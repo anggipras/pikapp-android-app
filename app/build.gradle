@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
@@ -24,6 +26,16 @@ android {
     }
 }
 
+def lifeCycleExtensionVersion = '2.2.0'
+def supportVersion = '29.0.0'
+def retrofitVersion = '2.9.0'
+def glideVersion = '4.11.0'
+def rxJavaVersion = '2.2.8'
+def rxAndroidVersion = '2.1.1'
+def roomVersion = '2.2.5'
+def navVersion = '2.3.0'
+def preferencesVersion = '1.1.1'
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -33,5 +45,37 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "com.android.support:design:$supportVersion"
 
+    implementation "android.arch.lifecycle:extensions:$lifeCycleExtensionVersion"
+
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+
+    implementation "com.google.android.material:material:1.0.0"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+
+    implementation "com.android.support:palette-v7:$supportVersion"
+
+    implementation "androidx.preference:preference:$preferencesVersion"
+    // Dynamic Feature Module Support
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVersion"
+    
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

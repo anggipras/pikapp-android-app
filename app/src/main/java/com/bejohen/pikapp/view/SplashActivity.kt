@@ -1,10 +1,11 @@
-package com.bejohen.pikapp
+package com.bejohen.pikapp.view
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.bejohen.pikapp.R
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,9 +18,9 @@ class SplashActivity : AppCompatActivity() {
 //                startActivity(homeActivity)
 //                finish()
             } else {
-//                val onboardingActivity = Intent(this, HomeActivity::class.java)
-//                startActivity(onboardingActivity)
-//                finish()
+                val onboardingActivity = Intent(this, OnboardingActivity::class.java)
+                startActivity(onboardingActivity)
+                finish()
             }
         }, 2000)
     }
