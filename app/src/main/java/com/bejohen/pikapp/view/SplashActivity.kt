@@ -5,28 +5,27 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
+import com.bejohen.pikapp.util.SharedPreferencesHelper
+import com.bejohen.pikapp.viewmodel.SplashViewModel
 
 class SplashActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: SplashViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        Handler().postDelayed({
-            if (isOnboardinFinished()) {
-//                val homeActivity = Intent(this, HomeActivity::class.java)
-//                startActivity(homeActivity)
-//                finish()
-            } else {
-                val onboardingActivity = Intent(this, OnboardingActivity::class.java)
-                startActivity(onboardingActivity)
-                finish()
-            }
-        }, 2000)
-    }
+        supportActionBar?.hide()
 
-    private fun isOnboardinFinished(): Boolean {
-        val sharedPref = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
-        return sharedPref.getBoolean("Finished", false)
+        viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
+
+        Handler().postDelayed({
+            viewModel.checkOnboardingFinished(this)
+            finish()
+        }, 2000)
+
     }
 }
