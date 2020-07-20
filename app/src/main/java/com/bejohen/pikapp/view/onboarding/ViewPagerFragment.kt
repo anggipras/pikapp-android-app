@@ -9,7 +9,11 @@ import com.bejohen.pikapp.R
 import com.bejohen.pikapp.view.onboarding.screens.OnboardingFirst
 import com.bejohen.pikapp.view.onboarding.screens.OnboardingSecond
 import com.bejohen.pikapp.view.onboarding.screens.OnboardingThird
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.fragment_view_pager.*
 import kotlinx.android.synthetic.main.fragment_view_pager.view.*
+import kotlinx.android.synthetic.main.fragment_view_pager.view.viewPager
 
 class ViewPagerFragment : Fragment() {
 
@@ -28,6 +32,10 @@ class ViewPagerFragment : Fragment() {
 
         val adapter = ViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle )
         view.viewPager.adapter = adapter
+
+        TabLayoutMediator(view.tabLayout, view.viewPager)   {
+            tab, position ->
+        }.attach()
 
         return view
     }
