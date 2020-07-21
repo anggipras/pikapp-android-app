@@ -9,5 +9,26 @@
         android:id="@+id/viewPagerFragment"
         android:name="com.bejohen.pikapp.view.onboarding.ViewPagerFragment"
         android:label="fragment_view_pager"
-        tools:layout="@layout/fragment_view_pager" />
+        tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/actionToLoginOnboardingFragment"
+            app:destination="@id/loginOnboardingFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/actionToSignupOnboardingFragment"
+            app:destination="@id/signupOnboardingFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginOnboardingFragment"
+        android:name="com.bejohen.pikapp.view.onboarding.login.LoginOnboardingFragment"
+        android:label="fragment_login_onboarding"
+        tools:layout="@layout/fragment_login_onboarding" />
+    <fragment
+        android:id="@+id/signupOnboardingFragment"
+        android:name="com.bejohen.pikapp.view.onboarding.login.SignupOnboardingFragment"
+        android:label="fragment_signup_onboarding"
+        tools:layout="@layout/fragment_signup_onboarding" />
 </navigation>

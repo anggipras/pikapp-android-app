@@ -28,7 +28,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="70dp"
             android:fontFamily="@font/montserrat"
-            android:text="Welcome to  Pikapp!"
+            android:text="Welcome to  PikApp!"
             android:textColor="@android:color/white"
             android:textSize="40sp"
             android:textStyle="bold"
@@ -68,6 +68,21 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+
+        <TextView
+            android:id="@+id/textSkipToHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Teruskan nanti"
+            android:textColor="@color/colorPrimary"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSignup" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
