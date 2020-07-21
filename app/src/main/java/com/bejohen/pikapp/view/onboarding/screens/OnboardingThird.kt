@@ -53,7 +53,6 @@ class OnboardingThird : Fragment() {
             viewModel.setOnboardingFinished(true)
             (activity as OnboardingActivity).finish()
         }
-
         return view
     }
 

@@ -31,14 +31,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="PikApp!"
+            android:text="PikApp"
             android:textColor="#FFFFFF"
             android:textSize="35sp"
             android:textStyle="bold" />
 
 
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

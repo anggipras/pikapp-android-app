@@ -12,5 +12,4 @@ class OnboardingThirdViewModel(application: Application): BaseViewModel(applicat
         prefHelper.saveOnboardingFinised(status)
     }
 
-
 }
