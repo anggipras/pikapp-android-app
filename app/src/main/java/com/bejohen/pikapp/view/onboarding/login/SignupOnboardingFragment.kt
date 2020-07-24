@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.bejohen.pikapp.R
+import com.bejohen.pikapp.databinding.FragmentLoginOnboardingBinding
+import com.bejohen.pikapp.databinding.FragmentSignupOnboardingBinding
 
 class SignupOnboardingFragment : Fragment() {
+
+    private lateinit var dataBinding: FragmentSignupOnboardingBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -16,7 +20,7 @@ class SignupOnboardingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_signup_onboarding, container, false)
-//        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_onboarding, container, false)
-//        return dataBinding.root
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_onboarding, container, false)
+        return dataBinding.root
     }
 }
