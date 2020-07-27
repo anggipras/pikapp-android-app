@@ -2,4 +2,7 @@
     <string name="app_name">Pikapp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kebijakan_privasi">
+        Dengan memilih salah satu pilihan, anda setuju dengan <b>Aturan Penggunaan dan Kebijakan Privasi PikApp</b>
+    </string>
 </resources>

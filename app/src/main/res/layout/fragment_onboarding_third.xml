@@ -40,14 +40,14 @@
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="80dp"
-            android:background="@color/colorAccent"
+            android:background="@drawable/button_blue_yellow_stroke"
             android:text="Masuk"
             android:textColor="#FFFFFF"
-            android:textSize="19sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,14 +56,14 @@
         <Button
             android:id="@+id/buttonSignup"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginStart="80dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="80dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_yellow"
             android:text="Daftar"
             android:textColor="@android:color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +83,21 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonSignup" />
+
+        <TextView
+            android:id="@+id/textViewPrivacyPolicy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="25dp"
+            android:text="@string/kebijakan_privasi"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textSkipToHome" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

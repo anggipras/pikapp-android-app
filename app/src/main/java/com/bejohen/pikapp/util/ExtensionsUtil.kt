@@ -7,6 +7,8 @@ import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun getProgressDrawable(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {
@@ -31,9 +33,15 @@ fun loadImage(view: ImageView, url: String?) {
 }
 
 fun String.isEmailValid(): Boolean {
-    return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    return !TextUtils.isEmpty(this)
+//    return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
 fun String.isPasswordValid(): Boolean {
     return !TextUtils.isEmpty(this)
+}
+
+fun getTime() : String {
+    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    return timeStamp
 }

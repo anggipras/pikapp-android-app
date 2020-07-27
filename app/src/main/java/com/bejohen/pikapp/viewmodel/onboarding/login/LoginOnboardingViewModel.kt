@@ -20,6 +20,8 @@ class LoginOnboardingViewModel(application: Application): BaseViewModel(applicat
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
 
+//    val dataBinding =
+
     val loginResponse = MutableLiveData<LoginResponse>()
     val loginLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
@@ -68,7 +70,7 @@ class LoginOnboardingViewModel(application: Application): BaseViewModel(applicat
                 .subscribeWith(object: DisposableSingleObserver<LoginResponse>() {
                     override fun onSuccess(t: LoginResponse) {
                         loginSuccess(t)
-                        Toast.makeText(getApplication(), "LOGIN BANGSD", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(getApplication(), "token: ${t.token}", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onError(e: Throwable) {

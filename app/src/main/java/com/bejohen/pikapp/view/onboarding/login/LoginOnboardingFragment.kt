@@ -38,10 +38,7 @@ class LoginOnboardingFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(LoginOnboardingViewModel::class.java)
 
-
-
         dataBinding.buttonLogin.setOnClickListener{
-
             val email = dataBinding.textFieldLogin.text.trim().toString()
             val password = dataBinding.textFieldPassword.text.trim().toString()
             Log.d("Debug","email : " + email)

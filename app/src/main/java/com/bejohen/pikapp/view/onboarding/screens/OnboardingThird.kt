@@ -22,7 +22,6 @@ class OnboardingThird : Fragment() {
 
     private var _binding: FragmentOnboardingThirdBinding? = null
     // This property is only valid between onCreateView and
-// onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var viewModel: OnboardingThirdViewModel

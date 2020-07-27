@@ -9,7 +9,7 @@
         android:id="@+id/viewPagerFragment"
         android:name="com.bejohen.pikapp.view.onboarding.ViewPagerFragment"
         android:label="fragment_view_pager"
-        tools:layout="@layout/fragment_view_pager" >
+        tools:layout="@layout/fragment_view_pager">
         <action
             android:id="@+id/actionToLoginOnboardingFragment"
             app:destination="@id/loginOnboardingFragment"
@@ -30,5 +30,24 @@
         android:id="@+id/signupOnboardingFragment"
         android:name="com.bejohen.pikapp.view.onboarding.login.SignupOnboardingFragment"
         android:label="fragment_signup_onboarding"
-        tools:layout="@layout/fragment_signup_onboarding" />
+        tools:layout="@layout/fragment_signup_onboarding">
+        <action
+            android:id="@+id/actionToSignupOnboardingSuccessFragment"
+            app:destination="@id/signupOnboardingSuccessFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/viewPagerFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupOnboardingSuccessFragment"
+        android:name="com.bejohen.pikapp.view.onboarding.login.SignupOnboardingSuccessFragment"
+        android:label="fragment_signup_onboarding_success"
+        tools:layout="@layout/fragment_signup_onboarding_success">
+        <action
+            android:id="@+id/actionBackToLoginFragment"
+            app:destination="@id/loginOnboardingFragment"
+            app:popUpTo="@id/viewPagerFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
 </navigation>

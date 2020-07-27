@@ -117,11 +117,15 @@
 
             <Button
                 android:id="@+id/buttonLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="55dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/colorPrimary"
-                android:text="Log in" />
+                android:layout_marginEnd="55dp"
+                android:background="@drawable/button_yellow"
+                android:text="Log in"
+                android:textColor="#000000"
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -134,10 +138,14 @@
 
             <Button
                 android:id="@+id/buttonAnotherWay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="55dp"
                 android:layout_marginTop="15dp"
-                android:text="Cara Lain" />
+                android:layout_marginEnd="55dp"
+                android:background="@drawable/button_gray"
+                android:text="Cara Lain"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
