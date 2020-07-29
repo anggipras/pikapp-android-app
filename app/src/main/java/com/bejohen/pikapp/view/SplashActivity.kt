@@ -19,10 +19,6 @@ class SplashActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        val typeface = Typeface.createFromAsset(assets, "NyataFtrRegular.otf")
-
-        titleText.typeface = typeface
-
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
         Handler().postDelayed({

@@ -53,16 +53,8 @@ class LoginOnboardingFragment : Fragment() {
 
         viewModel.emailValid.observe(this, Observer { isValid ->
             isValid?.let {
-                if (!it) {
-                    dataBinding.textErrorEmail.visibility = View.VISIBLE
-                    if(viewModel.loginLoadError.value == true) {
-                        dataBinding.textErrorEmail.text = "User not found"
-                    } else {
-                        dataBinding.textErrorEmail.text = "Please input your valid email address"
-                    }
-                } else {
-                    dataBinding.textErrorEmail.visibility = View.INVISIBLE
-                }
+                dataBinding.textErrorEmail.visibility = if(it) View.INVISIBLE else View.VISIBLE
+                dataBinding.textErrorEmail.text = if(it) "" else "Please input your valid email address"
             }
         })
 
@@ -86,18 +78,19 @@ class LoginOnboardingFragment : Fragment() {
             }
         })
 
-        viewModel.loginLoadError.observe(this, Observer { isError ->
-            isError?.let {
-                dataBinding.loadingView.visibility = View.GONE
-//                loginError.visibility = if(it) View.VISIBLE else View.GONE
+        viewModel.loading.observe(this, Observer { isLoading ->
+            isLoading?.let {
+                dataBinding.loadingViewLogin.visibility = if(it) View.VISIBLE else View.GONE
+                dataBinding.textErrorEmail.visibility = View.INVISIBLE
+                dataBinding.textErrorPassword.visibility = View.INVISIBLE
             }
         })
 
-        viewModel.loading.observe(this, Observer { isLoading ->
-            isLoading?.let {
-                dataBinding.loadingView.visibility = if(it) View.VISIBLE else View.GONE
-                dataBinding.textErrorEmail.visibility = View.INVISIBLE
-                dataBinding.textErrorPassword.visibility = View.INVISIBLE
+        viewModel.loginErrorResponse.observe(this, Observer { errorResponse ->
+            errorResponse?.let {
+                Log.d("debug", "errorrrr : ${errorResponse.errCode}, ${errorResponse.errMessage}")
+                dataBinding.loadingViewLogin.visibility = View.GONE
+                dataBinding.buttonLogin.isClickable = true
             }
         })
     }

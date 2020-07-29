@@ -41,6 +41,11 @@ fun String.isPasswordValid(): Boolean {
     return !TextUtils.isEmpty(this)
 }
 
+fun getUUID() : String {
+    val uuid = UUID.randomUUID().toString()
+    return uuid
+}
+
 fun getTime() : String {
     val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     return timeStamp

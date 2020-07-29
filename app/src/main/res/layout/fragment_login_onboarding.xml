@@ -9,16 +9,6 @@
         android:background="@color/colorPrimary"
         tools:context=".view.onboarding.login.LoginOnboardingFragment">
 
-        <ProgressBar
-            android:id="@+id/loadingView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="304dp"
@@ -35,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="200dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Masuk"
             android:textColor="#000000"
             android:textSize="43sp"
@@ -51,16 +41,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
-            android:layout_marginBottom="30dp"
-            android:gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView7"
@@ -71,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email Anda"
+                android:fontFamily="@font/proximanova_regular"
                 android:textColor="#000000"
                 android:textSize="25sp" />
 
@@ -79,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Masukan email anda"
+                android:fontFamily="@font/proximanova_regular"
                 android:inputType="textEmailAddress"
                 android:textColor="#000000" />
 
@@ -87,14 +80,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email tidak terdaftar."
+                android:fontFamily="@font/proximanova_regular"
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
                 android:visibility="invisible" />
 
             <TextView
+                android:id="@+id/textErrorFailure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email tidak terdaftar."
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password Anda"
+                android:fontFamily="@font/proximanova_regular"
                 android:textColor="#000000"
                 android:textSize="25sp" />
 
@@ -103,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Masukan password anda"
+                android:fontFamily="@font/proximanova_regular"
                 android:inputType="textPassword"
                 android:textColor="#000000" />
 
@@ -111,6 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password anda Salah"
+                android:fontFamily="@font/proximanova_regular"
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
                 android:visibility="invisible" />
@@ -119,11 +126,12 @@
                 android:id="@+id/buttonLogin"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginStart="55dp"
+                android:layout_marginStart="35dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="55dp"
+                android:layout_marginEnd="35dp"
                 android:background="@drawable/button_yellow"
-                android:text="Log in"
+                android:fontFamily="@font/proximanova_bold"
+                android:text="Masuk"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -132,6 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="ATAU"
+                android:fontFamily="@font/proximanova_regular"
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="14sp" />
@@ -140,14 +149,26 @@
                 android:id="@+id/buttonAnotherWay"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginStart="55dp"
+                android:layout_marginStart="35dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="55dp"
+                android:layout_marginEnd="35dp"
                 android:background="@drawable/button_gray"
                 android:text="Cara Lain"
+                android:fontFamily="@font/proximanova_bold"
                 android:textSize="18sp" />
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loadingViewLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

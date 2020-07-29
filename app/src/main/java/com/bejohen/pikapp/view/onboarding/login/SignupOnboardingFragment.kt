@@ -68,6 +68,7 @@ class SignupOnboardingFragment : Fragment() {
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
+
         viewModel.emailValid.observe(this, Observer {isValid ->
             isValid?.let {
                 if(it) {

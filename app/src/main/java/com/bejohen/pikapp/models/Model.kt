@@ -47,3 +47,11 @@ data class RegisterResponse(
     @SerializedName("err_message")
     val errMessage: String?
 )
+
+data class ErrorResponse(
+    @SerializedName("err_code")
+    val errCode: String?,
+
+    @SerializedName("err_message")
+    val errMessage: String?
+)

@@ -1,11 +1,10 @@
 package com.bejohen.pikapp.models.network
 
-import com.bejohen.pikapp.models.LoginRequest
-import com.bejohen.pikapp.models.LoginResponse
-import com.bejohen.pikapp.models.RegisterRequest
-import com.bejohen.pikapp.models.RegisterResponse
+import android.util.Log
+import com.bejohen.pikapp.models.*
 import com.bejohen.pikapp.util.BASE_URL
 import com.bejohen.pikapp.util.getTime
+import com.bejohen.pikapp.util.getUUID
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -21,8 +20,10 @@ class PikappApiService {
         .create(PikappApi::class.java)
 
     fun loginUser(email: String, password: String): Single<LoginResponse> {
+        val uuid = getUUID()
+        Log.d("Debug","uuid : " + uuid)
         val loginData = LoginRequest(email, password)
-        return api.loginUser(getTime(), loginData)
+        return api.loginUser(uuid, getTime(), "123", loginData)
     }
 
     fun registerUser(email: String, password: String, fullName: String, phoneNumber: String, birthday: String, gender: String): Single<RegisterResponse> {
@@ -34,6 +35,6 @@ class PikappApiService {
             birthday,
             gender
         )
-        return api.registerUser(getTime(), registerData)
+        return api.registerUser(getUUID(), getTime(),"123",registerData)
     }
 }
