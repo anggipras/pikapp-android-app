@@ -50,3 +50,9 @@ fun getTime() : String {
     val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     return timeStamp
 }
+
+fun getClientID() : String {
+    val clientId: String = "123"
+    return clientId
+}
+

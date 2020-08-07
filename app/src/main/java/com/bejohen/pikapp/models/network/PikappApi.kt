@@ -1,11 +1,9 @@
 package com.bejohen.pikapp.models.network
 
-import com.bejohen.pikapp.models.LoginRequest
-import com.bejohen.pikapp.models.LoginResponse
-import com.bejohen.pikapp.models.RegisterRequest
-import com.bejohen.pikapp.models.RegisterResponse
+import com.bejohen.pikapp.models.*
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -23,4 +21,16 @@ interface PikappApi {
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Body RegisterRequest: RegisterRequest) : Single<RegisterResponse>
+
+    @GET("home/v1/category")
+    fun getHomeCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String) : Single<ItemHomeCategoryResponse>
+
+    @GET("home/v1/slider")
+    fun getHomeBannerSlider(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String) : Single<ItemHomeBannerSliderResponse>
 }

@@ -13,14 +13,14 @@ import androidx.navigation.Navigation
 import com.bejohen.pikapp.databinding.FragmentOnboardingThirdBinding
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.OnboardingActivity
-import com.bejohen.pikapp.view.onboarding.ViewPagerFragmentDirections
-import com.bejohen.pikapp.viewmodel.SplashViewModel
+import com.bejohen.pikapp.view.onboarding.OnboardingViewPagerFragmentDirections
 import com.bejohen.pikapp.viewmodel.onboarding.OnboardingThirdViewModel
 import kotlinx.android.synthetic.main.fragment_onboarding_third.view.*
 
 class OnboardingThird : Fragment() {
 
     private var _binding: FragmentOnboardingThirdBinding? = null
+
     // This property is only valid between onCreateView and
     private val binding get() = _binding!!
 
@@ -37,12 +37,12 @@ class OnboardingThird : Fragment() {
         viewModel = ViewModelProviders.of(this).get(OnboardingThirdViewModel::class.java)
 
         view.buttonLogin.setOnClickListener {
-            val action = ViewPagerFragmentDirections.actionToLoginOnboardingFragment()
+            val action = OnboardingViewPagerFragmentDirections.actionToLoginOnboardingFragment()
             Navigation.findNavController(view).navigate(action)
         }
 
         view.buttonSignup.setOnClickListener {
-            val action = ViewPagerFragmentDirections.actionToSignupOnboardingFragment()
+            val action = OnboardingViewPagerFragmentDirections.actionToSignupOnboardingFragment()
             Navigation.findNavController(view).navigate(action)
         }
 

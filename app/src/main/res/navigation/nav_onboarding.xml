@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.bejohen.pikapp.view.onboarding.ViewPagerFragment"
+        android:name="com.bejohen.pikapp.view.onboarding.OnboardingViewPagerFragment"
         android:label="fragment_view_pager"
-        tools:layout="@layout/fragment_view_pager">
+        tools:layout="@layout/fragment_onboarding_view_pager">
         <action
             android:id="@+id/actionToLoginOnboardingFragment"
             app:destination="@id/loginOnboardingFragment"

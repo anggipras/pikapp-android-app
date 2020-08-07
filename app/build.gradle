@@ -25,7 +25,11 @@ android {
         }
     }
 
-    dataBinding.enabled = true
+    buildFeatures {
+        dataBinding = true
+        // for view binding:
+        viewBinding = true
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -91,4 +95,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 }

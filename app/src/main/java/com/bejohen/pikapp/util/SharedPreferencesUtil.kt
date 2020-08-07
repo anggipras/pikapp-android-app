@@ -13,6 +13,12 @@ class SharedPreferencesUtil {
 
         private const val PREF_ONBOARDING_FINISHED = "onboarding"
 
+        private const val PREF_ISLOGGINGIN = "login"
+
+        private const val PREF_USER_TOKEN = "user token"
+
+        private const val PREF_LOGIN_HISTORY_TIME = "login history"
+
         private var prefs: SharedPreferences? = null
 
         @Volatile
@@ -40,6 +46,8 @@ class SharedPreferencesUtil {
 
     fun getUpdateTime() = prefs?.getLong(PREF_TIME, 0)
 
+    fun getCacheDuration() = prefs?.getString("pref_cache_duration", "")
+
     fun saveOnboardingFinised(boolean: Boolean) {
         prefs?.edit(commit = true) {
             putBoolean(PREF_ONBOARDING_FINISHED, boolean)
@@ -48,5 +56,35 @@ class SharedPreferencesUtil {
 
     fun isOnboardingFinished() = prefs?.getBoolean(PREF_ONBOARDING_FINISHED, false)
 
-    fun getCacheDuration() = prefs?.getString("pref_cache_duration", "")
+    fun saveUserLogin(boolean: Boolean) {
+        prefs?.edit(commit = true) {
+            putBoolean(PREF_ISLOGGINGIN, boolean)
+        }
+    }
+
+    fun isLoggingIn() = prefs?.getBoolean(PREF_ISLOGGINGIN, false)
+
+    fun saveUserToken(token: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_TOKEN, token)
+        }
+    }
+
+    fun getUserToken() = prefs?.getString(PREF_USER_TOKEN, "")
+
+    fun deleteUserToken() {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_TOKEN, "")
+        }
+    }
+
+    fun saveLoginHistory(time: Long) {
+        prefs?.edit(commit = true) {
+            putLong(PREF_LOGIN_HISTORY_TIME, time)
+        }
+    }
+
+    fun getLoginHistory() = prefs?.getLong(PREF_LOGIN_HISTORY_TIME, 0)
+
+
 }

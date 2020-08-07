@@ -109,7 +109,7 @@ class SignupOnboardingFragment : Fragment() {
     private fun animateUI() {
 
         val transition = Fade()
-        transition.setDuration(800)
+        transition.duration = 800
 
         transition.addTarget(dataBinding.textYourEmail)
         transition.addTarget(dataBinding.textEmailValid)
@@ -158,7 +158,7 @@ class SignupOnboardingFragment : Fragment() {
     private fun animateGone() {
         dataBinding.container.transitionToEnd()
         val transition = Fade()
-        transition.setDuration(500)
+        transition.duration = 500
 
         transition.addTarget(dataBinding.textSignupEmail)
         transition.addTarget(dataBinding.textFieldSignupEmail)

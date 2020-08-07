@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="categoryItem"
+            type="com.bejohen.pikapp.models.ItemHomeCategory" />
+        <variable
+            name="Listener"
+            type="com.bejohen.pikapp.view.home.HomeCategoryClickListener" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/top_header_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:onClick="@{Listener::onCategoryClicked}"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/HomeCategoryUuid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@{String.valueOf(categoryItem.uuid)}"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/categoryImage"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:imageUrl="@{categoryItem.categoryPict}"
+            app:srcCompat="@drawable/logo_new" />
+
+        <TextView
+            android:id="@+id/categoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/proximanova_regular"
+            android:text="@{String.valueOf(categoryItem.categoryName)}"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</layout>

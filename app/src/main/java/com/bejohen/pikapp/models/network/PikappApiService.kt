@@ -3,6 +3,7 @@ package com.bejohen.pikapp.models.network
 import android.util.Log
 import com.bejohen.pikapp.models.*
 import com.bejohen.pikapp.util.BASE_URL
+import com.bejohen.pikapp.util.getClientID
 import com.bejohen.pikapp.util.getTime
 import com.bejohen.pikapp.util.getUUID
 import io.reactivex.Single
@@ -23,7 +24,7 @@ class PikappApiService {
         val uuid = getUUID()
         Log.d("Debug","uuid : " + uuid)
         val loginData = LoginRequest(email, password)
-        return api.loginUser(uuid, getTime(), "123", loginData)
+        return api.loginUser(uuid, getTime(), getClientID(), loginData)
     }
 
     fun registerUser(email: String, password: String, fullName: String, phoneNumber: String, birthday: String, gender: String): Single<RegisterResponse> {
@@ -35,6 +36,18 @@ class PikappApiService {
             birthday,
             gender
         )
-        return api.registerUser(getUUID(), getTime(),"123",registerData)
+        return api.registerUser(getUUID(), getTime(),getClientID(),registerData)
+    }
+
+    fun getHomeCategory(): Single<ItemHomeCategoryResponse> {
+        val uuid = getUUID()
+        Log.d("Debug","uuid : " + uuid)
+        return api.getHomeCategory(getUUID(), getTime(), getClientID())
+    }
+
+    fun getHomeBannerSlider(): Single<ItemHomeBannerSliderResponse> {
+        val uuid = getUUID()
+        Log.d("Debug","uuid : " + uuid)
+        return api.getHomeBannerSlider(getUUID(), getTime(), getClientID())
     }
 }
