@@ -1,6 +1,7 @@
 package com.bejohen.pikapp.viewmodel.home
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.bejohen.pikapp.models.*
@@ -61,6 +62,7 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
                     override fun onError(e: Throwable) {
                         var errorResponse: ErrorResponse
                         try {
+                            Log.d("Debug","error slider : " + e)
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
                             errorResponse =

@@ -33,8 +33,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_weight="1"
-            android:imageUrl="@{categoryItem.categoryPict}"
-            app:srcCompat="@drawable/logo_new" />
+            android:imageUrl="@{categoryItem.categoryPict}" />
 
         <TextView
             android:id="@+id/categoryTitle"

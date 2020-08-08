@@ -42,7 +42,7 @@ data class ItemHomeBannerSliderResponse(
 @Entity
 data class ItemHomeBannerSlider(
     @SerializedName("slider_name")
-    val sliderName: Long?,
+    val sliderName: String?,
     @SerializedName("slider_pict")
     val sliderPict: String?
 ) {

@@ -56,3 +56,8 @@ fun getClientID() : String {
     return clientId
 }
 
+fun setTokenPublic() : String {
+    val token: String = "PUBLIC"
+    return token
+}
+

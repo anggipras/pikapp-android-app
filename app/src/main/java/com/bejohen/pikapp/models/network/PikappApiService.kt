@@ -2,10 +2,7 @@ package com.bejohen.pikapp.models.network
 
 import android.util.Log
 import com.bejohen.pikapp.models.*
-import com.bejohen.pikapp.util.BASE_URL
-import com.bejohen.pikapp.util.getClientID
-import com.bejohen.pikapp.util.getTime
-import com.bejohen.pikapp.util.getUUID
+import com.bejohen.pikapp.util.*
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -39,15 +36,15 @@ class PikappApiService {
         return api.registerUser(getUUID(), getTime(),getClientID(),registerData)
     }
 
-    fun getHomeCategory(): Single<ItemHomeCategoryResponse> {
-        val uuid = getUUID()
-        Log.d("Debug","uuid : " + uuid)
-        return api.getHomeCategory(getUUID(), getTime(), getClientID())
-    }
-
     fun getHomeBannerSlider(): Single<ItemHomeBannerSliderResponse> {
         val uuid = getUUID()
         Log.d("Debug","uuid : " + uuid)
-        return api.getHomeBannerSlider(getUUID(), getTime(), getClientID())
+        return api.getHomeBannerSlider(getUUID(), getTime(), getClientID(), setTokenPublic())
+    }
+
+    fun getHomeCategory(): Single<ItemHomeCategoryResponse> {
+        val uuid = getUUID()
+        Log.d("Debug","uuid : " + uuid)
+        return api.getHomeCategory(getUUID(), getTime(), getClientID(), setTokenPublic())
     }
 }

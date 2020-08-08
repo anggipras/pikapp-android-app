@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentHomeHomeBinding
@@ -58,8 +59,11 @@ class HomeHomeFragment : Fragment() {
 
         // apply to home category
         dataBinding.recyclerViewCategory.apply {
-            layoutManager = LinearLayoutManager(context)
+            val gridLayoutManager = GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
+            layoutManager = gridLayoutManager
             adapter = homeCategoryListAdapter
+            val spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing)
+            addItemDecoration(ItemHomeCategoryDecoration(spacingInPixels))
         }
 
         dataBinding.homeHomeRefreshLayout.setOnRefreshListener{
@@ -152,6 +156,6 @@ class HomeHomeFragment : Fragment() {
             override fun run() {
                 handler.post(Update)
             }
-        }, 3000, 3000)
+        }, 5000, 5000)
     }
 }

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentHomeBinding
 import com.bejohen.pikapp.databinding.FragmentHomeHomeBinding
+import com.bejohen.pikapp.view.HomeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_home_view_pager.view.*
 
@@ -34,10 +35,18 @@ class HomeFragment : Fragment() {
                 tab.setIcon(R.drawable.ic_home)
             } else {
                 tab.text = "Live Chat"
-                tab.setIcon(R.drawable.ic_favorite)
+                tab.setIcon(R.drawable.ic_chat)
             }
             view.homeViewPager.setCurrentItem(tab.position, true)
         }.attach()
+
+        dataBinding.buttonProfile.setOnClickListener{
+
+            val profileFragment = ProfileFragment()
+
+            profileFragment.show((activity as HomeActivity).supportFragmentManager, profileFragment.getTag())
+
+        }
 
     }
 }

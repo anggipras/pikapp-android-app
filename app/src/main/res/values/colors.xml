@@ -5,4 +5,7 @@
     <color name="colorSecondary">#FEB614</color>
     <color name="colorAccent">#4056C6</color>
     <color name="placeholderBackground">#DDDDDD</color>
+    <color name="colorFavorite">#FF4057</color>
+    <color name="colorGrey">#323232</color>
+
 </resources>
