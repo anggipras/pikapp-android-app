@@ -17,6 +17,9 @@ class SharedPreferencesUtil {
 
         private const val PREF_USER_TOKEN = "user token"
 
+        private const val PREF_ISUSEREXCLUSIVE = "user exclusive"
+        private const val PREF_ISUSEREXCLUSIVEFORM = "user exclusive form"
+
         private const val PREF_LOGIN_HISTORY_TIME = "login history"
 
         private var prefs: SharedPreferences? = null
@@ -56,7 +59,23 @@ class SharedPreferencesUtil {
 
     fun isOnboardingFinished() = prefs?.getBoolean(PREF_ONBOARDING_FINISHED, false)
 
-    fun saveUserLogin(boolean: Boolean) {
+    fun saveUserExclusive(boolean: Boolean) {
+        prefs?.edit(commit = true) {
+            putBoolean(PREF_ISUSEREXCLUSIVE, boolean)
+        }
+    }
+    fun isUserExclusive() = prefs?.getBoolean(PREF_ISUSEREXCLUSIVE, false)
+
+    fun saveUserExclusiveForm(boolean: Boolean) {
+        prefs?.edit(commit = true) {
+            putBoolean(PREF_ISUSEREXCLUSIVEFORM, boolean)
+        }
+    }
+
+    fun isUserExclusiveFormFinished() = prefs?.getBoolean(PREF_ISUSEREXCLUSIVEFORM, false)
+
+
+    private fun saveUserLogin(boolean: Boolean) {
         prefs?.edit(commit = true) {
             putBoolean(PREF_ISLOGGINGIN, boolean)
         }
@@ -64,7 +83,7 @@ class SharedPreferencesUtil {
 
     fun isLoggingIn() = prefs?.getBoolean(PREF_ISLOGGINGIN, false)
 
-    fun saveUserToken(token: String) {
+    private fun saveUserToken(token: String) {
         prefs?.edit(commit = true) {
             putString(PREF_USER_TOKEN, token)
         }
@@ -78,13 +97,24 @@ class SharedPreferencesUtil {
         }
     }
 
-    fun saveLoginHistory(time: Long) {
+    private fun saveLoginHistory(time: Long) {
         prefs?.edit(commit = true) {
             putLong(PREF_LOGIN_HISTORY_TIME, time)
         }
     }
 
     fun getLoginHistory() = prefs?.getLong(PREF_LOGIN_HISTORY_TIME, 0)
+
+    fun setUserSession(token: String, time: Long) {
+        saveUserLogin(true)
+        saveUserToken(token)
+        saveLoginHistory(time)
+    }
+
+    fun logout() {
+        saveUserLogin(false)
+        deleteUserToken()
+    }
 
 
 }

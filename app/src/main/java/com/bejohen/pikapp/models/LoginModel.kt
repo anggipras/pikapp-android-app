@@ -17,7 +17,10 @@ data class LoginResponse(
     @SerializedName("err_message")
     val errMessage: String?,
 
-    val token:String?
+    val token:String?,
+
+    @SerializedName("new_event")
+    val newEvent: Boolean?
 )
 
 data class RegisterRequest(

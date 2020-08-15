@@ -1,7 +1,6 @@
 package com.bejohen.pikapp.view.onboarding.login
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,16 +12,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentLoginOnboardingBinding
-import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.OnboardingActivity
 import com.bejohen.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModel
-import kotlinx.android.synthetic.main.fragment_login_onboarding.*
 
 class LoginOnboardingFragment : Fragment() {
 
     private lateinit var viewModel: LoginOnboardingViewModel
     private lateinit var dataBinding: FragmentLoginOnboardingBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,10 +72,16 @@ class LoginOnboardingFragment : Fragment() {
             response?.let {
                 dataBinding.buttonLogin.isClickable = false
 
-                if (viewModel.getOnboardingFinished()) {
-                    viewModel.goToHome(activity as LoginActivity)
-                } else {
-                    viewModel.goToHome(activity as OnboardingActivity)
+                Log.d("debug", "nama : ${response.newEvent!!}")
+                if(response.newEvent!!) {
+                    viewModel.goToUserExclusive(activity as OnboardingActivity)
+                }
+                else {
+                    if (viewModel.getOnboardingFinished()) {
+                        viewModel.goToHome(activity as LoginActivity)
+                    } else {
+                        viewModel.goToHome(activity as OnboardingActivity)
+                    }
                 }
             }
         })

@@ -15,6 +15,7 @@ import com.bejohen.pikapp.util.isPasswordValid
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.OnboardingActivity
+import com.bejohen.pikapp.view.UserExclusiveActivity
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -106,7 +107,8 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     private fun loginSuccess(response: LoginResponse) {
         loginResponse.value = response
         loading.value = false
-        response.token?.let { prefHelper.saveUserToken(it) }
+        response.newEvent?.let { prefHelper.saveUserExclusive(response.newEvent) }
+        response.token?.let { prefHelper.setUserSession(response.token, System.nanoTime()) }
         prefHelper.saveOnboardingFinised(true)
     }
 
@@ -116,7 +118,6 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     }
 
     fun goToHome(context: Context) {
-        prefHelper.saveUserLogin(true)
         if (getOnboardingFinished()) {
             (context as LoginActivity).finish()
         } else {
@@ -124,7 +125,13 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
             context?.startActivity(homeActivity)
             (context as OnboardingActivity).finish()
         }
+    }
 
+    fun goToUserExclusive(context: Context) {
+
+        val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
+        context?.startActivity(userExclusiveActivity)
+        (context as OnboardingActivity).finish()
     }
 
     override fun onCleared() {
