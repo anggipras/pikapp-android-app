@@ -23,4 +23,12 @@ class ProfileFragment : BottomSheetDialogFragment() {
         return dataBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.buttonLogout.setOnClickListener {
+
+        }
+    }
+
 }

@@ -2,15 +2,19 @@ package com.bejohen.pikapp.viewmodel.onboarding.login
 
 import android.app.Application
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.bejohen.pikapp.models.LoginResponse
 import com.bejohen.pikapp.models.network.PikappApiService
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.util.isEmailValid
+import com.bejohen.pikapp.view.login.SignupFragmentDirections
+import com.bejohen.pikapp.view.onboarding.login.SignupOnboardingFragmentDirections
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-class SignupOnboardingViewModel(application: Application): BaseViewModel(application) {
+class SignupOnboardingViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private val apiService = PikappApiService()
@@ -27,6 +31,10 @@ class SignupOnboardingViewModel(application: Application): BaseViewModel(applica
 
     var isEmailValid = false
 
+    fun getOnboardingFinished(): Boolean {
+        return prefHelper.isOnboardingFinished() ?: false
+    }
+
     fun emailValidation(mail: String) {
 
         email = mail
@@ -34,7 +42,7 @@ class SignupOnboardingViewModel(application: Application): BaseViewModel(applica
         emailValid.value = mail.isEmailValid()
     }
 
-    fun register(fullName : String, phone: String, password: String, confPassword: String) {
+    fun register(fullName: String, phone: String, password: String, confPassword: String) {
         loading.value = true
         registerSuccess()
     }
@@ -48,6 +56,17 @@ class SignupOnboardingViewModel(application: Application): BaseViewModel(applica
 
         registerLoadError.value = false
         loading.value = false
+    }
+
+    fun goToSuccess(view: View) {
+        if (getOnboardingFinished()) {
+            val action = SignupFragmentDirections.actionToSignupSuccessFragment()
+            Navigation.findNavController(view).navigate(action)
+        } else {
+            val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
+            Navigation.findNavController(view).navigate(action)
+        }
+
     }
 
     override fun onCleared() {

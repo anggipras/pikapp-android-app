@@ -1,4 +1,4 @@
-package com.bejohen.pikapp.view.onboarding.login
+package com.bejohen.pikapp.view.login
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,27 +6,29 @@ import android.os.Handler
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.bejohen.pikapp.R
+import com.bejohen.pikapp.databinding.FragmentSignupBinding
 import com.bejohen.pikapp.databinding.FragmentSignupOnboardingBinding
 import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.OnboardingActivity
+import com.bejohen.pikapp.view.onboarding.login.SignupOnboardingFragmentDirections
 import com.bejohen.pikapp.viewmodel.onboarding.login.SignupOnboardingViewModel
 
-
-class SignupOnboardingFragment : Fragment() {
+class SignupFragment : Fragment() {
 
     private lateinit var viewModel: SignupOnboardingViewModel
-    private lateinit var dataBinding: FragmentSignupOnboardingBinding
+    private lateinit var dataBinding: FragmentSignupBinding
 
     private var isEmailValid = false
+
     private var shortAnimationDuration: Int = 0
 
     override fun onCreateView(
@@ -34,24 +36,22 @@ class SignupOnboardingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_signup_onboarding, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container, false)
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProviders.of(this).get(SignupOnboardingViewModel::class.java)
         shortAnimationDuration = resources.getInteger(android.R.integer.config_longAnimTime)
 
-        viewModel = ViewModelProviders.of(this).get(SignupOnboardingViewModel::class.java)
-
-        dataBinding.buttonOnboardingSignupSignup.setOnClickListener {
+        dataBinding.buttonSignupSignup.setOnClickListener {
             if (isEmailValid) {
 //                sendRegister()
                 registerSuccess()
             } else {
-                val email = dataBinding.textFieldOnboardingSignupEmail.text.toString().trim()
+                val email = dataBinding.textFieldSignupEmail.text.toString().trim()
                 Log.d("Debug", "email : " + email)
                 viewModel.emailValidation(email)
             }
@@ -61,11 +61,10 @@ class SignupOnboardingFragment : Fragment() {
     }
 
     private fun sendRegister() {
-        val fullName = dataBinding.textFieldOnboardingSignupFullName.text.toString().trim()
-        val phone = dataBinding.textFieldOnboardingSignupPhone.text.toString().trim()
-        val password = dataBinding.textFieldOnboardingSignupPassword.text.toString().trim()
-        val confPassword =
-            dataBinding.textErrorOnboardingSignupConfirmPassword.text.toString().trim()
+        val fullName = dataBinding.textFieldSignupFullName.text.toString().trim()
+        val phone = dataBinding.textFieldSignupPhone.text.toString().trim()
+        val password = dataBinding.textFieldSignupPassword.text.toString().trim()
+        val confPassword = dataBinding.textErrorSignupConfirmPassword.text.toString().trim()
 
         viewModel.register(fullName, phone, password, confPassword)
     }
@@ -86,10 +85,10 @@ class SignupOnboardingFragment : Fragment() {
                         animateUI()
                     }, 500)
                     Log.d("Debug", "email harusnya : " + viewModel.email)
-                    dataBinding.textOnboardingEmailValid.text = viewModel.email
+                    dataBinding.textEmailValid.text = viewModel.email
                     isEmailValid = true
                 } else {
-                    dataBinding.textErrorOnboardingSignupEmail.visibility = View.VISIBLE
+                    dataBinding.textErrorSignupEmail.visibility = View.VISIBLE
                 }
             }
 
@@ -97,23 +96,21 @@ class SignupOnboardingFragment : Fragment() {
 
         viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                dataBinding.loadingViewOnboarding.visibility = if (it) View.VISIBLE else View.GONE
+                dataBinding.loadingView.visibility = if (it) View.VISIBLE else View.GONE
             }
         })
 
         viewModel.registerResponse.observe(this, Observer { response ->
             response?.let {
                 viewModel.goToSuccess(dataBinding.root)
-//                val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
-//                Navigation.findNavController(dataBinding.root).navigate(action)
             }
         })
     }
 
     private fun registerSuccess() {
-
-        val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
-        Navigation.findNavController(dataBinding.root).navigate(action)
+        viewModel.goToSuccess(dataBinding.root)
+//        val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
+//        Navigation.findNavController(dataBinding.root).navigate(action)
     }
 
     private fun animateUI() {
@@ -122,136 +119,136 @@ class SignupOnboardingFragment : Fragment() {
             val transition = Fade()
             transition.duration = 800
 
-            transition.addTarget(dataBinding.textOnboardingYourEmail)
-            transition.addTarget(dataBinding.textOnboardingEmailValid)
+            transition.addTarget(dataBinding.textYourEmail)
+            transition.addTarget(dataBinding.textEmailValid)
 
-            transition.addTarget(dataBinding.textOnboardingSignupFullName)
-            transition.addTarget(dataBinding.textFieldOnboardingSignupFullName)
-            transition.addTarget(dataBinding.textErrorOnboardingFullName)
-            transition.addTarget(dataBinding.textOnboardingSignupPhone)
-            transition.addTarget(dataBinding.textFieldOnboardingSignupPhone)
-            transition.addTarget(dataBinding.textErrorOnboardingPhone)
+            transition.addTarget(dataBinding.textSignupFullName)
+            transition.addTarget(dataBinding.textFieldSignupFullName)
+            transition.addTarget(dataBinding.textErrorFullName)
+            transition.addTarget(dataBinding.textSignupPhone)
+            transition.addTarget(dataBinding.textFieldSignupPhone)
+            transition.addTarget(dataBinding.textErrorPhone)
 
-            transition.addTarget(dataBinding.textOnboardingSignupPassword)
-            transition.addTarget(dataBinding.textFieldOnboardingSignupPassword)
-            transition.addTarget(dataBinding.textErrorOnboardingSignupPassword)
-            transition.addTarget(dataBinding.textOnboardingSignupConfirmPassword)
-            transition.addTarget(dataBinding.textFieldOnboardingSignupConfirmPassword)
-            transition.addTarget(dataBinding.textErrorOnboardingSignupConfirmPassword)
-            transition.addTarget(dataBinding.buttonOnboardingSignupSignup)
-            transition.addTarget(dataBinding.textOnboardingOr)
-            transition.addTarget(dataBinding.buttonOnboardingSignupAnotherWay)
+            transition.addTarget(dataBinding.textSignupPassword)
+            transition.addTarget(dataBinding.textFieldSignupPassword)
+            transition.addTarget(dataBinding.textErrorSignupPassword)
+            transition.addTarget(dataBinding.textSignupConfirmPassword)
+            transition.addTarget(dataBinding.textFieldSignupConfirmPassword)
+            transition.addTarget(dataBinding.textErrorSignupConfirmPassword)
+            transition.addTarget(dataBinding.buttonSignupSignup)
+            transition.addTarget(dataBinding.textOr)
+            transition.addTarget(dataBinding.buttonSignupAnotherWay)
 
-            TransitionManager.beginDelayedTransition(dataBinding.containerOnboarding, transition)
+            TransitionManager.beginDelayedTransition(dataBinding.container, transition)
 
             //set visible
-            dataBinding.textOnboardingYourEmail.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textOnboardingEmailValid.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textOnboardingSignupFullName.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textFieldOnboardingSignupFullName.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textYourEmail.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textEmailValid.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textSignupFullName.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textFieldSignupFullName.setTransitionVisibility(View.VISIBLE)
 
-            dataBinding.textOnboardingSignupPhone.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textFieldOnboardingSignupPhone.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textSignupPhone.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textFieldSignupPhone.setTransitionVisibility(View.VISIBLE)
 
-            dataBinding.textOnboardingSignupPassword.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textFieldOnboardingSignupPassword.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textOnboardingSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textFieldOnboardingSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
-            dataBinding.buttonOnboardingSignupSignup.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textSignupPassword.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textFieldSignupPassword.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
+            dataBinding.textFieldSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
+            dataBinding.buttonSignupSignup.setTransitionVisibility(View.VISIBLE)
 
             //set invisible
-            dataBinding.textErrorOnboardingFullName.setTransitionVisibility(View.INVISIBLE)
-            dataBinding.textErrorOnboardingPhone.setTransitionVisibility(View.INVISIBLE)
-            dataBinding.textErrorOnboardingSignupPassword.setTransitionVisibility(View.INVISIBLE)
-            dataBinding.textErrorOnboardingSignupConfirmPassword.setTransitionVisibility(View.INVISIBLE)
+            dataBinding.textErrorFullName.setTransitionVisibility(View.INVISIBLE)
+            dataBinding.textErrorPhone.setTransitionVisibility(View.INVISIBLE)
+            dataBinding.textErrorSignupPassword.setTransitionVisibility(View.INVISIBLE)
+            dataBinding.textErrorSignupConfirmPassword.setTransitionVisibility(View.INVISIBLE)
         } else {
-            dataBinding.textOnboardingYourEmail.apply {
+            dataBinding.textYourEmail.apply {
                 visibility = View.VISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textOnboardingEmailValid.apply {
+            dataBinding.textEmailValid.apply {
                 visibility = View.VISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textOnboardingSignupFullName.apply {
+            dataBinding.textSignupFullName.apply {
                 visibility = View.VISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textFieldOnboardingSignupFullName.apply {
+            dataBinding.textFieldSignupFullName.apply {
                 visibility = View.VISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textOnboardingSignupPhone.apply {
+            dataBinding.textSignupPhone.apply {
                 visibility = View.VISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textFieldOnboardingSignupPhone.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
-
-            dataBinding.textOnboardingSignupPassword.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
-            dataBinding.textFieldOnboardingSignupPassword.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
-            dataBinding.textOnboardingSignupConfirmPassword.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
-            dataBinding.textFieldOnboardingSignupConfirmPassword.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
-            dataBinding.buttonOnboardingSignupSignup.apply {
+            dataBinding.textFieldSignupPhone.apply {
                 visibility = View.VISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
 
-            dataBinding.textErrorOnboardingFullName.apply {
+            dataBinding.textSignupPassword.apply {
+                visibility = View.VISIBLE
+                animate()
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+            }
+            dataBinding.textFieldSignupPassword.apply {
+                visibility = View.VISIBLE
+                animate()
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+            }
+            dataBinding.textSignupConfirmPassword.apply {
+                visibility = View.VISIBLE
+                animate()
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+            }
+            dataBinding.textFieldSignupConfirmPassword.apply {
+                visibility = View.VISIBLE
+                animate()
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+            }
+            dataBinding.buttonSignupSignup.apply {
+                visibility = View.VISIBLE
+                animate()
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+            }
+
+            dataBinding.textErrorFullName.apply {
                 visibility = View.INVISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textErrorOnboardingPhone.apply {
+            dataBinding.textErrorPhone.apply {
                 visibility = View.INVISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textErrorOnboardingSignupPassword.apply {
+            dataBinding.textErrorSignupPassword.apply {
                 visibility = View.INVISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textErrorOnboardingSignupConfirmPassword.apply {
+            dataBinding.textErrorSignupConfirmPassword.apply {
                 visibility = View.INVISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
@@ -261,70 +258,65 @@ class SignupOnboardingFragment : Fragment() {
     }
 
     private fun animateGone() {
-
-        dataBinding.containerOnboarding.transitionToEnd()
-
+        dataBinding.container.transitionToEnd()
         if (android.os.Build.VERSION_CODES.BASE >= android.os.Build.VERSION_CODES.O) {
-
             val transition = Fade()
             transition.duration = 500
 
-            transition.addTarget(dataBinding.textOnboardingSignupEmail)
-            transition.addTarget(dataBinding.textFieldOnboardingSignupEmail)
-            transition.addTarget(dataBinding.textErrorOnboardingSignupEmail)
+            transition.addTarget(dataBinding.textSignupEmail)
+            transition.addTarget(dataBinding.textFieldSignupEmail)
+            transition.addTarget(dataBinding.textErrorSignupEmail)
 
-            transition.addTarget(dataBinding.buttonOnboardingSignupSignup)
+            transition.addTarget(dataBinding.buttonSignupSignup)
 
-            TransitionManager.beginDelayedTransition(dataBinding.containerOnboarding, transition)
+            TransitionManager.beginDelayedTransition(dataBinding.container, transition)
 
             //set gone
-            dataBinding.textOnboardingSignupEmail.setTransitionVisibility(View.GONE)
-            dataBinding.textFieldOnboardingSignupEmail.setTransitionVisibility(View.GONE)
-            dataBinding.textErrorOnboardingSignupEmail.setTransitionVisibility(View.GONE)
-            dataBinding.textOnboardingOr.setTransitionVisibility(View.GONE)
-            dataBinding.buttonOnboardingSignupAnotherWay.setTransitionVisibility(View.GONE)
-            dataBinding.buttonOnboardingSignupSignup.setTransitionVisibility(View.INVISIBLE)
+            dataBinding.textSignupEmail.setTransitionVisibility(View.GONE)
+            dataBinding.textFieldSignupEmail.setTransitionVisibility(View.GONE)
+            dataBinding.textErrorSignupEmail.setTransitionVisibility(View.GONE)
+            dataBinding.textOr.setTransitionVisibility(View.GONE)
+            dataBinding.buttonSignupAnotherWay.setTransitionVisibility(View.GONE)
+            dataBinding.buttonSignupSignup.setTransitionVisibility(View.INVISIBLE)
         } else {
-            dataBinding.textOnboardingSignupEmail.apply {
+            dataBinding.textSignupEmail.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textFieldOnboardingSignupEmail.apply {
+            dataBinding.textFieldSignupEmail.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-
-            dataBinding.textErrorOnboardingSignupEmail.apply {
+            dataBinding.textErrorSignupEmail.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-
-            dataBinding.textOnboardingOr.apply {
+            dataBinding.textOr.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.buttonOnboardingSignupAnotherWay.apply {
+            dataBinding.buttonSignupAnotherWay.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-
-            dataBinding.buttonOnboardingSignupSignup.apply {
+            dataBinding.buttonSignupSignup.apply {
                 visibility = View.INVISIBLE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-
         }
+
+
     }
 }

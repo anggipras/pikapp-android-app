@@ -23,7 +23,6 @@ class HomeCategoryListAdapter(val categoryItemlist: ArrayList<ItemHomeCategory>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-
         val view = DataBindingUtil.inflate<ItemHomeCategoryBinding>(inflater, R.layout.item_home_category, parent, false)
         return CategoryViewHolder(view)
     }
@@ -37,8 +36,8 @@ class HomeCategoryListAdapter(val categoryItemlist: ArrayList<ItemHomeCategory>)
 
     override fun onCategoryClicked(v: View) {
         val uuid = v.HomeCategoryUuid.text.toString().toInt()
-//        val action = HomeFragmentDirections.actionToCategoryFragment()
-//        Navigation.findNavController(v).navigate(action)
+        val action = HomeFragmentDirections.actionToCategoryFragment(uuid)
+        Navigation.findNavController(v).navigate(action)
     }
 
 

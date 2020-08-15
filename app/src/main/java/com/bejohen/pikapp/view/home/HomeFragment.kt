@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentHomeBinding
 import com.bejohen.pikapp.databinding.FragmentHomeHomeBinding
 import com.bejohen.pikapp.view.HomeActivity
+import com.bejohen.pikapp.viewmodel.home.HomeViewModel
+import com.bejohen.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_home_view_pager.view.*
 
 class HomeFragment : Fragment() {
 
+    private lateinit var viewModel: HomeViewModel
     private lateinit var dataBinding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -29,6 +33,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
         TabLayoutMediator(dataBinding.tabLayout, view.homeViewPager) { tab, position ->
             if(position == 0) {
                 tab.text = "Home"
@@ -42,9 +49,7 @@ class HomeFragment : Fragment() {
 
         dataBinding.buttonProfile.setOnClickListener{
 
-            val profileFragment = ProfileFragment()
-
-            profileFragment.show((activity as HomeActivity).supportFragmentManager, profileFragment.getTag())
+            viewModel.checkUserLogin(activity as HomeActivity)
 
         }
 

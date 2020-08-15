@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentLoginOnboardingBinding
 import com.bejohen.pikapp.view.HomeActivity
+import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.OnboardingActivity
 import com.bejohen.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModel
 import kotlinx.android.synthetic.main.fragment_login_onboarding.*
@@ -72,9 +73,12 @@ class LoginOnboardingFragment : Fragment() {
         viewModel.loginResponse.observe(this, Observer { response ->
             response?.let {
                 dataBinding.buttonLogin.isClickable = false
-                val homeActivity = Intent(context, HomeActivity::class.java)
-                context?.startActivity(homeActivity)
-                (activity as OnboardingActivity).finish()
+
+                if (viewModel.getOnboardingFinished()) {
+                    viewModel.goToHome(activity as LoginActivity)
+                } else {
+                    viewModel.goToHome(activity as OnboardingActivity)
+                }
             }
         })
 

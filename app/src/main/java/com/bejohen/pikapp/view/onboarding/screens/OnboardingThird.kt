@@ -8,9 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.bejohen.pikapp.R
+import com.bejohen.pikapp.databinding.FragmentLoginOnboardingBinding
 import com.bejohen.pikapp.databinding.FragmentOnboardingThirdBinding
+import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.OnboardingActivity
 import com.bejohen.pikapp.view.onboarding.OnboardingViewPagerFragmentDirections
@@ -19,11 +23,7 @@ import kotlinx.android.synthetic.main.fragment_onboarding_third.view.*
 
 class OnboardingThird : Fragment() {
 
-    private var _binding: FragmentOnboardingThirdBinding? = null
-
-    // This property is only valid between onCreateView and
-    private val binding get() = _binding!!
-
+    private lateinit var dataBinding: FragmentOnboardingThirdBinding
     private lateinit var viewModel: OnboardingThirdViewModel
 
     override fun onCreateView(
@@ -31,32 +31,31 @@ class OnboardingThird : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOnboardingThirdBinding.inflate(inflater, container, false)
-        val view = binding.root
-
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_onboarding_third, container, false)
         viewModel = ViewModelProviders.of(this).get(OnboardingThirdViewModel::class.java)
+        return dataBinding.root
+    }
 
-        view.buttonLogin.setOnClickListener {
-            val action = OnboardingViewPagerFragmentDirections.actionToLoginOnboardingFragment()
-            Navigation.findNavController(view).navigate(action)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (viewModel.getOnboardingFinished()) {
+            dataBinding.textSkipToHome.visibility = View.INVISIBLE
         }
 
-        view.buttonSignup.setOnClickListener {
-            val action = OnboardingViewPagerFragmentDirections.actionToSignupOnboardingFragment()
-            Navigation.findNavController(view).navigate(action)
+        dataBinding.buttonLogin.setOnClickListener {
+            viewModel.goToLogin(view)
         }
 
-        view.textSkipToHome.setOnClickListener {
+        dataBinding.buttonSignup.setOnClickListener {
+            viewModel.goToSignup(view)
+        }
+
+        dataBinding.textSkipToHome.setOnClickListener {
             val homeActivity = Intent(activity as OnboardingActivity, HomeActivity::class.java)
             (activity as OnboardingActivity).startActivity(homeActivity)
             viewModel.setOnboardingFinished(true)
             (activity as OnboardingActivity).finish()
         }
-        return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

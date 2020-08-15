@@ -33,8 +33,7 @@ fun loadImage(view: ImageView, url: String?) {
 }
 
 fun String.isEmailValid(): Boolean {
-    return !TextUtils.isEmpty(this)
-//    return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
 fun String.isPasswordValid(): Boolean {

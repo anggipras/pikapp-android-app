@@ -1,6 +1,8 @@
 package com.bejohen.pikapp.viewmodel.onboarding.login
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +12,9 @@ import com.bejohen.pikapp.models.network.PikappApiService
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.util.isEmailValid
 import com.bejohen.pikapp.util.isPasswordValid
+import com.bejohen.pikapp.view.HomeActivity
+import com.bejohen.pikapp.view.LoginActivity
+import com.bejohen.pikapp.view.OnboardingActivity
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +25,7 @@ import retrofit2.HttpException
 import kotlin.math.log
 
 
-class LoginOnboardingViewModel(application: Application): BaseViewModel(application) {
+class LoginOnboardingViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private val apiService = PikappApiService()
@@ -32,6 +37,10 @@ class LoginOnboardingViewModel(application: Application): BaseViewModel(applicat
 
     val emailValid = MutableLiveData<Boolean>()
     val passwordValid = MutableLiveData<Boolean>()
+
+    fun getOnboardingFinished(): Boolean {
+        return prefHelper.isOnboardingFinished() ?: false
+    }
 
     fun login(email: String?, password: String?) {
         var _email = ""
@@ -66,24 +75,29 @@ class LoginOnboardingViewModel(application: Application): BaseViewModel(applicat
             apiService.loginUser(email, password)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object: DisposableSingleObserver<LoginResponse>() {
+                .subscribeWith(object : DisposableSingleObserver<LoginResponse>() {
                     override fun onSuccess(t: LoginResponse) {
                         loginSuccess(t)
-                        Toast.makeText(getApplication(), "token: ${t.token}", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(getApplication(), "token: ${t.token}", Toast.LENGTH_SHORT).show()
                     }
 
-                    override fun onError(e: Throwable ) {
+                    override fun onError(e: Throwable) {
                         var errorResponse: ErrorResponse
                         try {
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
-                            errorResponse = Gson().fromJson<ErrorResponse>(body, ErrorResponse::class.java)
+                            errorResponse =
+                                Gson().fromJson(body, ErrorResponse::class.java)
                         } catch (err: Throwable) {
                             errorResponse = ErrorResponse("400", "Connection Problem")
                         }
 
                         loginFail(errorResponse)
-                        Toast.makeText(getApplication(), errorResponse.errMessage, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            getApplication(),
+                            errorResponse.errMessage,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 })
         )
@@ -92,12 +106,25 @@ class LoginOnboardingViewModel(application: Application): BaseViewModel(applicat
     private fun loginSuccess(response: LoginResponse) {
         loginResponse.value = response
         loading.value = false
+        response.token?.let { prefHelper.saveUserToken(it) }
         prefHelper.saveOnboardingFinised(true)
     }
 
     private fun loginFail(response: ErrorResponse) {
         loginErrorResponse.value = response
         loading.value = false
+    }
+
+    fun goToHome(context: Context) {
+        prefHelper.saveUserLogin(true)
+        if (getOnboardingFinished()) {
+            (context as LoginActivity).finish()
+        } else {
+            val homeActivity = Intent(context, HomeActivity::class.java)
+            context?.startActivity(homeActivity)
+            (context as OnboardingActivity).finish()
+        }
+
     }
 
     override fun onCleared() {

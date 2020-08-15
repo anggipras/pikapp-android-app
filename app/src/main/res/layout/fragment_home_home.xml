@@ -226,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/proximanova_regular"
                         android:text="Lihat Semua"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorAccent"
                         android:textSize="12sp" />
                 </LinearLayout>
 

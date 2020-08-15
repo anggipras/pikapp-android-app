@@ -11,10 +11,10 @@
             android:id="@+id/drag_handle"
             android:layout_width="30dp"
             android:layout_height="6dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/circular_dialog"
             android:tint="@color/colorAccent"
-            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -581,7 +581,6 @@
                     android:src="@drawable/move_to_store"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
