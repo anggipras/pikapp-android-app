@@ -48,12 +48,12 @@ class SignupOnboardingFragment : Fragment() {
 
         dataBinding.buttonOnboardingSignupSignup.setOnClickListener {
             if (isEmailValid) {
-//                sendRegister()
-                registerSuccess()
+                sendRegister()
             } else {
                 val email = dataBinding.textFieldOnboardingSignupEmail.text.toString().trim()
                 Log.d("Debug", "email : " + email)
                 viewModel.emailValidation(email)
+                dataBinding.loadingViewOnboardingSignup.visibility = View.VISIBLE
             }
 
         }
@@ -61,11 +61,12 @@ class SignupOnboardingFragment : Fragment() {
     }
 
     private fun sendRegister() {
+
         val fullName = dataBinding.textFieldOnboardingSignupFullName.text.toString().trim()
         val phone = dataBinding.textFieldOnboardingSignupPhone.text.toString().trim()
         val password = dataBinding.textFieldOnboardingSignupPassword.text.toString().trim()
         val confPassword =
-            dataBinding.textErrorOnboardingSignupConfirmPassword.text.toString().trim()
+            dataBinding.textFieldOnboardingSignupConfirmPassword.text.toString().trim()
 
         viewModel.register(fullName, phone, password, confPassword)
     }
@@ -95,25 +96,65 @@ class SignupOnboardingFragment : Fragment() {
 
         })
 
+        viewModel.fullNameError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorOnboardingFullName.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
+        viewModel.phoneError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorOnboardingPhone.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
+        viewModel.passwordError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorOnboardingSignupPassword.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
+        viewModel.passwordConfError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorOnboardingSignupConfirmPassword.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
         viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                dataBinding.loadingViewOnboarding.visibility = if (it) View.VISIBLE else View.GONE
+                dataBinding.loadingViewOnboardingSignup.visibility = if (it) View.VISIBLE else View.GONE
+                dataBinding.buttonOnboardingSignupSignup.isClickable = !it
+                if (viewModel.getOnboardingFinished()) {
+                    (activity as LoginActivity).hideKeyboard()
+                } else {
+                    (activity as OnboardingActivity).hideKeyboard()
+                }
             }
         })
 
         viewModel.registerResponse.observe(this, Observer { response ->
             response?.let {
                 viewModel.goToSuccess(dataBinding.root)
-//                val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
-//                Navigation.findNavController(dataBinding.root).navigate(action)
             }
         })
-    }
 
-    private fun registerSuccess() {
-
-        val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
-        Navigation.findNavController(dataBinding.root).navigate(action)
+        viewModel.registerErrorResponse.observe(this, Observer { errorResponse ->
+            errorResponse?.let {
+                errorResponse.errMessage?.let { err -> viewModel.createToast(err) }
+            }
+        })
     }
 
     private fun animateUI() {

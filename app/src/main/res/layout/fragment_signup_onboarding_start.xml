@@ -9,23 +9,13 @@
         android:background="@color/colorAccent"
         tools:context=".view.onboarding.login.SignupOnboardingFragment">
 
-        <ProgressBar
-            android:id="@+id/loadingView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="304dp"
             android:layout_height="241dp"
             android:layout_marginStart="125dp"
             android:layout_marginTop="60dp"
-            android:src="@drawable/image_daftar"
+            android:src="@drawable/imgdaftar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -256,6 +246,16 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/loadingViewOnboardingSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

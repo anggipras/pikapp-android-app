@@ -3,6 +3,8 @@ package com.bejohen.pikapp.models
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.bejohen.pikapp.models.model.ItemHomeBannerSlider
+import com.bejohen.pikapp.models.model.ItemHomeCategory
 
 @Dao
 interface PikappDao {

@@ -1,7 +1,6 @@
-package com.bejohen.pikapp.models
+package com.bejohen.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
-
 
 data class LoginRequest(
     @SerializedName("username")
@@ -17,10 +16,13 @@ data class LoginResponse(
     @SerializedName("err_message")
     val errMessage: String?,
 
-    val token:String?,
+    val token: String?,
 
     @SerializedName("new_event")
-    val newEvent: Boolean?
+    val newEvent: Boolean?,
+
+    @SerializedName("recommendation_status")
+    val recommendationStatus: Boolean?
 )
 
 data class RegisterRequest(
@@ -58,3 +60,10 @@ data class ErrorResponse(
     @SerializedName("err_message")
     val errMessage: String?
 )
+
+data class LogoutResponse(
+    @SerializedName("err_code")
+    override val errCode: String?,
+    @SerializedName("err_message")
+    override val errMessage: String?
+) : Response

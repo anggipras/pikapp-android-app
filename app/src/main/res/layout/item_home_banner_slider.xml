@@ -5,7 +5,7 @@
     <data>
         <variable
             name="sliderList"
-            type="com.bejohen.pikapp.models.ItemHomeBannerSlider" />
+            type="com.bejohen.pikapp.models.model.ItemHomeBannerSlider" />
     </data>
 
     <RelativeLayout

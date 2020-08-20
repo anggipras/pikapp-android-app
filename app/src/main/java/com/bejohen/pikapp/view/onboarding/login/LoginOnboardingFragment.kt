@@ -38,6 +38,11 @@ class LoginOnboardingFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(LoginOnboardingViewModel::class.java)
 
         dataBinding.buttonLogin.setOnClickListener{
+            if (viewModel.getOnboardingFinished()) {
+                (activity as LoginActivity).hideKeyboard()
+            } else {
+                (activity as OnboardingActivity).hideKeyboard()
+            }
             val email = dataBinding.textFieldLogin.text.trim().toString()
             val password = dataBinding.textFieldPassword.text.trim().toString()
             Log.d("Debug","email : " + email)
@@ -50,21 +55,17 @@ class LoginOnboardingFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
 
-        viewModel.emailValid.observe(this, Observer { isValid ->
-            isValid?.let {
-                dataBinding.textErrorEmail.visibility = if(it) View.INVISIBLE else View.VISIBLE
-                dataBinding.textErrorEmail.text = if(it) "" else "Please input your valid email address"
+        viewModel.emailError.observe(this, Observer { t ->
+            dataBinding.textErrorEmail.apply {
+                visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                text = t
             }
         })
 
-        viewModel.passwordValid.observe(this, Observer { isValid ->
-            isValid?.let {
-                if(!it) {
-                    dataBinding.textErrorPassword.visibility = View.VISIBLE
-                    dataBinding.textErrorPassword.text = "Please input your valid password"
-                } else {
-                    dataBinding.textErrorPassword.visibility = View.INVISIBLE
-                }
+        viewModel.passwordError.observe(this, Observer { t ->
+            dataBinding.textErrorPassword.apply {
+                visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                text = t
             }
         })
 
@@ -89,18 +90,16 @@ class LoginOnboardingFragment : Fragment() {
         viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {
                 dataBinding.loadingViewLogin.visibility = if(it) View.VISIBLE else View.GONE
-                dataBinding.textErrorEmail.visibility = View.INVISIBLE
-                dataBinding.textErrorPassword.visibility = View.INVISIBLE
+                dataBinding.buttonLogin.isClickable = !it
+
             }
         })
 
         viewModel.loginErrorResponse.observe(this, Observer { errorResponse ->
             errorResponse?.let {
+                errorResponse.errMessage?.let { it1 -> viewModel.createToast(it1) }
                 Log.d("debug", "errorrrr : ${errorResponse.errCode}, ${errorResponse.errMessage}")
-                dataBinding.loadingViewLogin.visibility = View.GONE
-                dataBinding.buttonLogin.isClickable = true
             }
         })
     }
-
 }

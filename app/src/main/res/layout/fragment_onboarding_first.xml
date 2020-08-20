@@ -12,11 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="54dp"
-        android:src="@drawable/onboardingimage1"
+        android:src="@drawable/imgonboarding1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/onboardingimage1" />
+        app:srcCompat="@drawable/imgonboarding1" />
 
     <TextView
         android:id="@+id/textView2"

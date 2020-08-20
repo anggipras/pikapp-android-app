@@ -2,7 +2,7 @@ package com.bejohen.pikapp.viewmodel.categoryProduct
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.bejohen.pikapp.models.ItemHomeCategory
+import com.bejohen.pikapp.models.model.ItemHomeCategory
 import com.bejohen.pikapp.models.PikappDatabase
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import kotlinx.coroutines.launch

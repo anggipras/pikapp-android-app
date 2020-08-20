@@ -3,6 +3,7 @@ package com.bejohen.pikapp.viewmodel.home
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import com.bejohen.pikapp.util.SessionManager
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
@@ -12,9 +13,10 @@ import com.bejohen.pikapp.viewmodel.BaseViewModel
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
+    private var sessionManager = SessionManager(getApplication())
 
     fun checkUserLogin(context: Context) {
-        val isLoggingIn = prefHelper.isLoggingIn() ?: false
+        val isLoggingIn = sessionManager.isLoggingIn() ?: false
 
         if (isLoggingIn) {
             val profileFragment = ProfileFragment()

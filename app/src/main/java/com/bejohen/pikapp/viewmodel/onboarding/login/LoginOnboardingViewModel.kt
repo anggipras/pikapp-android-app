@@ -6,12 +6,14 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.bejohen.pikapp.models.ErrorResponse
-import com.bejohen.pikapp.models.LoginResponse
+import com.bejohen.pikapp.models.model.ErrorResponse
+import com.bejohen.pikapp.models.model.LoginResponse
+import com.bejohen.pikapp.models.model.UserAccess
 import com.bejohen.pikapp.models.network.PikappApiService
+import com.bejohen.pikapp.util.SessionManager
 import com.bejohen.pikapp.util.SharedPreferencesUtil
+import com.bejohen.pikapp.util.decodeJWT
 import com.bejohen.pikapp.util.isEmailValid
-import com.bejohen.pikapp.util.isPasswordValid
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.OnboardingActivity
@@ -23,12 +25,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
-import kotlin.math.log
 
 
 class LoginOnboardingViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
+    private var sessionManager = SessionManager(getApplication())
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
 
@@ -36,39 +38,45 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     val loginErrorResponse = MutableLiveData<ErrorResponse>()
     val loading = MutableLiveData<Boolean>()
 
-    val emailValid = MutableLiveData<Boolean>()
-    val passwordValid = MutableLiveData<Boolean>()
+    val emailError = MutableLiveData<String>()
+    val passwordError = MutableLiveData<String>()
+
+    private var isEmailValid = false
+    private var isPasswordValid = false
 
     fun getOnboardingFinished(): Boolean {
         return prefHelper.isOnboardingFinished() ?: false
     }
 
-    fun login(email: String?, password: String?) {
-        var _email = ""
-        var _password = ""
-
-        email?.let {
-            _email = it
-            emailValidation(it)
-        }
-        password?.let {
-            _password = it
-            passwordValidation(it)
-        }
-
-        if (emailValid.value == true && passwordValid.value == true) {
-            loginProcess(_email, _password)
+    fun login(email: String, password: String) {
+        checkUserInput(email, password)
+        if(isEmailValid && isPasswordValid) {
+            loginProcess(email, password)
         }
     }
 
-    private fun emailValidation(email: String) {
-        emailValid.value = email.isEmailValid()
+    private fun checkUserInput(email: String, password: String) {
+        if (email.isEmpty()) {
+            emailError.value = "Silakan masukkan email anda"
+            isEmailValid = false
+        } else if (!email.isEmailValid()){
+            emailError.value = "Silakan masukkan email anda secara valid"
+            isEmailValid = false
+        } else {
+            emailError.value = ""
+            isEmailValid = true
+        }
+        if (password.isEmpty()) {
+            passwordError.value = "Silakan masukkan password anda"
+            isPasswordValid = false
+        } else if (password.length < 6) {
+            passwordError.value = "Minimal password 8 digit (kombinasi angka dan huruf)"
+            isPasswordValid = false
+        } else {
+            passwordError.value = ""
+            isPasswordValid = true
+        }
     }
-
-    private fun passwordValidation(password: String) {
-        passwordValid.value = password.isPasswordValid()
-    }
-
 
     private fun loginProcess(email: String, password: String) {
         loading.value = true
@@ -83,6 +91,7 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
                     }
 
                     override fun onError(e: Throwable) {
+                        Log.d("Debug", "error : " + e)
                         var errorResponse: ErrorResponse
                         try {
                             val responseBody = (e as HttpException)
@@ -90,7 +99,11 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
                             errorResponse =
                                 Gson().fromJson(body, ErrorResponse::class.java)
                         } catch (err: Throwable) {
-                            errorResponse = ErrorResponse("400", "Connection Problem")
+                            errorResponse =
+                                ErrorResponse(
+                                    "503",
+                                    "Service Unavailable"
+                                )
                         }
 
                         loginFail(errorResponse)
@@ -107,8 +120,14 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     private fun loginSuccess(response: LoginResponse) {
         loginResponse.value = response
         loading.value = false
+
         response.newEvent?.let { prefHelper.saveUserExclusive(response.newEvent) }
-        response.token?.let { prefHelper.setUserSession(response.token, System.nanoTime()) }
+        response.recommendationStatus?.let { prefHelper.saveUserExclusiveForm(response.recommendationStatus) }
+        response.token?.let {
+            val userData : UserAccess = decodeJWT(response.token)
+            sessionManager.setUserSession(response.token, System.nanoTime(), userData)
+        }
+
         prefHelper.saveOnboardingFinised(true)
     }
 
@@ -128,10 +147,13 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     }
 
     fun goToUserExclusive(context: Context) {
-
         val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
         context?.startActivity(userExclusiveActivity)
         (context as OnboardingActivity).finish()
+    }
+
+    fun createToast(m: String) {
+        Toast.makeText(getApplication(), m, Toast.LENGTH_SHORT).show()
     }
 
     override fun onCleared() {

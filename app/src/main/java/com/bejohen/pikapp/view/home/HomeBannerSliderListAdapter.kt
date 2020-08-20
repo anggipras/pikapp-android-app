@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.ItemHomeBannerSliderBinding
-import com.bejohen.pikapp.models.ItemHomeBannerSlider
+import com.bejohen.pikapp.models.model.ItemHomeBannerSlider
 
 class HomeBannerSliderListAdapter(val sliderList: ArrayList<ItemHomeBannerSlider>) :
     RecyclerView.Adapter<HomeBannerSliderListAdapter.SliderViewHolder>() {

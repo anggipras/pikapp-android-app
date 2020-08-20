@@ -27,7 +27,7 @@
             android:layout_height="241dp"
             android:layout_marginStart="125dp"
             android:layout_marginTop="60dp"
-            android:src="@drawable/image_daftar"
+            android:src="@drawable/imgdaftar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

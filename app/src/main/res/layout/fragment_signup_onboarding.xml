@@ -12,23 +12,13 @@
         app:layoutDescription="@xml/fragment_signup_onboarding_scene"
         tools:context=".view.onboarding.login.SignupOnboardingFragment">
 
-        <ProgressBar
-            android:id="@+id/loadingViewOnboarding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="304dp"
             android:layout_height="241dp"
             android:layout_marginStart="125dp"
             android:layout_marginTop="60dp"
-            android:src="@drawable/image_daftar"
+            android:src="@drawable/imgdaftar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -144,7 +134,8 @@
                 android:hint="Masukan nama anda"
                 android:inputType="textPersonName"
                 android:textColor="#000000"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:maxLength="50"/>
 
             <TextView
                 android:id="@+id/textErrorOnboardingFullName"
@@ -172,10 +163,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="Masukan nomor telepon anda"
-                android:inputType="textPhonetic"
+                android:hint="contoh: 6281xxxxxxxxx"
+                android:inputType="phone"
                 android:textColor="#000000"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:maxLength="15"/>
 
             <TextView
                 android:id="@+id/textErrorOnboardingPhone"
@@ -269,7 +261,8 @@
                 android:text="ATAU"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/buttonOnboardingSignupAnotherWay"
@@ -282,9 +275,21 @@
                 android:fontFamily="@font/proximanova_bold"
                 android:text="Cara Lain"
                 android:textColor="#000000"
+                android:visibility="gone"
                 android:textSize="18sp" />
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loadingViewOnboardingSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.motion.widget.MotionLayout>

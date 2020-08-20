@@ -1,71 +1,99 @@
 package com.bejohen.pikapp.util
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import com.bejohen.pikapp.view.HomeActivity
-import com.bejohen.pikapp.view.LoginActivity
-import java.util.*
+import androidx.core.content.edit
+import androidx.preference.PreferenceManager
+import com.bejohen.pikapp.models.model.UserAccess
+import com.google.gson.GsonBuilder
 
-
-class SessionManager(context: Context) {
-    var sharedPreferences: SharedPreferences
-    var editor: SharedPreferences.Editor
-    var context: Context
-    var PRIVATE_MODE = 0
-    fun createSession(
-        name: String?,
-        email: String?,
-        id: String?
-    ) {
-        editor.putBoolean(LOGIN, true)
-        editor.putString(NAME, name)
-        editor.putString(EMAIL, email)
-        editor.putString(ID, id)
-        editor.apply()
-    }
-
-    val isLoggin: Boolean
-        get() = sharedPreferences.getBoolean(LOGIN, false)
-
-    fun checkLogin() {
-        if (!isLoggin) {
-            val i = Intent(context, LoginActivity::class.java)
-            context.startActivity(i)
-            (context as HomeActivity).finish()
-        }
-    }
-
-    val userDetail: HashMap<String, String?>
-        get() {
-            val user =
-                HashMap<String, String?>()
-            user[NAME] = sharedPreferences.getString(NAME, null)
-            user[EMAIL] = sharedPreferences.getString(EMAIL, null)
-            user[ID] = sharedPreferences.getString(ID, null)
-            return user
-        }
-
-    fun logout() {
-        editor.clear()
-        editor.commit()
-        val i = Intent(context, LoginActivity::class.java)
-        context.startActivity(i)
-        (context as HomeActivity).finish()
-    }
+class SessionManager {
 
     companion object {
-        private const val PREF_NAME = "LOGIN"
-        private const val LOGIN = "IS_LOGIN"
-        const val NAME = "NAME"
-        const val EMAIL = "EMAIL"
-        const val ID = "ID"
+
+        private const val PREF_ISLOGGINGIN = "login"
+        private const val PREF_LOGIN_HISTORY_TIME = "login history"
+        private const val PREF_USER_TOKEN = "user token"
+        private const val PREF_USER_DATA = "user data"
+
+        private var prefs: SharedPreferences? = null
+
+        @Volatile
+        private var instance: SessionManager? = null
+        private val LOCK = Any()
+
+        operator fun invoke(context: Context): SessionManager =
+            instance ?: synchronized(LOCK) {
+                instance ?: buildHelper(context).also {
+                    instance = it
+                }
+            }
+
+        private fun buildHelper(context: Context): SessionManager {
+            prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            return SessionManager()
+        }
     }
 
-    init {
-        this.context = context
-        sharedPreferences =
-            context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
-        editor = sharedPreferences.edit()
+    private fun saveUserLogin(boolean: Boolean) {
+        prefs?.edit(commit = true) {
+            putBoolean(PREF_ISLOGGINGIN, boolean)
+        }
+    }
+
+    fun isLoggingIn() = prefs?.getBoolean(PREF_ISLOGGINGIN, false)
+
+    private fun saveUserToken(token: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_TOKEN, token)
+        }
+    }
+
+    fun getUserToken() = prefs?.getString(PREF_USER_TOKEN, "")
+
+    fun deleteUserToken() {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_TOKEN, "")
+        }
+    }
+
+    private fun saveLoginHistory(time: Long) {
+        prefs?.edit(commit = true) {
+            putLong(PREF_LOGIN_HISTORY_TIME, time)
+        }
+    }
+
+    fun getLoginHistory() = prefs?.getLong(PREF_LOGIN_HISTORY_TIME, 0)
+
+    private fun saveUserData(userData: UserAccess) {
+        val jsonString = GsonBuilder().create().toJson(userData)
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_DATA, jsonString)
+        }
+    }
+
+    fun getUserData() : UserAccess? {
+        val userData = prefs?.getString(PREF_USER_DATA, null)
+        return GsonBuilder().create().fromJson(userData, UserAccess::class.java)
+    }
+
+    private fun deleteUserData() {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_DATA, "")
+        }
+    }
+
+    fun setUserSession(token: String, time: Long, userData: UserAccess) {
+        saveUserLogin(true)
+        saveUserToken(token)
+        saveLoginHistory(time)
+        saveUserData(userData)
+    }
+
+    fun logout() {
+        saveUserLogin(false)
+        saveUserToken("")
+        deleteUserToken()
+        deleteUserData()
     }
 }

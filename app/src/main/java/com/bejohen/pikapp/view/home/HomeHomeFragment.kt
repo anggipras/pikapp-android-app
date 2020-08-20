@@ -15,11 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentHomeHomeBinding
 import com.bejohen.pikapp.databinding.FragmentLoginOnboardingBinding
-import com.bejohen.pikapp.models.ItemHomeBannerSlider
 import com.bejohen.pikapp.viewmodel.home.HomeHomeViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.fragment_home_home.*
-import kotlinx.android.synthetic.main.fragment_home_home.view.*
 import kotlinx.android.synthetic.main.fragment_home_home.viewPagerSlider
 import java.util.*
 

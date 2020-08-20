@@ -14,11 +14,11 @@
             android:layout_marginTop="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/circular_dialog"
-            android:tint="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/colorAccent" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -39,9 +39,9 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="32dp"
                     android:src="@drawable/circular_dialog"
-                    android:tint="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -91,9 +91,9 @@
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="40dp"
                     android:src="@drawable/ic_assignment"
-                    android:tint="@color/colorAccent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                    app:tint="@color/colorAccent" />
 
                 <LinearLayout
                     android:id="@+id/buttonBelomBayar"
@@ -241,7 +241,7 @@
                         android:layout_height="50dp"
                         android:scaleType="center"
                         android:src="@drawable/ic_person"
-                        android:tint="@color/colorAccent" />
+                        app:tint="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -299,7 +299,7 @@
                         android:layout_height="50dp"
                         android:scaleType="center"
                         android:src="@drawable/ic_person"
-                        android:tint="@color/colorAccent" />
+                        app:tint="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -356,7 +356,7 @@
                         android:layout_height="50dp"
                         android:scaleType="center"
                         android:src="@drawable/ic_person"
-                        android:tint="@color/colorAccent" />
+                        app:tint="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -413,7 +413,7 @@
                         android:layout_height="50dp"
                         android:scaleType="center"
                         android:src="@drawable/ic_person"
-                        android:tint="@color/colorAccent" />
+                        app:tint="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -470,7 +470,7 @@
                         android:layout_height="50dp"
                         android:scaleType="center"
                         android:src="@drawable/ic_person"
-                        android:tint="@color/colorAccent" />
+                        app:tint="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -527,7 +527,7 @@
                         android:layout_height="50dp"
                         android:scaleType="center"
                         android:src="@drawable/ic_person"
-                        android:tint="@color/colorAccent" />
+                        app:tint="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

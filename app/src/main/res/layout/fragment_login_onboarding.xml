@@ -15,7 +15,7 @@
             android:layout_height="241dp"
             android:layout_marginStart="125dp"
             android:layout_marginTop="60dp"
-            android:src="@drawable/image_login"
+            android:src="@drawable/imglogin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,10 +48,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="10dp"
-            android:gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView7"
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Email Anda"
-                android:fontFamily="@font/proximanova_regular"
+                android:fontFamily="@font/proximanova_semibold"
                 android:textColor="#000000"
                 android:textSize="25sp" />
 
@@ -86,20 +86,10 @@
                 android:visibility="invisible" />
 
             <TextView
-                android:id="@+id/textErrorFailure"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email tidak terdaftar."
-                android:fontFamily="@font/proximanova_regular"
-                android:textColor="?attr/colorError"
-                android:textSize="13sp"
-                android:visibility="gone" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password Anda"
-                android:fontFamily="@font/proximanova_regular"
+                android:fontFamily="@font/proximanova_semibold"
                 android:textColor="#000000"
                 android:textSize="25sp" />
 
@@ -143,7 +133,8 @@
                 android:fontFamily="@font/proximanova_regular"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/buttonAnotherWay"
@@ -155,7 +146,8 @@
                 android:background="@drawable/button_gray"
                 android:text="Cara Lain"
                 android:fontFamily="@font/proximanova_bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

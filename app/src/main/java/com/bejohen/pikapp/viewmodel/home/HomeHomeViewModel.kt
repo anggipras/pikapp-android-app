@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.bejohen.pikapp.models.*
+import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.models.network.PikappApiService
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.viewmodel.BaseViewModel
@@ -68,7 +69,11 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
                             errorResponse =
                                 Gson().fromJson<ErrorResponse>(body, ErrorResponse::class.java)
                         } catch (err: Throwable) {
-                            errorResponse = ErrorResponse("400", "Connection Problem")
+                            errorResponse =
+                                ErrorResponse(
+                                    "400",
+                                    "Connection Problem"
+                                )
                         }
 
                         itemHomeBannerSliderFail(errorResponse)
@@ -98,7 +103,11 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
                             errorResponse =
                                 Gson().fromJson<ErrorResponse>(body, ErrorResponse::class.java)
                         } catch (err: Throwable) {
-                            errorResponse = ErrorResponse("400", "Connection Problem")
+                            errorResponse =
+                                ErrorResponse(
+                                    "400",
+                                    "Connection Problem"
+                                )
                         }
 
                         itemHomeCategoryFail(errorResponse)

@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentCategoryBinding
-import com.bejohen.pikapp.models.ItemHomeCategory
+import com.bejohen.pikapp.models.model.ItemHomeCategory
 import com.bejohen.pikapp.viewmodel.categoryProduct.CategoryViewModel
 
 class CategoryFragment : Fragment() {

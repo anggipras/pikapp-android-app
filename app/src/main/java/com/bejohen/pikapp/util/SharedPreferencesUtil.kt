@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.bejohen.pikapp.models.model.UserAccess
+import com.google.gson.GsonBuilder
 
 class SharedPreferencesUtil {
 
@@ -13,14 +15,9 @@ class SharedPreferencesUtil {
 
         private const val PREF_ONBOARDING_FINISHED = "onboarding"
 
-        private const val PREF_ISLOGGINGIN = "login"
-
-        private const val PREF_USER_TOKEN = "user token"
-
         private const val PREF_ISUSEREXCLUSIVE = "user exclusive"
-        private const val PREF_ISUSEREXCLUSIVEFORM = "user exclusive form"
 
-        private const val PREF_LOGIN_HISTORY_TIME = "login history"
+        private const val PREF_ISUSEREXCLUSIVEFORM = "user exclusive form"
 
         private var prefs: SharedPreferences? = null
 
@@ -73,48 +70,5 @@ class SharedPreferencesUtil {
     }
 
     fun isUserExclusiveFormFinished() = prefs?.getBoolean(PREF_ISUSEREXCLUSIVEFORM, false)
-
-
-    private fun saveUserLogin(boolean: Boolean) {
-        prefs?.edit(commit = true) {
-            putBoolean(PREF_ISLOGGINGIN, boolean)
-        }
-    }
-
-    fun isLoggingIn() = prefs?.getBoolean(PREF_ISLOGGINGIN, false)
-
-    private fun saveUserToken(token: String) {
-        prefs?.edit(commit = true) {
-            putString(PREF_USER_TOKEN, token)
-        }
-    }
-
-    fun getUserToken() = prefs?.getString(PREF_USER_TOKEN, "")
-
-    fun deleteUserToken() {
-        prefs?.edit(commit = true) {
-            putString(PREF_USER_TOKEN, "")
-        }
-    }
-
-    private fun saveLoginHistory(time: Long) {
-        prefs?.edit(commit = true) {
-            putLong(PREF_LOGIN_HISTORY_TIME, time)
-        }
-    }
-
-    fun getLoginHistory() = prefs?.getLong(PREF_LOGIN_HISTORY_TIME, 0)
-
-    fun setUserSession(token: String, time: Long) {
-        saveUserLogin(true)
-        saveUserToken(token)
-        saveLoginHistory(time)
-    }
-
-    fun logout() {
-        saveUserLogin(false)
-        deleteUserToken()
-    }
-
 
 }

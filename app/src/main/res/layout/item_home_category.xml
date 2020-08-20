@@ -5,7 +5,7 @@
     <data>
         <variable
             name="categoryItem"
-            type="com.bejohen.pikapp.models.ItemHomeCategory" />
+            type="com.bejohen.pikapp.models.model.ItemHomeCategory" />
         <variable
             name="Listener"
             type="com.bejohen.pikapp.view.home.HomeCategoryClickListener" />

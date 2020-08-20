@@ -8,7 +8,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.ItemHomeCategoryBinding
-import com.bejohen.pikapp.models.ItemHomeCategory
+import com.bejohen.pikapp.models.model.ItemHomeCategory
 import kotlinx.android.synthetic.main.item_home_category.view.*
 
 class HomeCategoryListAdapter(val categoryItemlist: ArrayList<ItemHomeCategory>)  :

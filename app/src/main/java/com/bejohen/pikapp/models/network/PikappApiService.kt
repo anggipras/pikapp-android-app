@@ -1,7 +1,7 @@
 package com.bejohen.pikapp.models.network
 
 import android.util.Log
-import com.bejohen.pikapp.models.*
+import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.util.*
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -20,31 +20,41 @@ class PikappApiService {
     fun loginUser(email: String, password: String): Single<LoginResponse> {
         val uuid = getUUID()
         Log.d("Debug","uuid : " + uuid)
-        val loginData = LoginRequest(email, password)
-        return api.loginUser(uuid, getTime(), getClientID(), loginData)
+        val loginData =
+            LoginRequest(email, password)
+        return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
+    }
+
+    fun logoutUser(sessionID: String): Single<LogoutResponse> {
+        return api.logoutUser(getUUID(), getTimestamp(), getClientID(), sessionID)
     }
 
     fun registerUser(email: String, password: String, fullName: String, phoneNumber: String, birthday: String, gender: String): Single<RegisterResponse> {
         val registerData = RegisterRequest(
-            email,
-            password,
-            fullName,
-            phoneNumber,
-            birthday,
-            gender
+            email = email,
+            password = password,
+            fullName = fullName,
+            phoneNumber = phoneNumber,
+            birthday = birthday,
+            gender = gender
         )
-        return api.registerUser(getUUID(), getTime(),getClientID(),registerData)
+        return api.registerUser(getUUID(), getTimestamp(), getClientID(), registerData)
     }
 
     fun getHomeBannerSlider(): Single<ItemHomeBannerSliderResponse> {
         val uuid = getUUID()
         Log.d("Debug","uuid : " + uuid)
-        return api.getHomeBannerSlider(getUUID(), getTime(), getClientID(), setTokenPublic())
+        return api.getHomeBannerSlider(getUUID(), getTimestamp(), getClientID(), setTokenPublic())
     }
 
     fun getHomeCategory(): Single<ItemHomeCategoryResponse> {
-        val uuid = getUUID()
-        Log.d("Debug","uuid : " + uuid)
-        return api.getHomeCategory(getUUID(), getTime(), getClientID(), setTokenPublic())
+        return api.getHomeCategory(getUUID(), getTimestamp(), getClientID(), setTokenPublic())
+    }
+
+    fun sendRecommendation(email: String, token: String, userExclusiveRequest: UserExclusiveRecommendationRequest): Single<UserExclusiveRecommendationResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        Log.d("Debug","signature : " + signature)
+        return api.postUserExclusive(getUUID(), timestamp, getClientID(), signature, token, userExclusiveRequest)
     }
 }
