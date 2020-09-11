@@ -1,6 +1,5 @@
 package com.bejohen.pikapp.view.onboarding
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentOnboardingViewPagerBinding
 import com.bejohen.pikapp.view.onboarding.screens.OnboardingFirst
 import com.bejohen.pikapp.view.onboarding.screens.OnboardingSecond
+import com.bejohen.pikapp.view.onboarding.screens.OnboardingStartFragment
 import com.bejohen.pikapp.view.onboarding.screens.OnboardingThird
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.fragment_onboarding_view_pager.*
 
 class OnboardingViewPagerFragment : Fragment() {
 
@@ -34,7 +32,7 @@ class OnboardingViewPagerFragment : Fragment() {
         )
 
         val fragmentList = arrayListOf<Fragment>(
-            OnboardingFirst(),
+            OnboardingStartFragment(),
             OnboardingSecond(),
             OnboardingThird()
         )
@@ -67,19 +65,14 @@ class OnboardingViewPagerFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 if (dataBinding.viewPager.currentItem == 2) {
                     dataBinding.buttonOnboardingNext.visibility = View.GONE
-                    dataBinding.tabLayout.selectedTabPosition
                 } else {
                     dataBinding.buttonOnboardingNext.visibility = View.VISIBLE
-                    dataBinding.tabLayout.setSelectedTabIndicator(R.drawable.tab_selector_blue)
                 }
                 super.onPageSelected(position)
             }
         })
         dataBinding.buttonOnboardingNext.setOnClickListener {
             dataBinding.viewPager.currentItem += 1
-//            if (dataBinding.viewPager.currentItem == 2) {
-//                dataBinding.buttonOnboardingNext.visibility = View.GONE
-//            }
         }
     }
 

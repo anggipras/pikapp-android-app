@@ -10,37 +10,53 @@
         android:background="@color/colorAccent"
         tools:context=".view.onboarding.screens.OnboardingThird">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/imgonboarding3"
+        <LinearLayout
+            android:id="@+id/imageViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="45dp"
+            android:gravity="right"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:layout_gravity="right"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/imgonboarding3" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="70dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="Welcome to PikApp!"
             android:textColor="@android:color/white"
-            android:textSize="45sp"
             android:textStyle="bold"
+            app:autoSizeMaxTextSize="45sp"
+            app:autoSizeMinTextSize="20sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/loginContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewContainer" />
 
         <LinearLayout
+            android:id="@+id/loginContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:orientation="vertical"
@@ -66,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="60dp"
                 android:background="@drawable/button_yellow"
                 android:fontFamily="@font/proximanova_bold"
@@ -78,16 +94,16 @@
                 android:id="@+id/textSkipToHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Teruskan nanti"
                 android:textColor="@color/colorPrimary"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <TextView
-                android:id="@+id/textViewPrivacyPolicy"
+                android:id="@+id/textViewEmbel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
@@ -97,15 +113,71 @@
                 android:text="@string/kebijakan_privasi"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:textSize="11sp"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewDengan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text="dengan "
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/buttonSK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:text="Aturan Penggunaaan"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textViewDan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text=" dan "
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/buttonPrivacyPolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:text="Kebijakan Privasi"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textViewApp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text=" PikApp."
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
-
-
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

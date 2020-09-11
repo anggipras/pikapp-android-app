@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.bejohen.pikapp.models.model.LatestLocation
 import com.bejohen.pikapp.models.model.UserAccess
 import com.google.gson.GsonBuilder
 
@@ -18,6 +19,10 @@ class SharedPreferencesUtil {
         private const val PREF_ISUSEREXCLUSIVE = "user exclusive"
 
         private const val PREF_ISUSEREXCLUSIVEFORM = "user exclusive form"
+
+        private const val LONGITUDE = "longitude"
+
+        private const val LATITUDE = "latitude"
 
         private var prefs: SharedPreferences? = null
 
@@ -70,5 +75,18 @@ class SharedPreferencesUtil {
     }
 
     fun isUserExclusiveFormFinished() = prefs?.getBoolean(PREF_ISUSEREXCLUSIVEFORM, false)
+
+    fun saveLatestLocation(longitude: String, latitude: String) {
+        prefs?.edit(commit = true) {
+            putString(LONGITUDE, longitude)
+            putString(LATITUDE, latitude)
+        }
+    }
+
+    fun getLatestLocation() : LatestLocation {
+        val latitude = prefs?.getString(LATITUDE, "")
+        val longitude = prefs?.getString(LONGITUDE, "")
+        return LatestLocation(longitude, latitude)
+    }
 
 }

@@ -7,9 +7,11 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bejohen.pikapp.BuildConfig
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import java.security.Key
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -74,13 +76,13 @@ fun getTimestamp() : String {
 }
 
 fun getClientID() : String {
-    val clientId: String = "abf0e2a9-e9ee-440f-8563-94481c64b797"
+    val clientId = BuildConfig.CLIENT_ID
     return clientId
 }
 
 fun getClientSecret() : String {
-    val clientId: String = "21f6fc80-cfdb-11ea-87d0-0242ac130003"
-    return clientId
+    val clientSecret = BuildConfig.CLIENT_SECRET
+    return clientSecret
 }
 
 fun setTokenPublic() : String {
@@ -120,4 +122,10 @@ fun getInitial(string: String): String {
         initial = parts[0].substring(0, 1)
     }
     return initial.toUpperCase()
+}
+
+fun rupiahFormat(price: Int): String {
+    val localeID = Locale("in", "ID")
+    val formatRupiah: NumberFormat = NumberFormat.getCurrencyInstance(localeID)
+    return formatRupiah.format(price)
 }

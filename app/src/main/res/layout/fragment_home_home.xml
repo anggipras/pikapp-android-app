@@ -21,7 +21,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/bannerSliderContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="280dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +36,8 @@
                         android:paddingBottom="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
 
                         <include layout="@layout/placeholder_item_home_banner_slider"/>
 
@@ -44,23 +45,24 @@
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPagerSlider"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="170dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.11"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:tabBackground="@drawable/tab_selector"
                         app:tabGravity="center"
                         app:tabIndicatorHeight="0dp" />
@@ -110,10 +112,10 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="30dp"
                         android:scaleType="fitCenter"
-                        android:tint="@color/colorFavorite"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_favorite" />
+                        app:srcCompat="@drawable/ic_favorite"
+                        app:tint="@color/colorFavorite" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/homeCategoryCardView"

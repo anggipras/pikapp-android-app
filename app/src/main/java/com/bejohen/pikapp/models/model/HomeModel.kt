@@ -49,3 +49,8 @@ data class ItemHomeBannerSlider(
     @PrimaryKey(autoGenerate = true)
     var uuid: Int = 0
 }
+
+data class LatestLocation(
+    val longitude: String?,
+    val latitude: String?
+)

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="merchantDetail"
+            type="com.bejohen.pikapp.models.model.MerchantDetail" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.categoryProduct.merchantDetail.MerchantDetailFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Design.Light">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:collapsedTitleTextAppearance="@style/MerchantDetailTitleCollapsed"
+                app:contentScrim="@color/colorPrimaryDark"
+                app:expandedTitleTextAppearance="@style/MerchantDetailTitleExpanded"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgMerchant"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:imageUrl="@{merchantDetail.merchantPict}"
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:layout_marginTop="5dp"
+                                app:cardCornerRadius="30dp">
+
+                                <ImageView
+                                    android:id="@+id/imageViewMerchantDetail"
+                                    android:layout_width="70dp"
+                                    android:layout_height="70dp"
+                                    android:imageUrl="@{merchantDetail.merchantLogo}"
+                                    android:scaleType="centerCrop" />
+                            </androidx.cardview.widget.CardView>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textMerchantName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="@{String.valueOf(merchantDetail.merchantName)}"
+                                    android:textColor="#000000"
+                                    android:textSize="23dp" />
+
+                                <TextView
+                                    android:id="@+id/textMerchantCategory"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text=""
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="17sp"
+                                    android:visibility="invisible" />
+
+                                <TextView
+                                    android:id="@+id/merchantGrade"
+                                    android:layout_width="130dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@drawable/circular_dialog"
+                                    android:backgroundTint="@color/colorPrimary"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:gravity="center"
+                                    android:text="Classic Store"
+                                    android:textColor="@color/colorGrey"
+                                    app:autoSizeMaxTextSize="16sp"
+                                    app:autoSizeMinTextSize="12sp"
+                                    app:autoSizeTextType="uniform" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="clip_horizontal|center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/imageViewFavorite"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:scaleType="fitXY"
+                                    android:src="@drawable/ic_favorite"
+                                    app:tint="@color/placeholderBackground" />
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginBottom="5dp"
+                                    app:cardCornerRadius="20dp">
+
+                                    <ImageView
+                                        android:id="@+id/imageViewMap"
+                                        android:layout_width="60dp"
+                                        android:layout_height="60dp"
+                                        android:scaleType="centerCrop" />
+                                </androidx.cardview.widget.CardView>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                android:paddingStart="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <ImageView
+                                            android:id="@+id/imageViewStar"
+                                            android:layout_width="30dp"
+                                            android:layout_height="30dp"
+                                            android:src="@drawable/ic_star"
+                                            app:tint="@color/colorPrimary" />
+
+                                        <TextView
+                                            android:id="@+id/textMerchantRating"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="7dp"
+                                            android:fontFamily="@font/proximanova_bold"
+                                            android:text="@{String.valueOf(merchantDetail.merchantRating)}"
+                                            android:textColor="#000000"
+                                            android:textSize="18sp" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/textTotalRating"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/proximanova_regular"
+                                        android:text="1000+ ratings"
+                                        android:textColor="@color/colorGrey"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:paddingStart="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <ImageView
+                                            android:id="@+id/imageViewDistance"
+                                            android:layout_width="30dp"
+                                            android:layout_height="30dp"
+                                            android:src="@drawable/ic_directions_walk"
+                                            app:tint="@color/colorPrimary" />
+
+                                        <TextView
+                                            android:id="@+id/textMerchantDistance"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="7dp"
+                                            android:fontFamily="@font/proximanova_bold"
+                                            android:text="@{String.valueOf(merchantDetail.merchantDistance)}"
+                                            android:textColor="#000000"
+                                            android:textSize="18sp" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/textDistanceMin"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/proximanova_regular"
+                                        android:text="25 min"
+                                        android:textColor="@color/colorGrey"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:paddingStart="30dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <ImageView
+                                            android:id="@+id/imageViewPrice"
+                                            android:layout_width="30dp"
+                                            android:layout_height="30dp"
+                                            android:src="@drawable/ic_directions_walk"
+                                            app:tint="@color/colorPrimary" />
+
+                                        <TextView
+                                            android:id="@+id/textAvgPrice"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="7dp"
+                                            android:fontFamily="@font/proximanova_bold"
+                                            android:text="60k"
+                                            android:textColor="#000000"
+                                            android:textSize="18sp" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/textRangePrice"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/proximanova_regular"
+                                        android:text="20k - 100k"
+                                        android:textColor="@color/colorGrey"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+                    app:title="" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_message"
+            android:tint="@android:color/white"
+            app:layout_anchor="@id/appBarLayout"
+            app:layout_anchorGravity="top|right|end" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/titleProduk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Semua Produk"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/merchantProductListContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/titleProduk">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/merchantProductList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</layout>

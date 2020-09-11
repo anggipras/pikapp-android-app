@@ -66,24 +66,24 @@
             <TextView
                 android:id="@+id/textOnboardingYourEmail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
+                android:layout_height="27sp"
                 android:text="Email Anda:"
                 android:textColor="#000000"
-                android:textSize="23sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="23sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textOnboardingEmailValid"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="mail"
+                android:layout_height="24dp"
+                android:text="example@mail.com"
                 android:textColor="@color/colorAccent"
-                android:textSize="20sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textOnboardingSignupEmail"
@@ -118,126 +118,256 @@
             <TextView
                 android:id="@+id/textOnboardingSignupFullName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/proximanova_regular"
                 android:text="Nama Lengkap"
                 android:textColor="#000000"
-                android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
 
             <EditText
                 android:id="@+id/textFieldOnboardingSignupFullName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/proximanova_regular"
+                android:layout_height="37dp"
                 android:hint="Masukan nama anda"
                 android:inputType="textPersonName"
                 android:textColor="#000000"
+                android:textSize="14sp"
                 android:visibility="gone"
-                android:maxLength="50"/>
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textErrorOnboardingFullName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/proximanova_regular"
+                android:layout_height="15dp"
                 android:text="Masukkan nama anda."
                 android:textColor="?attr/colorError"
-                android:textSize="13sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
 
             <!--            phone number             -->
             <TextView
                 android:id="@+id/textOnboardingSignupPhone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:fontFamily="@font/proximanova_regular"
                 android:text="Nomor Telepon"
                 android:textColor="#000000"
-                android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
 
             <EditText
                 android:id="@+id/textFieldOnboardingSignupPhone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/proximanova_regular"
+                android:layout_height="37dp"
                 android:hint="contoh: 6281xxxxxxxxx"
                 android:inputType="phone"
                 android:textColor="#000000"
+                android:textSize="14sp"
                 android:visibility="gone"
-                android:maxLength="15"/>
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textErrorOnboardingPhone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/proximanova_regular"
+                android:layout_height="15dp"
                 android:text="Masukkan nama anda."
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
 
             <!--            password             -->
             <TextView
                 android:id="@+id/textOnboardingSignupPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:fontFamily="@font/proximanova_regular"
                 android:text="Password"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
 
             <EditText
                 android:id="@+id/textFieldOnboardingSignupPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="37dp"
                 android:hint="Masukan password anda"
                 android:inputType="textPassword"
                 android:textColor="#000000"
-                android:visibility="gone" />
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textErrorOnboardingSignupPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/proximanova_regular"
+                android:layout_height="15dp"
                 android:text="Masukkan nama anda."
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
 
             <!--           confirm password             -->
             <TextView
                 android:id="@+id/textOnboardingSignupConfirmPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:fontFamily="@font/proximanova_regular"
                 android:text="Konfirmasi Password"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
 
             <EditText
                 android:id="@+id/textFieldOnboardingSignupConfirmPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="37dp"
                 android:hint="Masukan password anda"
                 android:inputType="textPassword"
                 android:textColor="#000000"
-                android:visibility="gone" />
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textErrorOnboardingSignupConfirmPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/proximanova_regular"
+                android:layout_height="15dp"
                 android:text="Masukkan nama anda."
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupFullName"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:hint="Masukan nama anda"-->
+            <!--                android:inputType="textPersonName"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone"-->
+            <!--                android:maxLength="50"/>-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingFullName"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            &lt;!&ndash;            phone number             &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/textOnboardingSignupPhone"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Nomor Telepon"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="18sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupPhone"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:hint="contoh: 6281xxxxxxxxx"-->
+            <!--                android:inputType="phone"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone"-->
+            <!--                android:maxLength="15"/>-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingPhone"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            &lt;!&ndash;            password             &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/textOnboardingSignupPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Password"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="18sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:hint="Masukan password anda"-->
+            <!--                android:inputType="textPassword"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingSignupPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            &lt;!&ndash;           confirm password             &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/textOnboardingSignupConfirmPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Konfirmasi Password"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="18sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupConfirmPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:hint="Masukan password anda"-->
+            <!--                android:inputType="textPassword"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingSignupConfirmPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
 
             <Button
                 android:id="@+id/buttonOnboardingSignupSignup"
@@ -262,7 +392,7 @@
                 android:textAlignment="center"
                 android:textColor="#000000"
                 android:textSize="14sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/buttonOnboardingSignupAnotherWay"
@@ -275,8 +405,8 @@
                 android:fontFamily="@font/proximanova_bold"
                 android:text="Cara Lain"
                 android:textColor="#000000"
-                android:visibility="gone"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

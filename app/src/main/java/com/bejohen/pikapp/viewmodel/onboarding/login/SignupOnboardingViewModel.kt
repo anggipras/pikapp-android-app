@@ -104,7 +104,7 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
             passwordError.value = "Karakter spesial tidak diperbolehkan"
             isPasswordValid = false
         } else if (password.length < 6) {
-            passwordError.value = "Minimal password 8 digit (kombinasi angka dan huruf)"
+            passwordError.value = "Minimal password 6 digit (kombinasi angka dan huruf)"
             isPasswordValid = false
         } else {
             passwordError.value = ""

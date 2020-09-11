@@ -1,25 +1,19 @@
 package com.bejohen.pikapp.view.onboarding.screens
 
-import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import com.bejohen.pikapp.R
-import com.bejohen.pikapp.databinding.FragmentLoginOnboardingBinding
 import com.bejohen.pikapp.databinding.FragmentOnboardingThirdBinding
-import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.OnboardingActivity
-import com.bejohen.pikapp.view.onboarding.OnboardingViewPagerFragmentDirections
 import com.bejohen.pikapp.viewmodel.onboarding.OnboardingThirdViewModel
-import kotlinx.android.synthetic.main.fragment_onboarding_third.view.*
 
 class OnboardingThird : Fragment() {
 
@@ -31,7 +25,8 @@ class OnboardingThird : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_onboarding_third, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_onboarding_third, container, false)
         viewModel = ViewModelProviders.of(this).get(OnboardingThirdViewModel::class.java)
         return dataBinding.root
     }
@@ -56,6 +51,24 @@ class OnboardingThird : Fragment() {
             (activity as OnboardingActivity).startActivity(homeActivity)
             viewModel.setOnboardingFinished(true)
             (activity as OnboardingActivity).finish()
+        }
+
+        dataBinding.buttonSK.setOnClickListener {
+            val url = "https://pikapp.id/syarat-dan-ketentuan/"
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+            intent.data = Uri.parse(url)
+            (activity as OnboardingActivity).startActivity(intent)
+        }
+
+        dataBinding.buttonPrivacyPolicy.setOnClickListener {
+            val url = "https://pikapp.id/kebijakan-privasi/"
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+            intent.data = Uri.parse(url)
+            (activity as OnboardingActivity).startActivity(intent)
         }
     }
 }

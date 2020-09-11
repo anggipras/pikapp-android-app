@@ -29,8 +29,8 @@ interface PikappDao {
     @Query("SELECT * FROM itemHomeCategory")
     suspend fun getAllHomeCategory(): List<ItemHomeCategory>
 
-    @Query("SELECT * FROM itemHomeCategory WHERE uuid = :uuid")
-    suspend fun getHomeCategory(uuid: Int): ItemHomeCategory
+    @Query("SELECT * FROM itemHomeCategory WHERE categoryId = :categoryId")
+    suspend fun getHomeCategory(categoryId: Long): ItemHomeCategory
 
     @Query("DELETE FROM itemHomeCategory")
     suspend fun deleteAllHomeCategory()

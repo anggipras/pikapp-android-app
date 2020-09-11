@@ -70,7 +70,7 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
             passwordError.value = "Silakan masukkan password anda"
             isPasswordValid = false
         } else if (password.length < 6) {
-            passwordError.value = "Minimal password 8 digit (kombinasi angka dan huruf)"
+            passwordError.value = "Minimal password 6 digit (kombinasi angka dan huruf)"
             isPasswordValid = false
         } else {
             passwordError.value = ""

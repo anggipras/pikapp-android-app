@@ -71,8 +71,8 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
                         } catch (err: Throwable) {
                             errorResponse =
                                 ErrorResponse(
-                                    "400",
-                                    "Connection Problem"
+                                    "503",
+                                    "Service Unavailable"
                                 )
                         }
 
@@ -105,8 +105,8 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
                         } catch (err: Throwable) {
                             errorResponse =
                                 ErrorResponse(
-                                    "400",
-                                    "Connection Problem"
+                                    "503",
+                                    "Service Unavailable"
                                 )
                         }
 
@@ -144,7 +144,7 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
             val itemHomeBannerSlider =
                 PikappDatabase(getApplication()).pikappDao().getAllHomeBannerSlider()
             itemHomeBannerSliderRetrieved(itemHomeBannerSlider)
-            Toast.makeText(getApplication(), "dari database jing", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(getApplication(), "dari database jing", Toast.LENGTH_SHORT).show()
         }
     }
 

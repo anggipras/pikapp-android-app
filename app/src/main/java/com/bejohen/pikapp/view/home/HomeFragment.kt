@@ -36,6 +36,7 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
+        viewModel.saveUserLocation("106.634157", "-6.234916")
         TabLayoutMediator(dataBinding.tabLayout, view.homeViewPager) { tab, position ->
             if(position == 0) {
                 tab.text = "Home"

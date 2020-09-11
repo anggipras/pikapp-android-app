@@ -26,4 +26,8 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
             context.startActivity(loginActivity)
         }
     }
+
+    fun saveUserLocation(longitude: String, latitude: String) {
+        prefHelper.saveLatestLocation(longitude, latitude)
+    }
 }

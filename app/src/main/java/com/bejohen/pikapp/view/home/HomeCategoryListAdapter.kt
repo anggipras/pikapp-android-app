@@ -35,7 +35,7 @@ class HomeCategoryListAdapter(val categoryItemlist: ArrayList<ItemHomeCategory>)
     }
 
     override fun onCategoryClicked(v: View) {
-        val uuid = v.HomeCategoryUuid.text.toString().toInt()
+        val uuid = v.HomeCategoryUuid.text.toString().toLong()
         val action = HomeFragmentDirections.actionToCategoryFragment(uuid)
         Navigation.findNavController(v).navigate(action)
     }

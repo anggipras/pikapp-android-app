@@ -88,7 +88,8 @@
                 android:src="@drawable/user_exclusive_success"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/imageViewBG"/>
 
             <ImageView
                 android:id="@+id/imageViewBG"
@@ -115,45 +116,53 @@
                 <TextView
                     android:id="@+id/textSelamat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Selamat ya,"
                     android:textColor="#000000"
-                    android:textSize="40sp"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="30sp"
+                    app:autoSizeMaxTextSize="40sp"
                     android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/textUsername"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:fontFamily="@font/montserrat"
                     android:text="User Name"
                     android:textColor="#000000"
-                    android:textSize="40sp"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="30sp"
+                    app:autoSizeMaxTextSize="40sp"
                     android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/textTex1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/proximanova_regular"
-                    android:lineSpacingExtra="8sp"
+                    android:lineSpacingExtra="4sp"
                     android:text="Kamu sudah terdaftar dan dapat dengan segera mencoba aplikasi PikApp di tempat rekomendasi-mu."
                     android:textColor="#000000"
-                    android:textSize="20sp"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="15sp"
+                    app:autoSizeMaxTextSize="20sp"
                     android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/textTex2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="15dp"
                     android:fontFamily="@font/proximanova_regular"
-                    android:lineSpacingExtra="8sp"
+                    android:lineSpacingExtra="4sp"
                     android:text="Nantikan pengalaman belanja tanpa harus mengantri. #antriantriclub"
                     android:textColor="#000000"
-                    android:textSize="20sp"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="15sp"
+                    app:autoSizeMaxTextSize="20sp"
                     android:visibility="visible" />
 
             </LinearLayout>

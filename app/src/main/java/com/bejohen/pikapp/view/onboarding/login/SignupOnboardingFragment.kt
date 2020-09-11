@@ -53,7 +53,6 @@ class SignupOnboardingFragment : Fragment() {
                 val email = dataBinding.textFieldOnboardingSignupEmail.text.toString().trim()
                 Log.d("Debug", "email : " + email)
                 viewModel.emailValidation(email)
-                dataBinding.loadingViewOnboardingSignup.visibility = View.VISIBLE
             }
 
         }
