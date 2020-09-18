@@ -109,6 +109,8 @@ data class ProductListResponse(
 )
 
 data class ProductList(
+    @SerializedName("mid")
+    val merchantID: String?,
     @SerializedName("product_id")
     val productID: String?,
     @SerializedName("product_name")

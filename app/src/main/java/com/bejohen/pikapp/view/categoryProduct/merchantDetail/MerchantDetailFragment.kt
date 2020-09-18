@@ -70,7 +70,7 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
         })
     }
 
-    override fun onAdd(pid: String) {
-        viewModel.onAddProduct(pid, context as HomeActivity)
+    override fun onAdd(mid: String, pid: String) {
+        viewModel.onAddProduct(mid, pid, context as HomeActivity)
     }
 }

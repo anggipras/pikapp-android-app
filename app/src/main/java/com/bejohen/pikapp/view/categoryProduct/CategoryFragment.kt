@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentCategoryBinding
-import com.bejohen.pikapp.models.model.ItemHomeCategory
+import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.viewmodel.categoryProduct.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_category.*
 
@@ -40,12 +40,13 @@ class CategoryFragment : Fragment() {
         arguments?.let {
             categoryId = CategoryFragmentArgs.fromBundle(it).categoryid
         }
+
         dataBinding.merchantList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = merchantListAdapter
         }
 
-        dataBinding.categoryRefreshLayout.setOnRefreshListener{
+        dataBinding.categoryRefreshLayout.setOnRefreshListener {
             dataBinding.merchantList.visibility = View.GONE
 //            dataBinding.homeBannerSliderLoadingShimmerView.visibility = View.VISIBLE
 //            dataBinding.homeCategoryLoadingShimmerView.visibility = View.VISIBLE
@@ -53,13 +54,19 @@ class CategoryFragment : Fragment() {
             viewModel.fetch(categoryId)
             dataBinding.categoryRefreshLayout.isRefreshing = false
         }
+        viewModel.getLocation(activity as HomeActivity)
 
         viewModel.fetch(categoryId)
+
         observeViewModel()
     }
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
+
+        viewModel.locationResponse.observe(this, Observer { it ->
+            dataBinding.textCurrentLocation.text = it
+        })
         viewModel.categoryData.observe(this, Observer { category ->
             merchantList.visibility = View.VISIBLE
             category?.let {

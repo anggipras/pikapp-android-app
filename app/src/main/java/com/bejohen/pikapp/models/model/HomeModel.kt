@@ -54,3 +54,8 @@ data class LatestLocation(
     val longitude: String?,
     val latitude: String?
 )
+
+data class LocationModel(
+    val longitude: Double,
+    val latitude: Double
+)

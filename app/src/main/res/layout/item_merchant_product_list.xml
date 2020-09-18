@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="productList"
             type="com.bejohen.pikapp.models.model.ProductList" />
@@ -36,7 +35,14 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/listProductID"
+                    android:id="@+id/listProductMerchantID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(productList.merchantID)}"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/listProductProductID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(productList.productID)}"
@@ -80,11 +86,11 @@
                     android:orientation="vertical">
 
                     <Button
+                        android:id="@+id/buttonAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:background="@drawable/button_green"
                         android:fontFamily="@font/montserrat_bold"
-                        android:onClick="@{Listener::onAddProductClicked}"
                         android:text="ADD"
                         android:textColor="#ffffff"
                         android:textSize="15sp" />

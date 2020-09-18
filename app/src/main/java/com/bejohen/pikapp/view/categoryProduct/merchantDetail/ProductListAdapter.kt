@@ -1,5 +1,6 @@
 package com.bejohen.pikapp.view.categoryProduct.merchantDetail
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,12 @@ import com.bejohen.pikapp.util.rupiahFormat
 import com.bejohen.pikapp.view.categoryProduct.ProductListClickListener
 import kotlinx.android.synthetic.main.item_merchant_product_list.view.*
 
-class ProductListAdapter(val merchantProductList: ArrayList<ProductList>, val productAddInterface: ProductAddInterface) :
+class ProductListAdapter(
+    val merchantProductList: ArrayList<ProductList>,
+    val productAddInterface: ProductAddInterface
+) :
     RecyclerView.Adapter<ProductListAdapter.MerchantProductListViewHolder>(),
-    ProductListClickListener  {
+    ProductListClickListener {
 
     class MerchantProductListViewHolder(var view: ItemMerchantProductListBinding) :
         RecyclerView.ViewHolder(view.root)
@@ -39,6 +43,10 @@ class ProductListAdapter(val merchantProductList: ArrayList<ProductList>, val pr
             parent,
             false
         )
+
+        dataBinding.buttonAdd.setOnClickListener {
+
+        }
         return MerchantProductListViewHolder(dataBinding)
     }
 
@@ -48,21 +56,23 @@ class ProductListAdapter(val merchantProductList: ArrayList<ProductList>, val pr
         dataBinding.productList = merchantProductList[position]
         dataBinding.listener = this
         dataBinding.textPrice.text = rupiahFormat(merchantProductList[position].productPrice!!)
+        dataBinding.buttonAdd.setOnClickListener {
+            val pid = merchantProductList[position].productID
+            val mid = merchantProductList[position].merchantID
+            Log.d("Debug", "product id add : " + pid)
+            productAddInterface.onAdd(mid!!, pid!!)
+        }
     }
 
     override fun onProductListClicked(v: View) {
-        val pid = dataBinding.listProductID.text.toString()
+        val pid = v.listProductProductID.text.toString()
+        val mid = v.listProductMerchantID.text.toString()
         val action = MerchantDetailFragmentDirections.actionToProductDetailFragment(pid, "0")
         Navigation.findNavController(v).navigate(action)
     }
 
-    override fun onAddProductClicked(v: View) {
-        val pid = dataBinding.listProductID.text.toString()
-        productAddInterface.onAdd(pid)
-    }
-
     interface ProductAddInterface {
-        fun onAdd(pid: String)
+        fun onAdd(mid: String, pid: String)
     }
 
 }

@@ -8,5 +8,5 @@ interface ProductClickListener {
 
 interface ProductListClickListener {
     fun onProductListClicked(v: View)
-    fun onAddProductClicked(v: View)
+//    fun onAddProductClicked(v: View, position: Int)
 }

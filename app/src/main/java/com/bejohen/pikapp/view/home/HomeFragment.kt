@@ -1,15 +1,21 @@
 package com.bejohen.pikapp.view.home
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentHomeBinding
-import com.bejohen.pikapp.databinding.FragmentHomeHomeBinding
+import com.bejohen.pikapp.util.LOCATION_REQUEST
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.viewmodel.home.HomeViewModel
 import com.bejohen.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModel
@@ -36,9 +42,12 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
-        viewModel.saveUserLocation("106.634157", "-6.234916")
+        checkLocationPermission()
+
+        dataBinding.tabLayout.visibility = View.GONE
+        dataBinding.layoutHomeContainer.visibility = View.GONE
         TabLayoutMediator(dataBinding.tabLayout, view.homeViewPager) { tab, position ->
-            if(position == 0) {
+            if (position == 0) {
                 tab.text = "Home"
                 tab.setIcon(R.drawable.ic_home)
             } else {
@@ -48,11 +57,71 @@ class HomeFragment : Fragment() {
             view.homeViewPager.setCurrentItem(tab.position, true)
         }.attach()
 
-        dataBinding.buttonProfile.setOnClickListener{
-
+        dataBinding.buttonProfile.setOnClickListener {
             viewModel.checkUserLogin(activity as HomeActivity)
-
         }
 
+        dataBinding.buttonAccessLocation.setOnClickListener {
+            requestPermission()
+        }
+
+        observeViewModel(view)
+    }
+
+    @SuppressLint("FragmentLiveDataObserve")
+    private fun observeViewModel(view: View) {
+        viewModel.isLocationEnabled.observe(this, Observer { it ->
+            if (it) {
+                dataBinding.tabLayout.visibility = View.VISIBLE
+                dataBinding.layoutHomeContainer.visibility = View.VISIBLE
+                dataBinding.layoutLocationPermission.visibility = View.GONE
+                viewModel.getUserLocation(activity as HomeActivity)
+            } else {
+                dataBinding.tabLayout.visibility = View.GONE
+                dataBinding.layoutHomeContainer.visibility = View.GONE
+                dataBinding.layoutLocationPermission.visibility = View.VISIBLE
+            }
+        })
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_REQUEST) {
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                viewModel.setStatusLocation(false)
+            } else {
+                viewModel.setStatusLocation(true)
+            }
+        }
+    }
+
+    fun checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            viewModel.setStatusLocation(false)
+            requestPermission()
+        } else {
+            viewModel.setStatusLocation(true)
+        }
+    }
+    fun requestPermission() {
+        requestPermissions(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            LOCATION_REQUEST
+        )
     }
 }

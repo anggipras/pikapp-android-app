@@ -3,15 +3,19 @@ package com.bejohen.pikapp.viewmodel.categoryProduct
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.models.network.PikappApiService
+import com.bejohen.pikapp.util.MERCHANT_ID
+import com.bejohen.pikapp.util.PRODUCT_ID
 import com.bejohen.pikapp.util.SessionManager
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
+import com.bejohen.pikapp.view.categoryProduct.AddToCartFragment
 import com.bejohen.pikapp.view.home.ProfileFragment
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
@@ -63,7 +67,10 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
                             errorResponse =
-                                Gson().fromJson<MerchantListErrorResponse>(body, MerchantListErrorResponse::class.java)
+                                Gson().fromJson<MerchantListErrorResponse>(
+                                    body,
+                                    MerchantListErrorResponse::class.java
+                                )
                         } catch (err: Throwable) {
                             errorResponse = MerchantListErrorResponse(
                                 "now", "503", "Unavailable", "Unavailable", "Unavailable"
@@ -76,7 +83,10 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
                             "${errorResponse.message} ${errorResponse.path}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.d("Debug", "error merchant detail : ${errorResponse.message} ${errorResponse.path}")
+                        Log.d(
+                            "Debug",
+                            "error merchant detail : ${errorResponse.message} ${errorResponse.path}"
+                        )
                     }
                 })
         )
@@ -96,7 +106,10 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
                             errorResponse =
-                                Gson().fromJson<MerchantListErrorResponse>(body, MerchantListErrorResponse::class.java)
+                                Gson().fromJson<MerchantListErrorResponse>(
+                                    body,
+                                    MerchantListErrorResponse::class.java
+                                )
                         } catch (err: Throwable) {
                             errorResponse = MerchantListErrorResponse(
                                 "now", "503", "Unavailable", "Unavailable", "Unavailable"
@@ -109,7 +122,10 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
                             "${errorResponse.message} ${errorResponse.path}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.d("Debug", "error Merchant Product List : ${errorResponse.message} ${errorResponse.path}")
+                        Log.d(
+                            "Debug",
+                            "error Merchant Product List : ${errorResponse.message} ${errorResponse.path}"
+                        )
                     }
                 })
         )
@@ -133,11 +149,18 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
         loadingProductList.value = false
     }
 
-    fun onAddProduct(pid: String, context : Context) {
+    fun onAddProduct(mid: String, pid: String, context: Context) {
         val isLoggingIn = sessionManager.isLoggingIn() ?: false
         if (isLoggingIn) {
-            val profileFragment = ProfileFragment()
-            profileFragment.show((context as HomeActivity).supportFragmentManager, profileFragment.getTag())
+            val args = Bundle()
+            args.putString(MERCHANT_ID, mid)
+            args.putString(PRODUCT_ID, pid)
+            val addToCartFragment = AddToCartFragment()
+            addToCartFragment.arguments = args
+            addToCartFragment.show(
+                (context as HomeActivity).supportFragmentManager,
+                addToCartFragment.tag
+            )
         } else {
             val loginActivity = Intent(context, LoginActivity::class.java)
             context.startActivity(loginActivity)

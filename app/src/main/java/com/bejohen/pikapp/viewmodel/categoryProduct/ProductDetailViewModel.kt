@@ -3,15 +3,21 @@ package com.bejohen.pikapp.viewmodel.categoryProduct
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.bejohen.pikapp.models.model.*
+import com.bejohen.pikapp.models.model.MerchantListErrorResponse
+import com.bejohen.pikapp.models.model.ProductDetail
+import com.bejohen.pikapp.models.model.ProductDetailResponse
 import com.bejohen.pikapp.models.network.PikappApiService
+import com.bejohen.pikapp.util.MERCHANT_ID
+import com.bejohen.pikapp.util.PRODUCT_ID
 import com.bejohen.pikapp.util.SessionManager
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
+import com.bejohen.pikapp.view.categoryProduct.AddToCartFragment
 import com.bejohen.pikapp.view.home.ProfileFragment
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
@@ -95,9 +101,15 @@ class ProductDetailViewModel(application: Application) : BaseViewModel(applicati
     fun onAddProduct(pid: String, mid: String, context : Context) {
         val isLoggingIn = sessionManager.isLoggingIn() ?: false
         if (isLoggingIn) {
-
-            val profileFragment = ProfileFragment()
-            profileFragment.show((context as HomeActivity).supportFragmentManager, profileFragment.getTag())
+            val args = Bundle()
+            args.putString(MERCHANT_ID, mid)
+            args.putString(PRODUCT_ID, pid)
+            val addToCartFragment = AddToCartFragment()
+            addToCartFragment.arguments = args
+            addToCartFragment.show(
+                (context as HomeActivity).supportFragmentManager,
+                addToCartFragment.tag
+            )
         } else {
             val loginActivity = Intent(context, LoginActivity::class.java)
             context.startActivity(loginActivity)

@@ -1,13 +1,20 @@
 package com.bejohen.pikapp.viewmodel.categoryProduct
 
+import android.Manifest
+import android.app.Activity
 import android.app.Application
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import com.bejohen.pikapp.models.PikappDatabase
 import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.models.network.PikappApiService
 import com.bejohen.pikapp.util.SharedPreferencesUtil
+import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,6 +23,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.util.*
 
 class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
@@ -25,11 +33,13 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     private var prefHelper = SharedPreferencesUtil(getApplication())
     val categoryData = MutableLiveData<ItemHomeCategory>()
 
+    val locationResponse = MutableLiveData<String>()
     val merchantResponse = MutableLiveData<List<MerchantList>>()
     val merchantLoadError = MutableLiveData<Boolean>()
     val merchantErrorResponse = MutableLiveData<MerchantListErrorResponse>()
     val loading = MutableLiveData<Boolean>()
 
+    var address = ""
     var categoryID = ""
     var latitude = ""
     var longitude = ""
@@ -47,10 +57,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
     private fun categoryRetrieved(data: ItemHomeCategory) {
         categoryID = data.categoryId.toString()
-
-        Log.d("Debug", "category id: " + categoryID)
-        latitude = "-6.234916"
-        longitude = "106.634157"
         categoryData.value = data
     }
 
@@ -78,7 +84,10 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
                             errorResponse =
-                                Gson().fromJson<MerchantListErrorResponse>(body, MerchantListErrorResponse::class.java)
+                                Gson().fromJson<MerchantListErrorResponse>(
+                                    body,
+                                    MerchantListErrorResponse::class.java
+                                )
                         } catch (err: Throwable) {
                             errorResponse = MerchantListErrorResponse(
                                 "now", "503", "Unavailable", "Unavailable", "Unavailable"
@@ -91,7 +100,10 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                             "${errorResponse.message} ${errorResponse.path}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        Log.d("Debug", "error category : ${errorResponse.message} ${errorResponse.path}")
+                        Log.d(
+                            "Debug",
+                            "error category : ${errorResponse.message} ${errorResponse.path}"
+                        )
                     }
 
                 }
@@ -107,6 +119,18 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     private fun merchantFail(response: MerchantListErrorResponse) {
         merchantErrorResponse.value = response
         loading.value = false
+    }
+
+    fun getLocation(activity: Activity) {
+        val location = prefHelper.getLatestLocation()
+        longitude = location.longitude.toString()
+        latitude = location.latitude.toString()
+
+        val geocoder = Geocoder(activity as HomeActivity, Locale.getDefault())
+        var addresses: List<Address>
+        addresses = geocoder.getFromLocation(latitude.toDouble(), longitude.toDouble(), 1)
+        val address: String = addresses[0].getAddressLine(0)
+        locationResponse.value = address
     }
 
     override fun onCleared() {

@@ -56,6 +56,6 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
 
     override fun onProductClicked(v: View) {
         val mid = dataBinding.listProductMerchantID.text.toString()
-        viewModel.onAddProduct(pid, context as HomeActivity)
+        viewModel.onAddProduct(pid, mid, context as HomeActivity)
     }
 }
