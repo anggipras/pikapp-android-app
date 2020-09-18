@@ -43,6 +43,7 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
     var longitude = ""
 
     fun getMerchantDetail(mid: String) {
+        prefHelper.deleteDeeplinkUrl()
         loadingMerchantDetail.value = true
         loadingProductList.value = true
         val location = prefHelper.getLatestLocation()

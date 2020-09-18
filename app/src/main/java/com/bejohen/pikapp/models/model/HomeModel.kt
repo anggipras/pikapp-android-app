@@ -59,3 +59,8 @@ data class LocationModel(
     val longitude: Double,
     val latitude: Double
 )
+
+data class DeepinkModel(
+    val mid: String?,
+    val tableNo: String?
+)

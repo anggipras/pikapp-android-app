@@ -10,12 +10,16 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Looper
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.bejohen.pikapp.util.SessionManager
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
+import com.bejohen.pikapp.view.categoryProduct.CategoryFragmentDirections
+import com.bejohen.pikapp.view.home.HomeFragmentDirections
 import com.bejohen.pikapp.view.home.ProfileFragment
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.android.gms.location.LocationCallback
@@ -31,6 +35,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     private var sessionManager = SessionManager(getApplication())
 
     val isLocationEnabled = MutableLiveData<Boolean>()
+    val isDeeplinkEnabled = MutableLiveData<Boolean>()
 
     fun checkUserLogin(context: Context) {
         val isLoggingIn = sessionManager.isLoggingIn() ?: false
@@ -56,9 +61,6 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         locationRequest.interval = 10000
         locationRequest.fastestInterval = 5000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
-        val geocoder = Geocoder(activity as HomeActivity, Locale.getDefault())
-        var addresses: List<Address>
 
         if (ActivityCompat.checkSelfPermission(
                 (activity as HomeActivity),
@@ -94,8 +96,6 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                             longitude = longitude.toString(),
                             latitude = latitude.toString()
                         )
-
-//                        addresses = geocoder.getFromLocation(latitude,longitude,1)
                     }
                 }
             }, Looper.getMainLooper())
@@ -103,5 +103,16 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     private fun saveUserLocation(longitude: String, latitude: String) {
         prefHelper.saveLatestLocation(longitude, latitude)
+    }
+
+    fun checkDeeplink() {
+        val deeplink = prefHelper.getDeeplink()
+        isDeeplinkEnabled.value = !deeplink.mid.isNullOrEmpty()
+    }
+
+    fun goToMerchant(view: View) {
+        val deeplink = prefHelper.getDeeplink()
+        val action = HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
+        Navigation.findNavController(view).navigate(action)
     }
 }

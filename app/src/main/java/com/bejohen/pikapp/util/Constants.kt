@@ -10,3 +10,7 @@ const val PRODUCT_ID = "product id"
 
 const val LOCATION_REQUEST = 100
 const val GPS_REQUEST = 101
+
+//DEEP LINK CONST
+const val DL_MERCHANTID= "deeplink merchant id"
+const val DL_TABLENO= "deeplink table no"

@@ -72,15 +72,24 @@ class HomeFragment : Fragment() {
     private fun observeViewModel(view: View) {
         viewModel.isLocationEnabled.observe(this, Observer { it ->
             if (it) {
-                dataBinding.tabLayout.visibility = View.VISIBLE
-                dataBinding.layoutHomeContainer.visibility = View.VISIBLE
                 dataBinding.layoutLocationPermission.visibility = View.GONE
                 viewModel.getUserLocation(activity as HomeActivity)
+                dataBinding.tabLayout.visibility = View.VISIBLE
+                dataBinding.layoutHomeContainer.visibility = View.VISIBLE
+                viewModel.checkDeeplink()
             } else {
                 dataBinding.tabLayout.visibility = View.GONE
                 dataBinding.layoutHomeContainer.visibility = View.GONE
                 dataBinding.layoutLocationPermission.visibility = View.VISIBLE
             }
+        })
+
+        viewModel.isDeeplinkEnabled.observe(this, Observer { it ->
+            if (it) {
+                viewModel.goToMerchant(dataBinding.root)
+            } else {
+            }
+
         })
     }
 

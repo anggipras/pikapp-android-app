@@ -129,7 +129,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         val geocoder = Geocoder(activity as HomeActivity, Locale.getDefault())
         var addresses: List<Address>
         addresses = geocoder.getFromLocation(latitude.toDouble(), longitude.toDouble(), 1)
-        val address: String = addresses[0].getAddressLine(0)
+        address = addresses[0].getAddressLine(0)
         locationResponse.value = address
     }
 

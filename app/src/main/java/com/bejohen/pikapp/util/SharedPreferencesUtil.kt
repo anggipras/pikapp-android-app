@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.bejohen.pikapp.models.model.DeepinkModel
 import com.bejohen.pikapp.models.model.LatestLocation
 import com.bejohen.pikapp.models.model.UserAccess
 import com.google.gson.GsonBuilder
@@ -23,6 +24,8 @@ class SharedPreferencesUtil {
         private const val LONGITUDE = "longitude"
 
         private const val LATITUDE = "latitude"
+
+        private const val DEEPLINK = "deeplink"
 
         private var prefs: SharedPreferences? = null
 
@@ -87,6 +90,26 @@ class SharedPreferencesUtil {
         val latitude = prefs?.getString(LATITUDE, "")
         val longitude = prefs?.getString(LONGITUDE, "")
         return LatestLocation(longitude, latitude)
+    }
+
+    fun saveDeeplinkUrl(mid: String, tableNo: String) {
+        prefs?.edit(commit = true) {
+            putString(DL_MERCHANTID, mid)
+            putString(DL_TABLENO, tableNo)
+        }
+    }
+
+    fun deleteDeeplinkUrl() {
+        prefs?.edit(commit = true) {
+            putString(DL_MERCHANTID, "")
+            putString(DL_TABLENO, "")
+        }
+    }
+
+    fun getDeeplink() : DeepinkModel{
+        val mid = prefs?.getString(DL_MERCHANTID, "")
+        val tableNo = prefs?.getString(DL_TABLENO, "")
+        return DeepinkModel(mid, tableNo)
     }
 
 }
