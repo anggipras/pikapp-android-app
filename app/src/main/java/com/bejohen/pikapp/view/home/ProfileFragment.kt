@@ -1,5 +1,6 @@
 package com.bejohen.pikapp.view.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentProfileBinding
+import com.bejohen.pikapp.view.HomeActivity
+import com.bejohen.pikapp.view.StoreActivity
+import com.bejohen.pikapp.view.UserExclusiveActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ProfileFragment : BottomSheetDialogFragment() {
@@ -25,6 +29,11 @@ class ProfileFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.buttonToStore.setOnClickListener {
+            val storeActivity = Intent(context, StoreActivity::class.java)
+            (activity as HomeActivity).startActivity(storeActivity)
+        }
         dataBinding.buttonLogout.setOnClickListener {
 
         }

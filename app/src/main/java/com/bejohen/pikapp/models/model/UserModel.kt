@@ -12,14 +12,13 @@ data class UserJWTBody(
 data class UserAccess(
     @SerializedName("phone_number")
     val phoneNumber: String?,
-
     @SerializedName("customer_name")
     val customerName: String?,
-
     val email: String?,
-
     @SerializedName("session_id")
-    val sessionId: String?
+    val sessionId: String?,
+    @SerializedName("is_merchant")
+    val isMerchant: Boolean?
 ) {
     var expired: Long? = null
 }

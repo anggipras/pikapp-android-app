@@ -157,7 +157,7 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_favorite"
                         app:tint="@color/placeholderBackground"
-                        android:visibility="gone"/>
+                        android:visibility="visible"/>
 
                 </LinearLayout>
 

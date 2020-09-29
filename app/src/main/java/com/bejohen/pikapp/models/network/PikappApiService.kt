@@ -18,6 +18,7 @@ class PikappApiService {
         .build()
         .create(PikappApi::class.java)
 
+    // AUTH
     fun loginUser(email: String, password: String): Single<LoginResponse> {
         val uuid = getUUID()
         Log.d("Debug", "uuid : " + uuid)
@@ -49,6 +50,7 @@ class PikappApiService {
         return api.registerUser(getUUID(), getTimestamp(), getClientID(), registerData)
     }
 
+    // HOME
     fun getHomeBannerSlider(): Single<ItemHomeBannerSliderResponse> {
         val uuid = getUUID()
         Log.d("Debug", "uuid : " + uuid)
@@ -118,6 +120,35 @@ class PikappApiService {
         pid: String, latitude: String,
         longitude: String
     ): Single<ProductDetailResponse> {
-        return api.getProductDetail(getUUID(), getTimestamp(), getClientID(), setTokenPublic(), pid, longitude, latitude)
+        return api.getProductDetail(
+            getUUID(),
+            getTimestamp(),
+            getClientID(),
+            setTokenPublic(),
+            pid,
+            longitude,
+            latitude
+        )
     }
+
+    // MERCHANT
+    fun getStoreProductList(
+        email: String,
+        token: String,
+        mid: String
+    ): Single<StoreProductListResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        return api.getStoreProductList(getUUID(), timestamp, getClientID(), signature, token, mid)
+    }
+
+//    fun postStoreAddProduct(
+//        email: String,
+//        token: String,
+//        mid: String
+//    ): Single<StoreProductActionResponse> {
+//        val timestamp = getTimestamp()
+//        val signature = getSignature(email, timestamp)
+//        return api.postStoreProductAdd(getUUID(), timestamp, getClientID(), signature, token, mid)
+//    }
 }

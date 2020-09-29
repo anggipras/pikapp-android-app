@@ -33,7 +33,5 @@ class SplashActivity : AppCompatActivity() {
             viewModel.checkOnboardingFinished(this, mid, tableNo)
             finish()
         }, 2000)
-
-
     }
 }

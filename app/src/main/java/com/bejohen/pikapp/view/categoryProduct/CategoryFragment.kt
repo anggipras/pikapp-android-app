@@ -67,6 +67,7 @@ class CategoryFragment : Fragment() {
         viewModel.locationResponse.observe(this, Observer { it ->
             dataBinding.textCurrentLocation.text = it
         })
+
         viewModel.categoryData.observe(this, Observer { category ->
             merchantList.visibility = View.VISIBLE
             category?.let {

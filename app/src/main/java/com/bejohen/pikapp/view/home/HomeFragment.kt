@@ -16,9 +16,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentHomeBinding
 import com.bejohen.pikapp.util.LOCATION_REQUEST
+import com.bejohen.pikapp.util.getSignature
+import com.bejohen.pikapp.util.getTimestamp
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.viewmodel.home.HomeViewModel
-import com.bejohen.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_home_view_pager.view.*
 
@@ -41,6 +42,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+
+        val timestamp = getTimestamp()
+        val signature = getSignature("superindo@mailinator.com", timestamp)
+
+        Log.d("Debug", "timestamp : $timestamp")
+        Log.d("Debug", "signature : $signature")
 
         checkLocationPermission()
 
@@ -72,15 +79,20 @@ class HomeFragment : Fragment() {
     private fun observeViewModel(view: View) {
         viewModel.isLocationEnabled.observe(this, Observer { it ->
             if (it) {
-                dataBinding.layoutLocationPermission.visibility = View.GONE
                 viewModel.getUserLocation(activity as HomeActivity)
                 dataBinding.tabLayout.visibility = View.VISIBLE
                 dataBinding.layoutHomeContainer.visibility = View.VISIBLE
-                viewModel.checkDeeplink()
+                dataBinding.layoutLocationPermission.visibility = View.GONE
             } else {
                 dataBinding.tabLayout.visibility = View.GONE
                 dataBinding.layoutHomeContainer.visibility = View.GONE
                 dataBinding.layoutLocationPermission.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.isLocationRetrieved.observe(this, Observer {
+            if(it) {
+                viewModel.checkDeeplink()
             }
         })
 

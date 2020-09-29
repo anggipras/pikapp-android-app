@@ -3,9 +3,12 @@ package com.bejohen.pikapp.models.network
 import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.models.model.MerchantListResponse
 import io.reactivex.Single
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface PikappApi {
+
+    // AUTH
     @POST("auth/login")
     fun loginUser(
         @Header("x-request-id") uuid: String,
@@ -22,6 +25,15 @@ interface PikappApi {
         @Body registerRequest: RegisterRequest
     ): Single<RegisterResponse>
 
+    @GET("auth/exit")
+    fun logoutUser(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-session-id") sessionID: String
+    ): Single<LogoutResponse>
+
+    // HOME
     @POST("home/v1/exclusive-member")
     fun postUserExclusive(
         @Header("x-request-id") uuid: String,
@@ -47,14 +59,6 @@ interface PikappApi {
         @Header("x-client-id") clientID: String,
         @Header("token") token: String
     ): Single<ItemHomeCategoryResponse>
-
-    @GET("auth/exit")
-    fun logoutUser(
-        @Header("x-request-id") uuid: String,
-        @Header("x-request-timestamp") time: String,
-        @Header("x-client-id") clientID: String,
-        @Header("x-session-id") sessionID: String
-    ): Single<LogoutResponse>
 
     @GET("home/v1/merchant/{longitude}/{latitude}/{merchant_name}/")
     fun getMerchant(
@@ -98,4 +102,55 @@ interface PikappApi {
         @Path("longitude") longitude: String,
         @Path("latitude") latitude: String
     ): Single<ProductDetailResponse>
+
+
+    // STORE
+    @GET("merchant/v1/product-list/")
+    fun getStoreProductList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String
+    ): Single<StoreProductListResponse>
+
+    @POST("merchant/v1/product-action/")
+    fun postStoreProductAdd(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Part("file_01", encoding = "8-bit") file01: RequestBody,
+        @Part("file_02", encoding = "8-bit") file02: RequestBody,
+        @Part("file_03", encoding = "8-bit") file03: RequestBody,
+        @Part("product_name") productName: String,
+        @Part("price") price: String,
+        @Part("condition") condition: String,
+        @Part("action") action: String,
+        @Part("status") status: String,
+        @Part("product_qty") product_qty: String
+    ): Single<StoreProductActionResponse>
+
+    @POST("merchant/v1/product-action/")
+    fun postStoreProductAction(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Header("pid") pid: String,
+        @Part("file_01", encoding = "8-bit") file01: RequestBody,
+        @Part("file_02", encoding = "8-bit") file02: RequestBody,
+        @Part("file_03", encoding = "8-bit") file03: RequestBody,
+        @Part("product_name") productName: String,
+        @Part("price") price: String,
+        @Part("condition") condition: String,
+        @Part("action") action: String,
+        @Part("status") status: String,
+        @Part("product_qty") product_qty: String
+    ): Single<StoreProductActionResponse>
 }

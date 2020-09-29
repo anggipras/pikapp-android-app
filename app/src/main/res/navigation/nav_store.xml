@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_store"
+    app:startDestination="@id/storeWelcomeFragment">
+
+    <fragment
+        android:id="@+id/storeWelcomeFragment"
+        android:name="com.bejohen.pikapp.view.store.StoreWelcomeFragment"
+        android:label="fragment_store_welcome"
+        tools:layout="@layout/fragment_store_welcome" >
+        <action
+            android:id="@+id/action_storeWelcomeFragment_to_storeHomeFragment"
+            app:destination="@id/storeHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeHomeFragment"
+        android:name="com.bejohen.pikapp.view.store.StoreHomeFragment"
+        android:label="StoreHomeFragment" >
+        <action
+            android:id="@+id/actionToStoreMyProductFragment"
+            app:destination="@id/storeMyProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeMyProductFragment"
+        android:name="com.bejohen.pikapp.view.store.myProduct.StoreMyProductFragment"
+        android:label="StoreMyProductFragment" />
+</navigation>

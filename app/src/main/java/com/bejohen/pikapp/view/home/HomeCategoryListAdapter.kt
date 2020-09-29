@@ -40,5 +40,4 @@ class HomeCategoryListAdapter(val categoryItemlist: ArrayList<ItemHomeCategory>)
         Navigation.findNavController(v).navigate(action)
     }
 
-
 }

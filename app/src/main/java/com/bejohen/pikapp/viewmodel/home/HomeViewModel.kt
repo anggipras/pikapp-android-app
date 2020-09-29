@@ -35,6 +35,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     private var sessionManager = SessionManager(getApplication())
 
     val isLocationEnabled = MutableLiveData<Boolean>()
+    val isLocationRetrieved = MutableLiveData<Boolean>()
     val isDeeplinkEnabled = MutableLiveData<Boolean>()
 
     fun checkUserLogin(context: Context) {
@@ -103,6 +104,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     private fun saveUserLocation(longitude: String, latitude: String) {
         prefHelper.saveLatestLocation(longitude, latitude)
+        isLocationRetrieved.value = true
     }
 
     fun checkDeeplink() {
