@@ -3,7 +3,6 @@ package com.bejohen.pikapp.view
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.bejohen.pikapp.R

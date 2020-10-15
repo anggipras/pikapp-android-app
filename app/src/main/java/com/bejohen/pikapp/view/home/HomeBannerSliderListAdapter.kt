@@ -19,7 +19,6 @@ class HomeBannerSliderListAdapter(val sliderList: ArrayList<ItemHomeBannerSlider
         notifyDataSetChanged()
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = DataBindingUtil.inflate<ItemHomeBannerSliderBinding>(

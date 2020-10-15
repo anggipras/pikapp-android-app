@@ -187,7 +187,6 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
         launch {
             val itemHomeCategory = PikappDatabase(getApplication()).pikappDao().getAllHomeCategory()
             itemHomeCategoryRetrieved(itemHomeCategory)
-//            Toast.makeText(getApplication(), "dari database jing", Toast.LENGTH_SHORT).show()
         }
     }
 

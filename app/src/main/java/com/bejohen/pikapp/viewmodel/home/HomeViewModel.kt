@@ -10,14 +10,17 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.bejohen.pikapp.models.model.UserAccess
 import com.bejohen.pikapp.util.SessionManager
 import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
+import com.bejohen.pikapp.view.StoreActivity
 import com.bejohen.pikapp.view.categoryProduct.CategoryFragmentDirections
 import com.bejohen.pikapp.view.home.HomeFragmentDirections
 import com.bejohen.pikapp.view.home.ProfileFragment
@@ -38,22 +41,18 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     val isLocationRetrieved = MutableLiveData<Boolean>()
     val isDeeplinkEnabled = MutableLiveData<Boolean>()
 
-    fun checkUserLogin(context: Context) {
-        val isLoggingIn = sessionManager.isLoggingIn() ?: false
+    val isUserMerchant = MutableLiveData<Boolean>()
 
-        if (isLoggingIn) {
-            val profileFragment = ProfileFragment()
-            profileFragment.show(
-                (context as HomeActivity).supportFragmentManager,
-                profileFragment.getTag()
-            )
-        } else {
-            val loginActivity = Intent(context, LoginActivity::class.java)
-            context.startActivity(loginActivity)
-        }
+    fun goToProfile(context: Context) {
+        val profileFragment = ProfileFragment()
+        profileFragment.show(
+            (context as HomeActivity).supportFragmentManager,
+            profileFragment.getTag()
+        )
     }
 
     fun setStatusLocation(status: Boolean) {
+        Log.d("Debug", "token : ${sessionManager.getUserToken()}")
         isLocationEnabled.value = status
     }
 
@@ -80,8 +79,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        LocationServices.getFusedLocationProviderClient(activity as HomeActivity)
-            .requestLocationUpdates(locationRequest, object : LocationCallback() {
+        LocationServices.getFusedLocationProviderClient(activity as HomeActivity).requestLocationUpdates(locationRequest, object : LocationCallback() {
                 @SuppressLint("SetTextI18n")
                 override fun onLocationResult(locationResult: LocationResult?) {
                     super.onLocationResult(locationResult)
@@ -112,9 +110,21 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         isDeeplinkEnabled.value = !deeplink.mid.isNullOrEmpty()
     }
 
+    fun checkUserMerchantStatus() {
+        val userAccess: UserAccess? = sessionManager.getUserData()
+        Log.d("Debug", "user access : $userAccess")
+        isUserMerchant.value = userAccess!!.isMerchant!!
+    }
+
+    fun goToStoreHome(context: Context) {
+        val storeActivity = Intent(context, StoreActivity::class.java)
+        (context as HomeActivity).startActivity(storeActivity)
+    }
+
     fun goToMerchant(view: View) {
         val deeplink = prefHelper.getDeeplink()
-        val action = HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
+        val action =
+            HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
         Navigation.findNavController(view).navigate(action)
     }
 }

@@ -46,6 +46,10 @@ class SignupOnboardingFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(SignupOnboardingViewModel::class.java)
 
+
+        dataBinding.buttonLogin.setOnClickListener {
+            viewModel.goToLogin(dataBinding.root)
+        }
         dataBinding.buttonOnboardingSignupSignup.setOnClickListener {
             if (isEmailValid) {
                 sendRegister()
@@ -64,10 +68,8 @@ class SignupOnboardingFragment : Fragment() {
         val fullName = dataBinding.textFieldOnboardingSignupFullName.text.toString().trim()
         val phone = dataBinding.textFieldOnboardingSignupPhone.text.toString().trim()
         val password = dataBinding.textFieldOnboardingSignupPassword.text.toString().trim()
-        val confPassword =
-            dataBinding.textFieldOnboardingSignupConfirmPassword.text.toString().trim()
 
-        viewModel.register(fullName, phone, password, confPassword)
+        viewModel.register(fullName, phone, password)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -76,11 +78,7 @@ class SignupOnboardingFragment : Fragment() {
         viewModel.emailValid.observe(this, Observer { isValid ->
             isValid?.let {
                 if (it) {
-                    if (viewModel.getOnboardingFinished()) {
-                        (activity as LoginActivity).hideKeyboard()
-                    } else {
-                        (activity as OnboardingActivity).hideKeyboard()
-                    }
+                    (activity as OnboardingActivity).hideKeyboard()
                     animateGone()
                     Handler().postDelayed({
                         animateUI()
@@ -122,34 +120,36 @@ class SignupOnboardingFragment : Fragment() {
             }
         })
 
-        viewModel.passwordConfError.observe(this, Observer { t ->
-            t?.let {
-                dataBinding.textErrorOnboardingSignupConfirmPassword.apply {
-                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
-                    text = t
-                }
-            }
-        })
-
         viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                dataBinding.loadingViewOnboardingSignup.visibility = if (it) View.VISIBLE else View.GONE
+                dataBinding.loadingViewOnboardingSignup.visibility =
+                    if (it) View.VISIBLE else View.GONE
                 dataBinding.buttonOnboardingSignupSignup.isClickable = !it
-                if (viewModel.getOnboardingFinished()) {
-                    (activity as LoginActivity).hideKeyboard()
-                } else {
-                    (activity as OnboardingActivity).hideKeyboard()
-                }
+                (activity as OnboardingActivity).hideKeyboard()
             }
         })
 
         viewModel.registerResponse.observe(this, Observer { response ->
             response?.let {
-                viewModel.goToSuccess(dataBinding.root)
+                viewModel.loginProcess()
             }
         })
 
         viewModel.registerErrorResponse.observe(this, Observer { errorResponse ->
+            errorResponse?.let {
+                errorResponse.errMessage?.let { err -> viewModel.createToast(err) }
+            }
+        })
+
+        viewModel.loginResponse.observe(this, Observer {response ->
+            if (response.newEvent!!) {
+                viewModel.goToUserExclusive(activity as OnboardingActivity)
+            } else {
+                viewModel.goToHome(activity as OnboardingActivity)
+            }
+        })
+
+        viewModel.loginErrorResponse.observe(this, Observer { errorResponse ->
             errorResponse?.let {
                 errorResponse.errMessage?.let { err -> viewModel.createToast(err) }
             }
@@ -175,11 +175,11 @@ class SignupOnboardingFragment : Fragment() {
             transition.addTarget(dataBinding.textOnboardingSignupPassword)
             transition.addTarget(dataBinding.textFieldOnboardingSignupPassword)
             transition.addTarget(dataBinding.textErrorOnboardingSignupPassword)
-            transition.addTarget(dataBinding.textOnboardingSignupConfirmPassword)
-            transition.addTarget(dataBinding.textFieldOnboardingSignupConfirmPassword)
-            transition.addTarget(dataBinding.textErrorOnboardingSignupConfirmPassword)
+//            transition.addTarget(dataBinding.textOnboardingSignupConfirmPassword)
+//            transition.addTarget(dataBinding.textFieldOnboardingSignupConfirmPassword)
+//            transition.addTarget(dataBinding.textErrorOnboardingSignupConfirmPassword)
             transition.addTarget(dataBinding.buttonOnboardingSignupSignup)
-            transition.addTarget(dataBinding.textOnboardingOr)
+            transition.addTarget(dataBinding.loginSection)
             transition.addTarget(dataBinding.buttonOnboardingSignupAnotherWay)
 
             TransitionManager.beginDelayedTransition(dataBinding.containerOnboarding, transition)
@@ -195,15 +195,15 @@ class SignupOnboardingFragment : Fragment() {
 
             dataBinding.textOnboardingSignupPassword.setTransitionVisibility(View.VISIBLE)
             dataBinding.textFieldOnboardingSignupPassword.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textOnboardingSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
-            dataBinding.textFieldOnboardingSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
+//            dataBinding.textOnboardingSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
+//            dataBinding.textFieldOnboardingSignupConfirmPassword.setTransitionVisibility(View.VISIBLE)
             dataBinding.buttonOnboardingSignupSignup.setTransitionVisibility(View.VISIBLE)
 
             //set invisible
             dataBinding.textErrorOnboardingFullName.setTransitionVisibility(View.INVISIBLE)
             dataBinding.textErrorOnboardingPhone.setTransitionVisibility(View.INVISIBLE)
             dataBinding.textErrorOnboardingSignupPassword.setTransitionVisibility(View.INVISIBLE)
-            dataBinding.textErrorOnboardingSignupConfirmPassword.setTransitionVisibility(View.INVISIBLE)
+//            dataBinding.textErrorOnboardingSignupConfirmPassword.setTransitionVisibility(View.INVISIBLE)
         } else {
             dataBinding.textOnboardingYourEmail.apply {
                 visibility = View.VISIBLE
@@ -254,18 +254,18 @@ class SignupOnboardingFragment : Fragment() {
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textOnboardingSignupConfirmPassword.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
-            dataBinding.textFieldOnboardingSignupConfirmPassword.apply {
-                visibility = View.VISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
+//            dataBinding.textOnboardingSignupConfirmPassword.apply {
+//                visibility = View.VISIBLE
+//                animate()
+//                    .setDuration(shortAnimationDuration.toLong())
+//                    .setListener(null)
+//            }
+//            dataBinding.textFieldOnboardingSignupConfirmPassword.apply {
+//                visibility = View.VISIBLE
+//                animate()
+//                    .setDuration(shortAnimationDuration.toLong())
+//                    .setListener(null)
+//            }
             dataBinding.buttonOnboardingSignupSignup.apply {
                 visibility = View.VISIBLE
                 animate()
@@ -291,12 +291,12 @@ class SignupOnboardingFragment : Fragment() {
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
             }
-            dataBinding.textErrorOnboardingSignupConfirmPassword.apply {
-                visibility = View.INVISIBLE
-                animate()
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-            }
+//            dataBinding.textErrorOnboardingSignupConfirmPassword.apply {
+//                visibility = View.INVISIBLE
+//                animate()
+//                    .setDuration(shortAnimationDuration.toLong())
+//                    .setListener(null)
+//            }
         }
     }
 
@@ -321,7 +321,7 @@ class SignupOnboardingFragment : Fragment() {
             dataBinding.textOnboardingSignupEmail.setTransitionVisibility(View.GONE)
             dataBinding.textFieldOnboardingSignupEmail.setTransitionVisibility(View.GONE)
             dataBinding.textErrorOnboardingSignupEmail.setTransitionVisibility(View.GONE)
-            dataBinding.textOnboardingOr.setTransitionVisibility(View.GONE)
+            dataBinding.loginSection.setTransitionVisibility(View.GONE)
             dataBinding.buttonOnboardingSignupAnotherWay.setTransitionVisibility(View.GONE)
             dataBinding.buttonOnboardingSignupSignup.setTransitionVisibility(View.INVISIBLE)
         } else {
@@ -345,7 +345,7 @@ class SignupOnboardingFragment : Fragment() {
                     .setListener(null)
             }
 
-            dataBinding.textOnboardingOr.apply {
+            dataBinding.loginSection.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
@@ -367,4 +367,5 @@ class SignupOnboardingFragment : Fragment() {
 
         }
     }
+
 }

@@ -2,12 +2,13 @@ package com.bejohen.pikapp.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.bejohen.pikapp.models.model.DeepinkModel
+import com.bejohen.pikapp.models.model.CartModel
+import com.bejohen.pikapp.models.model.DeepLinkModel
 import com.bejohen.pikapp.models.model.LatestLocation
-import com.bejohen.pikapp.models.model.UserAccess
-import com.google.gson.GsonBuilder
+import com.google.gson.Gson
 
 class SharedPreferencesUtil {
 
@@ -69,6 +70,7 @@ class SharedPreferencesUtil {
             putBoolean(PREF_ISUSEREXCLUSIVE, boolean)
         }
     }
+
     fun isUserExclusive() = prefs?.getBoolean(PREF_ISUSEREXCLUSIVE, false)
 
     fun saveUserExclusiveForm(boolean: Boolean) {
@@ -86,17 +88,20 @@ class SharedPreferencesUtil {
         }
     }
 
-    fun getLatestLocation() : LatestLocation {
+    fun getLatestLocation(): LatestLocation {
         val latitude = prefs?.getString(LATITUDE, "")
         val longitude = prefs?.getString(LONGITUDE, "")
         return LatestLocation(longitude, latitude)
     }
 
-    fun saveDeeplinkUrl(mid: String, tableNo: String) {
+    fun saveDeeplinkUrl(mid: String, tableNo: String?) {
         prefs?.edit(commit = true) {
             putString(DL_MERCHANTID, mid)
-            putString(DL_TABLENO, tableNo)
+            tableNo?.let {
+                putString(DL_TABLENO, tableNo)
+            }
         }
+        storeDeepLink(mid, tableNo)
     }
 
     fun deleteDeeplinkUrl() {
@@ -106,10 +111,36 @@ class SharedPreferencesUtil {
         }
     }
 
-    fun getDeeplink() : DeepinkModel{
+    fun getDeeplink(): DeepLinkModel {
         val mid = prefs?.getString(DL_MERCHANTID, "")
         val tableNo = prefs?.getString(DL_TABLENO, "")
-        return DeepinkModel(mid, tableNo)
+        return DeepLinkModel(mid, tableNo)
+    }
+
+    fun storeDeepLink(mid: String, tableNo: String?) {
+        val deeplLinkModel = DeepLinkModel(mid, tableNo)
+        val json = Gson().toJson(deeplLinkModel)
+        prefs?.edit(commit = true) {
+            putString(DEEPLINK, json)
+        }
+    }
+
+    fun getStoredDeepLink() : DeepLinkModel? {
+        val gson = Gson()
+        val json: String? = prefs?.getString(DEEPLINK, "")
+        json?.let {
+            if (json.isNotEmpty()) {
+                val deepLinkModel: DeepLinkModel = gson.fromJson(json, DeepLinkModel::class.java)
+                return deepLinkModel
+            }
+        }
+        return null
+    }
+
+    fun deleteStoredDeepLink() {
+        prefs?.edit(commit = true) {
+            putString(DEEPLINK, "")
+        }
     }
 
 }

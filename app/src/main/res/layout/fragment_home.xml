@@ -41,7 +41,8 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_notifications"
                     android:tint="@android:color/white"
-                    tools:layout_editor_absoluteX="16dp" />
+                    tools:layout_editor_absoluteX="16dp"
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/imageView3"

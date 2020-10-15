@@ -59,7 +59,7 @@ class UserExclusiveProfileFragment : BottomSheetDialogFragment() {
 
         viewModel.logoutResponse.observe(this, Observer { response ->
             response?.let {
-                viewModel.clearSession(activity as UserExclusiveActivity)
+                viewModel.clearSessionExclusive(activity as UserExclusiveActivity)
             }
         })
 

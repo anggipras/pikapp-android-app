@@ -1,10 +1,8 @@
 package com.bejohen.pikapp.view.categoryProduct
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,14 +11,13 @@ import com.bejohen.pikapp.databinding.ItemMerchantListBinding
 import com.bejohen.pikapp.models.model.MerchantList
 import com.bejohen.pikapp.models.model.ProductListSmall
 import com.bejohen.pikapp.view.home.ItemHomeCategoryDecoration
-import kotlinx.android.synthetic.main.item_merchant_list.view.*
 
-class MerchantListAdapter(val merchantList: ArrayList<MerchantList>) :
-    RecyclerView.Adapter<MerchantListAdapter.MerchantViewHolder>(), MerchantClickListener {
+class MerchantListAdapter(private val merchantList: ArrayList<MerchantList>, val merchantClickInterface: MerchantClickInterface) :
+    RecyclerView.Adapter<MerchantListAdapter.MerchantViewHolder>(), ProductListSmallAdapter.ProductClickInterface {
 
     class MerchantViewHolder(var view: ItemMerchantListBinding) : RecyclerView.ViewHolder(view.root)
 
-    private val productListAdapter = ProductListSmallAdapter(arrayListOf())
+    private val productListAdapter = ProductListSmallAdapter(arrayListOf(), this)
 
     fun updateMerchantList(newMerchantList: List<MerchantList>) {
         merchantList.clear()
@@ -37,13 +34,13 @@ class MerchantListAdapter(val merchantList: ArrayList<MerchantList>) :
             false
         )
         view.productList.apply {
-            val gridLayoutManager =
-                GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
+            val gridLayoutManager = GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
             layoutManager = gridLayoutManager
-            val spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing)
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing2)
             addItemDecoration(ItemHomeCategoryDecoration(spacingInPixels))
             adapter = productListAdapter
         }
+
         return MerchantViewHolder(view)
     }
 
@@ -51,18 +48,24 @@ class MerchantListAdapter(val merchantList: ArrayList<MerchantList>) :
 
     override fun onBindViewHolder(holder: MerchantViewHolder, position: Int) {
         holder.view.merchantItem = merchantList[position]
-        holder.view.listener = this
-        val productList : List<ProductListSmall>?
+
         merchantList[position].products?.let {
-            productList = it
+            val productList = it
             productListAdapter.productList = productList
+        }
+
+        holder.view.buttonMerchantCategory.setOnClickListener {
+            val mid = holder.view.merchantId.text.toString()
+            merchantClickInterface.onClickMerchant(mid)
         }
     }
 
-    override fun onMerchantClicked(v: View) {
-        val mid = v.merchantId.text.toString()
-        val action = CategoryFragmentDirections.actionToMerchantDetailFragment(mid)
-        Navigation.findNavController(v).navigate(action)
+    override fun onClickProductSmall(pid: String) {
+        merchantClickInterface.onClickProductSmall(pid)
     }
 
+    interface MerchantClickInterface {
+        fun onClickMerchant(mid: String)
+        fun onClickProductSmall(pid: String)
+    }
 }

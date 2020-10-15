@@ -66,7 +66,7 @@ class SignupFragment : Fragment() {
         val password = dataBinding.textFieldSignupPassword.text.toString().trim()
         val confPassword = dataBinding.textErrorSignupConfirmPassword.text.toString().trim()
 
-        viewModel.register(fullName, phone, password, confPassword)
+        viewModel.register(fullName, phone, password)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -102,13 +102,13 @@ class SignupFragment : Fragment() {
 
         viewModel.registerResponse.observe(this, Observer { response ->
             response?.let {
-                viewModel.goToSuccess(dataBinding.root)
+//                viewModel.goToSuccess(dataBinding.root)
             }
         })
     }
 
     private fun registerSuccess() {
-        viewModel.goToSuccess(dataBinding.root)
+//        viewModel.goToSuccess(dataBinding.root)
 //        val action = SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
 //        Navigation.findNavController(dataBinding.root).navigate(action)
     }

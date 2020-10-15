@@ -28,7 +28,8 @@ class LoginOnboardingFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_login_onboarding, container, false)
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_onboarding, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_login_onboarding, container, false)
         return dataBinding.root
     }
 
@@ -37,15 +38,11 @@ class LoginOnboardingFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(LoginOnboardingViewModel::class.java)
 
-        dataBinding.buttonLogin.setOnClickListener{
-            if (viewModel.getOnboardingFinished()) {
-                (activity as LoginActivity).hideKeyboard()
-            } else {
-                (activity as OnboardingActivity).hideKeyboard()
-            }
+        dataBinding.buttonLogin.setOnClickListener {
+            (activity as OnboardingActivity).hideKeyboard()
             val email = dataBinding.textFieldLogin.text.trim().toString()
             val password = dataBinding.textFieldPassword.text.trim().toString()
-            Log.d("Debug","email : " + email)
+            Log.d("Debug", "email : " + email)
             viewModel.login(email, password)
         }
 
@@ -74,22 +71,17 @@ class LoginOnboardingFragment : Fragment() {
                 dataBinding.buttonLogin.isClickable = false
 
                 Log.d("debug", "nama : ${response.newEvent!!}")
-                if(response.newEvent!!) {
+                if (response.newEvent!!) {
                     viewModel.goToUserExclusive(activity as OnboardingActivity)
-                }
-                else {
-                    if (viewModel.getOnboardingFinished()) {
-                        viewModel.goToHome(activity as LoginActivity)
-                    } else {
-                        viewModel.goToHome(activity as OnboardingActivity)
-                    }
+                } else {
+                    viewModel.goToHome(activity as OnboardingActivity)
                 }
             }
         })
 
         viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                dataBinding.loadingViewLogin.visibility = if(it) View.VISIBLE else View.GONE
+                dataBinding.loadingViewLogin.visibility = if (it) View.VISIBLE else View.GONE
                 dataBinding.buttonLogin.isClickable = !it
 
             }

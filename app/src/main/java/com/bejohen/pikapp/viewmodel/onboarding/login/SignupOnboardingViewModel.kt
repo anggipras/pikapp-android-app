@@ -1,16 +1,22 @@
 package com.bejohen.pikapp.viewmodel.onboarding.login
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import com.bejohen.pikapp.models.model.ErrorResponse
+import com.bejohen.pikapp.models.model.LoginResponse
 import com.bejohen.pikapp.models.model.RegisterResponse
+import com.bejohen.pikapp.models.model.UserAccess
 import com.bejohen.pikapp.models.network.PikappApiService
-import com.bejohen.pikapp.util.SharedPreferencesUtil
-import com.bejohen.pikapp.util.detectSpecialCharacter
-import com.bejohen.pikapp.util.isEmailValid
+import com.bejohen.pikapp.util.*
+import com.bejohen.pikapp.view.HomeActivity
+import com.bejohen.pikapp.view.OnboardingActivity
+import com.bejohen.pikapp.view.UserExclusiveActivity
 import com.bejohen.pikapp.view.login.SignupFragmentDirections
 import com.bejohen.pikapp.view.onboarding.login.SignupOnboardingFragmentDirections
 import com.bejohen.pikapp.viewmodel.BaseViewModel
@@ -23,28 +29,30 @@ import retrofit2.HttpException
 
 class SignupOnboardingViewModel(application: Application) : BaseViewModel(application) {
 
+    private var sessionManager = SessionManager(getApplication())
     private var prefHelper = SharedPreferencesUtil(getApplication())
+
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
 
     var email = ""
+    var password = ""
 
     val registerResponse = MutableLiveData<RegisterResponse>()
     val registerErrorResponse = MutableLiveData<ErrorResponse>()
     val loading = MutableLiveData<Boolean>()
-
+    val loginResponse = MutableLiveData<LoginResponse>()
+    val loginErrorResponse = MutableLiveData<ErrorResponse>()
     val emailValid = MutableLiveData<Boolean>()
 
     val fullNameError = MutableLiveData<String>()
     val phoneError = MutableLiveData<String>()
     val passwordError = MutableLiveData<String>()
-    val passwordConfError = MutableLiveData<String>()
 
     var isEmailValid = false
     var isFullNameValid = false
     var isPhoneValid = false
     var isPasswordValid = false
-    var isConfPasswordValid = false
 
     fun getOnboardingFinished(): Boolean {
         return prefHelper.isOnboardingFinished() ?: false
@@ -56,9 +64,9 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
         emailValid.value = mail.isEmailValid()
     }
 
-    fun register(fullName: String, phone: String, password: String, confPassword: String) {
-        checkUserInput(fullName, phone, password, confPassword)
-        if (isFullNameValid && isPhoneValid && isPasswordValid && isConfPasswordValid) {
+    fun register(fullName: String, phone: String, password: String) {
+        checkUserInput(fullName, phone, password)
+        if (isFullNameValid && isPhoneValid && isPasswordValid) {
             registerUser(fullName, phone, password)
         }
     }
@@ -66,8 +74,7 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
     private fun checkUserInput(
         fullName: String,
         phone: String,
-        password: String,
-        confPassword: String
+        password: String
     ) {
         if (fullName.isEmpty()) {
             fullNameError.value = "Silakan masukkan nama anda"
@@ -111,26 +118,27 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
             isPasswordValid = true
         }
 
-        if (confPassword.isEmpty()) {
-            passwordConfError.value = "Silakan masukkan password anda"
-            isConfPasswordValid = false
-        } else if (confPassword != password) {
-            passwordConfError.value = "Password tidak sama"
-            isConfPasswordValid = false
-        } else {
-            passwordConfError.value = ""
-            isConfPasswordValid = true
-        }
+//        if (confPassword.isEmpty()) {
+//            passwordConfError.value = "Silakan masukkan password anda"
+//            isConfPasswordValid = false
+//        } else if (confPassword != password) {
+//            passwordConfError.value = "Password tidak sama"
+//            isConfPasswordValid = false
+//        } else {
+//            passwordConfError.value = ""
+//            isConfPasswordValid = true
+//        }
     }
 
-    private fun registerUser(fullName: String, phone: String, password: String) {
+    private fun registerUser(fullName: String, phone: String, pword: String) {
         loading.value = true
         disposable.add(
-            apiService.registerUser(email, password, fullName, phone, "01011970", "MALE")
+            apiService.registerUser(email, pword, fullName, phone, "01011970", "MALE")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<RegisterResponse>() {
                     override fun onSuccess(t: RegisterResponse) {
+                        password = pword
                         registerSuccess(t)
                     }
 
@@ -157,6 +165,57 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
 
     private fun registerSuccess(response: RegisterResponse) {
         registerResponse.value = response
+    }
+
+    fun loginProcess() {
+        disposable.add(
+            apiService.loginUser(email, password)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<LoginResponse>() {
+                    override fun onSuccess(t: LoginResponse) {
+                        loginSuccess(t)
+//                        Toast.makeText(getApplication(), "token: ${t.token}", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.d("Debug", "error : " + e)
+                        var errorResponse: ErrorResponse
+                        try {
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse =
+                                ErrorResponse(
+                                    "503",
+                                    "Service Unavailable"
+                                )
+                        }
+                        loginFail(errorResponse)
+                        createToastShort(errorResponse.errMessage!!)
+                    }
+                })
+        )
+    }
+
+    private fun loginSuccess(response: LoginResponse) {
+        loginResponse.value = response
+        loading.value = false
+
+        response.newEvent?.let { prefHelper.saveUserExclusive(response.newEvent) }
+        response.recommendationStatus?.let { prefHelper.saveUserExclusiveForm(response.recommendationStatus) }
+        response.token?.let {
+            val userData: UserAccess = decodeJWT(response.token)
+            sessionManager.setUserSession(response.token, System.nanoTime(), userData)
+        }
+
+        prefHelper.saveOnboardingFinised(true)
+    }
+
+    private fun loginFail(response: ErrorResponse) {
+        loginErrorResponse.value = response
         loading.value = false
     }
 
@@ -165,16 +224,21 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
         loading.value = false
     }
 
-    fun goToSuccess(view: View) {
-        if (getOnboardingFinished()) {
-            val action = SignupFragmentDirections.actionToSignupSuccessFragment()
-            Navigation.findNavController(view).navigate(action)
-        } else {
-            val action =
-                SignupOnboardingFragmentDirections.actionToSignupOnboardingSuccessFragment()
-            Navigation.findNavController(view).navigate(action)
-        }
+    fun goToHome(context: Context) {
+        val homeActivity = Intent(context, HomeActivity::class.java)
+        context.startActivity(homeActivity)
+        (context as OnboardingActivity).finish()
+    }
 
+    fun goToUserExclusive(context: Context) {
+        val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
+        context.startActivity(userExclusiveActivity)
+        (context as OnboardingActivity).finish()
+    }
+
+    fun goToLogin(view: View) {
+        val action = SignupOnboardingFragmentDirections.actionFromSignupOnboardingFragmentToLoginOnboardingFragment()
+        Navigation.findNavController(view).navigate(action)
     }
 
     fun createToast(m: String) {

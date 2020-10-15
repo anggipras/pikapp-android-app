@@ -7,18 +7,13 @@
         <variable
             name="productItem"
             type="com.bejohen.pikapp.models.model.ProductListSmall" />
-
-        <variable
-            name="Listener"
-            type="com.bejohen.pikapp.view.categoryProduct.ProductClickListener" />
     </data>
 
     <LinearLayout
-        android:id="@+id/top_header_rl"
+        android:id="@+id/buttonProductSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|center_vertical"
-        android:onClick="@{Listener::onProductClicked}"
         android:orientation="vertical"
         android:background="#fff"
         android:padding="4dp">
@@ -40,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/categoryImage"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:imageUrl="@{productItem.productPicture1}"
                 android:scaleType="centerCrop" />

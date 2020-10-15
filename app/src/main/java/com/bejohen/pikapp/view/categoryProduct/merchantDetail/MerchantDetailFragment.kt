@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,12 +18,12 @@ import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.home.ItemHomeCategoryDecoration
 import com.bejohen.pikapp.viewmodel.categoryProduct.MerchantDetailViewModel
 
-
 class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterface {
 
     private lateinit var viewModel: MerchantDetailViewModel
     private lateinit var dataBinding: FragmentMerchantDetailBinding
     var mid = ""
+    var ispulled = false
     private val merchantProductListAdapter = ProductListAdapter(arrayListOf(), this)
 
     override fun onCreateView(
@@ -30,8 +31,7 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_merchant_detail, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_merchant_detail, container, false)
         viewModel = ViewModelProviders.of(this).get(MerchantDetailViewModel::class.java)
         return dataBinding.root
     }
@@ -65,12 +65,42 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
 
         viewModel.productListResponse.observe(this, Observer { productList ->
             productList?.let {
-                merchantProductListAdapter.updateMerchantProductList(productList)
+                if (!ispulled) {
+                    merchantProductListAdapter.updateMerchantProductList(productList)
+                    ispulled = true
+                }
+            }
+        })
+
+        viewModel.cart.observe(this, Observer {status ->
+            val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+            buttonFloat?.let {
+                if (status) {
+                    buttonFloat.visibility= View.VISIBLE
+                    setButtonCartPosition()
+                } else buttonFloat.visibility= View.GONE
             }
         })
     }
 
-    override fun onAdd(mid: String, pid: String) {
-        viewModel.onAddProduct(mid, pid, context as HomeActivity)
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCart()
+        setButtonCartPosition()
+    }
+
+    private fun setButtonCartPosition() {
+        val buttonFloat: View? =
+            (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        buttonFloat?.let { it ->
+            if (it.isVisible) {
+                val param = it.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0, 0, 10, 160)
+                it.layoutParams = param
+            }
+        }
+    }
+    override fun onAdd(mid: String, pid: String, pName: String, pImage: String, pPrice: String) {
+        viewModel.onAddProduct(mid, pid, pName, pImage, pPrice, context as HomeActivity)
     }
 }

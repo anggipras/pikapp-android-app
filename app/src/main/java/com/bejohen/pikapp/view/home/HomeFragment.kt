@@ -28,6 +28,8 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var dataBinding: FragmentHomeBinding
 
+    private var isFirstTime = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +67,7 @@ class HomeFragment : Fragment() {
         }.attach()
 
         dataBinding.buttonProfile.setOnClickListener {
-            viewModel.checkUserLogin(activity as HomeActivity)
+            viewModel.goToProfile(activity as HomeActivity)
         }
 
         dataBinding.buttonAccessLocation.setOnClickListener {
@@ -80,7 +82,7 @@ class HomeFragment : Fragment() {
         viewModel.isLocationEnabled.observe(this, Observer { it ->
             if (it) {
                 viewModel.getUserLocation(activity as HomeActivity)
-                dataBinding.tabLayout.visibility = View.VISIBLE
+//                dataBinding.tabLayout.visibility = View.VISIBLE
                 dataBinding.layoutHomeContainer.visibility = View.VISIBLE
                 dataBinding.layoutLocationPermission.visibility = View.GONE
             } else {
@@ -93,15 +95,23 @@ class HomeFragment : Fragment() {
         viewModel.isLocationRetrieved.observe(this, Observer {
             if(it) {
                 viewModel.checkDeeplink()
+                viewModel.checkUserMerchantStatus()
             }
         })
 
-        viewModel.isDeeplinkEnabled.observe(this, Observer { it ->
+        viewModel.isDeeplinkEnabled.observe(this, Observer {
             if (it) {
                 viewModel.goToMerchant(dataBinding.root)
             } else {
             }
 
+        })
+
+        viewModel.isUserMerchant.observe(this, Observer {
+            if (it && isFirstTime) {
+                isFirstTime = false
+                viewModel.goToStoreHome(activity as HomeActivity)
+            }
         })
     }
 
@@ -120,16 +130,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+    private fun checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             viewModel.setStatusLocation(false)
             requestPermission()
         } else {
@@ -138,11 +142,7 @@ class HomeFragment : Fragment() {
     }
     fun requestPermission() {
         requestPermissions(
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            LOCATION_REQUEST
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST
         )
     }
 }

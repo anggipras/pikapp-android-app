@@ -60,7 +60,7 @@ data class LocationModel(
     val latitude: Double
 )
 
-data class DeepinkModel(
+data class DeepLinkModel(
     val mid: String?,
     val tableNo: String?
 )

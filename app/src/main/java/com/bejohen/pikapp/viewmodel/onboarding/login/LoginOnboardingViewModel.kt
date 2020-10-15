@@ -15,7 +15,6 @@ import com.bejohen.pikapp.util.SharedPreferencesUtil
 import com.bejohen.pikapp.util.decodeJWT
 import com.bejohen.pikapp.util.isEmailValid
 import com.bejohen.pikapp.view.HomeActivity
-import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.OnboardingActivity
 import com.bejohen.pikapp.view.UserExclusiveActivity
 import com.bejohen.pikapp.viewmodel.BaseViewModel
@@ -44,13 +43,9 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     private var isEmailValid = false
     private var isPasswordValid = false
 
-    fun getOnboardingFinished(): Boolean {
-        return prefHelper.isOnboardingFinished() ?: false
-    }
-
     fun login(email: String, password: String) {
         checkUserInput(email, password)
-        if(isEmailValid && isPasswordValid) {
+        if (isEmailValid && isPasswordValid) {
             loginProcess(email, password)
         }
     }
@@ -59,7 +54,7 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
         if (email.isEmpty()) {
             emailError.value = "Silakan masukkan email anda"
             isEmailValid = false
-        } else if (!email.isEmailValid()){
+        } else if (!email.isEmailValid()) {
             emailError.value = "Silakan masukkan email anda secara valid"
             isEmailValid = false
         } else {
@@ -105,13 +100,8 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
                                     "Service Unavailable"
                                 )
                         }
-
                         loginFail(errorResponse)
-                        Toast.makeText(
-                            getApplication(),
-                            errorResponse.errMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        createToastShort(errorResponse.errMessage!!)
                     }
                 })
         )
@@ -124,7 +114,7 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
         response.newEvent?.let { prefHelper.saveUserExclusive(response.newEvent) }
         response.recommendationStatus?.let { prefHelper.saveUserExclusiveForm(response.recommendationStatus) }
         response.token?.let {
-            val userData : UserAccess = decodeJWT(response.token)
+            val userData: UserAccess = decodeJWT(response.token)
             sessionManager.setUserSession(response.token, System.nanoTime(), userData)
         }
 
@@ -137,18 +127,14 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     }
 
     fun goToHome(context: Context) {
-        if (getOnboardingFinished()) {
-            (context as LoginActivity).finish()
-        } else {
-            val homeActivity = Intent(context, HomeActivity::class.java)
-            context?.startActivity(homeActivity)
-            (context as OnboardingActivity).finish()
-        }
+        val homeActivity = Intent(context, HomeActivity::class.java)
+        context.startActivity(homeActivity)
+        (context as OnboardingActivity).finish()
     }
 
     fun goToUserExclusive(context: Context) {
         val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
-        context?.startActivity(userExclusiveActivity)
+        context.startActivity(userExclusiveActivity)
         (context as OnboardingActivity).finish()
     }
 

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.store.myProduct.StoreMyProductFormFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#fff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="23sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/proximanova_bold"
+                            android:text="Foto Produk"
+                            android:textColor="#000"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/buttonToGallery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/proximanova_regular"
+                            android:text="Pilih foto"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/imageContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/white"
+                        android:orientation="horizontal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Nama Produk"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/textProductName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:hint="Masukkan nama produk anda"
+                        android:inputType="textPersonName"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Deskrpsi"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+
+                    <EditText
+                        android:id="@+id/textDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/edit_text_border"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:gravity="top|left"
+                        android:hint="Masukkan deskripsi produk anda"
+                        android:inputType="textMultiLine"
+                        android:lineSpacingExtra="4sp"
+                        android:minLines="4"
+                        android:padding="5dp"
+                        android:singleLine="false"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Harga"
+                        android:textColor="#000"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/textPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:hint="e.g. 500000"
+                        android:inputType="number"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Kondisi"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/textCondition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:text="Baru"
+                        android:textAlignment="textEnd"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"/>
+
+                <Button
+                    android:id="@+id/buttonActionProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:height="60dp"
+                    android:background="@drawable/button_yellow"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:text=""
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

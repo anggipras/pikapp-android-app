@@ -22,10 +22,6 @@ abstract class PikappDatabase : RoomDatabase() {
             }
         }
 
-        private fun buildDatabase(context: Context) = Room.databaseBuilder(
-            context.applicationContext,
-            PikappDatabase::class.java,
-            "PikappDatabase"
-        ).build()
+        private fun buildDatabase(context: Context) = Room.databaseBuilder(context.applicationContext, PikappDatabase::class.java, "PikappDatabase").build()
     }
 }

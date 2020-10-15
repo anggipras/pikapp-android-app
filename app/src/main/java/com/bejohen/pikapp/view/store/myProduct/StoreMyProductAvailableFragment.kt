@@ -6,19 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentStoreMyProductAvailableBinding
+import com.bejohen.pikapp.view.StoreActivity
 import com.bejohen.pikapp.viewmodel.store.StoreProductListViewModel
 
-class StoreMyProductAvailableFragment : Fragment() {
+class StoreMyProductAvailableFragment : Fragment(), StoreMyProductListAdapter.ProductListInterface {
 
     private lateinit var dataBinding: FragmentStoreMyProductAvailableBinding
     private lateinit var viewModel: StoreProductListViewModel
-    private val myProductListAdapter = MyProductListAdapter(arrayListOf())
+    private val myProductListAdapter = StoreMyProductListAdapter(arrayListOf(), this)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +46,12 @@ class StoreMyProductAvailableFragment : Fragment() {
             adapter = myProductListAdapter
         }
 
-        viewModel.getProductList()
+        dataBinding.pListAvailableRefreshLayout.setOnRefreshListener {
+            viewModel.getProductListAvailable(true)
+            dataBinding.pListAvailableRefreshLayout.isRefreshing = false
+        }
+
+        viewModel.getProductListAvailable(true)
         observeViewModel()
 
     }
@@ -53,5 +62,31 @@ class StoreMyProductAvailableFragment : Fragment() {
             myProductListAdapter.updateProductList(it)
         })
 
+    }
+
+    override fun changeToOnOff(pid: String, position: Int, status: Boolean) {
+        viewModel.setOnOffProduct(pid, position, !status)
+    }
+
+    override fun onEditTapped(pid: String) {
+        val action = StoreMyProductFragmentDirections.actionToStoreMyProductFormFragment(false, pid)
+        Navigation.findNavController(dataBinding.root).navigate(action)
+    }
+
+    override fun onDeleteTapped(pid: String, position: Int, pName: String) {
+        val builder = AlertDialog.Builder(activity as StoreActivity)
+        builder.apply {
+            setTitle("Hapus Produk")
+            setMessage("Anda yakin akan menghapus produk \"${pName}\"?")
+            setPositiveButton("Hapus") { dialog, which ->
+                // Do something when user press the positive button
+                viewModel.deleteProduct(pid, position)
+            }
+            builder.setNegativeButton("Kepencet") { dialog, which ->
+
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
     }
 }

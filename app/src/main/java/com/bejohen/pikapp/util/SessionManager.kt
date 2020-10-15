@@ -51,12 +51,6 @@ class SessionManager {
 
     fun getUserToken() = prefs?.getString(PREF_USER_TOKEN, "")
 
-    fun deleteUserToken() {
-        prefs?.edit(commit = true) {
-            putString(PREF_USER_TOKEN, "")
-        }
-    }
-
     private fun saveLoginHistory(time: Long) {
         prefs?.edit(commit = true) {
             putLong(PREF_LOGIN_HISTORY_TIME, time)
@@ -77,12 +71,6 @@ class SessionManager {
         return GsonBuilder().create().fromJson(userData, UserAccess::class.java)
     }
 
-    private fun deleteUserData() {
-        prefs?.edit(commit = true) {
-            putString(PREF_USER_DATA, "")
-        }
-    }
-
     fun setUserSession(token: String, time: Long, userData: UserAccess) {
         saveUserLogin(true)
         saveUserToken(token)
@@ -91,9 +79,14 @@ class SessionManager {
     }
 
     fun logout() {
-        saveUserLogin(false)
-        saveUserToken("")
-        deleteUserToken()
         deleteUserData()
+    }
+
+    private fun deleteUserData() {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_TOKEN, "") //delete token
+            putBoolean(PREF_ISLOGGINGIN, false) //logging in false
+            putString(PREF_USER_DATA, "") //delete data
+        }
     }
 }

@@ -89,7 +89,7 @@ class UserExclusiveProfileViewModel(application: Application) : BaseViewModel(ap
         loading.value = false
     }
 
-    fun clearSession(context: Context) {
+    fun clearSessionExclusive(context: Context) {
         sessionManager.logout()
         prefHelper.saveUserExclusive(false)
         prefHelper.saveUserExclusiveForm(false)

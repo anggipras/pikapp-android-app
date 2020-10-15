@@ -9,14 +9,10 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.models.network.PikappApiService
-import com.bejohen.pikapp.util.MERCHANT_ID
-import com.bejohen.pikapp.util.PRODUCT_ID
-import com.bejohen.pikapp.util.SessionManager
-import com.bejohen.pikapp.util.SharedPreferencesUtil
+import com.bejohen.pikapp.util.*
 import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.view.LoginActivity
 import com.bejohen.pikapp.view.categoryProduct.AddToCartFragment
-import com.bejohen.pikapp.view.home.ProfileFragment
 import com.bejohen.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,10 +21,11 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
-class MerchantDetailViewModel(application: Application) : BaseViewModel(application) {
+class MerchantDetailViewModel(application: Application) : BaseViewModel(application), AddToCartFragment.DialogDismissInterface {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
+    private var cartUtil = CartUtil(getApplication())
     private val pikappService = PikappApiService()
     private val disposable = CompositeDisposable()
 
@@ -38,6 +35,7 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
     val productListResponse = MutableLiveData<List<ProductList>>()
     val merchantLoadError = MutableLiveData<Boolean>()
     val merchantErrorResponse = MutableLiveData<MerchantListErrorResponse>()
+    val cart = MutableLiveData<Boolean>()
 
     var latitude = ""
     var longitude = ""
@@ -150,13 +148,16 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
         loadingProductList.value = false
     }
 
-    fun onAddProduct(mid: String, pid: String, context: Context) {
+    fun onAddProduct(mid: String, pid: String, pName: String, pImage: String, pPrice: String, context: Context) {
         val isLoggingIn = sessionManager.isLoggingIn() ?: false
         if (isLoggingIn) {
             val args = Bundle()
             args.putString(MERCHANT_ID, mid)
             args.putString(PRODUCT_ID, pid)
-            val addToCartFragment = AddToCartFragment()
+            args.putString(PRODUCT_NAME, pName)
+            args.putString(PRODUCT_IMAGE, pImage)
+            args.putString(PRODUCT_PRICE, pPrice)
+            val addToCartFragment = AddToCartFragment(this)
             addToCartFragment.arguments = args
             addToCartFragment.show(
                 (context as HomeActivity).supportFragmentManager,
@@ -168,8 +169,17 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
         }
     }
 
+    fun getCart() {
+        Log.d("Debug", "Cart status : ${cartUtil.getCartStatus()}")
+        cart.value = cartUtil.getCartStatus()
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+
+    override fun onDialogDismiss() {
+        getCart()
     }
 }

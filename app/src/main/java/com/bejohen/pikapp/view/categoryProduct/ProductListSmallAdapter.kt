@@ -11,8 +11,8 @@ import com.bejohen.pikapp.databinding.ItemMerchantProductListSmallBinding
 import com.bejohen.pikapp.models.model.ProductListSmall
 import kotlinx.android.synthetic.main.item_merchant_product_list_small.view.*
 
-class ProductListSmallAdapter(var productList: List<ProductListSmall>) :
-    RecyclerView.Adapter<ProductListSmallAdapter.ProductViewHolder>(), ProductClickListener {
+class ProductListSmallAdapter(var productList: List<ProductListSmall>, val productClickInterface: ProductClickInterface) :
+    RecyclerView.Adapter<ProductListSmallAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(var view: ItemMerchantProductListSmallBinding) : RecyclerView.ViewHolder(view.root)
 
@@ -26,13 +26,15 @@ class ProductListSmallAdapter(var productList: List<ProductListSmall>) :
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.view.productItem = productList[position]
-        holder.view.listener = this
+
+        holder.view.buttonProductSmall.setOnClickListener {
+            val pid = holder.view.productId.text.toString()
+            productClickInterface.onClickProductSmall(pid)
+        }
     }
 
-    override fun onProductClicked(v: View) {
-        val pid = v.productId.text.toString()
-        val action = CategoryFragmentDirections.actionFromCategoryFragmentToProductDetailFragment(pid,"0")
-        Navigation.findNavController(v).navigate(action)
+    interface ProductClickInterface {
+        fun onClickProductSmall(pid: String)
     }
 
 }

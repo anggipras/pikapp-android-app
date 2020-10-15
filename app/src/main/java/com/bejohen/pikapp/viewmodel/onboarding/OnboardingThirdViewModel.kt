@@ -31,12 +31,12 @@ class OnboardingThirdViewModel(application: Application) : BaseViewModel(applica
     }
 
     fun goToSignup(view: View) {
-        if (getOnboardingFinished()) {
-            val action = OnboardingThirdDirections.actionToSignupFragment()
-            Navigation.findNavController(view).navigate(action)
-        } else {
+//        if (getOnboardingFinished()) {
+//            val action = OnboardingThirdDirections.actionToSignupFragment()
+//            Navigation.findNavController(view).navigate(action)
+//        } else {
             val action = OnboardingViewPagerFragmentDirections.actionToSignupOnboardingFragment()
             Navigation.findNavController(view).navigate(action)
-        }
+//        }
     }
 }

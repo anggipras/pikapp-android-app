@@ -62,8 +62,5 @@
         <argument
             android:name="pid"
             app:argType="string" />
-        <argument
-            android:name="distance"
-            app:argType="string" />
     </fragment>
 </navigation>

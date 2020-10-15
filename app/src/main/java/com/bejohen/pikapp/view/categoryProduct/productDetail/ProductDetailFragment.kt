@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,17 +21,12 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
 
     private lateinit var viewModel: ProductDetailViewModel
     private lateinit var dataBinding: FragmentProductDetailBinding
-    var pid = ""
+    private var pid = ""
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
         dataBinding.listener = this
         viewModel = ViewModelProviders.of(this).get(ProductDetailViewModel::class.java)
-        // Inflate the layout for this fragment
         return dataBinding.root
     }
 
@@ -49,13 +45,46 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
             productDetail?.let {
                 dataBinding.productDetail = productDetail
                 dataBinding.toolbar.setTitle(productDetail.productName)
-                dataBinding.textProductPrice.text = rupiahFormat(productDetail.productPrice!!)
+                dataBinding.textProductPrice.text = rupiahFormat(productDetail.productPrice!!.toLong())
             }
+        })
+        viewModel.cart.observe(this, Observer { cart ->
+            setButtonCart(cart)
         })
     }
 
     override fun onProductClicked(v: View) {
         val mid = dataBinding.listProductMerchantID.text.toString()
-        viewModel.onAddProduct(pid, mid, context as HomeActivity)
+        val pName = dataBinding.listProductName.text.toString()
+        val pImage = dataBinding.listProductProductImage.text.toString()
+        val pPrice = dataBinding.listProductProductPrice.text.toString()
+        viewModel.onAddProduct(pid, mid, pName, pImage, pPrice, context as HomeActivity)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCart()
+        val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        buttonFloat?.let { it ->
+            if (it.isVisible) {
+                val param = it.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,10,200)
+                it.layoutParams = param
+            }
+        }
+    }
+
+    private fun setButtonCart(status: Boolean) {
+        val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        buttonFloat?.let {
+            if(status) {
+                buttonFloat.visibility = View.VISIBLE
+                val param = it.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,10,200)
+                it.layoutParams = param
+            } else {
+                buttonFloat.visibility = View.GONE
+            }
+        }
     }
 }

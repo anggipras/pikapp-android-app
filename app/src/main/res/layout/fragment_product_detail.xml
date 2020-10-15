@@ -38,6 +38,13 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/listProductMerchantID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(productDetail.merchantID)}"
+                        android:visibility="gone" />
+
+                    <TextView
                         android:id="@+id/listProductID"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -45,10 +52,24 @@
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/listProductMerchantID"
+                        android:id="@+id/listProductName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(productDetail.merchantID)}"
+                        android:text="@{String.valueOf(productDetail.productName)}"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/listProductProductImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(productDetail.productPicture[0])}"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/listProductProductPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(productDetail.productPrice)}"
                         android:visibility="gone" />
 
                     <ImageView

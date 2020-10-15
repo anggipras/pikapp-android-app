@@ -3,12 +3,14 @@ package com.bejohen.pikapp.models.network
 import com.bejohen.pikapp.models.model.*
 import com.bejohen.pikapp.models.model.MerchantListResponse
 import io.reactivex.Single
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface PikappApi {
 
     // AUTH
+
     @POST("auth/login")
     fun loginUser(
         @Header("x-request-id") uuid: String,
@@ -105,6 +107,8 @@ interface PikappApi {
 
 
     // STORE
+
+
     @GET("merchant/v1/product-list/")
     fun getStoreProductList(
         @Header("x-request-id") uuid: String,
@@ -112,9 +116,21 @@ interface PikappApi {
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
-        @Header("mid") mid: String
+        @Header("mid") mid: String,
+        @Header("status") status: String
     ): Single<StoreProductListResponse>
 
+    @GET("merchant/v1/product-detail/")
+    fun getStoreProductDetail(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("pid") mid: String
+    ): Single<StoreProductDetailResponse>
+
+    @Multipart
     @POST("merchant/v1/product-action/")
     fun postStoreProductAdd(
         @Header("x-request-id") uuid: String,
@@ -123,17 +139,41 @@ interface PikappApi {
         @Header("x-signature") signature: String,
         @Header("token") token: String,
         @Header("mid") mid: String,
-        @Part("file_01", encoding = "8-bit") file01: RequestBody,
-        @Part("file_02", encoding = "8-bit") file02: RequestBody,
-        @Part("file_03", encoding = "8-bit") file03: RequestBody,
-        @Part("product_name") productName: String,
-        @Part("price") price: String,
-        @Part("condition") condition: String,
-        @Part("action") action: String,
-        @Part("status") status: String,
-        @Part("product_qty") product_qty: String
+        @Part file01: MultipartBody.Part,
+        @Part file02: MultipartBody.Part,
+        @Part file03: MultipartBody.Part,
+        @Part("product_name") productName: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("condition") condition: RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("product_qty") productQty: RequestBody,
+        @Part("product_desc") productDesc: RequestBody,
+        @Part("action") action: RequestBody
     ): Single<StoreProductActionResponse>
 
+    @Multipart
+    @POST("merchant/v1/product-action/")
+    fun postStoreProductEdit(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Header("pid") pid: String,
+        @Part file01: MultipartBody.Part?,
+        @Part file02: MultipartBody.Part?,
+        @Part file03: MultipartBody.Part?,
+        @Part("product_name") productName: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("condition") condition: RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("product_qty") product_qty: RequestBody,
+        @Part("product_desc") productDesc: RequestBody,
+        @Part("action") action: RequestBody
+    ): Single<StoreProductActionResponse>
+
+    @Multipart
     @POST("merchant/v1/product-action/")
     fun postStoreProductAction(
         @Header("x-request-id") uuid: String,
@@ -143,14 +183,28 @@ interface PikappApi {
         @Header("token") token: String,
         @Header("mid") mid: String,
         @Header("pid") pid: String,
-        @Part("file_01", encoding = "8-bit") file01: RequestBody,
-        @Part("file_02", encoding = "8-bit") file02: RequestBody,
-        @Part("file_03", encoding = "8-bit") file03: RequestBody,
-        @Part("product_name") productName: String,
-        @Part("price") price: String,
-        @Part("condition") condition: String,
-        @Part("action") action: String,
-        @Part("status") status: String,
-        @Part("product_qty") product_qty: String
+        @Part("action") action: RequestBody
     ): Single<StoreProductActionResponse>
+
+
+    // TRANSACTIONS
+
+    @POST("txn/v1/cart-post/")
+    fun addToCart(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body addToCartModel: AddToCartModel
+    ): Single<AddToCartResponse>
+
+    @GET("txn/v1/cart-list/")
+    fun getCartList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String
+    ): Single<CartListResponse>
 }

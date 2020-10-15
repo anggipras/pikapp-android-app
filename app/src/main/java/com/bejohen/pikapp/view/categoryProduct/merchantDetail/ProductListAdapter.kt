@@ -14,10 +14,7 @@ import com.bejohen.pikapp.util.rupiahFormat
 import com.bejohen.pikapp.view.categoryProduct.ProductListClickListener
 import kotlinx.android.synthetic.main.item_merchant_product_list.view.*
 
-class ProductListAdapter(
-    val merchantProductList: ArrayList<ProductList>,
-    val productAddInterface: ProductAddInterface
-) :
+class ProductListAdapter(var merchantProductList: ArrayList<ProductList>, val productAddInterface: ProductAddInterface) :
     RecyclerView.Adapter<ProductListAdapter.MerchantProductListViewHolder>(),
     ProductListClickListener {
 
@@ -44,9 +41,6 @@ class ProductListAdapter(
             false
         )
 
-        dataBinding.buttonAdd.setOnClickListener {
-
-        }
         return MerchantProductListViewHolder(dataBinding)
     }
 
@@ -55,24 +49,26 @@ class ProductListAdapter(
     override fun onBindViewHolder(holder: MerchantProductListViewHolder, position: Int) {
         dataBinding.productList = merchantProductList[position]
         dataBinding.listener = this
-        dataBinding.textPrice.text = rupiahFormat(merchantProductList[position].productPrice!!)
+        dataBinding.textPrice.text = rupiahFormat(merchantProductList[position].productPrice!!.toLong())
         dataBinding.buttonAdd.setOnClickListener {
-            val pid = merchantProductList[position].productID
             val mid = merchantProductList[position].merchantID
+            val pid = merchantProductList[position].productID
+            val pName = merchantProductList[position].productName
+            val pImage = merchantProductList[position].productPicture?.get(0)
+            val pPrice = merchantProductList[position].productPrice.toString()
             Log.d("Debug", "product id add : " + pid)
-            productAddInterface.onAdd(mid!!, pid!!)
+            productAddInterface.onAdd(mid!!, pid!!, pName!!, pImage!!, pPrice)
         }
     }
 
     override fun onProductListClicked(v: View) {
         val pid = v.listProductProductID.text.toString()
-        val mid = v.listProductMerchantID.text.toString()
-        val action = MerchantDetailFragmentDirections.actionToProductDetailFragment(pid, "0")
+        val action = MerchantDetailFragmentDirections.actionToProductDetailFragment(pid)
         Navigation.findNavController(v).navigate(action)
     }
 
     interface ProductAddInterface {
-        fun onAdd(mid: String, pid: String)
+        fun onAdd(mid: String, pid: String, pName: String, pImage: String, pPrice: String)
     }
 
 }

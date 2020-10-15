@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,17 +17,15 @@ import com.bejohen.pikapp.view.HomeActivity
 import com.bejohen.pikapp.viewmodel.categoryProduct.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_category.*
 
-class CategoryFragment : Fragment() {
+class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface {
 
     private lateinit var viewModel: CategoryViewModel
     private var categoryId: Long = 0
     private lateinit var dataBinding: FragmentCategoryBinding
-    private val merchantListAdapter = MerchantListAdapter(arrayListOf())
+    var isPulled = false
+    private val merchantListAdapter = MerchantListAdapter(arrayListOf(), this)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         dataBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
@@ -46,14 +45,6 @@ class CategoryFragment : Fragment() {
             adapter = merchantListAdapter
         }
 
-        dataBinding.categoryRefreshLayout.setOnRefreshListener {
-            dataBinding.merchantList.visibility = View.GONE
-//            dataBinding.homeBannerSliderLoadingShimmerView.visibility = View.VISIBLE
-//            dataBinding.homeCategoryLoadingShimmerView.visibility = View.VISIBLE
-
-            viewModel.fetch(categoryId)
-            dataBinding.categoryRefreshLayout.isRefreshing = false
-        }
         viewModel.getLocation(activity as HomeActivity)
 
         viewModel.fetch(categoryId)
@@ -72,12 +63,36 @@ class CategoryFragment : Fragment() {
             merchantList.visibility = View.VISIBLE
             category?.let {
                 dataBinding.category = category
-                viewModel.getMerchant()
+                if(!isPulled) viewModel.getMerchant()
             }
         })
 
         viewModel.merchantResponse.observe(this, Observer { merchant ->
-            merchantListAdapter.updateMerchantList(merchant)
+            if (!isPulled) {
+                merchantListAdapter.updateMerchantList(merchant)
+                isPulled = true
+            }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCart()
+        val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        buttonFloat?.let { it ->
+            if (it.isVisible) {
+                val param = it.layoutParams as ViewGroup.MarginLayoutParams
+                param.setMargins(0,0,10,30)
+                it.layoutParams = param
+            }
+        }
+    }
+
+    override fun onClickMerchant(mid: String) {
+        viewModel.goToMerchantDetail(mid, dataBinding.root)
+    }
+
+    override fun onClickProductSmall(pid: String) {
+        viewModel.goToProductDetail(pid, dataBinding.root)
     }
 }

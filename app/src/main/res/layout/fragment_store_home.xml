@@ -32,6 +32,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:alpha="0.3"
                     android:imageUrl="@{merchantDetail.merchantPict}"
                     android:scaleType="fitXY" />
 
@@ -197,7 +198,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_weight="1"
-                                android:src="@drawable/ic_home" />
+                                android:src="@drawable/ic_store_packed" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -221,7 +222,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_weight="1"
-                                android:src="@drawable/ic_home" />
+                                android:src="@drawable/ic_store_cancelled" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -245,7 +246,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_weight="1"
-                                android:src="@drawable/ic_home" />
+                                android:src="@drawable/ic_store_return" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -268,7 +269,7 @@
                                 android:id="@+id/imageView8"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:src="@drawable/ic_home" />
+                                android:src="@drawable/ic_store_rating" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -305,7 +306,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:scaleType="center"
-                        android:src="@drawable/ic_person"
+                        android:src="@drawable/ic_store_myproduct"
                         app:tint="@color/colorAccent" />
 
                     <LinearLayout

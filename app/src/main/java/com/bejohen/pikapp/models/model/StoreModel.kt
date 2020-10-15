@@ -1,5 +1,6 @@
 package com.bejohen.pikapp.models.model
 
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
 data class StoreProductListResponse(
@@ -12,7 +13,7 @@ data class StoreProductListResponse(
 
 data class StoreProductList(
     @SerializedName("product_id")
-    var productDd: String?,
+    var productId: String?,
     @SerializedName("product_name")
     val productName: String?,
     @SerializedName("pict_01")
@@ -21,7 +22,7 @@ data class StoreProductList(
     val productPicture2: String?,
     @SerializedName("pict_03")
     val productPicture3: String?,
-    @SerializedName("product_price")
+    @SerializedName("price")
     val productPrice: Long?,
     @SerializedName("on_off")
     val onOff: Boolean?,
@@ -45,4 +46,16 @@ data class StoreProductActionResponse(
     @SerializedName("err_message")
     override val errMessage: String?
 ): Response
+
+data class StoreProductDetailResponse(
+    @SerializedName("err_code")
+    val errCode: String?,
+    @SerializedName("err_message")
+    val errMessage: String?,
+    val results: StoreProductList?
+)
+
+data class StoreImage(
+    val imageUri: Uri?
+)
 

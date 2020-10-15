@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import com.bejohen.pikapp.R
 import com.bejohen.pikapp.databinding.FragmentStoreMyProductBinding
 import com.bejohen.pikapp.view.home.HomeViewPagerAdapter
+import com.bejohen.pikapp.view.store.StoreHomeFragmentDirections
 import com.google.android.material.tabs.TabLayoutMediator
 
 class StoreMyProductFragment : Fragment() {
@@ -45,9 +47,14 @@ class StoreMyProductFragment : Fragment() {
             if (position == 0) {
                 tab.text = "Tersedia"
             } else if (position == 1) {
-                tab.text = "Habis"
+                tab.text = "Tidak Tersedia"
             }
             dataBinding.myProductViewPager.setCurrentItem(tab.position, true)
         }.attach()
+
+        dataBinding.buttonToAddProduct.setOnClickListener {
+            val action = StoreMyProductFragmentDirections.actionToStoreMyProductFormFragment(true, "")
+            Navigation.findNavController(view).navigate(action)
+        }
     }
 }
