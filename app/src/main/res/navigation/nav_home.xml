@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.bejohen.pikapp.view.home.HomeFragment"
+        android:name="com.tsab.pikapp.view.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.bejohen.pikapp.view.categoryProduct.CategoryFragment"
+        android:name="com.tsab.pikapp.view.categoryProduct.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category">
         <argument
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/merchantDetailFragment"
-        android:name="com.bejohen.pikapp.view.categoryProduct.merchantDetail.MerchantDetailFragment"
+        android:name="com.tsab.pikapp.view.categoryProduct.merchantDetail.MerchantDetailFragment"
         android:label="fragment_merchant_detail"
         tools:layout="@layout/fragment_merchant_detail">
         <argument
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
-        android:name="com.bejohen.pikapp.view.categoryProduct.productDetail.ProductDetailFragment"
+        android:name="com.tsab.pikapp.view.categoryProduct.productDetail.ProductDetailFragment"
         android:label="fragment_product_detail"
         tools:layout="@layout/fragment_product_detail">
         <argument

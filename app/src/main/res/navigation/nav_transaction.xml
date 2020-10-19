@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/txnCartFragment"
-        android:name="com.bejohen.pikapp.view.transaction.TxnCartFragment"
+        android:name="com.tsab.pikapp.view.transaction.TxnCartFragment"
         android:label="fragment_txn_cart"
         tools:layout="@layout/fragment_txn_cart" />
 </navigation>

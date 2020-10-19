@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/userExclusiveFormFragment"
-        android:name="com.bejohen.pikapp.view.userExclusive.UserExclusiveFormFragment"
+        android:name="com.tsab.pikapp.view.userExclusive.UserExclusiveFormFragment"
         android:label="UserExclusiveFormFragment" >
         <action
             android:id="@+id/actionToUserExclusiveHomeFragment"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/userExclusiveHomeFragment"
-        android:name="com.bejohen.pikapp.view.userExclusive.UserExclusiveHomeFragment"
+        android:name="com.tsab.pikapp.view.userExclusive.UserExclusiveHomeFragment"
         android:label="fragment_user_exclusive_home"
         tools:layout="@layout/fragment_user_exclusive_home" />
 </navigation>

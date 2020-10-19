@@ -121,7 +121,7 @@
 
             <fragment
                 android:id="@+id/viewpager2"
-                android:name="com.bejohen.pikapp.view.home.HomeViewPagerFragment"
+                android:name="com.tsab.pikapp.view.home.HomeViewPagerFragment"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="visible"

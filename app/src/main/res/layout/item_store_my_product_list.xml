@@ -6,7 +6,7 @@
     <data>
         <variable
             name="productItem"
-            type="com.bejohen.pikapp.models.model.StoreProductList" />
+            type="com.tsab.pikapp.models.model.StoreProductList" />
     </data>
 
     <LinearLayout

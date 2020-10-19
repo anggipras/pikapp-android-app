@@ -5,10 +5,10 @@
     <data>
         <variable
             name="categoryItem"
-            type="com.bejohen.pikapp.models.model.ItemHomeCategory" />
+            type="com.tsab.pikapp.models.model.ItemHomeCategory" />
         <variable
             name="Listener"
-            type="com.bejohen.pikapp.view.home.HomeCategoryClickListener" />
+            type="com.tsab.pikapp.view.home.HomeCategoryClickListener" />
     </data>
 
     <LinearLayout

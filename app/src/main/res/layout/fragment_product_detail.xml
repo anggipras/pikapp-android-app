@@ -6,10 +6,10 @@
     <data>
         <variable
             name="productDetail"
-            type="com.bejohen.pikapp.models.model.ProductDetail" />
+            type="com.tsab.pikapp.models.model.ProductDetail" />
         <variable
             name="Listener"
-            type="com.bejohen.pikapp.view.categoryProduct.ProductClickListener" />
+            type="com.tsab.pikapp.view.categoryProduct.ProductClickListener" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

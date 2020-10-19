@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.bejohen.pikapp.view.onboarding.OnboardingViewPagerFragment"
+        android:name="com.tsab.pikapp.view.onboarding.OnboardingViewPagerFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_onboarding_view_pager">
         <action
@@ -23,12 +23,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginOnboardingFragment"
-        android:name="com.bejohen.pikapp.view.onboarding.login.LoginOnboardingFragment"
+        android:name="com.tsab.pikapp.view.onboarding.login.LoginOnboardingFragment"
         android:label="fragment_login_onboarding"
         tools:layout="@layout/fragment_login_onboarding" />
     <fragment
         android:id="@+id/signupOnboardingFragment"
-        android:name="com.bejohen.pikapp.view.onboarding.login.SignupOnboardingFragment"
+        android:name="com.tsab.pikapp.view.onboarding.login.SignupOnboardingFragment"
         android:label="fragment_signup_onboarding"
         tools:layout="@layout/fragment_signup_onboarding">
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupOnboardingSuccessFragment"
-        android:name="com.bejohen.pikapp.view.onboarding.login.SignupOnboardingSuccessFragment"
+        android:name="com.tsab.pikapp.view.onboarding.login.SignupOnboardingSuccessFragment"
         android:label="fragment_signup_onboarding_success"
         tools:layout="@layout/fragment_signup_onboarding_success">
         <action

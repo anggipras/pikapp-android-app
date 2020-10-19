@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/storeWelcomeFragment"
-        android:name="com.bejohen.pikapp.view.store.StoreWelcomeFragment"
+        android:name="com.tsab.pikapp.view.store.StoreWelcomeFragment"
         android:label="fragment_store_welcome"
         tools:layout="@layout/fragment_store_welcome">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/storeHomeFragment"
-        android:name="com.bejohen.pikapp.view.store.StoreHomeFragment"
+        android:name="com.tsab.pikapp.view.store.StoreHomeFragment"
         android:label="StoreHomeFragment">
         <action
             android:id="@+id/actionToStoreMyProductFragment"
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/storeMyProductFragment"
-        android:name="com.bejohen.pikapp.view.store.myProduct.StoreMyProductFragment"
+        android:name="com.tsab.pikapp.view.store.myProduct.StoreMyProductFragment"
         android:label="StoreMyProductFragment">
         <action
             android:id="@+id/actionToStoreMyProductFormFragment"
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/storeMyProductFormFragment"
-        android:name="com.bejohen.pikapp.view.store.myProduct.StoreMyProductFormFragment"
+        android:name="com.tsab.pikapp.view.store.myProduct.StoreMyProductFormFragment"
         android:label="fragment_store_my_product_form"
         tools:layout="@layout/fragment_store_my_product_form" >
         <argument

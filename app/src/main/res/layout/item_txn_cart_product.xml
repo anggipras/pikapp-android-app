@@ -5,7 +5,7 @@
     <data>
         <variable
             name="cartList"
-            type="com.bejohen.pikapp.models.model.CartModel" />
+            type="com.tsab.pikapp.models.model.CartModel" />
     </data>
 
     <LinearLayout

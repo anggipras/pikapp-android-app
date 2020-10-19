@@ -5,11 +5,11 @@
     <data>
         <variable
             name="productList"
-            type="com.bejohen.pikapp.models.model.ProductList" />
+            type="com.tsab.pikapp.models.model.ProductList" />
 
         <variable
             name="Listener"
-            type="com.bejohen.pikapp.view.categoryProduct.ProductListClickListener" />
+            type="com.tsab.pikapp.view.categoryProduct.ProductListClickListener" />
     </data>
 
     <LinearLayout

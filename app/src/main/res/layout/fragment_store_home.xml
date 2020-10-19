@@ -7,7 +7,7 @@
 
         <variable
             name="merchantDetail"
-            type="com.bejohen.pikapp.models.model.MerchantDetail" />
+            type="com.tsab.pikapp.models.model.MerchantDetail" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

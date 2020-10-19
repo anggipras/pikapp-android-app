@@ -6,7 +6,7 @@
     <data>
         <variable
             name="storeImage"
-            type="com.bejohen.pikapp.models.model.StoreImage" />
+            type="com.tsab.pikapp.models.model.StoreImage" />
     </data>
 
     <RelativeLayout

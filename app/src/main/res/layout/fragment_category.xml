@@ -7,7 +7,7 @@
 
         <variable
             name="category"
-            type="com.bejohen.pikapp.models.model.ItemHomeCategory" />
+            type="com.tsab.pikapp.models.model.ItemHomeCategory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
