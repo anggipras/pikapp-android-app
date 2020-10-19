@@ -207,4 +207,14 @@ interface PikappApi {
         @Header("x-signature") signature: String,
         @Header("token") token: String
     ): Single<CartListResponse>
+
+    @POST("txn/v1/txn-post/")
+    fun postTransaction(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body transactionModel: TransactionModel
+    ): Single<TransactionResponse>
 }

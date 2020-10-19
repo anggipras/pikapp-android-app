@@ -14,6 +14,10 @@ class CartUtil {
 
         private const val PREF_CART = "cart"
         private const val PREF_ISCARTON = "is cart"
+        private const val PREF_CARTTYPE = "cart type"
+        private const val PREF_ISNEWCART = "new cart"
+
+        private const val PREF_PAYMENTTYPE = "payment type"
 
         private var prefs: SharedPreferences? = null
 
@@ -69,4 +73,28 @@ class CartUtil {
         }
         return null
     }
+
+    fun setCartType(status: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_CARTTYPE, status)
+        }
+    }
+
+    fun getCartType() = prefs?.getString(PREF_CARTTYPE, "")
+
+    fun setCartIsNew(status: Boolean) {
+        prefs?.edit(commit = true) {
+            putBoolean(PREF_ISNEWCART, status)
+        }
+    }
+
+    fun getCartIsNew() = prefs?.getBoolean(PREF_ISNEWCART, false)
+
+    fun setPaymentType(paymentType: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_PAYMENTTYPE, paymentType)
+        }
+    }
+
+    fun getPaymentType() = prefs?.getString(PREF_PAYMENTTYPE, "WALLET_OVO")
 }

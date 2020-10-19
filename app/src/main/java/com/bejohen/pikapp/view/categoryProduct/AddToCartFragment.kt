@@ -1,6 +1,7 @@
 package com.bejohen.pikapp.view.categoryProduct
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
@@ -99,7 +100,7 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
 
         viewModel.addedToCart.observe(this, Observer {
             if(it) {
-                viewModel.createToastShort("Barang berhasil masuk ke keranjang")
+                viewModel.createToastShort((activity as HomeActivity).application, "Barang berhasil masuk ke keranjang")
                 this.dismiss()
             }
         })

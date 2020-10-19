@@ -15,6 +15,9 @@ const val PRODUCT_PRICE = "product price"
 const val LOCATION_REQUEST = 100
 const val GPS_REQUEST = 101
 
+const val SELECTED_TYPE = "selected_type"
+const val SELECTED_PAYMENT = "selected_payment"
+
 //DEEP LINK CONST
 const val DL_MERCHANTID= "deeplink merchant id"
 const val DL_TABLENO= "deeplink table no"

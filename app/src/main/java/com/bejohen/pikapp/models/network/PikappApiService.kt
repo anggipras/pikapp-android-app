@@ -121,4 +121,10 @@ class PikappApiService {
         val signature = getSignature(email, timestamp)
         return api.getCartList(getUUID(), timestamp, getClientID(), signature, token)
     }
+
+    fun postTransaction(email: String, token: String, transactionModel: TransactionModel): Single<TransactionResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        return api.postTransaction(getUUID(), timestamp, getClientID(), signature, token, transactionModel)
+    }
 }

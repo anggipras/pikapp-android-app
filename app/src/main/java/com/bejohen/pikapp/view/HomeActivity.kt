@@ -47,7 +47,7 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.cartError.observe(this, Observer {
             if(it.errCode == "EC0021") {
-                viewModel.createToastShort("Kamu login di perangkat lain. Silakan login kembali, CUK")
+                viewModel.createToastShort(application, "Kamu login di perangkat lain. Silakan login kembali, CUK")
                 viewModel.clearSession(this)
             }
         })

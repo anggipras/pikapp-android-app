@@ -71,7 +71,7 @@ class ProductDetailViewModel(application: Application) : BaseViewModel(applicati
                         }
 
                         productDetailFail(errorResponse)
-                        createToastShort("${errorResponse.message} ${errorResponse.path}")
+//                        createToastShort("${errorResponse.message} ${errorResponse.path}")
                         Log.d("Debug", "error Product Detail : ${errorResponse.message} ${errorResponse.path}")
                     }
                 })

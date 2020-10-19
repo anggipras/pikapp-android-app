@@ -27,8 +27,8 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
         job.cancel()
     }
 
-    fun createToastShort(m: String) {
-        Toast.makeText(getApplication(), m, Toast.LENGTH_SHORT).show()
+    fun createToastShort(application: Application, m: String) {
+        Toast.makeText(application, m, Toast.LENGTH_SHORT).show()
     }
 
     fun createToastLong(m: String) {

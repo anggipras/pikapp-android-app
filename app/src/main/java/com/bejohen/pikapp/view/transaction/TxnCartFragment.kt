@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -44,36 +46,87 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
             layoutManager = LinearLayoutManager(context)
             adapter = txnCartProductListAdapter
         }
+        dataBinding.buttonPay.isEnabled = false
         viewModel.getCart()
         viewModel.getMerchant()
         viewModel.checkType()
+        viewModel.getPaymentType()
+
+        dataBinding.selectTypeContainer.setOnClickListener {
+            viewModel.goToSelectType(activity as TransactionActivity)
+        }
+
+        dataBinding.paymentContainer.setOnClickListener {
+            viewModel.goToPaymentType(activity as TransactionActivity)
+        }
+
+        dataBinding.buttonPay.setOnClickListener {
+            viewModel.doPay(dataBinding.txtTotalPrice.toString())
+        }
         observeViewModel()
     }
 
     @SuppressLint("FragmentLiveDataObserve")
     fun observeViewModel() {
-        viewModel.tableNumber.observe(this, Observer {
-            if(it < 0) {
-                //default
-            } else if (it == 0) {
+        viewModel.loading.observe(this, Observer {
+            if (it) {
+                dataBinding.progressBar.visibility = View.VISIBLE
+                dataBinding.buttonPay.isEnabled = false
+            } else {
+                dataBinding.progressBar.visibility = View.GONE
+                dataBinding.buttonPay.isEnabled = true
+            }
+
+        })
+
+        viewModel.cartType.observe(this, Observer {
+            if (it == "TAKE_AWAY") {
                 //take away
                 dataBinding.apply {
-                    imageSelectedType.setImageResource(R.drawable.bghome)
-                    textSelectedType.text = "Take Away"
+                    imageSelectedType.setImageResource(R.drawable.ic_takeaway)
+                    textSelectedType.text = "Bungkus/Take Away"
+                    buttonPay.background = ContextCompat.getDrawable(activity as TransactionActivity, R.drawable.button_yellow)
+                    buttonPay.isEnabled = true
+                    dataBinding.buttonPay.isClickable = true
                 }
-            } else if(it > 0) {
+            } else if(it == "DINE_IN") {
                 //dine in
                 dataBinding.apply {
-                    imageSelectedType.setImageResource(R.drawable.bghome)
-                    textSelectedType.text = "Dine"
+                    imageSelectedType.setImageResource(R.drawable.ic_dinein)
+                    textSelectedType.text = "Makan di tempat"
+                    buttonPay.background = ContextCompat.getDrawable(activity as TransactionActivity, R.drawable.button_yellow)
+                    buttonPay.isEnabled = true
+                    dataBinding.buttonPay.isClickable = true
+
+                }
+            } else if(it == ""){
+                dataBinding.buttonPay.isEnabled = false
+                dataBinding.buttonPay.isClickable = false
+                dataBinding.buttonPay.background = ContextCompat.getDrawable(activity as TransactionActivity, R.drawable.button_gray)
+            }
+        })
+
+        viewModel.paymentType.observe(this, Observer {
+            if (it == "WALLET_OVO") {
+                //take away
+                dataBinding.apply {
+                    imagePaymentType.setImageResource(R.drawable.ic_ovo)
+                    textPaymentType.text = "OVO"
+                }
+            } else if(it == "WALLET_DANA") {
+                dataBinding.apply {
+                    imagePaymentType.setImageResource(R.drawable.ic_dana)
+                    textPaymentType.text = "DANA"
                 }
             }
         })
+
         viewModel.merchantDetailResponse.observe(this, Observer {
             dataBinding.merchantName.text = it.merchantName
             dataBinding.merchantAddress.text = it.merchantAddress
             dataBinding.merchantDistance.text = it.merchantDistance
         })
+
         viewModel.cartList.observe(this, Observer { cartList ->
             if(cartList.isNotEmpty()) {
                 txnCartProductListAdapter.updateProductList(cartList)
@@ -85,6 +138,10 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
                 dataBinding.textError.text = "Pesanan kamu kosong, silakan kembali"
             }
         })
+
+        viewModel.transactionSucccess.observe(this, Observer {
+                //TODO
+        })
     }
 
     private fun setTotalPrice(cartList: List<CartModel>) {
@@ -94,6 +151,7 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
                 totalPrice += it
             }
         }
+        dataBinding.txtTotalPrice.text = totalPrice.toString()
         dataBinding.textTotalPrice.text = rupiahFormat(totalPrice.toLong())
     }
 

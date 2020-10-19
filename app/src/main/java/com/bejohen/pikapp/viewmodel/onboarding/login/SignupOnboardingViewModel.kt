@@ -194,7 +194,7 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
                                 )
                         }
                         loginFail(errorResponse)
-                        createToastShort(errorResponse.errMessage!!)
+//                        createToastShort(errorResponse.errMessage!!)
                     }
                 })
         )

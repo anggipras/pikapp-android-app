@@ -103,7 +103,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                         }
 
                         merchantFail(errorResponse)
-                        createToastShort("${errorResponse.message} ${errorResponse.path}")
+//                        createToastShort(getApplication(), "${errorResponse.message} ${errorResponse.path}")
                         Log.d(
                             "Debug",
                             "error category : ${errorResponse.message} ${errorResponse.path}"

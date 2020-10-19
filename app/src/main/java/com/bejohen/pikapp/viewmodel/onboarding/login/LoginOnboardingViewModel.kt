@@ -25,7 +25,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
-
 class LoginOnboardingViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
@@ -101,7 +100,8 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
                                 )
                         }
                         loginFail(errorResponse)
-                        createToastShort(errorResponse.errMessage!!)
+                        createToastShort(getApplication(), "error: ${errorResponse.errMessage}")
+//                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
                     }
                 })
         )

@@ -29,8 +29,7 @@ class ProfileFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         viewModel = ViewModelProviders.of(this).get(HomeProfileViewModel::class.java)
         return dataBinding.root
     }

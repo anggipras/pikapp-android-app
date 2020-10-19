@@ -111,6 +111,8 @@ class AddToCartViewModel(application: Application) : BaseViewModel(application) 
         carts.clear()
         carts.add(newCart)
         cartUtil.setCart(carts)
+        cartUtil.setCartIsNew(true)
+        cartUtil.setCartType("")
         addedToCart.value = true
     }
 

@@ -37,7 +37,6 @@ class HomeActivityViewModel(application: Application): BaseViewModel(application
 
     fun resetCart() {
         cartUtil.setCartEmpty()
-        prefHelper.deleteStoredDeepLink()
     }
 
     fun getCartStatus() {

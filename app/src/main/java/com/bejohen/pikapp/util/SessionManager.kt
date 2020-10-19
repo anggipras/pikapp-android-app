@@ -35,7 +35,7 @@ class SessionManager {
         }
     }
 
-    private fun saveUserLogin(boolean: Boolean) {
+    fun saveUserLogin(boolean: Boolean) {
         prefs?.edit(commit = true) {
             putBoolean(PREF_ISLOGGINGIN, boolean)
         }
