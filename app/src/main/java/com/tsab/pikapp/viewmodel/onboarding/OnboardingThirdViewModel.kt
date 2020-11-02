@@ -21,13 +21,8 @@ class OnboardingThirdViewModel(application: Application) : BaseViewModel(applica
     }
 
     fun goToLogin(view: View) {
-        if (getOnboardingFinished()) {
-            val action = OnboardingThirdDirections.actionToLoginFragment()
-            Navigation.findNavController(view).navigate(action)
-        } else {
-            val action = OnboardingViewPagerFragmentDirections.actionToLoginOnboardingFragment()
-            Navigation.findNavController(view).navigate(action)
-        }
+        val action = OnboardingViewPagerFragmentDirections.actionToLoginOnboardingFragment()
+        Navigation.findNavController(view).navigate(action)
     }
 
     fun goToSignup(view: View) {

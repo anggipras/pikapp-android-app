@@ -32,12 +32,22 @@ class HomeCategoryListAdapter(val categoryItemlist: ArrayList<ItemHomeCategory>)
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.view.categoryItem = categoryItemlist[position]
         holder.view.listener = this
+        val par: Long = 1
+        if(categoryItemlist[position].categoryId != par) {
+            holder.view.categoryImage.setColorFilter(R.color.colorGrey)
+            holder.view.categoryImage.alpha = 0.4f
+        }
     }
 
     override fun onCategoryClicked(v: View) {
         val uuid = v.HomeCategoryUuid.text.toString().toLong()
-        val action = HomeFragmentDirections.actionToCategoryFragment(uuid)
-        Navigation.findNavController(v).navigate(action)
+        val par: Long = 1
+        if(uuid == par) {
+            val action = HomeFragmentDirections.actionToCategoryFragment(uuid)
+            Navigation.findNavController(v).navigate(action)
+        } else {
+
+        }
     }
 
 }

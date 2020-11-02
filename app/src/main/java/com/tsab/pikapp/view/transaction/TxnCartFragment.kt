@@ -57,7 +57,7 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
         }
 
         dataBinding.buttonPay.setOnClickListener {
-            viewModel.doPay(dataBinding.txtTotalPrice.toString())
+            viewModel.doPay(dataBinding.txtTotalPrice.text.toString())
         }
         observeViewModel()
     }
@@ -136,7 +136,7 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
         })
 
         viewModel.transactionSucccess.observe(this, Observer {
-                //TODO
+                viewModel.goToPaymentPending(dataBinding.root)
         })
     }
 

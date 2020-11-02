@@ -64,3 +64,9 @@ data class DeepLinkModel(
     val mid: String?,
     val tableNo: String?
 )
+
+data class NotificationModel(
+    val isMerchant: Boolean?,
+    val transactionId: String?,
+    val tableNo: String?
+)

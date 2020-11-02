@@ -44,7 +44,7 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
         viewModel.productDetailResponse.observe(this, Observer { productDetail ->
             productDetail?.let {
                 dataBinding.productDetail = productDetail
-                dataBinding.toolbar.setTitle(productDetail.productName)
+                dataBinding.toolbar.setTitle("${productDetail.productName} | ${productDetail.merchantName}")
                 dataBinding.textProductPrice.text = rupiahFormat(productDetail.productPrice!!.toLong())
             }
         })

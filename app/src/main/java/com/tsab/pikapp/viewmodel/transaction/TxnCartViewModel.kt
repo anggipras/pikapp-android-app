@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -14,6 +16,8 @@ import com.tsab.pikapp.view.transaction.TxnCartChoosePaymentTypeFragment
 import com.tsab.pikapp.view.transaction.TxnCartChooseTypeFragment
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
+import com.tsab.pikapp.view.categoryProduct.CategoryFragmentDirections
+import com.tsab.pikapp.view.transaction.TxnCartFragmentDirections
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -229,7 +233,22 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
                         t.results?.let { it1 -> transactionSuccess(it1) }
                     }
                     override fun onError(e: Throwable) {
+                        var errorResponse: ErrorResponse
+                        try {
+                            Log.d("Debug", "error merchant detail : " + e)
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson(
+                                    body,
+                                    ErrorResponse::class.java
+                                )
+                        } catch (err: Throwable) {
+                            errorResponse = ErrorResponse("503", "Unavailable")
+                        }
 
+                        transactionFail(errorResponse)
+                        Log.d("Debug", "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
                     }
                 })
         )
@@ -241,6 +260,8 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
         for(cart in tmpCart) {
             postCart.add(CartTxnModel(cart.productID, cart.notes, cart.qty))
         }
+
+        Log.d("Debug", "isi post cart : $postCart")
 
         return TransactionModel(merchantID = tmpCart[0].merchantID, totalPrices = totalPrice, paymentWith = cartUtil.getPaymentType(), bizType = cartUtil.getCartType(), tableNo = tableNo.toString(), products = postCart)
     }
@@ -255,5 +276,15 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
             transactionUtil.setTransactionActive(txnList)
             transactionSucccess.value = transactionResponseDetails[0]
         }
+    }
+
+    fun goToPaymentPending(view: View) {
+        cartUtil.setCartEmpty()
+        val action = TxnCartFragmentDirections.actionToTxnPaymentPendingFragment()
+        Navigation.findNavController(view).navigate(action)
+    }
+
+    private fun transactionFail(err: ErrorResponse) {
+
     }
 }

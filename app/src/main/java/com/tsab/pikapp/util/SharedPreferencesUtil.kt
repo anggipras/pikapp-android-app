@@ -2,11 +2,11 @@ package com.tsab.pikapp.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.tsab.pikapp.models.model.DeepLinkModel
-import com.tsab.pikapp.models.model.LatestLocation
 import com.google.gson.Gson
+import com.tsab.pikapp.models.model.*
 
 class SharedPreferencesUtil {
 
@@ -25,6 +25,16 @@ class SharedPreferencesUtil {
         private const val LATITUDE = "latitude"
 
         private const val DEEPLINK = "deeplink"
+
+        private const val PREF_FCMTOKEN = "fcm token"
+
+        private const val PREF_NOTIFICATION_DATA = "notification data"
+
+        private const val PREF_ORDER_LIST_TAB_STATUS = "tab status order list"
+
+        private const val PREF_ORDER_LIST = "order list customer"
+
+        private const val PREF_STORE_ORDER_LIST = "order list merchant"
 
         private var prefs: SharedPreferences? = null
 
@@ -138,6 +148,109 @@ class SharedPreferencesUtil {
     fun deleteStoredDeepLink() {
         prefs?.edit(commit = true) {
             putString(DEEPLINK, "")
+        }
+    }
+
+    fun setFcmToken(token: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_FCMTOKEN, token)
+        }
+    }
+
+    fun getFcmToken() = prefs?.getString(PREF_FCMTOKEN, "")
+
+    fun setNotificationDetail(notif: NotificationModel) {
+        val json = Gson().toJson(notif)
+        Log.d("Debug", "notif json : $json")
+        prefs?.edit(commit = true) {
+            putString(PREF_NOTIFICATION_DATA, json)
+        }
+    }
+
+    fun getNotificationDetail(): NotificationModel? {
+        val gson = Gson()
+        val json: String? = prefs?.getString(PREF_NOTIFICATION_DATA, "")
+        Log.d("Debug", "notif json : $json")
+        json?.let {
+            if (json.isNotEmpty()) {
+                val notificationModel = gson.fromJson(json, NotificationModel::class.java)
+                return notificationModel
+            }
+        }
+        return null
+    }
+
+    fun deleteNotificationDetail() {
+        prefs?.edit(commit = true) {
+            putString(PREF_NOTIFICATION_DATA, "")
+        }
+    }
+
+    fun setOrderListTabSelected(status: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_ORDER_LIST_TAB_STATUS, status)
+        }
+    }
+
+    fun getOrderListTabSelected() = prefs?.getInt(PREF_ORDER_LIST_TAB_STATUS, 0)
+
+    fun resetOrderListTabSelected() {
+        prefs?.edit(commit = true) {
+            putInt(PREF_ORDER_LIST_TAB_STATUS, 0)
+        }
+    }
+
+    fun setOrderList(orderList: List<OrderList>) {
+        val json = Gson().toJson(orderList)
+        Log.d("Debug", "order list : $json")
+        prefs?.edit(commit = true) {
+            putString(PREF_ORDER_LIST, json)
+        }
+    }
+
+    fun getOrderList(): List<OrderList>? {
+        val gson = Gson()
+        val json: String? = prefs?.getString(PREF_ORDER_LIST, "")
+        Log.d("Debug", "order list get : $json")
+        json?.let {
+            if (json.isNotEmpty()) {
+                val orderList: List<OrderList> = gson.fromJson(json, Array<OrderList>::class.java).toList()
+                return orderList
+            }
+        }
+        return null
+    }
+
+    fun clearOrderList() {
+        prefs?.edit(commit = true) {
+            putString(PREF_ORDER_LIST, "")
+        }
+    }
+
+    fun setStoreOrderList(orderList: List<StoreOrderList>) {
+        val json = Gson().toJson(orderList)
+        Log.d("Debug", "order list : $json")
+        prefs?.edit(commit = true) {
+            putString(PREF_STORE_ORDER_LIST, json)
+        }
+    }
+
+    fun getStoreOrderList(): List<StoreOrderList>? {
+        val gson = Gson()
+        val json: String? = prefs?.getString(PREF_STORE_ORDER_LIST, "")
+        Log.d("Debug", "order list get : $json")
+        json?.let {
+            if (json.isNotEmpty()) {
+                val orderList: List<StoreOrderList> = gson.fromJson(json, Array<StoreOrderList>::class.java).toList()
+                return orderList
+            }
+        }
+        return null
+    }
+
+    fun clearStoreOrderList() {
+        prefs?.edit(commit = true) {
+            putString(PREF_STORE_ORDER_LIST, "")
         }
     }
 

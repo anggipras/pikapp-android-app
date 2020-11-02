@@ -19,6 +19,7 @@ class TxnCartProductListAdapter(private val cartList: ArrayList<CartModel>, priv
     }
 
     private lateinit var dataBinding: ItemTxnCartProductBinding
+
     class ProductViewHolder(var view: ItemTxnCartProductBinding) : RecyclerView.ViewHolder(view.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {

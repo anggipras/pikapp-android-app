@@ -12,19 +12,21 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreHomeBinding
+import com.tsab.pikapp.view.HomeActivity
+import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.viewmodel.store.StoreHomeViewModel
 
 class StoreHomeFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentStoreHomeBinding
     private lateinit var viewModel : StoreHomeViewModel
+    private var isFirstTime = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container, false)
         viewModel = ViewModelProviders.of(this).get(StoreHomeViewModel::class.java)
         return dataBinding.root
     }
@@ -33,7 +35,17 @@ class StoreHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getMerchantDetail()
+        viewModel.checkNotification()
 
+        dataBinding.buttonPrepare.setOnClickListener {
+            viewModel.goToOrderList(activity as StoreActivity, 0)
+        }
+        dataBinding.buttonPesananSiap.setOnClickListener {
+            viewModel.goToOrderList(activity as StoreActivity, 1)
+        }
+        dataBinding.buttonPesananSelesai.setOnClickListener {
+            viewModel.goToOrderList(activity as StoreActivity, 2)
+        }
         dataBinding.buttonMyProduct.setOnClickListener {
             val action = StoreHomeFragmentDirections.actionToStoreMyProductFragment()
             Navigation.findNavController(view).navigate(action)
@@ -48,6 +60,13 @@ class StoreHomeFragment : Fragment() {
             merchantDetail?.let {
                 dataBinding.merchantDetail = merchantDetail
                 dataBinding.toolbar.title = merchantDetail.merchantName
+            }
+        })
+
+        viewModel.notificationActive.observe(this, Observer {
+            if (it) {
+                isFirstTime = false
+                viewModel.goToOrderList(activity as StoreActivity)
             }
         })
     }

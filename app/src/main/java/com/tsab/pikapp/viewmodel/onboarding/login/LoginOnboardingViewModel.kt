@@ -75,7 +75,7 @@ class LoginOnboardingViewModel(application: Application) : BaseViewModel(applica
     private fun loginProcess(email: String, password: String) {
         loading.value = true
         disposable.add(
-            apiService.loginUser(email, password)
+            apiService.loginUser(email, password, prefHelper.getFcmToken().toString())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<LoginResponse>() {

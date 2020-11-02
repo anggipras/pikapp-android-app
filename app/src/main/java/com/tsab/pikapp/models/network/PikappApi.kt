@@ -108,7 +108,6 @@ interface PikappApi {
 
     // STORE
 
-
     @GET("merchant/v1/product-list/")
     fun getStoreProductList(
         @Header("x-request-id") uuid: String,
@@ -132,16 +131,16 @@ interface PikappApi {
 
     @Multipart
     @POST("merchant/v1/product-action/")
-    fun postStoreProductAdd(
+    fun postStoreProduct(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
         @Header("mid") mid: String,
-        @Part file01: MultipartBody.Part,
-        @Part file02: MultipartBody.Part,
-        @Part file03: MultipartBody.Part,
+        @Part file01: MultipartBody.Part?,
+        @Part file02: MultipartBody.Part?,
+        @Part file03: MultipartBody.Part?,
         @Part("product_name") productName: RequestBody,
         @Part("price") price: RequestBody,
         @Part("condition") condition: RequestBody,
@@ -153,7 +152,7 @@ interface PikappApi {
 
     @Multipart
     @POST("merchant/v1/product-action/")
-    fun postStoreProductEdit(
+    fun postStoreEditProduct(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
@@ -168,7 +167,26 @@ interface PikappApi {
         @Part("price") price: RequestBody,
         @Part("condition") condition: RequestBody,
         @Part("status") status: RequestBody,
-        @Part("product_qty") product_qty: RequestBody,
+        @Part("product_qty") productQty: RequestBody,
+        @Part("product_desc") productDesc: RequestBody,
+        @Part("action") action: RequestBody
+    ): Single<StoreProductActionResponse>
+
+    @Multipart
+    @POST("merchant/v1/product-action/")
+    fun postStoreProductWithoutImage(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Header("pid") pid: String,
+        @Part("product_name") productName: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("condition") condition: RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("product_qty") productQty: RequestBody,
         @Part("product_desc") productDesc: RequestBody,
         @Part("action") action: RequestBody
     ): Single<StoreProductActionResponse>
@@ -217,4 +235,60 @@ interface PikappApi {
         @Header("token") token: String,
         @Body transactionModel: TransactionModel
     ): Single<TransactionResponse>
+
+    @GET("txn/v1/txn-history/")
+    fun getTransactionList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String
+    ): Single<GetOrderListResponse>
+
+    @GET("txn/v1/{txnNo}/txn-detail/")
+    fun getTransactionDetail(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("txnNo") txnNo: String
+    ): Single<GetOrderDetailResponse>
+
+    // TRANSACTIONS - Merchant
+
+    @GET("merchant/v1/mch-order-history/")
+    fun getTransactionListMerchant(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") merchantID: String
+    ): Single<GetStoreOrderListResponse>
+
+    @GET("merchant/v1/order/{txnId}/{tableNo}")
+    fun getTransactionDetailMerchant(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("txnId") txnNo: String,
+        @Path("tableNo") tableNo: String
+    ): Single<GetStoreOrderDetailResponse>
+
+    //update status
+
+    @Multipart
+    @POST("txn/v1/txn-update/")
+    fun postUpdateTransactionStatus(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Part("transaction_id") transactionID: RequestBody,
+        @Part("status") status: RequestBody
+    ): Single<UpdateStatusResponse>
 }

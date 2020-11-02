@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.home
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProfileBinding
 import com.tsab.pikapp.util.getInitial
 import com.tsab.pikapp.view.HomeActivity
-import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.viewmodel.home.HomeProfileViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -38,9 +36,24 @@ class ProfileFragment : BottomSheetDialogFragment() {
 
         viewModel.getUserData()
 
+        dataBinding.buttonBelomBayar.setOnClickListener {
+            viewModel.goToOrderList(activity as HomeActivity, 0)
+        }
+
+        dataBinding.buttonDisiapkan.setOnClickListener {
+            viewModel.goToOrderList(activity as HomeActivity, 1)
+        }
+
+        dataBinding.buttonSiapDikirim.setOnClickListener {
+            viewModel.goToOrderList(activity as HomeActivity, 2)
+        }
+
+        dataBinding.buttonBeriPenilaian.setOnClickListener {
+            viewModel.goToOrderList(activity as HomeActivity, 3)
+        }
+
         dataBinding.buttonToStore.setOnClickListener {
-            val storeActivity = Intent(context, StoreActivity::class.java)
-            (activity as HomeActivity).startActivity(storeActivity)
+            viewModel.goToStoreHome(activity as HomeActivity)
         }
 
         dataBinding.buttonLogout.setOnClickListener {
@@ -52,6 +65,11 @@ class ProfileFragment : BottomSheetDialogFragment() {
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
+
+        viewModel.loading.observe(this, Observer { it ->
+            if(it) dataBinding.loadingView.visibility = View.VISIBLE else dataBinding.loadingView.visibility = View.GONE
+        })
+
         viewModel.userData.observe(this, Observer { t ->
             Log.d("Debug", "$t")
             dataBinding.textViewUsername.apply {
@@ -65,6 +83,7 @@ class ProfileFragment : BottomSheetDialogFragment() {
         viewModel.logoutResponse.observe(this, Observer { response ->
             response?.let {
                 viewModel.clearSession(activity as HomeActivity)
+                viewModel.goToOnboardingFromHome(activity as HomeActivity)
             }
         })
     }

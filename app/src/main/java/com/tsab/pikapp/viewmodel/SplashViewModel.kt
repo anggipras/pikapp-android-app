@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.tsab.pikapp.models.model.NotificationModel
 import com.tsab.pikapp.models.model.UserAccess
 import com.tsab.pikapp.util.CartUtil
 import com.tsab.pikapp.util.SessionManager
@@ -19,8 +20,16 @@ class SplashViewModel(application: Application): BaseViewModel(application) {
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
     private var cartUtil = CartUtil(getApplication())
+
+    fun saveNotification(mrcht: String, txn: String, tableNo: String?) {
+        var isMerchant = false
+        if(mrcht == "true") isMerchant = true
+        prefHelper.setNotificationDetail(NotificationModel(isMerchant, txn, tableNo))
+    }
+
     fun checkOnboardingFinished(context: Context, mid: String?, tableNo: String?) {
 
+        prefHelper.clearOrderList()
         prefHelper.deleteStoredDeepLink()
         prefHelper.deleteDeeplinkUrl()
         cartUtil.setCartType("")

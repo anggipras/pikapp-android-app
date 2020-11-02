@@ -25,6 +25,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.tsab.pikapp.view.OrderListActivity
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
@@ -36,6 +37,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     val isDeeplinkEnabled = MutableLiveData<Boolean>()
 
     val isUserMerchant = MutableLiveData<Boolean>()
+    val notificationActive = MutableLiveData<Boolean>()
 
     fun goToProfile(context: Context) {
         val profileFragment = ProfileFragment()
@@ -60,7 +62,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                 (activity as HomeActivity),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                (activity as HomeActivity),
+                activity,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
@@ -115,10 +117,24 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         (context as HomeActivity).startActivity(storeActivity)
     }
 
+    fun goToOrderList(context: Context) {
+        val orderListActivity = Intent(context, OrderListActivity::class.java)
+        (context as HomeActivity).startActivity(orderListActivity)
+    }
+
     fun goToMerchant(view: View) {
         val deeplink = prefHelper.getDeeplink()
         val action =
             HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
         Navigation.findNavController(view).navigate(action)
+    }
+
+    fun checkNotification() {
+        val notif = prefHelper.getNotificationDetail()
+        notif?.let {
+            it.isMerchant?.let {isMerchant ->
+                if (!isMerchant) notificationActive.value = true
+            }
+        }
     }
 }

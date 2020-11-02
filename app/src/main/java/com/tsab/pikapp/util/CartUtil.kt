@@ -58,6 +58,7 @@ class CartUtil {
         prefs?.edit(commit = true) {
             putString(PREF_CART, "")
             putBoolean(PREF_ISCARTON, false)
+            putString(PREF_CARTTYPE, "")
         }
     }
 

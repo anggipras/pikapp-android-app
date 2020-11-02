@@ -17,7 +17,6 @@ import com.tsab.pikapp.models.model.CartModel
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.viewmodel.categoryProduct.AddToCartViewModel
-import com.tsab.pikapp.viewmodel.home.HomeActivityViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
@@ -25,7 +24,6 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
 
     private lateinit var dataBinding: FragmentAddToCartBinding
     private lateinit var viewModel: AddToCartViewModel
-    private lateinit var homeActivityViewModel: HomeActivityViewModel
     var qty = 1
     var pid = ""
     var pName = ""
@@ -40,18 +38,19 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
         // Inflate the layout for this fragment
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_to_cart, container, false)
         viewModel = ViewModelProviders.of(this).get(AddToCartViewModel::class.java)
-        homeActivityViewModel = ViewModelProviders.of(this).get(HomeActivityViewModel::class.java)
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mArgs = arguments
-        pid = mArgs!!.getString(PRODUCT_ID).toString()
-        pName = mArgs.getString(PRODUCT_NAME).toString()
-        mid = mArgs.getString(MERCHANT_ID).toString()
-        pImage = mArgs.getString(PRODUCT_IMAGE).toString()
-        pPrice = mArgs.getString(PRODUCT_PRICE).toString()
+        mArgs?.let {
+            pid = it.getString(PRODUCT_ID).toString()
+            pName = it.getString(PRODUCT_NAME).toString()
+            mid = it.getString(MERCHANT_ID).toString()
+            pImage = it.getString(PRODUCT_IMAGE).toString()
+            pPrice = it.getString(PRODUCT_PRICE).toString()
+        }
         viewModel.getCart(pid)
 
         dataBinding.buttonDecrement.setOnClickListener {

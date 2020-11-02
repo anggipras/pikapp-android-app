@@ -19,16 +19,19 @@ import kotlinx.android.synthetic.main.fragment_category.*
 
 class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface {
 
+    private val merchantListAdapter = MerchantListAdapter(arrayListOf(), this)
+    private lateinit var dataBinding: FragmentCategoryBinding
     private lateinit var viewModel: CategoryViewModel
     private var categoryId: Long = 0
-    private lateinit var dataBinding: FragmentCategoryBinding
     var isPulled = false
-    private val merchantListAdapter = MerchantListAdapter(arrayListOf(), this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
         viewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         return dataBinding.root
     }
@@ -55,6 +58,11 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
 
+        viewModel.loading.observe(this, Observer { it ->
+            if (it) dataBinding.loadingView.visibility =
+                View.VISIBLE else dataBinding.loadingView.visibility = View.GONE
+        })
+
         viewModel.locationResponse.observe(this, Observer { it ->
             dataBinding.textCurrentLocation.text = it
         })
@@ -63,14 +71,18 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
             merchantList.visibility = View.VISIBLE
             category?.let {
                 dataBinding.category = category
-                if(!isPulled) viewModel.getMerchant()
+                if (!isPulled) viewModel.getMerchant()
             }
         })
 
         viewModel.merchantResponse.observe(this, Observer { merchant ->
             if (!isPulled) {
-                merchantListAdapter.updateMerchantList(merchant)
-                isPulled = true
+                if (merchant.isNotEmpty()) {
+                    merchantListAdapter.updateMerchantList(merchant)
+                    isPulled = true
+                } else {
+                    dataBinding.listError.text = "Mohon maaf, PikApp belum tersedia di area kamu :("
+                }
             }
         })
     }
@@ -78,11 +90,12 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     override fun onResume() {
         super.onResume()
         viewModel.getCart()
-        val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        val buttonFloat: View? =
+            (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
         buttonFloat?.let { it ->
             if (it.isVisible) {
                 val param = it.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0,0,10,30)
+                param.setMargins(0, 0, 10, 30)
                 it.layoutParams = param
             }
         }

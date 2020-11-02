@@ -24,10 +24,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProviders.of(this).get(HomeActivityViewModel::class.java)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-//        viewModel.getCart()
         setButton()
         viewModel.resetCart()
         dataBinding.buttonCart.setOnClickListener {
@@ -47,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.cartError.observe(this, Observer {
             if(it.errCode == "EC0021") {
-                viewModel.createToastShort(application, "Kamu login di perangkat lain. Silakan login kembali, CUK")
+                viewModel.createToastShort(application, "Kamu login di perangkat lain. Silakan login kembali")
                 viewModel.clearSession(this)
             }
         })

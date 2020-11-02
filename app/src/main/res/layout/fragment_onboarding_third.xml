@@ -68,21 +68,22 @@
                 android:id="@+id/buttonLogin"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:background="@drawable/button_blue_yellow_stroke"
                 android:fontFamily="@font/proximanova_bold"
                 android:text="Masuk"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/buttonSignInFacebook"
@@ -134,7 +135,7 @@
                 android:layout_marginEnd="25dp"
                 android:background="@drawable/button_yellow"
                 android:fontFamily="@font/proximanova_bold"
-                android:text="Email"
+                android:text="Daftar"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 

@@ -125,7 +125,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/buttonDikemas"
+                    android:id="@+id/buttonDisiapkan"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal|center_vertical"
@@ -141,13 +141,13 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_user_packed" />
+                        android:src="@drawable/ic_prepare" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/proximanova_regular"
-                        android:text="Dikemas"
+                        android:text="Disiapkan"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -161,21 +161,21 @@
                     app:layout_constraintBottom_toBottomOf="@+id/buttonDikemas"
                     app:layout_constraintEnd_toStartOf="@+id/buttonBeriPenilaian"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonDikemas"
-                    app:layout_constraintTop_toTopOf="@+id/buttonDikemas">
+                    app:layout_constraintStart_toEndOf="@+id/buttonDisiapkan"
+                    app:layout_constraintTop_toTopOf="@+id/buttonDisiapkan">
 
                     <ImageView
                         android:id="@+id/imageView7"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_sent" />
+                        android:src="@drawable/ic_ready" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/proximanova_regular"
-                        android:text="Siap/Dikirim"
+                        android:text="Pesanan Siap"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -197,13 +197,13 @@
                         android:id="@+id/imageView8"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/ic_user_rating" />
+                        android:src="@drawable/ic_finish" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/proximanova_regular"
-                        android:text="Beri Penilaian"
+                        android:text="Selesai"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -594,6 +594,16 @@
                     app:layout_constraintStart_toStartOf="@+id/imageViewProfile"
                     app:layout_constraintTop_toTopOf="@+id/imageViewProfile" />
 
+                <ProgressBar
+                    android:id="@+id/loadingView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

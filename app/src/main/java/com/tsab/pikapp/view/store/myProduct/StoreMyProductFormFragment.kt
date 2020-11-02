@@ -97,7 +97,8 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
             if (isAdd) {
                 viewModel.submitProduct((activity as StoreActivity), productName, textDescription, price, condition)
             } else {
-                viewModel.editProduct()
+                val pid = dataBinding.textProductID.text.toString()
+                viewModel.editProduct((activity as StoreActivity), pid, productName, textDescription, price)
             }
         }
 
@@ -106,6 +107,42 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
+
+        viewModel.imageError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorImage.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
+        viewModel.productNameError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorProductName.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
+        viewModel.descriptionError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorDescription.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
+
+        viewModel.priceError.observe(this, Observer { t ->
+            t?.let {
+                dataBinding.textErrorPrice.apply {
+                    visibility = if (t.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+                    text = t
+                }
+            }
+        })
 
         viewModel.imageAdd.observe(this, Observer {
             imageCount += 1
@@ -124,7 +161,7 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
 
         viewModel.productDetailResponse.observe(this, Observer {
             bindToScreen(it)
-            imageCount = 3
+            imageCount = 1
         })
 
 
@@ -134,26 +171,27 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
         //image
         val imageArrayFromDB: ArrayList<StoreImage> = arrayListOf()
         val pict01 = Uri.parse(storeProductList.productPicture1)
-        val pict02 = Uri.parse(storeProductList.productPicture2)
-        val pict03 = Uri.parse(storeProductList.productPicture3)
+//        val pict02 = Uri.parse(storeProductList.productPicture2)
+//        val pict03 = Uri.parse(storeProductList.productPicture3)
         imageArrayFromDB.add(StoreImage(pict01))
-        imageArrayFromDB.add(StoreImage(pict02))
-        imageArrayFromDB.add(StoreImage(pict03))
+//        imageArrayFromDB.add(StoreImage(pict02))
+//        imageArrayFromDB.add(StoreImage(pict03))
         storeImageUploadAdapter.addAllProductList(imageArrayFromDB)
 
         //product name
+        dataBinding.textProductID.setText(storeProductList.productId)
         dataBinding.textProductName.setText(storeProductList.productName)
         dataBinding.textDescription.setText(storeProductList.productDesc)
         dataBinding.textPrice.setText(storeProductList.productPrice.toString())
     }
 
     private fun startImageGallery() {
-        if (imageCount < 3) {
+        if (imageCount < 1) {
             pickImageIntent()
         } else {
             Toast.makeText(
                 context,
-                "Maksimum gambar yang diperbolehkan hanya 3",
+                "Maksimum gambar yang diperbolehkan hanya 1",
                 Toast.LENGTH_SHORT
             ).show()
         }

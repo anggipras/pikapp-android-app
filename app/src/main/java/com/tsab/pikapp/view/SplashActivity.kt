@@ -20,14 +20,20 @@ class SplashActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
+        if(intent != null && intent.hasExtra("is_merchant")) {
+            val isMerchant = intent.extras!!.getString("is_merchant")
+            val transactionID = intent.extras!!.getString("transaction_id")
+            val tableNo = intent.extras!!.getString("table_no")
+            viewModel.saveNotification(isMerchant!!, transactionID!!, tableNo!!)
+        }
         Handler().postDelayed({
             val uri: Uri? = intent.data
             var mid: String? = null
             var tableNo: String? = null
             if(uri != null) {
                 val params : List<String> = uri.pathSegments
-                mid = params.get(1)
-                tableNo = params.get(2)
+                mid = params[1]
+                tableNo = params[2]
             }
             viewModel.checkOnboardingFinished(this, mid, tableNo)
             finish()

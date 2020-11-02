@@ -1,5 +1,6 @@
 package com.tsab.pikapp.models.network
 
+import android.util.Log
 import com.tsab.pikapp.BuildConfig
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.util.*
@@ -21,9 +22,10 @@ class PikappApiService {
         .create(PikappApi::class.java)
 
     // AUTH
-    fun loginUser(email: String, password: String): Single<LoginResponse> {
+    fun loginUser(email: String, password: String, fcmToken: String): Single<LoginResponse> {
         val uuid = getUUID()
-        val loginData = LoginRequest(email, password)
+        val loginData = LoginRequest(email, password, fcmToken)
+        Log.d("Debug", "fcm token : $fcmToken")
         return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
     }
 
@@ -72,12 +74,16 @@ class PikappApiService {
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
         val status = if (available) "ON" else "OFF"
+        Log.d("Debug", "timestamp getStoreProductList : $timestamp")
+        Log.d("Debug", "signature getStoreProductList : $signature")
         return api.getStoreProductList(getUUID(), timestamp, getClientID(), signature, token, mid, status)
     }
 
     fun getStoreProductDetail(email: String, token: String, pid: String): Single<StoreProductDetailResponse> {
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
+        Log.d("Debug", "timestamp getStoreProductDetail : $timestamp")
+        Log.d("Debug", "signature getStoreProductDetail : $signature")
         return api.getStoreProductDetail(getUUID(), timestamp, getClientID(), signature, token, pid)
     }
 
@@ -88,7 +94,28 @@ class PikappApiService {
         val signature = getSignature(email, timestamp)
 
         val action: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), "ADD")
-        return api.postStoreProductAdd(getUUID(), timestamp, getClientID(), signature, token, mid, file01, file02, file03,
+        return api.postStoreProduct(getUUID(), timestamp, getClientID(), signature, token, mid, file01, file02, file03,
+            productName, price, condition, status, productQty, productDesc, action)
+    }
+
+    fun postStoreEditProductWithImage(email: String, token: String, mid: String, pid: String, file01: MultipartBody.Part?, file02: MultipartBody.Part?,
+                            file03: MultipartBody.Part?, productName: RequestBody, price: RequestBody, condition: RequestBody, status: RequestBody,
+                                      productQty: RequestBody, productDesc: RequestBody): Single<StoreProductActionResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+
+        val action: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), "MODIFY")
+        return api.postStoreEditProduct(getUUID(), timestamp, getClientID(), signature, token, mid, pid, file01, file02, file03,
+            productName, price, condition, status, productQty, productDesc, action)
+    }
+
+    fun postStoreEditProductWithoutImage(email: String, token: String, mid: String, pid: String, productName: RequestBody, price: RequestBody, condition: RequestBody, status: RequestBody,
+                                         productQty: RequestBody, productDesc: RequestBody): Single<StoreProductActionResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+
+        val action: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), "MODIFY")
+        return api.postStoreProductWithoutImage(getUUID(), timestamp, getClientID(), signature, token, mid, pid,
             productName, price, condition, status, productQty, productDesc, action)
     }
 
@@ -126,4 +153,42 @@ class PikappApiService {
         val signature = getSignature(email, timestamp)
         return api.postTransaction(getUUID(), timestamp, getClientID(), signature, token, transactionModel)
     }
+
+    fun getTransactionList(email: String, token: String): Single<GetOrderListResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        Log.d("Debug", "timestamp txnList : $timestamp")
+        Log.d("Debug", "signature txnList : $signature")
+        return api.getTransactionList(getUUID(), timestamp, getClientID(), signature, token)
+    }
+
+    fun getTransactionDetail(email: String, token: String, transactionID: String) : Single<GetOrderDetailResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        Log.d("Debug", "timestamp txnDetail : $timestamp")
+        Log.d("Debug", "signature txnDetail : $signature")
+        return api.getTransactionDetail(getUUID(), timestamp, getClientID(), signature, token, transactionID)
+    }
+
+    fun getTransactionListMerchant(email: String, token: String, mid: String): Single<GetStoreOrderListResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        return api.getTransactionListMerchant(getUUID(), timestamp, getClientID(), signature, token, mid)
+    }
+
+    fun getTransactionDetailMerchant(email: String, token: String, transactionID: String, tableNo: String) : Single<GetStoreOrderDetailResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        Log.d("Debug", "timestamp txnDetail merchant : $timestamp")
+        Log.d("Debug", "signature txnDetail merchant : $signature")
+        return api.getTransactionDetailMerchant(getUUID(), timestamp, getClientID(), signature, token, transactionID, tableNo)
+    }
+
+    fun postUpdateOrderStatus(email: String, token: String, transactionID : RequestBody, status : RequestBody): Single<UpdateStatusResponse> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        return api.postUpdateTransactionStatus(getUUID(), timestamp, getClientID(), signature, token, transactionID, status)
+    }
+
+
 }

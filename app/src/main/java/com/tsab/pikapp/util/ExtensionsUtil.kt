@@ -76,6 +76,13 @@ fun String.isPasswordValid(): Boolean {
     return !TextUtils.isEmpty(this)
 }
 
+fun isPhoneValid(string: String): Boolean {
+    if(string[0] == '0' && string[1] == '8') {
+        return true
+    }
+    return false
+}
+
 fun getUUID(): String {
     val uuid = UUID.randomUUID().toString()
     val trimmedUuid = uuid.replace("-", "")

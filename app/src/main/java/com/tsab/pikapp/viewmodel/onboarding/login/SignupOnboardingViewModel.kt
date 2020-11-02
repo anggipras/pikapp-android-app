@@ -95,10 +95,13 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
         } else if (detectSpecialCharacter(phone)) {
             phoneError.value = "Karakter spesial tidak diperbolehkan"
             isPhoneValid = false
-        } else if (phone.length < 10) {
+        } else if (phone.length < 10 || phone.length > 13) {
             phoneError.value = "Masukan nomor telepon anda dengan benar"
             isPhoneValid = false
-        } else {
+        } else if (!isPhoneValid(phone)) {
+            phoneError.value = "Masukan nomor telepon anda dengan benar1"
+            isPhoneValid = false
+        } else{
             phoneError.value = ""
             isPhoneValid = true
         }
@@ -168,7 +171,7 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
 
     fun loginProcess() {
         disposable.add(
-            apiService.loginUser(email, password)
+            apiService.loginUser(email, password, prefHelper.getFcmToken().toString())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<LoginResponse>() {

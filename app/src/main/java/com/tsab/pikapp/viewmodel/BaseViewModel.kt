@@ -1,5 +1,6 @@
 package com.tsab.pikapp.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,8 @@ import androidx.lifecycle.AndroidViewModel
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.OnboardingActivity
+import com.tsab.pikapp.view.OrderListActivity
+import com.tsab.pikapp.view.StoreOrderListActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,18 +33,37 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
         Toast.makeText(application, m, Toast.LENGTH_SHORT).show()
     }
 
-    fun createToastLong(m: String) {
-        Toast.makeText(getApplication(), m, Toast.LENGTH_LONG).show()
-    }
-    fun clearSession(context: Context) {
-        sessionManager.logout()
-        goToOnboardingFromHome(context)
+    fun createToastShortFragment(activity: Activity, m: String) {
+        Toast.makeText(activity, m, Toast.LENGTH_SHORT).show()
     }
 
-    private fun goToOnboardingFromHome(context: Context) {
+    fun createToastLong(application: Application, m: String) {
+        Toast.makeText(application, m, Toast.LENGTH_LONG).show()
+    }
+
+    fun createToastLongFragment(activity: Activity, m: String) {
+        Toast.makeText(activity, m, Toast.LENGTH_LONG).show()
+    }
+
+    fun clearSession(context: Context) {
+        sessionManager.logout()
+    }
+
+    fun goToOnboardingFromHome(context: Context) {
         val onboardingActivity = Intent(context, OnboardingActivity::class.java)
         context.startActivity(onboardingActivity)
         (context as HomeActivity).finish()
     }
 
+    fun goToOnboardingFromOrderList(context: Context) {
+        val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+        context.startActivity(onboardingActivity)
+        (context as OrderListActivity).finish()
+    }
+
+    fun goToOnboardingFromStoreOrderList(context: Context) {
+        val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+        context.startActivity(onboardingActivity)
+        (context as StoreOrderListActivity).finish()
+    }
 }

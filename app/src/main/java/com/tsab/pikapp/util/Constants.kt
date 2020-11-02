@@ -18,6 +18,11 @@ const val GPS_REQUEST = 101
 const val SELECTED_TYPE = "selected_type"
 const val SELECTED_PAYMENT = "selected_payment"
 
+const val NOTIFICATION_CHANNEL_ID = "com.tsab.pikapp.service.notification"
+
+const val CONST_TRANSACTION_ID = "transaction id"
+const val CONST_TABLE_NO = "table no"
+
 //DEEP LINK CONST
 const val DL_MERCHANTID= "deeplink merchant id"
 const val DL_TABLENO= "deeplink table no"

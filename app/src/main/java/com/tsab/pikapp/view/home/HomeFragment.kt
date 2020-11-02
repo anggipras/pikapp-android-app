@@ -35,8 +35,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         return dataBinding.root
     }
 
@@ -45,13 +44,8 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
-        val timestamp = getTimestamp()
-        val signature = getSignature("superindo@mailinator.com", timestamp)
-
-        Log.d("Debug", "timestamp : $timestamp")
-        Log.d("Debug", "signature : $signature")
-
         checkLocationPermission()
+        viewModel.checkNotification()
 
         dataBinding.tabLayout.visibility = View.GONE
         dataBinding.layoutHomeContainer.visibility = View.GONE
@@ -113,13 +107,16 @@ class HomeFragment : Fragment() {
                 viewModel.goToStoreHome(activity as HomeActivity)
             }
         })
+
+        viewModel.notificationActive.observe(this, Observer {
+            if (it && isFirstTime) {
+                isFirstTime = false
+                viewModel.goToOrderList(activity as HomeActivity)
+            }
+        })
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_REQUEST) {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {

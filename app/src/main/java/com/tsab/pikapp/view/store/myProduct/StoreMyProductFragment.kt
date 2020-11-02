@@ -21,16 +21,14 @@ class StoreMyProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_store_my_product, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_my_product, container, false)
 
         val fragmentList = arrayListOf<Fragment>(
             StoreMyProductAvailableFragment(),
             StoreMyProductNotAvailableFragment()
         )
 
-        val adapter =
-            HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        val adapter = HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         dataBinding.myProductViewPager.adapter = adapter
         dataBinding.myProductViewPager.isUserInputEnabled = false
         return dataBinding.root

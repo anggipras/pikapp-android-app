@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.onboarding.login
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.transition.Fade
@@ -156,7 +157,7 @@ class SignupOnboardingFragment : Fragment() {
 
     private fun animateUI() {
 
-        if (android.os.Build.VERSION_CODES.BASE >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val transition = Fade()
             transition.duration = 800
 
@@ -183,6 +184,7 @@ class SignupOnboardingFragment : Fragment() {
             TransitionManager.beginDelayedTransition(dataBinding.containerOnboarding, transition)
 
             //set visible
+
             dataBinding.textOnboardingYourEmail.setTransitionVisibility(View.VISIBLE)
             dataBinding.textOnboardingEmailValid.setTransitionVisibility(View.VISIBLE)
             dataBinding.textOnboardingSignupFullName.setTransitionVisibility(View.VISIBLE)
@@ -302,7 +304,7 @@ class SignupOnboardingFragment : Fragment() {
 
         dataBinding.containerOnboarding.transitionToEnd()
 
-        if (android.os.Build.VERSION_CODES.BASE >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
             val transition = Fade()
             transition.duration = 500

@@ -1,6 +1,8 @@
 package com.tsab.pikapp.viewmodel.store
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +14,8 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
+import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.view.StoreOrderListActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -29,6 +33,7 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
     val loadingMerchantDetail = MutableLiveData<Boolean>()
     val merchantLoadError = MutableLiveData<Boolean>()
     val merchantErrorResponse = MutableLiveData<MerchantListErrorResponse>()
+    val notificationActive = MutableLiveData<Boolean>()
 
     private var latitude = ""
     private var longitude = ""
@@ -98,5 +103,26 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+
+    fun checkNotification() {
+        val notif = prefHelper.getNotificationDetail()
+//        prefHelper.deleteNotificationDetail()
+        notif?.let {
+            it.isMerchant?.let {isMerchant ->
+                if (isMerchant) notificationActive.value = true
+            }
+        }
+    }
+
+    fun goToOrderList(context: Context) {
+        val storeOrderListActivity = Intent(context, StoreOrderListActivity::class.java)
+        (context as StoreActivity).startActivity(storeOrderListActivity)
+    }
+
+    fun goToOrderList(context: Context, status: Int) {
+        prefHelper.setOrderListTabSelected(status)
+        val storeOrderListActivity = Intent(context, StoreOrderListActivity::class.java)
+        (context as StoreActivity).startActivity(storeOrderListActivity)
     }
 }
