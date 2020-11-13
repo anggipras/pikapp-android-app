@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -11,13 +12,13 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.tsab.pikapp.models.model.StoreImage
-import com.tsab.pikapp.models.model.StoreProductActionResponse
-import com.tsab.pikapp.models.model.StoreProductDetailResponse
-import com.tsab.pikapp.models.model.StoreProductList
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.UploadRequestBody
 import com.tsab.pikapp.util.detectSpecialCharacter
+import com.tsab.pikapp.util.getFileName
+import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -28,9 +29,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.HttpException
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 
-class StoreProductFormViewModel(application: Application) : BaseViewModel(application) {
+class StoreProductFormViewModel(application: Application) : BaseViewModel(application), UploadRequestBody.UploadCallback {
 
     private var sessionManager = SessionManager(getApplication())
 
@@ -38,6 +41,7 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
     private val disposable = CompositeDisposable()
 
     private var imageArray: ArrayList<StoreImage> = arrayListOf()
+    private var imageArrayBitmap: ArrayList<StoreImageBitmap> = arrayListOf()
     private var imageArrayFromDB: ArrayList<StoreImage> = arrayListOf()
 
     val loading = MutableLiveData<Boolean>()
@@ -105,7 +109,6 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
     }
 
     fun submitProduct(context: Context, productName: String, description: String, price: String, condition: String) {
-        loading.value = true
         checkUserInput(productName, description, price)
         if(isImageValid && isProductNameValid && isDescriptionValid && isPriceValid){
             proceedSubmitProduct(context, productName, description, price)
@@ -161,6 +164,7 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
     }
 
     private fun proceedSubmitProduct(context: Context, productName: String, description: String, price: String) {
+        loading.value = true
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
@@ -250,12 +254,19 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
         val qty: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), "1")
         val desc: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), description)
 
+        val imageBuffer = imageArray[0].imageUri
+        Log.d("Debug", "image isinya : $image")
+
+        val cR = context.contentResolver
+        val mime = MimeTypeMap.getSingleton()
+        val type = mime.getExtensionFromMimeType(cR.getType(imageBuffer!!))
+
         if(isWithImage) {
-            val img1 = imageArray[0].imageUri?.let { getPath("file_01", context, it, "${productName}1") }!!
-            val img2 = imageArray[0].imageUri?.let { getPath("file_02", context, it, "${productName}2") }!!
-            val img3 = imageArray[0].imageUri?.let { getPath("file_03", context, it, "${productName}3") }!!
+            val img1 = imageArray[0].imageUri?.let { getPath("file_01", context, it, "${productName}1.${type}") }!!
+            val img2 = imageArray[0].imageUri?.let { getPath("file_02", context, it, "${productName}2.${type}") }!!
+            val img3 = imageArray[0].imageUri?.let { getPath("file_03", context, it, "${productName}3.${type}") }!!
             disposable.add(
-                pikappService.postStoreEditProductWithImage(email, token, mid, pid, img1, img2, img3, name, prc, condc, status, qty, desc)
+                pikappService.postStoreEditProductWithImage(email, token, mid, pid, img1, img2, img3, name, prc, condc, qty, desc)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<StoreProductActionResponse>() {
@@ -294,7 +305,7 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
             )
         } else {
             disposable.add(
-                pikappService.postStoreEditProductWithoutImage(email, token, mid, pid, name, prc, condc, status, qty, desc)
+                pikappService.postStoreEditProductWithoutImage(email, token, mid, pid, name, prc, condc, qty, desc)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<StoreProductActionResponse>() {
@@ -339,10 +350,19 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
         addSuccess.value = true
     }
 
-    private fun getPath(key: String, context: Context, uri: Uri, name: String): MultipartBody.Part {
-        val file= File(uri.path)
-        val absolutePath = file.absolutePath
-        val filePart = RequestBody.create(MediaType.parse("multipart/form-file"), absolutePath)
+    private fun getPath(key: String, context: Context, uri: Uri, name: String): MultipartBody.Part? {
+//        val file= File(uri.path!!)
+//        val absolutePath = file.absolutePath
+
+        val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri!!, "r", null) ?: return null
+
+        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+        val file = File(context.cacheDir, context.contentResolver.getFileName(uri!!))
+        val outputStream = FileOutputStream(file)
+        inputStream.copyTo(outputStream)
+
+//        val filePart = RequestBody.create(MediaType.parse("multipart/form-file"), absolutePath)
+        val filePart = UploadRequestBody(file, "multipart/form-file", this)
         val body = MultipartBody.Part.createFormData(key, name, filePart)
         return body
     }
@@ -361,5 +381,9 @@ class StoreProductFormViewModel(application: Application) : BaseViewModel(applic
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+
+    override fun onProgressUpdate(percentage: Int) {
+
     }
 }

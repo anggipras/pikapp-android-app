@@ -28,7 +28,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_margin="8dp"
-                    android:src="@drawable/ic_cart_white" />
+                    android:src="@drawable/ic_pesanan" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,6 +181,16 @@
                                 android:src="@drawable/ic_arrow_forward" />
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textPhoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:fontFamily="@font/proximanova_regular"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -290,7 +300,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/productRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"/>
                 </LinearLayout>
 
                 <LinearLayout

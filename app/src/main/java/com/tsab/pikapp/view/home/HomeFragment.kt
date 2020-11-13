@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
     private fun observeViewModel(view: View) {
         viewModel.isLocationEnabled.observe(this, Observer { it ->
             if (it) {
-                viewModel.getUserLocation(activity as HomeActivity)
+                startLocationUpdate()
 //                dataBinding.tabLayout.visibility = View.VISIBLE
                 dataBinding.layoutHomeContainer.visibility = View.VISIBLE
                 dataBinding.layoutLocationPermission.visibility = View.GONE
@@ -113,6 +113,13 @@ class HomeFragment : Fragment() {
                 isFirstTime = false
                 viewModel.goToOrderList(activity as HomeActivity)
             }
+        })
+    }
+
+    @SuppressLint("FragmentLiveDataObserve")
+    private fun startLocationUpdate() {
+        viewModel.getLocationData().observe(this, Observer {
+            viewModel.saveUserLocation(longitude = it.longitude.toString(), latitude = it.latitude.toString())
         })
     }
 

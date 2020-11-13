@@ -13,4 +13,8 @@ class StoreOrderListStatusViewModel(application: Application) : BaseViewModel(ap
         prefHelper.resetOrderListTabSelected()
         return x!!
     }
+
+    fun deleteNotificationDetail() {
+        prefHelper.deleteNotificationDetail()
+    }
 }

@@ -17,6 +17,7 @@ import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.categoryProduct.CategoryFragmentDirections
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
+import com.tsab.pikapp.util.LocationLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -32,20 +33,54 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var cartUtil = CartUtil(getApplication())
-    val categoryData = MutableLiveData<ItemHomeCategory>()
+    private val locationData = LocationLiveData(application)
 
+    val categoryData = MutableLiveData<ItemHomeCategory>()
     val locationResponse = MutableLiveData<String>()
     val merchantResponse = MutableLiveData<List<MerchantList>>()
     val merchantLoadError = MutableLiveData<Boolean>()
     val merchantErrorResponse = MutableLiveData<MerchantListErrorResponse>()
     val loading = MutableLiveData<Boolean>()
 
+    val isLocation = MutableLiveData<Boolean>()
+    fun getLocationData() = locationData
+
     var address = ""
     var categoryID = ""
     var latitude = ""
     var longitude = ""
 
+
     val cart = MutableLiveData<Boolean>()
+
+    fun getLocation(activity: Activity) {
+        loading.value = true
+        val location = prefHelper.getLatestLocation()
+
+        longitude = location.longitude.toString()
+        latitude = location.latitude.toString()
+
+        isLocation.value = !longitude.isEmpty()
+    }
+
+    fun getAddress(activity: Activity) {
+        val geocoder = Geocoder(activity as HomeActivity, Locale.getDefault())
+        val addresses: List<Address>
+        addresses = geocoder.getFromLocation(latitude.toDouble(), longitude.toDouble(), 1)
+        address = addresses[0].getAddressLine(0)
+        locationResponse.value = address
+    }
+
+    fun getAddress(activity: Activity, lati: String, longi: String) {
+        prefHelper.saveLatestLocation(longi, lati)
+        val geocoder = Geocoder(activity as HomeActivity, Locale.getDefault())
+        val addresses: List<Address>
+        addresses = geocoder.getFromLocation(lati.toDouble(), longi.toDouble(), 1)
+        address = addresses[0].getAddressLine(0)
+        locationResponse.value = address
+    }
+
+
 
     fun fetch(uuid: Long) {
         fetchFromDB(uuid)
@@ -66,9 +101,12 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     fun getMerchant() {
         loading.value = true
         val location = prefHelper.getLatestLocation()
-        location.let {
-            latitude = it.latitude!!
-            longitude = it.longitude!!
+        location.latitude?.let {
+            latitude = it
+        }
+
+        location.longitude?.let {
+            longitude = it
         }
 
         disposable.add(
@@ -77,7 +115,9 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantListResponse>() {
                     override fun onSuccess(t: MerchantListResponse) {
-                        t.results?.let { it1 -> merchantRetrieved(it1) }
+                        t.results?.let { it1 ->
+                            merchantRetrieved(it1)
+                        }
                     }
 
                     override fun onError(e: Throwable) {
@@ -120,17 +160,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         loading.value = false
     }
 
-    fun getLocation(activity: Activity) {
-        val location = prefHelper.getLatestLocation()
-        longitude = location.longitude.toString()
-        latitude = location.latitude.toString()
 
-        val geocoder = Geocoder(activity as HomeActivity, Locale.getDefault())
-        val addresses: List<Address>
-        addresses = geocoder.getFromLocation(latitude.toDouble(), longitude.toDouble(), 1)
-        address = addresses[0].getAddressLine(0)
-        locationResponse.value = address
-    }
 
     fun goToMerchantDetail(mid: String, view: View) {
         val action = CategoryFragmentDirections.actionToMerchantDetailFragment(mid)
@@ -144,6 +174,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
     fun getCart() {
         cart.value = cartUtil.getCartStatus()
+        loading.value = false
     }
 
     override fun onCleared() {

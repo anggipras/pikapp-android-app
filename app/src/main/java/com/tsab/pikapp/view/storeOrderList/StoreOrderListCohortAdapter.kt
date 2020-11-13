@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ItemStoreOrderListCohortBinding
+import com.tsab.pikapp.models.model.OrderDetailDetail
 import com.tsab.pikapp.models.model.StoreOrderList
 import com.tsab.pikapp.view.orderList.orderListDetail.OrderListDetailProductAdapter
 
@@ -17,7 +18,7 @@ class StoreOrderListCohortAdapter(private val storeOrderList: ArrayList<StoreOrd
 
     class ProductViewHolder(var view: ItemStoreOrderListCohortBinding) : RecyclerView.ViewHolder(view.root)
 
-    private val productListAdapter = OrderListDetailProductAdapter(arrayListOf())
+    private val productListAdapter = StoreOrderListDetailProductAdapter(arrayListOf())
 
     fun updateProductList(newOrderList: List<StoreOrderList>) {
         storeOrderList.clear()
@@ -47,7 +48,9 @@ class StoreOrderListCohortAdapter(private val storeOrderList: ArrayList<StoreOrd
         holder.view.productRecyclerView.suppressLayout(true)
 
         storeOrderList[position].detailProduct?.let {
-            productListAdapter.updateProductList(it)
+            val plist:ArrayList<OrderDetailDetail> = arrayListOf()
+            plist.addAll(it)
+            productListAdapter.productList = plist
         }
 
         if(storeOrderList[position].bizType == "DINE_IN") {

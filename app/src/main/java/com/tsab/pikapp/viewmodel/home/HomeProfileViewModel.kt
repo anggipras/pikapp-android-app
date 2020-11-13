@@ -13,6 +13,7 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
+import com.tsab.pikapp.models.model.GetOrderListResponse
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.OrderListActivity
 import com.tsab.pikapp.view.StoreActivity
@@ -28,6 +29,7 @@ class HomeProfileViewModel(application: Application) : BaseViewModel(application
 
     val userData = MutableLiveData<UserAccess>()
     val loading = MutableLiveData<Boolean>()
+    val userSuccess = MutableLiveData<Boolean>()
     private var sessionManager = SessionManager(getApplication())
     private var prefHelper = SharedPreferencesUtil(getApplication())
 
@@ -54,6 +56,47 @@ class HomeProfileViewModel(application: Application) : BaseViewModel(application
 
     fun getUserData() {
         userData.value = sessionManager.getUserData()
+        loading.value = false
+    }
+
+    fun validateUser() {
+        loading.value = true
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+
+        disposable.add(
+            apiService.getTransactionList(email, token)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<GetOrderListResponse>() {
+                    override fun onSuccess(t: GetOrderListResponse) {
+                        validateUserSuccess()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        var errorResponse: ErrorResponse
+                        try {
+                            Log.d("Debug", "error merchant detail : " + e)
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse = Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse = ErrorResponse("503", "Unavailable")
+                        }
+
+                        validateUserFail(errorResponse)
+                    }
+                })
+        )
+    }
+
+    private fun validateUserSuccess() {
+        userSuccess.value = true
+    }
+
+    private fun validateUserFail(err: ErrorResponse) {
+        errorResponse.value = err
+        loading.value = false
     }
 
     fun logout(context: Context) {

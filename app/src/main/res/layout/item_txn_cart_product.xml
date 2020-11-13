@@ -77,10 +77,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="5"
+                            android:singleLine="true"
+                            android:ellipsize="end"
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="@{String.valueOf(cartList.productName)}"
                             android:textColor="#000000"
-                            android:textSize="17sp" />
+                            android:textSize="16sp" />
 
                         <ImageButton
                             android:id="@+id/buttonDelete"

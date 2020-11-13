@@ -17,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         supportActionBar?.hide()
-
+        getIntent().getExtras()
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
         if(intent != null && intent.hasExtra("is_merchant")) {

@@ -4,189 +4,191 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="productItem"
             type="com.tsab.pikapp.models.model.StoreProductList" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/container"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical">
+        android:layout_margin="10dp"
+        app:cardCornerRadius="20dp">
 
         <LinearLayout
-            android:id="@+id/top_header_rl"
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:background="#fff"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/productID"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="@{String.valueOf(productItem.productId)}"
-                android:visibility="gone" />
-
             <LinearLayout
+                android:id="@+id/top_header_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#fff"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    app:cardCornerRadius="20dp">
-
-                    <ImageView
-                        android:id="@+id/imageViewMerchant"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:imageUrl="@{productItem.productPicture1}"
-                        android:scaleType="fitXY" />
-
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/productID"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="2"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/productName"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="@{String.valueOf(productItem.productName)}"
-                        android:textColor="#000000"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/productPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="3dp"
-                        android:fontFamily="@font/proximanova_regular"
-                        android:text=""
-                        android:textColor="#000000"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/productAvailability"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/proximanova_regular"
-                        android:text=""
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <Switch
-                        android:id="@+id/toggleAvailable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:ignore="UseSwitchCompatOrMaterialXml"
-                        tools:layout_editor_absoluteX="336dp"
-                        tools:layout_editor_absoluteY="40dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/garis"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#f0efef"
-                android:orientation="horizontal" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonArchive"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_blue"
-                    android:fontFamily="@font/proximanova_bold"
-                    android:text="Arsipkan"
-                    android:textColor="#fff"
-                    android:textSize="16dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@{String.valueOf(productItem.productId)}"
                     android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/buttonEdit"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_blue"
-                    android:fontFamily="@font/proximanova_bold"
-                    android:text="Ubah"
-                    android:textColor="#fff"
-                    android:textSize="16dp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/buttonDelete"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        app:cardCornerRadius="20dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewMerchant"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
+                            android:imageUrl="@{productItem.productPicture1}"
+                            android:scaleType="fitXY" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="2"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/productName"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="@{String.valueOf(productItem.productName)}"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/productPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="3dp"
+                            android:fontFamily="@font/proximanova_regular"
+                            android:text=""
+                            android:textColor="#000000"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/productAvailability"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/proximanova_regular"
+                            android:text=""
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <Switch
+                            android:id="@+id/toggleAvailable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="UseSwitchCompatOrMaterialXml"
+                            tools:layout_editor_absoluteX="336dp"
+                            tools:layout_editor_absoluteY="40dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/garis"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/button_blue"
-                    android:fontFamily="@font/proximanova_bold"
-                    android:text="Hapus"
-                    android:textColor="#fff"
-                    android:textSize="16dp" />
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#f0efef"
+                    android:orientation="horizontal" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonArchive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_blue"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Arsipkan"
+                        android:textColor="#fff"
+                        android:textSize="16dp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/buttonEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_blue"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Ubah"
+                        android:textColor="#fff"
+                        android:textSize="16dp" />
+
+                    <Button
+                        android:id="@+id/buttonDelete"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_blue"
+                        android:fontFamily="@font/proximanova_bold"
+                        android:text="Hapus"
+                        android:textColor="#fff"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:orientation="horizontal" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="horizontal" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/garis2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#f0efef"
-            android:orientation="horizontal" />
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </layout>

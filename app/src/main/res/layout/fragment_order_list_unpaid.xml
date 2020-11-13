@@ -21,7 +21,7 @@
                 android:id="@+id/orderListRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#fff" />
+                android:background="@color/colorLightGrey" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

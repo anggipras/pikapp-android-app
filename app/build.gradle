@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.tsab.pikapp"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 3
         versionName "1.0"
@@ -124,5 +124,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-messaging-ktx:20.3.0'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+//    implementation 'com.android.support:multidex:1.0.3'
 
 }

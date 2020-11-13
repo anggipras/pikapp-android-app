@@ -111,6 +111,7 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
         notif?.let {
             it.isMerchant?.let {isMerchant ->
                 if (isMerchant) notificationActive.value = true
+                prefHelper.deleteNotificationDetail()
             }
         }
     }

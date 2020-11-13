@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -108,6 +109,18 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
 
+        viewModel.loading.observe(this, Observer {
+            if(it) {
+                dataBinding.loadingView.visibility = View.VISIBLE
+                dataBinding.buttonToGallery.isEnabled = false
+                dataBinding.buttonActionProduct.isEnabled = false
+            } else {
+                dataBinding.loadingView.visibility = View.GONE
+                dataBinding.buttonToGallery.isEnabled = true
+                dataBinding.buttonActionProduct.isEnabled = true
+            }
+        })
+
         viewModel.imageError.observe(this, Observer { t ->
             t?.let {
                 dataBinding.textErrorImage.apply {
@@ -189,11 +202,7 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
         if (imageCount < 1) {
             pickImageIntent()
         } else {
-            Toast.makeText(
-                context,
-                "Maksimum gambar yang diperbolehkan hanya 1",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(context, "Maksimum gambar yang diperbolehkan hanya 1", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -205,10 +214,7 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
             action = Intent.ACTION_GET_CONTENT
         }
         startActivityForResult(
-            Intent.createChooser(
-                intent,
-                "Select images"
-            ), PICK_IMAGE_CODE
+            Intent.createChooser(intent, "Select images"), PICK_IMAGE_CODE
         )
     }
 
@@ -216,8 +222,11 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK) {
             val imageUri = data!!.data
+//            val mphoto: Bitmap? = data!!.data as Bitmap?
+
             try {
                 viewModel.addImage(imageUri!!)
+//                viewModel.addBitmap(mphoto!!)
             } catch (e: Error) {
                 Toast.makeText(context, "$e", Toast.LENGTH_SHORT).show()
             }

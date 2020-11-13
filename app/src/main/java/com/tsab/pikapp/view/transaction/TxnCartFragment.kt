@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -16,18 +17,17 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentTxnCartBinding
 import com.tsab.pikapp.models.model.CartModel
 import com.tsab.pikapp.util.rupiahFormat
+import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.TransactionActivity
 import com.tsab.pikapp.viewmodel.transaction.TxnCartViewModel
 
 class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface {
 
+    private val txnCartProductListAdapter = TxnCartProductListAdapter(arrayListOf(), this)
     lateinit var dataBinding: FragmentTxnCartBinding
     lateinit var viewModel: TxnCartViewModel
-    private val txnCartProductListAdapter = TxnCartProductListAdapter(arrayListOf(), this)
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_txn_cart, container, false)
         viewModel = ViewModelProviders.of(this).get(TxnCartViewModel::class.java)
@@ -38,15 +38,13 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.validateUser()
         dataBinding.productRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = txnCartProductListAdapter
         }
         dataBinding.buttonPay.isEnabled = false
-        viewModel.getCart()
-        viewModel.getMerchant()
-        viewModel.checkType()
-        viewModel.getPaymentType()
+
 
         dataBinding.selectTypeContainer.setOnClickListener {
             viewModel.goToSelectType(activity as TransactionActivity)
@@ -64,6 +62,15 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
 
     @SuppressLint("FragmentLiveDataObserve")
     fun observeViewModel() {
+
+        viewModel.userSuccess.observe( this, Observer {
+            if(it) {
+                viewModel.getCart()
+                viewModel.checkType()
+                viewModel.getPaymentType()
+            }
+        })
+
         viewModel.loading.observe(this, Observer {
             if (it) {
                 dataBinding.progressBar.visibility = View.VISIBLE
@@ -102,6 +109,14 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
             }
         })
 
+        viewModel.errorResponse.observe(this, Observer {
+            if(it.errCode == "EC0021") {
+                Toast.makeText(activity as HomeActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
+                viewModel.clearSession(activity as HomeActivity)
+                viewModel.goToOnboardingFromHome(activity as HomeActivity)
+            }
+        })
+
         viewModel.paymentType.observe(this, Observer {
             if (it == "WALLET_OVO") {
                 //take away
@@ -117,6 +132,14 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
             }
         })
 
+        viewModel.phoneNumber.observe(this, Observer {
+            if(it.isNotEmpty()) {
+                dataBinding.apply {
+                    textPhoneNumber.text = "Nomor Anda : $it "
+                }
+            }
+        })
+
         viewModel.merchantDetailResponse.observe(this, Observer {
             dataBinding.merchantName.text = it.merchantName
             dataBinding.merchantAddress.text = it.merchantAddress
@@ -125,6 +148,7 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
 
         viewModel.cartList.observe(this, Observer { cartList ->
             if(cartList.isNotEmpty()) {
+                viewModel.getMerchant()
                 txnCartProductListAdapter.updateProductList(cartList)
                 setTotalPrice(cartList)
             } else {

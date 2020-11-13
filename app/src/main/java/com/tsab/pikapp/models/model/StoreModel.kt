@@ -1,5 +1,6 @@
 package com.tsab.pikapp.models.model
 
+import android.graphics.Bitmap
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
@@ -57,5 +58,9 @@ data class StoreProductDetailResponse(
 
 data class StoreImage(
     val imageUri: Uri?
+)
+
+data class StoreImageBitmap(
+    val imageBitmap: Bitmap?
 )
 

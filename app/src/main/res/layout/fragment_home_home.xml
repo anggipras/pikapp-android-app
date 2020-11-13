@@ -45,8 +45,8 @@
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPagerSlider"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="170dp"
+                        android:layout_marginTop="190dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.11"
@@ -142,6 +142,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clipToPadding="false"
+                                android:nestedScrollingEnabled="false"
                                 android:orientation="horizontal"
                                 android:paddingTop="5dp"
                                 android:paddingBottom="5dp" />

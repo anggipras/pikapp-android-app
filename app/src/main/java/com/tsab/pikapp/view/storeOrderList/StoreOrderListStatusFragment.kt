@@ -43,6 +43,8 @@ class StoreOrderListStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.deleteNotificationDetail()
+
         viewModel.getSelectedTab().let {
             tabSelected = it
         }

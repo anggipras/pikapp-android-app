@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,569 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/imageViewProfile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="32dp"
-                    android:src="@drawable/circular_dialog"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/colorPrimary" />
-
-                <TextView
-                    android:id="@+id/textViewUsername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="User Name"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageViewProfile"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
-                    app:layout_constraintTop_toTopOf="@+id/imageViewProfile" />
-
-                <TextView
-                    android:id="@+id/textViewGrade"
-                    android:layout_width="110dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/circular_dialog"
-                    android:backgroundTint="@color/colorAccent"
-                    android:fontFamily="@font/proximanova_semibold"
-                    android:gravity="center"
-                    android:text="Classic User"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintStart_toStartOf="@+id/textViewUsername"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="Status Transaksi"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="40dp"
-                    android:src="@drawable/ic_assignment"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewProfile"
-                    app:tint="@color/colorAccent" />
-
-                <LinearLayout
-                    android:id="@+id/buttonBelomBayar"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonDikemas"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView4">
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_unpaid" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/proximanova_regular"
-                        android:text="Belum Bayar"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/buttonDisiapkan"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/buttonBelomBayar"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonSiapDikirim"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonBelomBayar"
-                    app:layout_constraintTop_toTopOf="@+id/buttonBelomBayar">
-
-                    <ImageView
-                        android:id="@+id/imageView6"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_prepare" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/proximanova_regular"
-                        android:text="Disiapkan"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/buttonSiapDikirim"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/buttonDikemas"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonBeriPenilaian"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonDisiapkan"
-                    app:layout_constraintTop_toTopOf="@+id/buttonDisiapkan">
-
-                    <ImageView
-                        android:id="@+id/imageView7"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/ic_ready" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/proximanova_regular"
-                        android:text="Pesanan Siap"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/buttonBeriPenilaian"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/buttonSiapDikirim"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/buttonSiapDikirim"
-                    app:layout_constraintTop_toTopOf="@+id/buttonSiapDikirim">
-
-                    <ImageView
-                        android:id="@+id/imageView8"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_finish" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/proximanova_regular"
-                        android:text="Selesai"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="Pengaturan Akun"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/buttonBelomBayar" />
-
-                <LinearLayout
-                    android:id="@+id/buttonUbahInformasi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-                    <ImageView
-                        android:id="@+id/imageView9"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_acc_info"
-                        app:tint="@color/colorAccent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_semibold"
-                            android:text="Ubah Informasi Akun"
-                            android:textColor="#000000"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_regular"
-                            android:text="Ubah email/hp, nama dan password"
-                            android:textColor="@color/colorGrey"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/garis"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#f0efef"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonUbahInformasi" />
-
-
-                <LinearLayout
-                    android:id="@+id/buttonPusatBantuan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonUbahInformasi">
-
-                    <ImageView
-                        android:id="@+id/imageView11"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_acc_help"
-                        app:tint="@color/colorAccent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_semibold"
-                            android:text="Pusat Bantuan"
-                            android:textColor="#000000"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_regular"
-                            android:text="Cara penggunaan serta FAQ (tanya jawab)"
-                            android:textColor="@color/colorGrey"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/garis3"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#f0efef"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonPusatBantuan" />
-
-                <LinearLayout
-                    android:id="@+id/buttonKritikSaran"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonPusatBantuan">
-
-                    <ImageView
-                        android:id="@+id/imageView12"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_acc_critics"
-                        app:tint="@color/colorAccent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_semibold"
-                            android:text="Kritik &amp; Saran"
-                            android:textColor="#000000"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_regular"
-                            android:text="Beri masukan untuk aplikasi ini"
-                            android:textColor="@color/colorGrey"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/garis4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#f0efef"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonKritikSaran" />
-
-                <LinearLayout
-                    android:id="@+id/buttonTentangKami"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonKritikSaran">
-
-                    <ImageView
-                        android:id="@+id/imageView13"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_about_us"
-                        app:tint="@color/colorAccent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_semibold"
-                            android:text="Tentang Kami"
-                            android:textColor="#000000"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_regular"
-                            android:text="Informasi lengkap tentang PikApp"
-                            android:textColor="@color/colorGrey"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/garis5"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#f0efef"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonTentangKami" />
-
-                <LinearLayout
-                    android:id="@+id/buttonPrivasi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonTentangKami">
-
-                    <ImageView
-                        android:id="@+id/imageView14"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_acc_security"
-                        app:tint="@color/colorAccent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_semibold"
-                            android:text="Privasi &amp; Keamanan"
-                            android:textColor="#000000"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_regular"
-                            android:text="Manajemen privasi dan keamanan"
-                            android:textColor="@color/colorGrey"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/garis6"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#f0efef"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonPrivasi" />
-
-                <LinearLayout
-                    android:id="@+id/buttonLogout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonPrivasi">
-
-                    <ImageView
-                        android:id="@+id/imageView15"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_logout"
-                        app:tint="@color/colorAccent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_semibold"
-                            android:text="Logout"
-                            android:textColor="#000000"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/proximanova_regular"
-                            android:text="Keluar dari PikApp"
-                            android:textColor="@color/colorGrey"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/garis7"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:background="#f0efef"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonLogout" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:background="@android:color/transparent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonLogout" />
-
-                <ImageView
-                    android:id="@+id/buttonToStore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:src="@drawable/move_to_store"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textViewInitial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text=""
-                    android:textColor="@color/colorAccent"
-                    android:textSize="21sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageViewProfile"
-                    app:layout_constraintEnd_toEndOf="@+id/imageViewProfile"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewProfile"
-                    app:layout_constraintTop_toTopOf="@+id/imageViewProfile" />
-
                 <ProgressBar
                     android:id="@+id/loadingView"
                     android:layout_width="wrap_content"
@@ -604,6 +42,635 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/containerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:id="@+id/userProfileContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp">
+
+                            <ImageView
+                                android:id="@+id/imageViewProfile"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="32dp"
+                                android:src="@drawable/circular_dialog"
+                                app:tint="@color/colorPrimary" />
+
+                            <TextView
+                                android:id="@+id/textViewInitial"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:text=""
+                                android:textColor="@color/colorAccent"
+                                android:textSize="21sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right|end">
+
+                                <ImageView
+                                    android:id="@+id/buttonToStore"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/move_to_store" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <TextView
+                                android:id="@+id/textViewUsername"
+                                android:layout_width="match_parent"
+                                android:layout_marginEnd="20dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="20sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <TextView
+                                android:id="@+id/textViewPhone"
+                                android:layout_width="match_parent"
+                                android:layout_marginEnd="20dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text=""
+                                android:textColor="#000000"
+                                android:textSize="14sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp" />
+
+                            <TextView
+                                android:id="@+id/textViewGrade"
+                                android:layout_width="110dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/circular_dialog"
+                                android:backgroundTint="@color/colorAccent"
+                                android:fontFamily="@font/proximanova_semibold"
+                                android:gravity="center"
+                                android:text="Classic User"
+                                android:textAlignment="center"
+                                android:textColor="@android:color/white" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+
+                    <LinearLayout
+                        android:id="@+id/statusContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView4"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/ic_assignment"
+                                app:tint="@color/colorAccent" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:text="Status Transaksi"
+                                android:textColor="#000000"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/buttonBelomBayar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/imageView5"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/ic_unpaid" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Belum Bayar"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/buttonDisiapkan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/imageView6"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/ic_prepare" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Disiapkan"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/buttonSiapDikirim"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/imageView7"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/ic_ready" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Pesanan Siap"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/buttonBeriPenilaian"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/imageView8"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_finish" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Selesai"
+                                    android:textColor="#000000"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Pengaturan Akun"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <LinearLayout
+                            android:id="@+id/buttonUbahInformasi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/imageView9"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_acc_info"
+                                app:tint="@color/colorAccent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:text="Ubah Informasi Akun"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Ubah email/hp, nama dan password"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/garis"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#f0efef"
+                            android:orientation="horizontal"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/buttonPusatBantuan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/imageView11"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_acc_help"
+                                app:tint="@color/colorAccent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:text="Pusat Bantuan"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Cara penggunaan serta FAQ (tanya jawab)"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/garis3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#f0efef"
+                            android:orientation="horizontal"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/buttonKritikSaran"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/imageView12"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_acc_critics"
+                                app:tint="@color/colorAccent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:text="Kritik &amp; Saran"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Beri masukan untuk aplikasi ini"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/garis4"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#f0efef"
+                            android:orientation="horizontal"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/buttonTentangKami"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/imageView13"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_about_us"
+                                app:tint="@color/colorAccent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:text="Tentang Kami"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Informasi lengkap tentang PikApp"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/garis5"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#f0efef"
+                            android:orientation="horizontal"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:visibility="gone"/>
+
+                        <LinearLayout
+                            android:id="@+id/buttonPrivasi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView14"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_acc_security"
+                                app:tint="@color/colorAccent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:text="Privasi &amp; Keamanan"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Manajemen privasi dan keamanan"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
+
+                        <LinearLayout
+                            android:id="@+id/garis6"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#f0efef"
+                            android:orientation="horizontal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
+
+                        <LinearLayout
+                            android:id="@+id/buttonLogout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView15"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:scaleType="center"
+                                android:src="@drawable/ic_logout"
+                                app:tint="@color/colorAccent" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:text="Logout"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:text="Keluar dari PikApp"
+                                    android:textColor="@color/colorGrey"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
+
+                        <LinearLayout
+                            android:id="@+id/garis7"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#f0efef"
+                            android:orientation="horizontal" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:background="@android:color/transparent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/buttonLogout" />
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

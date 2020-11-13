@@ -166,7 +166,6 @@ interface PikappApi {
         @Part("product_name") productName: RequestBody,
         @Part("price") price: RequestBody,
         @Part("condition") condition: RequestBody,
-        @Part("status") status: RequestBody,
         @Part("product_qty") productQty: RequestBody,
         @Part("product_desc") productDesc: RequestBody,
         @Part("action") action: RequestBody
@@ -185,7 +184,6 @@ interface PikappApi {
         @Part("product_name") productName: RequestBody,
         @Part("price") price: RequestBody,
         @Part("condition") condition: RequestBody,
-        @Part("status") status: RequestBody,
         @Part("product_qty") productQty: RequestBody,
         @Part("product_desc") productDesc: RequestBody,
         @Part("action") action: RequestBody

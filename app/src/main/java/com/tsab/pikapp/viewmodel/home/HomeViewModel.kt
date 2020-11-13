@@ -7,6 +7,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Looper
 import android.util.Log
 import android.view.View
@@ -25,12 +26,16 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
+import com.tsab.pikapp.models.model.LocationModel
+import com.tsab.pikapp.util.LocationLiveData
 import com.tsab.pikapp.view.OrderListActivity
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
+    private val locationData = LocationLiveData(application)
 
     val isLocationEnabled = MutableLiveData<Boolean>()
     val isLocationRetrieved = MutableLiveData<Boolean>()
@@ -52,51 +57,9 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         isLocationEnabled.value = status
     }
 
-    fun getUserLocation(activity: Activity) {
-        var locationRequest = LocationRequest()
-        locationRequest.interval = 10000
-        locationRequest.fastestInterval = 5000
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    fun getLocationData() = locationData
 
-        if (ActivityCompat.checkSelfPermission(
-                (activity as HomeActivity),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        LocationServices.getFusedLocationProviderClient(activity as HomeActivity).requestLocationUpdates(locationRequest, object : LocationCallback() {
-                @SuppressLint("SetTextI18n")
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    super.onLocationResult(locationResult)
-                    LocationServices.getFusedLocationProviderClient(activity as HomeActivity)
-                        .removeLocationUpdates(this)
-                    if (locationResult != null && locationResult.locations.size > 0) {
-                        val locIndex = locationResult.locations.size - 1
-
-                        val latitude = locationResult.locations.get(locIndex).latitude
-                        val longitude = locationResult.locations.get(locIndex).longitude
-
-                        saveUserLocation(
-                            longitude = longitude.toString(),
-                            latitude = latitude.toString()
-                        )
-                    }
-                }
-            }, Looper.getMainLooper())
-    }
-
-    private fun saveUserLocation(longitude: String, latitude: String) {
+    fun saveUserLocation(longitude: String, latitude: String) {
         prefHelper.saveLatestLocation(longitude, latitude)
         isLocationRetrieved.value = true
     }

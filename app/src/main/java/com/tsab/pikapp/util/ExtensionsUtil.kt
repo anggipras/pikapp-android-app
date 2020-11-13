@@ -1,18 +1,20 @@
 package com.tsab.pikapp.util
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.tsab.pikapp.BuildConfig
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.tsab.pikapp.BuildConfig
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -169,4 +171,25 @@ fun saveUriToFile(context: Context, uri: Uri?): File? {
         Log.v(TAG, "Error" + e.message)
         null
     }
+}
+
+fun ContentResolver.getFileName(fileUri: Uri): String {
+    var name = ""
+    val returnCursor = this.query(fileUri, null, null, null, null)
+    if (returnCursor != null) {
+        val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        returnCursor.moveToFirst()
+        name = returnCursor.getString(nameIndex)
+        returnCursor.close()
+    }
+    return name
+}
+
+fun substringPhone(str: String?): String? {
+    var str = str
+    if (str != null && str.length > 0) {
+        str = str.substring(0, str.length - 3)
+    }
+    str = str + "xxx"
+    return str
 }

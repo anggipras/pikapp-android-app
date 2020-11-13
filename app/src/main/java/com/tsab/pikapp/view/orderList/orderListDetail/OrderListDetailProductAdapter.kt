@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.orderList.orderListDetail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,14 @@ class OrderListDetailProductAdapter(private val productList: ArrayList<OrderDeta
         holder.view.productList = productList[position]
         holder.view.productName.text = productList[position].productName
         holder.view.productQty.text = "x${productList[position].productQty}"
-        holder.view.productNote.text = "Catatan : ${productList[position].productNote}"
+        productList[position].productNote?.let {
+            if(it.isNotEmpty())
+                holder.view.productNote.text = "Catatan : ${productList[position].productNote}"
+            else
+                holder.view.productNote.visibility = View.GONE
+        }
+
+
 //        holder.view.productPrice.text = rupiahFormat(productList[position].totalPrice!!.toLong())
     }
 }

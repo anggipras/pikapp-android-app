@@ -31,12 +31,12 @@
             android:layout_height="wrap_content"
             android:elevation="10dp"
             app:cardCornerRadius="20dp"
-            android:layout_margin="2dp">
+            android:layout_margin="3dp">
 
             <ImageView
                 android:id="@+id/categoryImage"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_weight="1"
                 android:imageUrl="@{productItem.productPicture1}"
                 android:scaleType="centerCrop" />

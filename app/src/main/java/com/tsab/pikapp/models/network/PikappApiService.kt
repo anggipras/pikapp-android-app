@@ -99,24 +99,24 @@ class PikappApiService {
     }
 
     fun postStoreEditProductWithImage(email: String, token: String, mid: String, pid: String, file01: MultipartBody.Part?, file02: MultipartBody.Part?,
-                            file03: MultipartBody.Part?, productName: RequestBody, price: RequestBody, condition: RequestBody, status: RequestBody,
+                            file03: MultipartBody.Part?, productName: RequestBody, price: RequestBody, condition: RequestBody,
                                       productQty: RequestBody, productDesc: RequestBody): Single<StoreProductActionResponse> {
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
 
         val action: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), "MODIFY")
         return api.postStoreEditProduct(getUUID(), timestamp, getClientID(), signature, token, mid, pid, file01, file02, file03,
-            productName, price, condition, status, productQty, productDesc, action)
+            productName, price, condition, productQty, productDesc, action)
     }
 
-    fun postStoreEditProductWithoutImage(email: String, token: String, mid: String, pid: String, productName: RequestBody, price: RequestBody, condition: RequestBody, status: RequestBody,
+    fun postStoreEditProductWithoutImage(email: String, token: String, mid: String, pid: String, productName: RequestBody, price: RequestBody, condition: RequestBody,
                                          productQty: RequestBody, productDesc: RequestBody): Single<StoreProductActionResponse> {
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
 
         val action: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), "MODIFY")
         return api.postStoreProductWithoutImage(getUUID(), timestamp, getClientID(), signature, token, mid, pid,
-            productName, price, condition, status, productQty, productDesc, action)
+            productName, price, condition, productQty, productDesc, action)
     }
 
     fun postStoreOnOffProduct(email: String, token: String, mid: String, pid: String, stts: Boolean): Single<StoreProductActionResponse> {

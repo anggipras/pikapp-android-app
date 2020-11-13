@@ -25,11 +25,7 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     private var categoryId: Long = 0
     var isPulled = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
         viewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
@@ -58,9 +54,20 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
 
+        viewModel.isLocation.observe(this, Observer {
+            if(it) {
+                viewModel.getAddress(activity as HomeActivity)
+            } else {
+                startLocationUpdate()
+            }
+        })
         viewModel.loading.observe(this, Observer { it ->
-            if (it) dataBinding.loadingView.visibility =
-                View.VISIBLE else dataBinding.loadingView.visibility = View.GONE
+            if (it) {
+                dataBinding.loadingView.visibility = View.VISIBLE
+                dataBinding.listError.visibility = View.GONE
+            } else {
+                dataBinding.loadingView.visibility = View.GONE
+            }
         })
 
         viewModel.locationResponse.observe(this, Observer { it ->
@@ -77,13 +84,21 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
 
         viewModel.merchantResponse.observe(this, Observer { merchant ->
             if (!isPulled) {
-                if (merchant.isNotEmpty()) {
+                if (!merchant.isNullOrEmpty()) {
                     merchantListAdapter.updateMerchantList(merchant)
                     isPulled = true
                 } else {
+                    dataBinding.listError.visibility = View.VISIBLE
                     dataBinding.listError.text = "Mohon maaf, PikApp belum tersedia di area kamu :("
                 }
             }
+        })
+    }
+
+    @SuppressLint("FragmentLiveDataObserve")
+    private fun startLocationUpdate() {
+        viewModel.getLocationData().observe(this, Observer {
+            viewModel.getAddress(activity as HomeActivity, it.latitude.toString(), it.longitude.toString())
         })
     }
 

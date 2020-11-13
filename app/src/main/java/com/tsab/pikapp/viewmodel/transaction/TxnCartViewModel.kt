@@ -27,25 +27,68 @@ import retrofit2.HttpException
 
 class TxnCartViewModel(application: Application): BaseViewModel(application), TxnCartChooseTypeFragment.DialogDismissInterface, TxnCartChoosePaymentTypeFragment.DialogDismissInterface {
 
-    private var sessionManager = SessionManager(getApplication())
-    private var prefHelper = SharedPreferencesUtil(getApplication())
     private var cartUtil = CartUtil(getApplication())
+    private var sessionManager = SessionManager(getApplication())
     private var transactionUtil = TransactionUtil(getApplication())
+    private var prefHelper = SharedPreferencesUtil(getApplication())
 
     val loading = MutableLiveData<Boolean>()
+    val userSuccess = MutableLiveData<Boolean>()
     val cartList = MutableLiveData<List<CartModel>>()
+    val errorResponse = MutableLiveData<ErrorResponse>()
     val merchantDetailResponse = MutableLiveData<MerchantDetail>()
     val merchantErrorResponse = MutableLiveData<MerchantListErrorResponse>()
 
     private val pikappService = PikappApiService()
     private val disposable = CompositeDisposable()
 
-    var tmpCart = arrayListOf<CartModel>()
     var tableNo = 0
     val cartType = MutableLiveData<String>()
     val paymentType = MutableLiveData<String>()
-
+    val phoneNumber = MutableLiveData<String>()
     val transactionSucccess = MutableLiveData<TransactionResponseDetail>()
+
+    var tmpCart = arrayListOf<CartModel>()
+
+    fun validateUser() {
+        loading.value = true
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+
+        disposable.add(
+            pikappService.getTransactionList(email, token)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<GetOrderListResponse>() {
+                    override fun onSuccess(t: GetOrderListResponse) {
+                        validateUserSuccess()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        var errorResponse: ErrorResponse
+                        try {
+                            Log.d("Debug", "error merchant detail : " + e)
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse = Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse = ErrorResponse("503", "Unavailable")
+                        }
+
+                        validateUserFail(errorResponse)
+                    }
+                })
+        )
+    }
+
+    private fun validateUserSuccess() {
+        userSuccess.value = true
+    }
+
+    private fun validateUserFail(err: ErrorResponse) {
+        errorResponse.value = err
+        loading.value = false
+    }
 
     fun getCart() {
         val cart = cartUtil.getCart()
@@ -57,6 +100,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
 
     fun getPaymentType() {
         paymentType.value = cartUtil.getPaymentType()
+        phoneNumber.value = sessionManager.getUserData()!!.phoneNumber
     }
 
     fun getMerchant() {

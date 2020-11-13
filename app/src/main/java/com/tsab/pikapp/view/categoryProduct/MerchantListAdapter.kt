@@ -53,6 +53,8 @@ class MerchantListAdapter(private val merchantList: ArrayList<MerchantList>, val
             productListAdapter.productList = productList
         }
 
+//        holder.view.productList.setHasFixedSize(true)
+//        holder.view.productList.isNestedScrollingEnabled = false
         holder.view.buttonMerchantCategory.setOnClickListener {
             val mid = holder.view.merchantId.text.toString()
             merchantClickInterface.onClickMerchant(mid)
