@@ -121,7 +121,7 @@
                             <TextView
                                 android:id="@+id/productNote"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:fontFamily="@font/proximanova_regular"
                                 android:text="@{String.valueOf(cartList.notes)}"
                                 android:textColor="#000000"

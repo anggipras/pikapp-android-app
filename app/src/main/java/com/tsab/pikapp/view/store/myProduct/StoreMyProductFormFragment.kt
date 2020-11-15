@@ -90,10 +90,10 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
         }
 
         dataBinding.buttonActionProduct.setOnClickListener {
-            val productName = dataBinding.textProductName.text.toString()
-            val textDescription = dataBinding.textDescription.text.toString()
-            val price = dataBinding.textPrice.text.toString()
-            val condition = dataBinding.textCondition.text.toString()
+            val productName = dataBinding.textProductName.text.trim().toString()
+            val textDescription = dataBinding.textDescription.text.trim().toString()
+            val price = dataBinding.textPrice.text.trim().toString()
+            val condition = dataBinding.textCondition.text.trim().toString()
 
             if (isAdd) {
                 viewModel.submitProduct((activity as StoreActivity), productName, textDescription, price, condition)

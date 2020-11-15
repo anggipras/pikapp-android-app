@@ -62,7 +62,7 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
         }
 
         dataBinding.buttonAddToCart.setOnClickListener {
-            viewModel.validateCart(mid, pid, pName, pImage, qty, pPrice, dataBinding.editTextMultiLine.text.toString())
+            viewModel.validateCart(mid, pid, pName, pImage, qty, pPrice, dataBinding.editTextMultiLine.text.trim().toString())
         }
         observeViewModel()
     }
