@@ -88,6 +88,9 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
         } else if(it.paymentWith == "WALLET_OVO") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_ovo)
             dataBinding.textPaymentType.text = "OVO"
+        } else if(it.paymentWith == "PAY_BY_CASHIER") {
+            dataBinding.imagePaymentType.setImageResource(R.drawable.ic_cashier)
+            dataBinding.textPaymentType.text = "Bayar di kasir"
         } else {
             dataBinding.imagePaymentType.visibility = View.GONE
             dataBinding.textPaymentType.visibility = View.GONE
@@ -97,50 +100,69 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
         }
         dataBinding.textTotalPrice.text = rupiahFormat(it.price!!.toLong())
 
-        if(it.status == "OPEN") {
-            dataBinding.buttonPay.visibility = View.VISIBLE
-            dataBinding.orderStatusContainer.visibility = View.GONE
-        } else if(it.status == "PAID") {
-            dataBinding.buttonPay.visibility = View.GONE
-            dataBinding.orderStatusContainer.visibility = View.VISIBLE
-            dataBinding.textOrderStatus.text = "Menunggu Konfirmasi"
-            dataBinding.textOrderGuide.visibility = View.GONE
-        } else if(it.status == "MERCHANT_CONFIRM") {
-            dataBinding.buttonPay.visibility = View.GONE
-            dataBinding.orderStatusContainer.visibility = View.VISIBLE
-            dataBinding.textOrderStatus.text = "Pesanan Diproses"
-            if(it.bizType == "TAKE_AWAY") {
-                dataBinding.textOrderGuide.visibility = View.VISIBLE
-                dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
-            } else {
-                if(it.tableNo == "0") {
+        when (it.status) {
+            "OPEN" -> {
+                dataBinding.buttonPay.visibility = View.GONE
+                dataBinding.orderStatusContainer.visibility = View.VISIBLE
+                dataBinding.textOrderStatus.text = "Menunggu Pembayaran"
+                if(it.paymentWith == "PAY_BY_CASHIER") {
                     dataBinding.textOrderGuide.visibility = View.VISIBLE
-                    dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
-                } else {
-                    dataBinding.textOrderGuide.visibility = View.VISIBLE
-                    dataBinding.textOrderGuide.text = "Ditunggu yah!"
-                }
-            }
-        } else if(it.status == "FINALIZE") {
-            dataBinding.buttonPay.visibility = View.GONE
-            dataBinding.orderStatusContainer.visibility = View.VISIBLE
-            dataBinding.textOrderStatus.text = "Pesanan Siap"
-            if(it.bizType == "TAKE_AWAY") {
-                dataBinding.textOrderGuide.visibility = View.VISIBLE
-                dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
-            } else {
-                if(it.tableNo == "0") {
-                    dataBinding.textOrderGuide.visibility = View.VISIBLE
-                    dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
-                } else {
+                    dataBinding.textOrderGuide.text = "Silakan tunjukkan transaksi ini ke kasir untuk melakukan pembayaran"
+                } else
                     dataBinding.textOrderGuide.visibility = View.GONE
+            }
+            "PAID" -> {
+                dataBinding.buttonPay.visibility = View.GONE
+                dataBinding.orderStatusContainer.visibility = View.VISIBLE
+                dataBinding.textOrderStatus.text = "Menunggu Konfirmasi"
+                dataBinding.textOrderGuide.visibility = View.GONE
+            }
+            "FAILED" -> {
+                dataBinding.buttonPay.visibility = View.GONE
+                dataBinding.orderStatusContainer.visibility = View.VISIBLE
+                dataBinding.textOrderStatus.text = "Transaksi Gagal"
+                dataBinding.textOrderGuide.visibility = View.VISIBLE
+                dataBinding.textOrderGuide.text = "Pembayaran melewati batas waktu"
+            }
+            "MERCHANT_CONFIRM" -> {
+                dataBinding.buttonPay.visibility = View.GONE
+                dataBinding.orderStatusContainer.visibility = View.VISIBLE
+                dataBinding.textOrderStatus.text = "Pesanan Diproses"
+                if(it.bizType == "TAKE_AWAY") {
+                    dataBinding.textOrderGuide.visibility = View.VISIBLE
+                    dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
+                } else {
+                    if(it.tableNo == "0") {
+                        dataBinding.textOrderGuide.visibility = View.VISIBLE
+                        dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
+                    } else {
+                        dataBinding.textOrderGuide.visibility = View.VISIBLE
+                        dataBinding.textOrderGuide.text = "Ditunggu yah!"
+                    }
                 }
             }
-        } else if (it.status == "CLOSE") {
-            dataBinding.buttonPay.visibility = View.GONE
-            dataBinding.orderStatusContainer.visibility = View.VISIBLE
-            dataBinding.textOrderStatus.text = "Pesanan Selesai"
-            dataBinding.textOrderGuide.visibility = View.GONE
+            "FINALIZE" -> {
+                dataBinding.buttonPay.visibility = View.GONE
+                dataBinding.orderStatusContainer.visibility = View.VISIBLE
+                dataBinding.textOrderStatus.text = "Pesanan Siap"
+                if(it.bizType == "TAKE_AWAY") {
+                    dataBinding.textOrderGuide.visibility = View.VISIBLE
+                    dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
+                } else {
+                    if(it.tableNo == "0") {
+                        dataBinding.textOrderGuide.visibility = View.VISIBLE
+                        dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
+                    } else {
+                        dataBinding.textOrderGuide.visibility = View.GONE
+                    }
+                }
+            }
+            "CLOSE" -> {
+                dataBinding.buttonPay.visibility = View.GONE
+                dataBinding.orderStatusContainer.visibility = View.VISIBLE
+                dataBinding.textOrderStatus.text = "Pesanan Selesai"
+                dataBinding.textOrderGuide.visibility = View.GONE
+            }
         }
 
     }

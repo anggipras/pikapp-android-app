@@ -44,9 +44,12 @@ class OrderListCohortAdapter(private val orderList: ArrayList<OrderList>, privat
         if (orderList[position].paymentWith == "WALLET_OVO") {
             holder.view.imagePaymentType.setImageResource(R.drawable.ic_ovo)
             holder.view.textPaymentType.text = "OVO"
-        } else {
+        } else if (orderList[position].paymentWith == "WALLET_DANA") {
             holder.view.imagePaymentType.setImageResource(R.drawable.ic_dana)
             holder.view.textPaymentType.text = "DANA"
+        } else if (orderList[position].paymentWith == "PAY_BY_CASHIER") {
+            holder.view.imagePaymentType.setImageResource(R.drawable.ic_cashier)
+            holder.view.textPaymentType.text = "Bayar di kasir"
         }
 
         holder.view.orderContainer.setOnClickListener {

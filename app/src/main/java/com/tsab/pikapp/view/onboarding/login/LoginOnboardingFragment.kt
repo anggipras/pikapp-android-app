@@ -70,11 +70,12 @@ class LoginOnboardingFragment : Fragment() {
                 dataBinding.buttonLogin.isClickable = false
 
                 Log.d("debug", "nama : ${response.newEvent!!}")
-                if (response.newEvent!!) {
-                    viewModel.goToUserExclusive(activity as OnboardingActivity)
-                } else {
-                    viewModel.goToHome(activity as OnboardingActivity)
-                }
+                viewModel.goToHome(activity as OnboardingActivity)
+//                if (response.newEvent!!) {
+//                    viewModel.goToUserExclusive(activity as OnboardingActivity)
+//                } else {
+//
+//                }
             }
         })
 

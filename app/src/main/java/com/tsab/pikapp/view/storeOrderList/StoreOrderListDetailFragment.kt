@@ -53,6 +53,11 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
             viewModel.getTransactionDetail(txnID, tableNo)
         }
 
+        dataBinding.buttonUpdateStatusPaid.setOnClickListener {
+            storeOrderListDetailInterface.changeOrderStatus(txnID, "PAID")
+            dismiss()
+        }
+
         dataBinding.buttonUpdateStatusReady.setOnClickListener {
             storeOrderListDetailInterface.changeOrderStatus(txnID, "MERCHANT_CONFIRM")
             dismiss()
@@ -107,6 +112,9 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
         } else if(it.paymentWith == "WALLET_OVO") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_ovo)
             dataBinding.textPaymentType.text = "OVO"
+        } else if(it.paymentWith == "PAY_BY_CASHIER") {
+            dataBinding.imagePaymentType.setImageResource(R.drawable.ic_cashier)
+            dataBinding.textPaymentType.text = "Bayar di kasir"
         } else {
             dataBinding.imagePaymentType.visibility = View.GONE
             dataBinding.textPaymentType.visibility = View.GONE
@@ -117,13 +125,20 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
         dataBinding.detailPaymentContainer.visibility = View.GONE
         dataBinding.spacePayment.visibility = View.GONE
 
-        if(it.status == "PAID") {
+        if(it.status == "OPEN") {
+            dataBinding.buttonUpdateStatusPaid.visibility = View.VISIBLE
+            dataBinding.buttonUpdateStatusReady.visibility = View.GONE
+            dataBinding.buttonUpdateStatusFinish.visibility = View.GONE
+        }else if(it.status == "PAID") {
+            dataBinding.buttonUpdateStatusPaid.visibility = View.GONE
             dataBinding.buttonUpdateStatusReady.visibility = View.GONE
             dataBinding.buttonUpdateStatusFinish.visibility = View.GONE
         } else if(it.status == "MERCHANT_CONFIRM") {
+            dataBinding.buttonUpdateStatusPaid.visibility = View.GONE
             dataBinding.buttonUpdateStatusReady.visibility = View.VISIBLE
             dataBinding.buttonUpdateStatusFinish.visibility = View.GONE
         } else if(it.status == "FINALIZE") {
+            dataBinding.buttonUpdateStatusPaid.visibility = View.GONE
             dataBinding.buttonUpdateStatusReady.visibility = View.GONE
             dataBinding.buttonUpdateStatusFinish.visibility = View.VISIBLE
         }

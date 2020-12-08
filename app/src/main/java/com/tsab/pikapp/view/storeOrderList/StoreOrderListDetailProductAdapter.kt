@@ -35,9 +35,10 @@ class StoreOrderListDetailProductAdapter(var productList: ArrayList<OrderDetailD
         holder.view.productName.text = productList[position].productName
         holder.view.productQty.text = "x${productList[position].productQty}"
         productList[position].productNote?.let {
-            if(it.isNotEmpty())
+            if(it.isNotEmpty()) {
+                holder.view.productNote.visibility = View.VISIBLE
                 holder.view.productNote.text = "Catatan : ${productList[position].productNote}"
-            else
+            } else
                 holder.view.productNote.visibility = View.GONE
         }
 //        holder.view.productPrice.text = rupiahFormat(productList[position].totalPrice!!.toLong())

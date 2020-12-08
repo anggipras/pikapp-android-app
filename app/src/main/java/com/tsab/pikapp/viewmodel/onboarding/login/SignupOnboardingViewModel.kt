@@ -95,11 +95,11 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
         } else if (detectSpecialCharacter(phone)) {
             phoneError.value = "Karakter spesial tidak diperbolehkan"
             isPhoneValid = false
-        } else if (phone.length < 10 || phone.length > 13) {
+        } else if (phone.length < 10 || phone.length > 15) {
             phoneError.value = "Masukan nomor telepon anda dengan benar"
             isPhoneValid = false
         } else if (!isPhoneValid(phone)) {
-            phoneError.value = "Masukan nomor telepon anda dengan benar1"
+            phoneError.value = "Gunakan format 08xxxxx"
             isPhoneValid = false
         } else{
             phoneError.value = ""
@@ -112,8 +112,8 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
         } else if (detectSpecialCharacter(password)) {
             passwordError.value = "Karakter spesial tidak diperbolehkan"
             isPasswordValid = false
-        } else if (password.length < 6) {
-            passwordError.value = "Minimal password 6 digit (kombinasi angka dan huruf)"
+        } else if (password.length < 8) {
+            passwordError.value = "Minimal password 8 digit (kombinasi angka dan huruf)"
             isPasswordValid = false
         } else {
             passwordError.value = ""

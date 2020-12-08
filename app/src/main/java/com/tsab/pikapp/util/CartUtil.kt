@@ -97,5 +97,5 @@ class CartUtil {
         }
     }
 
-    fun getPaymentType() = prefs?.getString(PREF_PAYMENTTYPE, "WALLET_OVO")
+    fun getPaymentType() = prefs?.getString(PREF_PAYMENTTYPE, "PAY_BY_CASHIER")
 }

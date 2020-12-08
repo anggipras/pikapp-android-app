@@ -143,10 +143,11 @@
 
                             <TextView
                                 android:id="@+id/textViewGrade"
-                                android:layout_width="110dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="25dp"
-                                android:background="@drawable/circular_dialog"
-                                android:backgroundTint="@color/colorAccent"
+                                android:paddingStart="20dp"
+                                android:paddingEnd="20dp"
+                                android:background="@drawable/button_blue"
                                 android:fontFamily="@font/proximanova_semibold"
                                 android:gravity="center"
                                 android:text="Classic User"

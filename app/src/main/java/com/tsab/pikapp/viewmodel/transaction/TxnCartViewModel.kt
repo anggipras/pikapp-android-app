@@ -39,6 +39,8 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     val merchantDetailResponse = MutableLiveData<MerchantDetail>()
     val merchantErrorResponse = MutableLiveData<MerchantListErrorResponse>()
 
+    val txnFail = MutableLiveData<ErrorResponse>()
+
     private val pikappService = PikappApiService()
     private val disposable = CompositeDisposable()
 
@@ -100,7 +102,10 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
 
     fun getPaymentType() {
         paymentType.value = cartUtil.getPaymentType()
-        phoneNumber.value = sessionManager.getUserData()!!.phoneNumber
+        if(cartUtil.getPaymentType() == "PAY_BY_CASHIER")
+            phoneNumber.value = ""
+        else
+            phoneNumber.value = sessionManager.getUserData()!!.phoneNumber
     }
 
     fun getMerchant() {
@@ -169,9 +174,11 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
                         if (no == "0") {
                             tableNo = 0
                             cartUtil.setCartType("TAKE_AWAY")
+                            cartUtil.setPaymentType("WALLET_OVO")
                         } else {
                             tableNo = no.toInt()
                             cartUtil.setCartType("DINE_IN")
+                            cartUtil.setPaymentType("PAY_BY_CASHIER")
                         }
                     }
                 }
@@ -181,7 +188,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
             type?.let {
                 if(it == "TAKE_AWAY") {
                     tableNo = 0
-
+                    cartUtil.setPaymentType("WALLET_OVO")
                 } else if (it == "DINE_IN") {
                     val deeplink = prefHelper.getStoredDeepLink()
                     deeplink?.let { deeplink ->
@@ -254,11 +261,13 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     }
 
     override fun onDialogDismiss() {
-        cartType.value = cartUtil.getCartType()
+        val carttype = cartUtil.getCartType()
+        cartType.value = carttype
+        getPaymentType()
     }
 
     override fun onPaymentDialogDismiss() {
-        paymentType.value = cartUtil.getPaymentType()
+        getPaymentType()
     }
 
     fun doPay(totalPrice: String) {
@@ -329,6 +338,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     }
 
     private fun transactionFail(err: ErrorResponse) {
-
+        txnFail.value = err
+        loading.value = false
     }
 }

@@ -111,9 +111,11 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
 
         viewModel.errorResponse.observe(this, Observer {
             if(it.errCode == "EC0021") {
-                Toast.makeText(activity as HomeActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
-                viewModel.clearSession(activity as HomeActivity)
-                viewModel.goToOnboardingFromHome(activity as HomeActivity)
+                Toast.makeText(activity as TransactionActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
+                viewModel.clearSession(activity as TransactionActivity)
+                viewModel.goToOnboardingFromTransaction(activity as TransactionActivity)
+            } else if(it.errCode == "EC0027") {
+                Toast.makeText(activity as TransactionActivity, "Akun Anda belum aktif. Silakan aktifkan akun Anda dengan verifikasi email", Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -129,15 +131,22 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
                     imagePaymentType.setImageResource(R.drawable.ic_dana)
                     textPaymentType.text = "DANA"
                 }
+            } else if(it == "PAY_BY_CASHIER") {
+                dataBinding.apply {
+                    imagePaymentType.setImageResource(R.drawable.ic_cashier)
+                    textPaymentType.text = "Bayar di kasir"
+                }
             }
         })
 
         viewModel.phoneNumber.observe(this, Observer {
             if(it.isNotEmpty()) {
                 dataBinding.apply {
+                    textPhoneNumber.visibility = View.VISIBLE
                     textPhoneNumber.text = "Nomor Anda : $it "
                 }
-            }
+            } else
+                dataBinding.textPhoneNumber.visibility = View.GONE
         })
 
         viewModel.merchantDetailResponse.observe(this, Observer {
@@ -161,6 +170,16 @@ class TxnCartFragment : Fragment(), TxnCartProductListAdapter.CartListInterface 
 
         viewModel.transactionSucccess.observe(this, Observer {
                 viewModel.goToPaymentPending(dataBinding.root)
+        })
+
+        viewModel.txnFail.observe(this, Observer {
+            if(it.errCode == "EC0021") {
+                Toast.makeText(activity as TransactionActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
+                viewModel.clearSession(activity as TransactionActivity)
+                viewModel.goToOnboardingFromTransaction(activity as TransactionActivity)
+            } else if(it.errCode == "EC0027") {
+                Toast.makeText(activity as TransactionActivity, "Akun Anda belum aktif. Silakan aktifkan akun Anda dengan verifikasi email", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 

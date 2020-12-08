@@ -90,9 +90,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximanova_semibold"
-                android:text="Daftarkan Email Anda"
+                android:text="Daftarkan Email Buku Tamu"
                 android:textColor="#000000"
                 android:textSize="25sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textOnboardingSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="di semua restoran di PikApp."
+                android:textColor="#000000"
+                android:textSize="17sp"
                 android:visibility="visible" />
 
             <EditText
@@ -100,8 +110,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="Masukan email anda"
+                android:hint="Masukkan email Anda"
                 android:inputType="textEmailAddress"
+                android:maxLength="50"
                 android:textColor="#000000" />
 
             <TextView
@@ -131,6 +142,7 @@
                 android:id="@+id/textFieldOnboardingSignupFullName"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
+                android:maxLength="50"
                 android:hint="Masukan nama anda"
                 android:inputType="textPersonName"
                 android:textColor="#000000"
@@ -169,6 +181,7 @@
                 android:inputType="phone"
                 android:textColor="#000000"
                 android:textSize="14sp"
+                android:maxLength="15"
                 android:visibility="gone"
                 app:autoSizeMaxTextSize="20sp"
                 app:autoSizeTextType="uniform" />
@@ -203,6 +216,7 @@
                 android:layout_height="37dp"
                 android:hint="Masukan password anda"
                 android:inputType="textPassword"
+                android:maxLength="16"
                 android:textColor="#000000"
                 android:textSize="14sp"
                 android:visibility="gone"

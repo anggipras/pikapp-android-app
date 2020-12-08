@@ -76,7 +76,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:fontFamily="@font/montserrat_bold"
-                            android:text="Metode pembayaran"
+                            android:text="Metode pembayaran Anda"
                             android:textColor="#000"
                             android:textSize="17sp" />
 
@@ -109,6 +109,20 @@
                                 android:textSize="17sp" />
 
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp" />
+
+                        <TextView
+                            android:id="@+id/textHowToPay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:fontFamily="@font/proximanova_regular"
+                            android:text="Silakan cek notifikasi Anda atau buka aplikasi OVO Anda untuk menyelesaikan pembayaran"
+                            android:textColor="#000"
+                            android:textSize="15sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

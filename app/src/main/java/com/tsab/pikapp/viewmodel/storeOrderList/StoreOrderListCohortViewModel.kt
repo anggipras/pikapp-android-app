@@ -86,7 +86,11 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
         } else {
             val bufferOrderList =  arrayListOf<StoreOrderList>()
             for(order in orderList) {
-                if(order.status != "OPEN") {
+                if(order.status == "OPEN") {
+                    if (order.paymentWith == "PAY_BY_CASHIER")
+                        bufferOrderList.add(order)
+                }
+                else {
                     bufferOrderList.add(order)
                 }
             }
@@ -111,7 +115,7 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
         orderList?.let {
             if (it.isNotEmpty()) {
                 for(order in it) {
-                    if(order.status == "PAID" || order.status == "MERCHANT_CONFIRM") {
+                    if(order.status == "OPEN" || order.status == "PAID" || order.status == "MERCHANT_CONFIRM") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -213,7 +217,9 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
     }
 
     override fun changeOrderStatus(txnID: String, stts: String) {
-        if (stts == "MERCHANT_CONFIRM" ) {
+        if (stts == "PAID") {
+            updateStatus(txnID, "MERCHANT_CONFIRM")
+        } else if (stts == "MERCHANT_CONFIRM" ) {
             updateStatus(txnID, "FINALIZE")
         } else if (stts == "FINALIZE") {
             updateStatus(txnID, "CLOSE")

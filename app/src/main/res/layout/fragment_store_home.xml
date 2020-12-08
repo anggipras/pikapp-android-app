@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="merchantDetail"
             type="com.tsab.pikapp.models.model.MerchantDetail" />
@@ -174,6 +173,7 @@
                             android:fontFamily="@font/proximanova_regular"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="12sp"
+                            android:visibility="gone"
                             android:text="Riwayat" />
 
                     </LinearLayout>

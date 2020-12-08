@@ -12,6 +12,9 @@ class TxnCartChooseTypeViewModel(application: Application) : BaseViewModel(appli
     val success = MutableLiveData<Boolean>()
     fun setType(selected: String) {
         cartUtil.setCartType(selected)
+        if(selected == "TAKE_AWAY") {
+            cartUtil.setPaymentType("WALLET_OVO")
+        }
         success.value = true
     }
 

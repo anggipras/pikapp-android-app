@@ -7,10 +7,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.HomeActivity
-import com.tsab.pikapp.view.OnboardingActivity
-import com.tsab.pikapp.view.OrderListActivity
-import com.tsab.pikapp.view.StoreOrderListActivity
+import com.tsab.pikapp.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -47,6 +44,12 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
 
     fun clearSession(context: Context) {
         sessionManager.logout()
+    }
+
+    fun goToOnboardingFromTransaction(context: Context) {
+        val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+        context.startActivity(onboardingActivity)
+        (context as TransactionActivity).finish()
     }
 
     fun goToOnboardingFromHome(context: Context) {

@@ -19,7 +19,7 @@
         <LinearLayout
             android:id="@+id/top_header_rl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="#fff"
@@ -36,7 +36,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -97,6 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="5dp"/>
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -112,7 +113,7 @@
                             <TextView
                                 android:id="@+id/productPrice"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/proximanova_regular"
                                 android:text=""
                                 android:textColor="#000000"
@@ -121,7 +122,7 @@
                             <TextView
                                 android:id="@+id/productNote"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/proximanova_regular"
                                 android:text="@{String.valueOf(cartList.notes)}"
                                 android:textColor="#000000"
@@ -132,41 +133,46 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
-                            android:gravity="center"
-                            android:padding="3dp"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:padding="3dp"
+                                android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/buttonDecrement"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:background="@drawable/button_light_gray_rounded"
-                                android:fontFamily="@font/montserrat_bold"
-                                android:text="-"
-                                android:textColor="#000"
-                                android:textSize="17sp" />
+                                <Button
+                                    android:id="@+id/buttonDecrement"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:background="@drawable/button_light_gray_rounded"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="-"
+                                    android:textColor="#000"
+                                    android:textSize="17sp" />
 
-                            <TextView
-                                android:id="@+id/textQuantity"
-                                android:layout_width="30dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
-                                android:fontFamily="@font/montserrat_bold"
-                                android:text="@{String.valueOf(cartList.qty)}"
-                                android:textAlignment="center"
-                                android:textColor="#000000"
-                                android:textSize="17sp" />
+                                <TextView
+                                    android:id="@+id/textQuantity"
+                                    android:layout_width="30dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="@{String.valueOf(cartList.qty)}"
+                                    android:textAlignment="center"
+                                    android:textColor="#000000"
+                                    android:textSize="17sp" />
 
-                            <Button
-                                android:id="@+id/buttonIncrement"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:background="@drawable/button_green_rounded"
-                                android:fontFamily="@font/montserrat_bold"
-                                android:text="+"
-                                android:textColor="#fff"
-                                android:textSize="17sp" />
+                                <Button
+                                    android:id="@+id/buttonIncrement"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:background="@drawable/button_green_rounded"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="+"
+                                    android:textColor="#fff"
+                                    android:textSize="17sp" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

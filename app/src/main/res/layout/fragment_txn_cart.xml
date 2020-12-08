@@ -189,6 +189,7 @@
                             android:layout_weight="2"
                             android:fontFamily="@font/proximanova_regular"
                             android:text=""
+                            android:visibility="visible"
                             android:textColor="#000"
                             android:textSize="14sp" />
                     </LinearLayout>

@@ -96,9 +96,7 @@ class HomeFragment : Fragment() {
         viewModel.isDeeplinkEnabled.observe(this, Observer {
             if (it) {
                 viewModel.goToMerchant(dataBinding.root)
-            } else {
             }
-
         })
 
         viewModel.isUserMerchant.observe(this, Observer {

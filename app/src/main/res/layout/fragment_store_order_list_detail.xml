@@ -147,76 +147,6 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:orientation="horizontal">
-
-                                <ImageView
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:src="@drawable/ic_pikafood" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:fontFamily="@font/proximanova_regular"
-                                        android:text="Store Location"
-                                        android:textColor="@color/colorGrey"
-                                        android:textSize="12sp" />
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="2dp" />
-
-                                    <TextView
-                                        android:id="@+id/merchantAddress"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginTop="2dp"
-                                        android:fontFamily="@font/montserrat_bold"
-                                        android:text="Alamat resto"
-                                        android:textColor="#000"
-                                        android:textSize="14sp" />
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="2dp" />
-
-                                    <TextView
-                                        android:id="@+id/merchantDistance"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginTop="2dp"
-                                        android:fontFamily="@font/montserrat_bold"
-                                        android:text="0.78km"
-                                        android:textColor="#000"
-                                        android:textSize="12sp"
-                                        android:visibility="gone"/>
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="#f0efef"
-                                android:orientation="horizontal" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="10dp" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -536,6 +466,29 @@
                         android:background="@android:color/white"
                         android:elevation="2dp"
                         android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/buttonUpdateStatusPaid"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="15dp"
+                            android:background="@drawable/button_green_rounded"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:text="Sudah Bayar"
+                                android:textAlignment="center"
+                                android:textColor="@android:color/white"
+                                android:textSize="20sp" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/buttonUpdateStatusReady"

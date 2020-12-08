@@ -72,7 +72,9 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     fun checkUserMerchantStatus() {
         val userAccess: UserAccess? = sessionManager.getUserData()
         Log.d("Debug", "user access : $userAccess")
-        isUserMerchant.value = userAccess!!.isMerchant!!
+        userAccess?.let {
+            isUserMerchant.value = it.isMerchant!!
+        }
     }
 
     fun goToStoreHome(context: Context) {

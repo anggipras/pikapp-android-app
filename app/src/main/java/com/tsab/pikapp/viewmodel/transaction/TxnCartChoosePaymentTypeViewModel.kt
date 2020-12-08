@@ -10,9 +10,14 @@ class TxnCartChoosePaymentTypeViewModel(application: Application) : BaseViewMode
     private var cartUtil = CartUtil(getApplication())
 
     val success = MutableLiveData<Boolean>()
+    val bizType = MutableLiveData<String>()
 
     fun setPaymentType(selected: String) {
         cartUtil.setPaymentType(selected)
         success.value = true
+    }
+
+    fun getBizType() {
+        bizType.value = cartUtil.getCartType()
     }
 }

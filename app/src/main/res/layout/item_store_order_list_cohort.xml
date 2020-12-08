@@ -83,7 +83,7 @@
                         android:text="NEW"
                         android:textColor="@color/colorRed"
                         android:textSize="16sp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <LinearLayout
                         android:layout_width="10dp"
@@ -173,6 +173,14 @@
                         android:layout_weight="1"
                         android:gravity="center|right"
                         android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageCashier"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_cashier"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/textTableNo"

@@ -20,7 +20,9 @@ data class UserAccess(
     @SerializedName("is_merchant")
     val isMerchant: Boolean?,
     @SerializedName("mid")
-    val mid: String?
+    val mid: String?,
+    @SerializedName("level")
+    val userLevel: String?
 ) {
     var expired: Long? = null
 }

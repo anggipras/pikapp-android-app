@@ -310,6 +310,7 @@ class SignupOnboardingFragment : Fragment() {
             transition.duration = 500
 
             transition.addTarget(dataBinding.textOnboardingSignupEmail)
+            transition.addTarget(dataBinding.textOnboardingSubtitle)
             transition.addTarget(dataBinding.textFieldOnboardingSignupEmail)
             transition.addTarget(dataBinding.textErrorOnboardingSignupEmail)
 
@@ -319,6 +320,7 @@ class SignupOnboardingFragment : Fragment() {
 
             //set gone
             dataBinding.textOnboardingSignupEmail.setTransitionVisibility(View.GONE)
+            dataBinding.textOnboardingSubtitle.setTransitionVisibility(View.GONE)
             dataBinding.textFieldOnboardingSignupEmail.setTransitionVisibility(View.GONE)
             dataBinding.textErrorOnboardingSignupEmail.setTransitionVisibility(View.GONE)
             dataBinding.loginSection.setTransitionVisibility(View.GONE)
@@ -326,6 +328,12 @@ class SignupOnboardingFragment : Fragment() {
             dataBinding.buttonOnboardingSignupSignup.setTransitionVisibility(View.INVISIBLE)
         } else {
             dataBinding.textOnboardingSignupEmail.apply {
+                visibility = View.GONE
+                animate()
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+            }
+            dataBinding.textOnboardingSubtitle.apply {
                 visibility = View.GONE
                 animate()
                     .setDuration(shortAnimationDuration.toLong())
