@@ -182,6 +182,19 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
                         }
                     }
                 }
+                if (it.address != "") {
+                    it.tableNo?.let { no ->
+                        if (no == "0") {
+                            tableNo = 0
+                            cartUtil.setCartType("TAKE_AWAY")
+                            cartUtil.setPaymentType("WALLET_OVO")
+                        } else {
+                            tableNo = no.toInt()
+                            cartUtil.setCartType("DINE_IN")
+                            cartUtil.setPaymentType("PAY_BY_CASHIER")
+                        }
+                    }
+                }
             }
             cartUtil.setCartIsNew(false)
         } else {

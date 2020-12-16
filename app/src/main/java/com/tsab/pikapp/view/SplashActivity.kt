@@ -29,13 +29,21 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             val uri: Uri? = intent.data
             var mid: String? = null
+            var address: String? = null
             var tableNo: String? = null
             if(uri != null) {
-                val params : List<String> = uri.pathSegments
-                mid = params[1]
-                tableNo = params[2]
+                val uriString = uri.toString()
+                if(uriString.contains("list")) {
+                    val params : List<String> = uri.pathSegments
+                    address = params[2]
+                    tableNo = params[3]
+                } else {
+                    val params : List<String> = uri.pathSegments
+                    mid = params[1]
+                    tableNo = params[2]
+                }
             }
-            viewModel.checkOnboardingFinished(this, mid, tableNo)
+            viewModel.checkOnboardingFinished(this, mid, address, tableNo)
             finish()
         }, 2000)
     }

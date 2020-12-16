@@ -102,31 +102,38 @@ class SharedPreferencesUtil {
         return LatestLocation(longitude, latitude)
     }
 
-    fun saveDeeplinkUrl(mid: String, tableNo: String?) {
+    fun saveDeeplinkUrl(mid: String?, address: String?, tableNo: String?) {
         prefs?.edit(commit = true) {
-            putString(DL_MERCHANTID, mid)
+            mid?.let {
+                putString(DL_MERCHANTID, it)
+            }
+            address?.let {
+                putString(DL_ADDRESS, it)
+            }
             tableNo?.let {
-                putString(DL_TABLENO, tableNo)
+                putString(DL_TABLENO, it)
             }
         }
-        storeDeepLink(mid, tableNo)
+        storeDeepLink(mid, address, tableNo)
     }
 
     fun deleteDeeplinkUrl() {
         prefs?.edit(commit = true) {
             putString(DL_MERCHANTID, "")
+            putString(DL_ADDRESS, "")
             putString(DL_TABLENO, "")
         }
     }
 
     fun getDeeplink(): DeepLinkModel {
         val mid = prefs?.getString(DL_MERCHANTID, "")
+        val address = prefs?.getString(DL_ADDRESS, "")
         val tableNo = prefs?.getString(DL_TABLENO, "")
-        return DeepLinkModel(mid, tableNo)
+        return DeepLinkModel(mid, address, tableNo)
     }
 
-    fun storeDeepLink(mid: String, tableNo: String?) {
-        val deeplLinkModel = DeepLinkModel(mid, tableNo)
+    fun storeDeepLink(mid: String?, address: String?, tableNo: String?) {
+        val deeplLinkModel = DeepLinkModel(mid, address, tableNo)
         val json = Gson().toJson(deeplLinkModel)
         prefs?.edit(commit = true) {
             putString(DEEPLINK, json)

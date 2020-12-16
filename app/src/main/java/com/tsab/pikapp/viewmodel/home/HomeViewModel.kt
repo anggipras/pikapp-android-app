@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnCompleteListener
+import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.LocationModel
 import com.tsab.pikapp.util.LocationLiveData
 import com.tsab.pikapp.view.OrderListActivity
@@ -43,6 +44,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     val isUserMerchant = MutableLiveData<Boolean>()
     val notificationActive = MutableLiveData<Boolean>()
+    var deeplinkTarget = ""
 
     fun goToProfile(context: Context) {
         val profileFragment = ProfileFragment()
@@ -66,7 +68,13 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     fun checkDeeplink() {
         val deeplink = prefHelper.getDeeplink()
-        isDeeplinkEnabled.value = !deeplink.mid.isNullOrEmpty()
+        if(deeplink.mid!! != "") {
+            deeplinkTarget = "merchant"
+            isDeeplinkEnabled.value = true
+        } else if (deeplink.address!! != "") {
+            deeplinkTarget = "list"
+            isDeeplinkEnabled.value = true
+        }
     }
 
     fun checkUserMerchantStatus() {
@@ -89,9 +97,15 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     fun goToMerchant(view: View) {
         val deeplink = prefHelper.getDeeplink()
-        val action =
-            HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
-        Navigation.findNavController(view).navigate(action)
+//        if (Navigation.findNavController(view).currentDestination?.id == R.id.homeFragment) {
+            if(deeplinkTarget == "merchant"){
+                val action = HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
+                Navigation.findNavController(view).navigate(action)
+            } else if(deeplinkTarget == "list"){
+                val action = HomeFragmentDirections.actionToCategoryFragment(1L)
+                Navigation.findNavController(view).navigate(action)
+            }
+//        }
     }
 
     fun checkNotification() {

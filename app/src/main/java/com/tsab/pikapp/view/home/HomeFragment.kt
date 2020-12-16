@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var dataBinding: FragmentHomeBinding
+    private var locationUpdate = false
 
     private var isFirstTime = true
 
@@ -94,8 +95,9 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.isDeeplinkEnabled.observe(this, Observer {
-            if (it) {
-                viewModel.goToMerchant(dataBinding.root)
+            if (it && !locationUpdate) {
+                viewModel.goToMerchant(view)
+                locationUpdate = true
             }
         })
 

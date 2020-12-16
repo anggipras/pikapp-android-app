@@ -62,6 +62,7 @@ data class LocationModel(
 
 data class DeepLinkModel(
     val mid: String?,
+    val address: String?,
     val tableNo: String?
 )
 

@@ -27,7 +27,7 @@ class SplashViewModel(application: Application): BaseViewModel(application) {
         prefHelper.setNotificationDetail(NotificationModel(isMerchant, txn, tableNo))
     }
 
-    fun checkOnboardingFinished(context: Context, mid: String?, tableNo: String?) {
+    fun checkOnboardingFinished(context: Context, mid: String?, address:String?, tableNo: String?) {
 
         prefHelper.clearOrderList()
         prefHelper.deleteStoredDeepLink()
@@ -38,8 +38,12 @@ class SplashViewModel(application: Application): BaseViewModel(application) {
 
         val isUserLogin = sessionManager.isLoggingIn() ?: false
 
-        if(!mid.isNullOrEmpty()) {
-            prefHelper.saveDeeplinkUrl(mid, tableNo)
+        if(!mid.isNullOrEmpty() || !address.isNullOrEmpty()) {
+            var addressSplit : String? = null
+            address?.let {
+               addressSplit = address.replace('_', ' ')
+            }
+            prefHelper.saveDeeplinkUrl(mid, addressSplit, tableNo)
         }
 
         if (isUserLogin) {

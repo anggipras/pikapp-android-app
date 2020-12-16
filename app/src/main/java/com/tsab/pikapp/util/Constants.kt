@@ -26,3 +26,4 @@ const val CONST_TABLE_NO = "table no"
 //DEEP LINK CONST
 const val DL_MERCHANTID= "deeplink merchant id"
 const val DL_TABLENO= "deeplink table no"
+const val DL_ADDRESS= "deeplink address"

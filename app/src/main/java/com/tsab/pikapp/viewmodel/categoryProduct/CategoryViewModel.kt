@@ -150,7 +150,25 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun merchantRetrieved(merchantList: List<MerchantList>) {
-        merchantResponse.value = merchantList
+        val deeplink = prefHelper.getDeeplink()
+        if(deeplink.address != "") {
+            filterMerchant(merchantList)
+        } else {
+            merchantResponse.value = merchantList
+            merchantLoadError.value = false
+            loading.value = false
+        }
+    }
+
+    private fun filterMerchant(merchantList: List<MerchantList>) {
+        val deeplink = prefHelper.getDeeplink()
+        var filteredMerchant = arrayListOf<MerchantList>()
+        for(merchant in merchantList) {
+            if(merchant.merchantAddress!!.contains(deeplink.address!!)) {
+                filteredMerchant.add(merchant)
+            }
+        }
+        merchantResponse.value = filteredMerchant
         merchantLoadError.value = false
         loading.value = false
     }
