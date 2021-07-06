@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "865001959940",
+    "firebase_url": "https://pikapp-dev-3789c.firebaseio.com",
+    "project_id": "pikapp-dev-3789c",
+    "storage_bucket": "pikapp-dev-3789c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865001959940:android:de870b305d87da7d15fb51",
+        "android_client_info": {
+          "package_name": "com.tsab.pikapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865001959940-c57j320f41cl6tcdgf85bk7usgojqe5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpgv_S1kGc7pYaxSh_q6Q-IWz_qlIwQpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865001959940-c57j320f41cl6tcdgf85bk7usgojqe5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

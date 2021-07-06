@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true">
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/containerOnboarding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        app:layoutDescription="@xml/fragment_signup_onboarding_scene"
+        tools:context=".view.onboarding.login.SignupOnboardingFragment">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="304dp"
+            android:layout_height="241dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/imgdaftar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewOnboarding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="200dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Daftar"
+            android:textColor="#FFFFFF"
+            android:textSize="43sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewOnboardingBG"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_login_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOnboarding" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutOnboarding"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewOnboardingBG"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="@+id/imageViewOnboardingBG"
+            app:layout_constraintTop_toTopOf="@+id/imageViewOnboardingBG">
+
+            <TextView
+                android:id="@+id/textOnboardingYourEmail"
+                android:layout_width="match_parent"
+                android:layout_height="27sp"
+                android:text="Email Anda:"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="23sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textOnboardingEmailValid"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:text="example@mail.com"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textOnboardingSignupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="Daftarkan Email Buku Tamu"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textOnboardingSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="di semua restoran di PikApp."
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="Masukkan email Anda"
+                android:inputType="textEmailAddress"
+                android:maxLength="50"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingSignupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Masukkan email anda secara valid."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="invisible" />
+
+            <!--            full name             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupFullName"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Nama Lengkap"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupFullName"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:maxLength="50"
+                android:hint="Masukan nama anda"
+                android:inputType="textPersonName"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingFullName"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--            phone number             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupPhone"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Nomor Telepon"
+                android:textColor="#000000"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupPhone"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="contoh: 081xxxxxxxxx"
+                android:inputType="phone"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:maxLength="15"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingPhone"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--            password             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Password"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="Masukan password anda"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingSignupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--           confirm password             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Konfirmasi Password"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="Masukan password anda"
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingSignupConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupFullName"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:hint="Masukan nama anda"-->
+            <!--                android:inputType="textPersonName"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone"-->
+            <!--                android:maxLength="50"/>-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingFullName"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            &lt;!&ndash;            phone number             &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/textOnboardingSignupPhone"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Nomor Telepon"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="18sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupPhone"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:hint="contoh: 6281xxxxxxxxx"-->
+            <!--                android:inputType="phone"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone"-->
+            <!--                android:maxLength="15"/>-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingPhone"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            &lt;!&ndash;            password             &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/textOnboardingSignupPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Password"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="18sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:hint="Masukan password anda"-->
+            <!--                android:inputType="textPassword"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingSignupPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            &lt;!&ndash;           confirm password             &ndash;&gt;-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/textOnboardingSignupConfirmPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Konfirmasi Password"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:textSize="18sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <EditText-->
+            <!--                android:id="@+id/textFieldOnboardingSignupConfirmPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:hint="Masukan password anda"-->
+            <!--                android:inputType="textPassword"-->
+            <!--                android:textColor="#000000"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/textErrorOnboardingSignupConfirmPassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/proximanova_regular"-->
+            <!--                android:text="Masukkan nama anda."-->
+            <!--                android:textColor="?attr/colorError"-->
+            <!--                android:textSize="13sp"-->
+            <!--                android:visibility="gone" />-->
+
+            <Button
+                android:id="@+id/buttonOnboardingSignupSignup"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="35dp"
+                android:background="@drawable/button_yellow"
+                android:fontFamily="@font/proximanova_bold"
+                android:text="Daftar"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/loginSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text="Sudah punya akun? Masuk "
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:text="disini"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/buttonOnboardingSignupAnotherWay"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="35dp"
+                android:background="@drawable/button_gray"
+                android:fontFamily="@font/proximanova_bold"
+                android:text="Cara Lain"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loadingViewOnboardingSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_store_orderlist"
+    app:startDestination="@id/storeOrderListStatusFragment">
+
+    <fragment
+        android:id="@+id/storeOrderListStatusFragment"
+        android:name="com.tsab.pikapp.view.storeOrderList.StoreOrderListStatusFragment"
+        android:label="StoreOrderListStatusFragment" />
+</navigation>

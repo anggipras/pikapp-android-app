@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        tools:context=".view.onboarding.login.SignupOnboardingFragment">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="304dp"
+            android:layout_height="241dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/imgdaftar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewOnboarding"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="100dp"
+            android:autoSizeMaxTextSize="43sp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Daftar"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewOnboardingBG"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_login_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewOnboarding" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutOnboarding"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewOnboardingBG"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="@+id/imageViewOnboardingBG"
+            app:layout_constraintTop_toTopOf="@+id/imageViewOnboardingBG">
+
+            <TextView
+                android:id="@+id/textOnboardingYourEmail"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:text="Email Anda:"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="23sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textOnboardingEmailValid"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:text="example@mail.com"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textOnboardingSignupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Daftarkan Email Anda"
+                android:textColor="#000000"
+                android:textSize="25sp"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Masukan email anda"
+                android:inputType="textEmailAddress"
+                android:textColor="#000000"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingSignupEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email tidak terdaftar."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!--            full name             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupFullName"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Nama Lengkap"
+                android:textColor="#000000"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupFullName"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="Masukan nama anda"
+                android:inputType="textEmailAddress"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingFullName"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:visibility="invisible"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--            phone number             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupPhone"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Nomor Telepon"
+                android:textColor="#000000"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupPhone"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="Masukan nomor telepon anda"
+                android:inputType="textEmailAddress"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textOnboardingErrorPhone"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="invisible"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform" />
+
+            <!--            password             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Password"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="Masukan password anda"
+                android:inputType="textEmailAddress"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                android:id="@+id/textErrorOnboardingSignupPassword"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="invisible"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform"/>
+
+            <!--           confirm password             -->
+            <TextView
+                android:id="@+id/textOnboardingSignupConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="Konfirmasi Password"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform" />
+
+            <EditText
+                android:id="@+id/textFieldOnboardingSignupConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:hint="Masukan password anda"
+                android:inputType="textPassword"
+                android:textColor="#000000"
+                android:visibility="visible"
+                android:textSize="14sp"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeTextType="uniform"/>
+
+            <TextView
+                android:id="@+id/textErrorOnboardingSignupConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text="Masukkan nama anda."
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="invisible"
+                app:autoSizeMaxTextSize="13sp"
+                app:autoSizeTextType="uniform"/>
+
+            <Button
+                android:id="@+id/buttonOnboardingSignupSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorPrimary"
+                android:text="Daftar" />
+
+            <TextView
+                android:id="@+id/textOnboardingOr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="ATAU"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/buttonOnboardingSignupAnotherWay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Cara Lain"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loadingViewOnboardingSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login"
+    app:startDestination="@id/onboardingThird">
+
+
+    <fragment
+        android:id="@+id/onboardingThird"
+        android:name="com.tsab.pikapp.view.onboarding.screens.OnboardingThird"
+        android:label="OnboardingThird">
+        <action
+            android:id="@+id/actionToLoginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/actionToSignupFragment"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.tsab.pikapp.view.onboarding.login.LoginOnboardingFragment"
+        android:label="LoginOnboardingFragment" />
+
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.tsab.pikapp.view.login.SignupFragment"
+        android:label="SignupFragment">
+        <action
+            android:id="@+id/actionToSignupSuccessFragment"
+            app:destination="@id/signupSuccessFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/onboardingThird"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupSuccessFragment"
+        android:name="com.tsab.pikapp.view.login.SignupSuccessFragment"
+        android:label="SignupSuccessFragment">
+        <action
+            android:id="@+id/actionBackToLoginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/onboardingThird"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+
+</navigation>

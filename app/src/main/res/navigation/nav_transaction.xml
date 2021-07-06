@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_transaction"
+    app:startDestination="@id/txnCartFragment">
+
+    <fragment
+        android:id="@+id/txnCartFragment"
+        android:name="com.tsab.pikapp.view.transaction.TxnCartFragment"
+        android:label="fragment_txn_cart"
+        tools:layout="@layout/fragment_txn_cart">
+        <action
+            android:id="@+id/actionToTxnPaymentPendingFragment"
+            app:destination="@id/txnPaymentPendingFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/txnPaymentPendingFragment"
+        android:name="com.tsab.pikapp.view.transaction.TxnPaymentPendingFragment"
+        android:label="fragment_txn_payment_pending"/>
+</navigation>
