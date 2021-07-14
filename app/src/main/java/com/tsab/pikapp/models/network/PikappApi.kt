@@ -5,11 +5,21 @@ import com.tsab.pikapp.models.model.MerchantListResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface PikappApi {
-
     // AUTH
+    @POST("merchant/v1/merchant-login/")
+    fun loginMerchant(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Body loginRequest: LoginRequestV2
+    ): Call<LoginResponseV2>
 
     @POST("auth/login")
     fun loginUser(

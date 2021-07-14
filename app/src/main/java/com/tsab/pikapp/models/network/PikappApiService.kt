@@ -8,6 +8,7 @@ import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +28,13 @@ class PikappApiService {
         val loginData = LoginRequest(email, password, fcmToken)
         Log.d("Debug", "fcm token : $fcmToken")
         return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
+    }
+
+    fun loginMerchant(username: String, pin: String, token: String): Call<LoginResponseV2> {
+        val uuid = getUUID()
+        val loginData = LoginRequestV2(username, pin, token)
+        Log.d("Debug", "fcm token : $token")
+        return api.loginMerchant(uuid, getTimestamp(), getClientID(), loginData)
     }
 
     fun logoutUser(sessionID: String): Single<LogoutResponse> {

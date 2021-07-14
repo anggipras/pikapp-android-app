@@ -11,6 +11,39 @@ data class LoginRequest(
     val fcmToken: String?
 )
 
+data class LoginRequestV2(
+    @SerializedName("username")
+    var username: String? = null,
+
+    @SerializedName("pin")
+    var pin: String? = null,
+
+    @SerializedName("token")
+    var token: String? = null
+)
+
+data class LoginResponseV2(
+    @SerializedName("err_code")
+    val errCode: String?,
+
+    @SerializedName("err_message")
+    val errMessage: String?,
+
+    @SerializedName("results")
+    val results: LoginResultV2?
+)
+
+data class LoginResultV2 (
+    @SerializedName("token")
+    val token: String?,
+
+    @SerializedName("is_verified")
+    val isVerified: Boolean?,
+
+    @SerializedName("login_time")
+    val loginTime: String?
+)
+
 data class LoginResponse(
     @SerializedName("err_code")
     val errCode: String?,

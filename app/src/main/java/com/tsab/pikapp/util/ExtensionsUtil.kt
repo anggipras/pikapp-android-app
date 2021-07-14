@@ -37,6 +37,12 @@ fun getProgressDrawable(context: Context): CircularProgressDrawable {
     }
 }
 
+fun isUsernameValid(str: String?): Boolean {
+
+    //TODO : check only allow for digit
+    return true
+}
+
 fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
         .placeholder(progressDrawable)

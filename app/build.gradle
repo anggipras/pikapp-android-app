@@ -84,6 +84,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    apply plugin: 'com.android.application'
+    apply plugin: 'kotlin-android'
+    apply plugin: 'androidx.navigation.safeargs.kotlin'
+    apply plugin: 'kotlin-android-extensions'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "com.android.support:design:$supportVersion"
 
@@ -110,6 +114,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 
     implementation "com.android.support:palette-v7:$supportVersion"
+
+    implementation 'com.github.GoodieBag:Pinview:v1.4'
 
     implementation "androidx.preference:preference:$preferencesVersion"
     // Dynamic Feature Module Support

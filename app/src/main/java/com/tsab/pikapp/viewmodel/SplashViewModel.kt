@@ -11,6 +11,7 @@ import com.tsab.pikapp.util.CartUtil
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.util.decodeJWT
+import com.tsab.pikapp.view.CarouselActivity
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
@@ -69,13 +70,13 @@ class SplashViewModel(application: Application): BaseViewModel(application) {
                     }
                 } else {
                     sessionManager.logout()
-                    val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+                    val onboardingActivity = Intent(context, CarouselActivity::class.java)
                     context.startActivity(onboardingActivity)
                 }
             }
 
         } else {
-            val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+            val onboardingActivity = Intent(context, CarouselActivity::class.java)
             context.startActivity(onboardingActivity)
         }
     }
