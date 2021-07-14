@@ -9,8 +9,17 @@ import retrofit2.http.*
 
 interface PikappApi {
 
-    // AUTH
+    // Merchant LOGIN, REGISTER, AND LOGOUT
+    @POST("merchant/v1/merchant-login/")
+    fun login(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Body loginRequest: LoginRequestV2
+    ): Single<LoginResponseV2>
 
+
+    // AUTH
     @POST("auth/login")
     fun loginUser(
         @Header("x-request-id") uuid: String,
