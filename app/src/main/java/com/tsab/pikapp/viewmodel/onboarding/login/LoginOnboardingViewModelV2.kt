@@ -77,8 +77,8 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
             apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<LoginResponse>() {
-                    override fun onSuccess(t: LoginResponse) {
+                .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
+                    override fun onSuccess(t: LoginResponseV2) {
                         loginSuccess(t)
 //                        Toast.makeText(getApplication(), "token: ${t.token}", Toast.LENGTH_SHORT).show()
                     }
@@ -106,15 +106,13 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         )
     }
 
-    private fun loginSuccess(response: LoginResponse) {
+    private fun loginSuccess(response: LoginResponseV2) {
         loginResponse.value = response
         loading.value = false
 
-        response.newEvent?.let { prefHelper.saveUserExclusive(response.newEvent) }
-        response.recommendationStatus?.let { prefHelper.saveUserExclusiveForm(response.recommendationStatus) }
-        response.token?.let {
-            val userData: UserAccess = decodeJWT(response.token)
-            sessionManager.setUserSession(response.token, System.nanoTime(), userData)
+        response.results?.token?.let {
+            val userData: UserAccess = decodeJWT(response.results.token)
+            sessionManager.setUserSession(response.results.token, System.nanoTime(), userData)
         }
 
         prefHelper.saveOnboardingFinised(true)
