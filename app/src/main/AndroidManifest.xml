@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".view.HomeV2Activity"></activity>
+        <activity android:name=".view.RegisterV2Activity"></activity>
+        <activity android:name=".view.HomeV2Activity" />
         <activity android:name=".view.LoginV2Activity" />
         <activity android:name=".view.onboarding.login.LoginV2Page2" />
         <activity android:name=".view.onboarding.login.LoginV2Page1" />

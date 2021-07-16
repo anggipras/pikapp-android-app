@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="50dp"
+    tools:context=".view.onboarding.login.BankNameFragment"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:id="@+id/closeBtn"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_baseline_close_24"
+        android:layout_gravity="right"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Pilih Bank"
+        android:textColor="#000000"
+        android:textSize="16dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:id="@+id/bankname"
+        android:checkedButton="@id/BCA"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp">
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BANK CENTRAL ASIA (BCA)"
+            android:id="@+id/BCA"
+            android:paddingRight="70dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="15dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:textColor="#767676"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BANK NEGARA INDONESIA (BNI)"
+            android:paddingRight="70dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="15dp"
+            android:id="@+id/BNI"
+            android:layout_marginTop="10dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:textColor="#767676"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BANK RAKYAT INDONESIA (BRI)"
+            android:paddingRight="70dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:id="@+id/BRI"
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:textColor="#767676"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BANK MANDIRI"
+            android:paddingRight="70dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="15dp"
+            android:id="@+id/Mandiri"
+            android:layoutDirection="rtl"
+            android:layout_marginTop="10dp"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:textColor="#767676"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BANK CIMB NIAGA"
+            android:paddingRight="70dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="15dp"
+            android:id="@+id/CIMB"
+            android:layoutDirection="rtl"
+            android:layout_marginTop="10dp"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:textColor="#767676"/>
+
+    </RadioGroup>
+
+    <ImageButton
+        android:layout_width="307dp"
+        android:id="@+id/btnoke"
+        android:layout_height="77dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/okebtn" />
+
+</LinearLayout>

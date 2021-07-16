@@ -96,6 +96,14 @@ data class ErrorResponse(
     val errMessage: String?
 )
 
+data class BaseResponse(
+        @SerializedName("err_code")
+        val errCode: String?,
+
+        @SerializedName("err_message")
+        val errMessage: String?
+)
+
 data class LogoutResponse(
     @SerializedName("err_code")
     override val errCode: String?,
