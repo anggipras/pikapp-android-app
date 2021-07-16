@@ -200,8 +200,13 @@ fun substringPhone(str: String?): String? {
     return str
 }
 
+<<<<<<< HEAD
 fun isUsernameValid(str: String?): Boolean {
 
     //TODO : check only allow for digit
     return true
 }
+=======
+
+
+>>>>>>> dee6d0a462729ddb45c652ddbcdff22dbcffa0ac

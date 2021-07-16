@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class PikappApiService {
 
-    private val api = Retrofit.Builder()
+    val api = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
