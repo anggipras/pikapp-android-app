@@ -31,7 +31,7 @@ class PikappApiService {
         return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
     }
 
-    fun loginMerchant(username: String, pin: String, token: String): Call<LoginResponseV2> {
+    fun loginMerchant(username: String, pin: String, token: String): Single<LoginResponseV2> {
         val uuid = getUUID()
         val loginData = LoginRequestV2(username, pin, token)
         Log.d("Debug", "fcm token : $token")

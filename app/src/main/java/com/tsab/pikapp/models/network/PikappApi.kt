@@ -19,7 +19,7 @@ interface PikappApi {
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Body loginRequest: LoginRequestV2
-    ): Call<LoginResponseV2>
+    ): Single<LoginResponseV2>
 
     @Multipart
     @POST("merchant/v1/merchant-registration/")
