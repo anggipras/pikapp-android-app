@@ -2,24 +2,13 @@ package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginRequest(
-    @SerializedName("username")
-    val email: String?,
-    @SerializedName("password")
-    val password: String?,
-    @SerializedName("fcm_token")
-    val fcmToken: String?
-)
-
 data class LoginRequestV2(
     @SerializedName("username")
-    var username: String? = null,
-
+    val username: String?,
     @SerializedName("pin")
-    var pin: String? = null,
-
+    val pin: String?,
     @SerializedName("token")
-    var token: String? = null
+    val token: String?
 )
 
 data class LoginResponseV2(
@@ -42,6 +31,15 @@ data class LoginResultV2 (
 
     @SerializedName("login_time")
     val loginTime: String?
+)
+
+data class LoginRequest(
+    @SerializedName("username")
+    val email: String?,
+    @SerializedName("password")
+    val password: String?,
+    @SerializedName("fcm_token")
+    val fcmToken: String?
 )
 
 data class LoginResponse(
