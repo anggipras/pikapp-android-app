@@ -14,6 +14,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreHomeBinding
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.store.StoreHomeViewModel
 
 class StoreHomeFragment : Fragment() {
@@ -50,7 +51,9 @@ class StoreHomeFragment : Fragment() {
             val action = StoreHomeFragmentDirections.actionToStoreMyProductFragment()
             Navigation.findNavController(view).navigate(action)
         }
-
+        dataBinding.logoutBtn.setOnClickListener {
+            viewModel.logout(activity as StoreActivity)
+        }
         observeViewModel()
     }
 
@@ -69,5 +72,18 @@ class StoreHomeFragment : Fragment() {
                 viewModel.goToOrderList(activity as StoreActivity)
             }
         })
+
+        viewModel.logoutResponse.observe(this, Observer { response ->
+            response?.let {
+                viewModel.clearSessionExclusive(activity as StoreActivity)
+            }
+        })
+
+        viewModel.errorResponse.observe(this, Observer { errorResponse ->
+            errorResponse?.let {
+                errorResponse.errMessage?.let { err -> viewModel.createToast(err) }
+            }
+        })
+
     }
 }

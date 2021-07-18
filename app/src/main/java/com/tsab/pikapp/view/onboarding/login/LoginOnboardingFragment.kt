@@ -44,7 +44,6 @@ class LoginOnboardingFragment : Fragment() {
             Log.d("Debug", "email : " + email)
             viewModel.login(email, password)
         }
-
         observeViewModel()
     }
 

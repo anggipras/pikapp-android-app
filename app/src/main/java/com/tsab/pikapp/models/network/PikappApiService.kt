@@ -30,7 +30,7 @@ class PikappApiService {
         return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
     }
 
-    fun loginMerchant(username: String, pin: String, token: String): Call<LoginResponseV2> {
+    fun loginMerchant(username: String, pin: String, token: String): Single<LoginResponseV2> {
         val uuid = getUUID()
         val loginData = LoginRequestV2(username, pin, token)
         Log.d("Debug", "fcm token : $token")
@@ -39,6 +39,10 @@ class PikappApiService {
 
     fun logoutUser(sessionID: String): Single<LogoutResponse> {
         return api.logoutUser(getUUID(), getTimestamp(), getClientID(), sessionID)
+    }
+
+    fun logoutMerchant(sessionID: String): Single<LogoutResponseV2> {
+        return api.logoutMerchant(getUUID(), getClientID(), getTimestamp(), sessionID)
     }
 
     fun registerUser(email: String, password: String, fullName: String, phoneNumber: String, birthday: String, gender: String): Single<RegisterResponse> {
