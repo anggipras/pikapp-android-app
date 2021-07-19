@@ -1,11 +1,12 @@
 package com.tsab.pikapp.view.onboarding.screens
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.RegisterV2Activity
@@ -29,7 +30,10 @@ class CarouselThreeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        masuk.setOnClickListener {
+
+        textMasuk.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
+        textMasuk.setOnClickListener {
             val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
             activity?.startActivity(intent)
         }
