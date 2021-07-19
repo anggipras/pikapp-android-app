@@ -108,3 +108,10 @@ data class LogoutResponse(
     @SerializedName("err_message")
     override val errMessage: String?
 ) : Response
+
+data class LogoutResponseV2(
+        @SerializedName("err_code")
+        override val errCode: String?,
+        @SerializedName("err_message")
+        override val errMessage: String?
+) : Response

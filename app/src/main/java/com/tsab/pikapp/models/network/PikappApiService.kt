@@ -42,6 +42,10 @@ class PikappApiService {
         return api.logoutUser(getUUID(), getTimestamp(), getClientID(), sessionID)
     }
 
+    fun logoutMerchant(sessionID: String): Single<LogoutResponseV2> {
+        return api.logoutMerchant(getUUID(), getClientID(), getTimestamp(), sessionID)
+    }
+
     fun registerUser(email: String, password: String, fullName: String, phoneNumber: String, birthday: String, gender: String): Single<RegisterResponse> {
         val registerData = RegisterRequest(email = email, password = password, fullName = fullName, phoneNumber = phoneNumber, birthday = birthday, gender = gender)
         return api.registerUser(getUUID(), getTimestamp(), getClientID(), registerData)

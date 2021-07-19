@@ -24,6 +24,7 @@ import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.HomeV2Activity
+import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.StoreActivity
 import kotlinx.android.synthetic.main.fragment_signup_v2_third.*
 import okhttp3.MediaType
@@ -184,7 +185,7 @@ class SignupV2ThirdFragment : Fragment() {
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if(response.code() == 200 && response.body()!!.errCode.toString() == "EC0000"){
-                    val intent = Intent(activity?.baseContext, HomeV2Activity::class.java)
+                    val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
                     activity?.startActivity(intent)
                 }else {
                     var errorResponse: BaseResponse? = gson1.fromJson(response.errorBody()!!.charStream(), type1)

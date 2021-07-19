@@ -69,6 +69,14 @@ interface PikappApi {
         @Header("x-session-id") sessionID: String
     ): Single<LogoutResponse>
 
+    @GET("merchant/exit/")
+    fun logoutMerchant(
+            @Header("x-request-id") uuid: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-session-id") sessionID: String
+    ): Single<LogoutResponseV2>
+
     // HOME
     @POST("home/v1/exclusive-member")
     fun postUserExclusive(

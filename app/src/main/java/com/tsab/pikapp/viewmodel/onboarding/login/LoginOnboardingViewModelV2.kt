@@ -17,6 +17,7 @@ import com.tsab.pikapp.viewmodel.BaseViewModel
 import com.google.gson.Gson
 import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -74,6 +75,34 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     private fun loginProcess(username: String, pin: String) {
         loading.value = true
         disposable.add(
+                apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
+                            override fun onSuccess(t: LoginResponseV2) {
+                                loginSuccess(t)
+                            }
+
+                            override fun onError(e: Throwable) {
+                                Log.d("Debug", "error : " + e)
+                                var errorResponse: ErrorResponse
+                                try {
+                                    val responseBody = (e as HttpException)
+                                    val body = responseBody.response()?.errorBody()?.string()
+                                    errorResponse =
+                                            Gson().fromJson(body, ErrorResponse::class.java)
+                                } catch (err: Throwable) {
+                                    errorResponse =
+                                            ErrorResponse(
+                                                    "503",
+                                                    "Service Unavailable"
+                                            )
+                                }
+                                loginFail(errorResponse)
+                                createToastShort(getApplication(), "error: ${errorResponse.errMessage}")
+//                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
             apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,7 +153,8 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     }
 
     fun goToHome(context: Context) {
-        val homeActivity = Intent(context, HomeActivity::class.java)
+        //val homeActivity = Intent(context, HomeActivity::class.java)
+        val homeActivity = Intent(context, StoreActivity::class.java)
         context.startActivity(homeActivity)
         (context as OnboardingActivity).finish()
     }
