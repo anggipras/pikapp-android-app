@@ -6,18 +6,19 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
-import com.tsab.pikapp.models.model.LoginResponse
+import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.models.model.UserAccess
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.view.HomeActivity
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.SharedPreferencesUtil
+import com.tsab.pikapp.util.decodeJWT
+import com.tsab.pikapp.util.isUsernameValid
 import com.tsab.pikapp.view.OnboardingActivity
+import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
-import com.tsab.pikapp.models.model.LoginResponseV2
-import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -99,39 +100,11 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
                                             )
                                 }
                                 loginFail(errorResponse)
-                                createToastShort(getApplication(), "error: ${errorResponse.errMessage}")
-//                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
+                                createToastShort(getApplication(),
+                                        "error: ${errorResponse.errMessage}")
+                                //                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
                             }
                         })
-            apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
-                    override fun onSuccess(t: LoginResponseV2) {
-                        loginSuccess(t)
-//                        Toast.makeText(getApplication(), "token: ${t.token}", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d("Debug", "error : " + e)
-                        var errorResponse: ErrorResponse
-                        try {
-                            val responseBody = (e as HttpException)
-                            val body = responseBody.response()?.errorBody()?.string()
-                            errorResponse =
-                                Gson().fromJson(body, ErrorResponse::class.java)
-                        } catch (err: Throwable) {
-                            errorResponse =
-                                ErrorResponse(
-                                    "503",
-                                    "Service Unavailable"
-                                )
-                        }
-                        loginFail(errorResponse)
-                        createToastShort(getApplication(), "error: ${errorResponse.errMessage}")
-//                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
-                    }
-                })
         )
     }
 
