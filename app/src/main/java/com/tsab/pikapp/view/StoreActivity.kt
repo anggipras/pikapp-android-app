@@ -7,16 +7,19 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.tsab.pikapp.R
 import kotlinx.android.synthetic.main.activity_store.*
+import kotlin.system.exitProcess
 
 class StoreActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
+    private var backPressedTime:Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,11 @@ class StoreActivity : AppCompatActivity() {
         navGraph.startDestination = destination
         navController.graph = navGraph
 
+    }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true);
+        exitProcess(-1)
     }
 
     fun hideKeyboard() {
