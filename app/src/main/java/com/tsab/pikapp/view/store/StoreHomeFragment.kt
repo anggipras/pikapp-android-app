@@ -2,35 +2,30 @@ package com.tsab.pikapp.view.store
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreHomeBinding
-import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.StoreActivity
-import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.store.StoreHomeViewModel
-import kotlin.system.exitProcess
 
 class StoreHomeFragment : Fragment() {
-
     private lateinit var dataBinding: FragmentStoreHomeBinding
     private lateinit var viewModel : StoreHomeViewModel
     private var isFirstTime = true
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container,
+                false)
         viewModel = ViewModelProviders.of(this).get(StoreHomeViewModel::class.java)
 
         return dataBinding.root
@@ -41,6 +36,9 @@ class StoreHomeFragment : Fragment() {
 
         viewModel.getMerchantDetail()
         viewModel.checkNotification()
+
+        (activity as AppCompatActivity).setSupportActionBar(dataBinding.toolbar)
+        setHasOptionsMenu(true)
 
         dataBinding.buttonPrepare.setOnClickListener {
             viewModel.goToOrderList(activity as StoreActivity, 0)
@@ -55,10 +53,21 @@ class StoreHomeFragment : Fragment() {
             val action = StoreHomeFragmentDirections.actionToStoreMyProductFragment()
             Navigation.findNavController(view).navigate(action)
         }
-        dataBinding.logoutBtn.setOnClickListener {
-            viewModel.logout(activity as StoreActivity)
-        }
+
         observeViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_store_home, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logoutButton) {
+            viewModel.logout(activity as StoreActivity)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     @SuppressLint("FragmentLiveDataObserve")
