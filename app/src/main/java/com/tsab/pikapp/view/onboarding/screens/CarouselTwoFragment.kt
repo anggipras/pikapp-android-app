@@ -4,24 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.tsab.pikapp.R
+import com.tsab.pikapp.viewmodel.CarouselViewModel
 import kotlinx.android.synthetic.main.fragment_carousel_two.*
-import java.io.Serializable
 
 class CarouselTwoFragment : Fragment() {
-    companion object {
-        private const val CALLBACK_ON_NEXT = "callback_on_next"
-
-        // When initiating the fragment, use this method.
-        fun newInstance(onNext: () -> Unit) = CarouselTwoFragment().apply {
-            // Put onNext callback function to argument bundle
-            arguments = bundleOf(CALLBACK_ON_NEXT to onNext as Serializable)
-        }
-    }
-
-    private var onNextCallback: () -> Unit = {}
+    private val viewModel: CarouselViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +22,6 @@ class CarouselTwoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Attempt to fetch onNext callback function from arguments
-        try {
-            onNextCallback = arguments?.getSerializable(CALLBACK_ON_NEXT) as () -> Unit
-            nextBtn?.setOnClickListener { onNextCallback.invoke() }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        nextBtn.setOnClickListener { viewModel.nextPage() }
     }
 }
