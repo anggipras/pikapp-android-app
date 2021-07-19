@@ -118,20 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-                    app:title="">
-
-                    <ImageView
-                        android:id="@+id/logoutBtn"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginStart="280dp"
-                        android:layout_marginTop="5dp"
-                        android:src="@drawable/ic_logout"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/colorAccent" />
-
-                </androidx.appcompat.widget.Toolbar>
+                    app:title="" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
