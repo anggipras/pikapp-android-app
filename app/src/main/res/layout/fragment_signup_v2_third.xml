@@ -57,8 +57,8 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/kartu"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
@@ -134,8 +134,8 @@
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/ketentuan"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
@@ -227,5 +227,20 @@
             android:background="@drawable/daftarbtn" />
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99FFFFFF"
+        android:elevation="999dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@android:style/Widget.Material.ProgressBar.Small"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
