@@ -84,47 +84,47 @@ class SignupV2ThirdFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ktp.setOnClickListener {
+        ktpImageSelector.setOnClickListener {
             registerForActivityResult(ActivityResultContracts.GetContent(),
                     ActivityResultCallback { uri ->
-                        ktp.setImageURI(uri)
+                        ktpImageSelector.setImageURI(uri)
                         ktpImage = uri
                     }
             ).launch("image/*")
         }
 
-        logo.setOnClickListener {
+        logoRestoranImageSelector.setOnClickListener {
             registerForActivityResult(ActivityResultContracts.GetContent(),
                     ActivityResultCallback { uri ->
-                        logo.setImageURI(uri)
+                        logoRestoranImageSelector.setImageURI(uri)
                         logoImage = uri
                     }
             ).launch("image/*")
         }
 
-        latar.setOnClickListener {
+        latarRestoranImageSelector.setOnClickListener {
             registerForActivityResult(ActivityResultContracts.GetContent(),
                     ActivityResultCallback { uri ->
-                        latar.setImageURI(uri)
+                        latarRestoranImageSelector.setImageURI(uri)
                         latarImage = uri
                     }
             ).launch("image/*")
         }
 
-        btnNext.setOnClickListener {
+        nextButton.setOnClickListener {
             if (ktpImage == null) {
-                ktperror.text = "KTP Tidak Boleh Kosong"
-                ktperror.setTextColor(Color.parseColor("#DC6A84"))
+                ktpErrorText.text = "KTP Tidak Boleh Kosong"
+                ktpErrorText.setTextColor(Color.parseColor("#DC6A84"))
             }
 
             if (logoImage == null) {
-                logoerror.text = "Logo Restoran Tidak Boleh Kosong"
-                logoerror.setTextColor(Color.parseColor("#DC6A84"))
+                logoRestoranErrorText.text = "Logo Restoran Tidak Boleh Kosong"
+                logoRestoranErrorText.setTextColor(Color.parseColor("#DC6A84"))
             }
 
             if (latarImage == null) {
-                latarerror.text = "Gambar Latar Tidak Boleh Kosong"
-                latarerror.setTextColor(Color.parseColor("#DC6A84"))
+                latarRestoranErrorText.text = "Gambar Latar Tidak Boleh Kosong"
+                latarRestoranErrorText.setTextColor(Color.parseColor("#DC6A84"))
             }
 
             if (ktpImage != null && logoImage != null && latarImage != null) {

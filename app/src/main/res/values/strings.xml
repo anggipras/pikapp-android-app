@@ -31,7 +31,6 @@
 
     <!-- Sign up screens -->
     <string name="registrasi_restoran_header">Registrasi Restoran</string>
-    <string name="registrasi_required_input">*</string>
 
     <string name="registrasi_nama_restoran_header">Nama Restoran&#160;</string>
     <string name="registrasi_nama_restoran_hint">Masukkan nama restoran anda</string>
