@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -64,8 +65,19 @@ class SignupV2First : Fragment() {
         dataBinding.nextButton.setOnClickListener {
             hideKeyboard()
 
+            viewModel.validateEmail(dataBinding.emailInputText.text.toString())
+            viewModel.validateFullName(dataBinding.fullNameInputText.text.toString())
+            viewModel.validatePhone(dataBinding.phoneInputText.text.toString())
+            viewModel.validatePin(dataBinding.pinInputText.text.toString())
+
             if (!viewModel.validateFirstPage()) return@setOnClickListener
-            navController.navigate(R.id.action_signupV2First_to_signupV2Second)
+
+            val bundle = bundleOf(
+                    "email" to dataBinding.emailInputText.text.toString(),
+                    "name" to dataBinding.fullNameInputText.text.toString(),
+                    "phone" to dataBinding.phoneInputText.text.toString(),
+                    "pin" to dataBinding.pinInputText.text.toString())
+            navController.navigate(R.id.action_signupV2First_to_signupV2Second, bundle)
         }
 
         dataBinding.emailInputText.setOnEditorActionListener { _, actionId, event ->
