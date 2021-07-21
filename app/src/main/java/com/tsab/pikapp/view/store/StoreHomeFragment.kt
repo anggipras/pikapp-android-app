@@ -3,6 +3,7 @@ package com.tsab.pikapp.view.store
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,20 +14,27 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreHomeBinding
 import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.viewmodel.store.StoreHomeViewModel
+import kotlin.system.exitProcess
 
 class StoreHomeFragment : Fragment() {
     private lateinit var dataBinding: FragmentStoreHomeBinding
-    private lateinit var viewModel : StoreHomeViewModel
+    private lateinit var viewModel: StoreHomeViewModel
     private var isFirstTime = true
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+        viewModel = ViewModelProviders.of(this).get(StoreHomeViewModel::class.java)
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container,
                 false)
-        viewModel = ViewModelProviders.of(this).get(StoreHomeViewModel::class.java)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        exitProcess(-1)
+                    }
+                })
 
         return dataBinding.root
     }
