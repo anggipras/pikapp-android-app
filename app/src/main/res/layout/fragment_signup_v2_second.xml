@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.onboarding.login.SignupV2Second">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageHeader"
+                android:layout_width="0dp"
+                android:layout_height="192dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="72dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/registrasi_restoran_header"
+                android:textColor="@color/colorWhite"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutInputGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="28dp"
+                android:background="@drawable/border"
+                android:elevation="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textHeader">
+
+                <!-- Nama restoran input group -->
+                <TextView
+                    android:id="@+id/namaRestoranHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_nama_restoran_header"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/namaRestoranRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/namaRestoranHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/namaRestoranHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/namaRestoranHeaderText" />
+
+                <EditText
+                    android:id="@+id/namaRestoranInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/colorBorderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/registrasi_nama_restoran_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorBorderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaRestoranHeaderText" />
+
+                <TextView
+                    android:id="@+id/namaRestoranErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/namaRestoranInputText"
+                    app:layout_constraintTop_toBottomOf="@id/namaRestoranInputText" />
+
+                <!-- Nama foodcourt input group -->
+                <TextView
+                    android:id="@+id/namaFoodcourtHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_nama_foodcourt_header"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaRestoranErrorText" />
+
+                <EditText
+                    android:id="@+id/namaFoodcourtInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/colorBorderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/registrasi_nama_foodcourt_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorBorderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaFoodcourtHeaderText" />
+
+                <TextView
+                    android:id="@+id/namaFoodcourtErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/namaFoodcourtInputText"
+                    app:layout_constraintTop_toBottomOf="@id/namaFoodcourtInputText" />
+
+                <!-- Nama restoran input group -->
+                <TextView
+                    android:id="@+id/alamatHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_alamat_header"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaFoodcourtErrorText" />
+
+                <TextView
+                    android:id="@+id/alamatRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/alamatHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/alamatHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/alamatHeaderText" />
+
+                <EditText
+                    android:id="@+id/alamatInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/colorBorderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/registrasi_alamat_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorBorderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/alamatHeaderText" />
+
+                <TextView
+                    android:id="@+id/alamatErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/alamatInputText"
+                    app:layout_constraintTop_toBottomOf="@id/alamatInputText" />
+
+                <!-- Nama bank input group -->
+                <TextView
+                    android:id="@+id/namaBankHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_nama_bank_header"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/alamatErrorText" />
+
+                <TextView
+                    android:id="@+id/namaBankRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/namaBankHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/namaBankHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/namaBankHeaderText" />
+
+                <EditText
+                    android:id="@+id/namaBankInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/colorBorderSubtle"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/registrasi_nama_bank_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorBorderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaBankHeaderText" />
+
+                <TextView
+                    android:id="@+id/namaBankErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/namaBankInputText"
+                    app:layout_constraintTop_toBottomOf="@id/namaBankInputText" />
+
+                <!-- Nomor rekening input group -->
+                <TextView
+                    android:id="@+id/nomorRekeningHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_nomor_rekening_header"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaBankErrorText" />
+
+                <TextView
+                    android:id="@+id/nomorRekeningRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/nomorRekeningHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/nomorRekeningHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/nomorRekeningHeaderText" />
+
+                <EditText
+                    android:id="@+id/nomorRekeningInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/colorBorderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/registrasi_nomor_rekening_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorBorderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/nomorRekeningHeaderText" />
+
+                <TextView
+                    android:id="@+id/nomorRekeningErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/nomorRekeningInputText"
+                    app:layout_constraintTop_toBottomOf="@id/nomorRekeningInputText" />
+
+                <!-- Nama rekening input group -->
+                <TextView
+                    android:id="@+id/namaRekeningHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_nama_rekening_header"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/nomorRekeningErrorText" />
+
+                <TextView
+                    android:id="@+id/namaRekeningRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/colorRed"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/namaRekeningHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/namaRekeningHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/namaRekeningHeaderText" />
+
+                <EditText
+                    android:id="@+id/namaRekeningInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@color/colorBorderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/registrasi_nama_rekening_hint"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorBorderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaRekeningHeaderText" />
+
+                <TextView
+                    android:id="@+id/namaRekeningErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/colorRed"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/namaRekeningInputText"
+                    app:layout_constraintTop_toBottomOf="@id/namaRekeningInputText" />
+
+                <!-- Next button -->
+                <Button
+                    android:id="@+id/nextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/button_green_small"
+                    android:backgroundTint="@color/colorGreen"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/selanjutnya"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="5:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaRekeningErrorText" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>

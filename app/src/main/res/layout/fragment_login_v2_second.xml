@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        tools:context=".view.onboarding.login.LoginV2Second">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:text="Masukkan PIN Anda"
+            android:textColor="#ffffff"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.goodiebag.pinview.Pinview
+            android:id="@+id/logPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:cursorVisible="true"
+            app:forceKeyboard="true"
+            app:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:password="true"
+            app:pinBackground="@drawable/pinform"
+            app:pinHeight="38dp"
+            app:pinLength="6"
+            app:pinWidth="38dp"
+            app:splitWidth="10dp" />
+
+        <TextView
+            android:id="@+id/lupaPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:text="Lupa PIN?"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logPin" />
+
+        <TextView
+            android:id="@+id/privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="248dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Privasi"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/persyaratan"
+            app:layout_constraintHorizontal_bias="0.821"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lupaPin" />
+
+        <TextView
+            android:id="@+id/persyaratan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="248dp"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Persyaratan"
+            android:textColor="#ffffff"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lupaPin" />
+
+        <RelativeLayout
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99FFFFFF"
+            android:visibility="gone">
+
+            <ProgressBar
+                style="@android:style/Widget.Material.ProgressBar.Small"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

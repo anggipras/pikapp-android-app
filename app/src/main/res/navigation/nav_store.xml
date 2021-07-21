@@ -3,19 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_store"
-    app:startDestination="@id/storeWelcomeFragment">
+    app:startDestination="@id/storeHomeFragment">
 
-    <fragment
-        android:id="@+id/storeWelcomeFragment"
-        android:name="com.tsab.pikapp.view.store.StoreWelcomeFragment"
-        android:label="fragment_store_welcome"
-        tools:layout="@layout/fragment_store_welcome">
-        <action
-            android:id="@+id/action_storeWelcomeFragment_to_storeHomeFragment"
-            app:destination="@id/storeHomeFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-    </fragment>
     <fragment
         android:id="@+id/storeHomeFragment"
         android:name="com.tsab.pikapp.view.store.StoreHomeFragment"

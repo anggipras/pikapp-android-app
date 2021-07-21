@@ -39,11 +39,11 @@ fun getProgressDrawable(context: Context): CircularProgressDrawable {
 
 fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
-        .placeholder(progressDrawable)
+            .placeholder(progressDrawable)
     Glide.with(context)
-        .setDefaultRequestOptions(options)
-        .load(uri)
-        .into(this)
+            .setDefaultRequestOptions(options)
+            .load(uri)
+            .into(this)
 }
 
 @BindingAdapter("android:imageUri")
@@ -58,6 +58,17 @@ fun loadImage(view: ImageView, url: String?) {
 
 fun String.isEmailValid(): Boolean {
     return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
+
+/**
+ * Check if a String is a valid Pikapp PIN.
+ * @return true if the pin has length 6 and contains repeating number.
+ */
+fun String.isPinValid(): Boolean {
+    if (this.isEmpty() || this.isBlank() || this.trim().length != 6) return false
+
+    for (i in 0..5) if (this.count { it == this[i] } > 1) return true
+    return false
 }
 
 fun detectSpecialCharacter(string: String): Boolean {
@@ -79,7 +90,7 @@ fun String.isPasswordValid(): Boolean {
 }
 
 fun isPhoneValid(string: String): Boolean {
-    if(string[0] == '0' && string[1] == '8') {
+    if (string[0] == '0' && string[1] == '8') {
         return true
     }
     return false
@@ -116,7 +127,7 @@ fun getSignature(email: String, timestamp: String): String {
 
     val byte: ByteArray = getClientSecret().toByteArray(charset("UTF-8"))
     val sk: Key = SecretKeySpec(byte, "HmacSHA256")
-    val mac = Mac.getInstance(sk.getAlgorithm())
+    val mac = Mac.getInstance(sk.algorithm)
     val mess = "${getClientID()}:${email}:${getClientSecret()}:${timestamp}"
     Log.d("debug", "kenapa ni : ${mess}")
     mac.init(sk)
@@ -153,6 +164,7 @@ fun rupiahFormat(price: Long): String {
 }
 
 private const val TAG = "FileSaver"
+
 @SuppressLint("SimpleDateFormat")
 fun saveUriToFile(context: Context, uri: Uri?): File? {
     val format = SimpleDateFormat("YYYY_MM_dd_HH_mm")
@@ -165,7 +177,7 @@ fun saveUriToFile(context: Context, uri: Uri?): File? {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 10, output)
         output.flush()
         output.close()
-        Log.v(TAG, "File path: " + file.getAbsolutePath())
+        Log.v(TAG, "File path: " + file.absolutePath)
         file
     } catch (e: IOException) {
         Log.v(TAG, "Error" + e.message)
@@ -192,4 +204,10 @@ fun substringPhone(str: String?): String? {
     }
     str = str + "xxx"
     return str
+}
+
+fun isUsernameValid(str: String?): Boolean {
+
+    //TODO : check only allow for digit
+    return true
 }

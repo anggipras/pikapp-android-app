@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_loginv2"
+    app:startDestination="@id/loginV2First">
+
+    <fragment
+        android:id="@+id/loginV2First"
+        android:name="com.tsab.pikapp.view.onboarding.login.LoginV2First"
+        android:label="fragment_login_v2_first"
+        tools:layout="@layout/fragment_login_v2_first" >
+        <action
+            android:id="@+id/action_loginV2First_to_loginV2Second"
+            app:destination="@id/loginV2Second" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginV2Second"
+        android:name="com.tsab.pikapp.view.onboarding.login.LoginV2Second"
+        android:label="fragment_login_v2_second"
+        tools:layout="@layout/fragment_login_v2_second" >
+
+        <argument
+            android:name="email"
+            android:defaultValue="None" />
+    </fragment>
+</navigation>

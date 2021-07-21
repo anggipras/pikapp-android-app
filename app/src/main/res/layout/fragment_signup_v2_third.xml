@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.onboarding.login.SignupV2Second">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="192dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/header"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="72dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/registrasi_restoran_header"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutInputGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="28dp"
+                    android:background="@drawable/border"
+                    android:elevation="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textHeader">
+
+                    <!-- KTP input group -->
+                    <TextView
+                        android:id="@+id/ktpHeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="36dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="KTP Pemilik Restoran"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/ktpRequiredText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/star"
+                        android:textColor="@color/colorRed"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@id/ktpHeaderText"
+                        app:layout_constraintTop_toBottomOf="@id/ktpHeaderText"
+                        app:layout_constraintTop_toTopOf="@id/ktpHeaderText" />
+
+                    <TextView
+                        android:id="@+id/ktpHintText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:text="(Format .png, .jpg, max. 2MB)"
+                        android:textColor="#767676"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/ktpHeaderText"
+                        app:layout_constraintTop_toBottomOf="@id/ktpHeaderText" />
+
+                    <ImageView
+                        android:id="@+id/ktpImageSelector"
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="@drawable/inputimage"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ktpHintText" />
+
+                    <TextView
+                        android:id="@+id/ktpErrorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:textColor="@color/colorRed"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/ktpImageSelector"
+                        app:layout_constraintTop_toBottomOf="@id/ktpImageSelector" />
+
+                    <!-- Logo restoran input group -->
+                    <TextView
+                        android:id="@+id/logoRestoranHeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Logo Restoran"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ktpErrorText" />
+
+                    <TextView
+                        android:id="@+id/logoRestoranRequiredText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/star"
+                        android:textColor="@color/colorRed"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@id/logoRestoranHeaderText"
+                        app:layout_constraintTop_toBottomOf="@id/logoRestoranHeaderText"
+                        app:layout_constraintTop_toTopOf="@id/logoRestoranHeaderText" />
+
+                    <TextView
+                        android:id="@+id/logoRestoranHintText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:text="(Format .png, .jpg, max. 2MB)"
+                        android:textColor="#767676"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/logoRestoranHeaderText"
+                        app:layout_constraintTop_toBottomOf="@id/logoRestoranHeaderText" />
+
+                    <ImageView
+                        android:id="@+id/logoRestoranImageSelector"
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="@drawable/inputimage"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/logoRestoranHintText" />
+
+                    <TextView
+                        android:id="@+id/logoRestoranErrorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:textColor="@color/colorRed"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/logoRestoranImageSelector"
+                        app:layout_constraintTop_toBottomOf="@id/logoRestoranImageSelector" />
+
+                    <!-- Latar restoran input group -->
+                    <TextView
+                        android:id="@+id/latarRestoranHeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Gambar Latar"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/logoRestoranErrorText" />
+
+                    <TextView
+                        android:id="@+id/latarRestoranRequiredText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/star"
+                        android:textColor="@color/colorRed"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@id/latarRestoranHeaderText"
+                        app:layout_constraintTop_toBottomOf="@id/latarRestoranHeaderText"
+                        app:layout_constraintTop_toTopOf="@id/latarRestoranHeaderText" />
+
+                    <TextView
+                        android:id="@+id/latarRestoranHintText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:text="(Format .png, .jpg, max. 2MB)"
+                        android:textColor="#767676"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/latarRestoranHeaderText"
+                        app:layout_constraintTop_toBottomOf="@id/latarRestoranHeaderText" />
+
+                    <ImageView
+                        android:id="@+id/latarRestoranImageSelector"
+                        android:layout_width="0dp"
+                        android:layout_height="75dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="@drawable/inputimage"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/latarRestoranHintText" />
+
+                    <TextView
+                        android:id="@+id/latarRestoranErrorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:textColor="@color/colorRed"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/latarRestoranImageSelector"
+                        app:layout_constraintTop_toBottomOf="@id/latarRestoranImageSelector" />
+
+                    <!-- Next button -->
+                    <Button
+                        android:id="@+id/nextButton"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="40dp"
+                        android:background="@drawable/button_green_small"
+                        android:backgroundTint="@color/colorGreen"
+                        android:fontFamily="@font/montserrat"
+                        android:text="@string/selanjutnya"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="5:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/latarRestoranErrorText" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#99FFFFFF"
+            android:elevation="999dp"
+            android:visibility="gone">
+
+            <ProgressBar
+                style="@android:style/Widget.Material.ProgressBar.Small"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

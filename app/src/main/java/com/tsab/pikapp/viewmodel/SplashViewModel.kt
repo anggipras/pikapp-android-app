@@ -11,24 +11,24 @@ import com.tsab.pikapp.util.CartUtil
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.util.decodeJWT
-import com.tsab.pikapp.view.HomeActivity
+import com.tsab.pikapp.view.CarouselActivity
 import com.tsab.pikapp.view.OnboardingActivity
+import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
 
-class SplashViewModel(application: Application): BaseViewModel(application) {
-
+class SplashViewModel(application: Application) : BaseViewModel(application) {
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
     private var cartUtil = CartUtil(getApplication())
 
     fun saveNotification(mrcht: String, txn: String, tableNo: String?) {
         var isMerchant = false
-        if(mrcht == "true") isMerchant = true
+        if (mrcht == "true") isMerchant = true
         prefHelper.setNotificationDetail(NotificationModel(isMerchant, txn, tableNo))
     }
 
-    fun checkOnboardingFinished(context: Context, mid: String?, address:String?, tableNo: String?) {
-
+    fun checkOnboardingFinished(context: Context, mid: String?, address: String?,
+                                tableNo: String?) {
         prefHelper.clearOrderList()
         prefHelper.deleteStoredDeepLink()
         prefHelper.deleteDeeplinkUrl()
@@ -38,10 +38,10 @@ class SplashViewModel(application: Application): BaseViewModel(application) {
 
         val isUserLogin = sessionManager.isLoggingIn() ?: false
 
-        if(!mid.isNullOrEmpty() || !address.isNullOrEmpty()) {
-            var addressSplit : String? = null
+        if (!mid.isNullOrEmpty() || !address.isNullOrEmpty()) {
+            var addressSplit: String? = null
             address?.let {
-               addressSplit = address.replace('_', ' ')
+                addressSplit = address.replace('_', ' ')
             }
             prefHelper.saveDeeplinkUrl(mid, addressSplit, tableNo)
         }
@@ -51,31 +51,31 @@ class SplashViewModel(application: Application): BaseViewModel(application) {
             token?.let {
                 if (token.isNotEmpty()) {
                     val userData: UserAccess = decodeJWT(token)
-                    if(userData.isMerchant == null)
-                    {
+                    if (userData.isMerchant == null) {
                         Log.d("Debug", "harus di logout nih")
-                        Toast.makeText(getApplication(), "Silakan login kembali", Toast.LENGTH_LONG).show()
+                        Toast.makeText(getApplication(), "Silakan login kembali", Toast.LENGTH_LONG)
+                                .show()
                         sessionManager.logout()
                         val onboardingActivity = Intent(context, OnboardingActivity::class.java)
                         context.startActivity(onboardingActivity)
                     }
 
                     if (isUserExclusive) {
-                        val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
+                        val userExclusiveActivity = Intent(context,
+                                UserExclusiveActivity::class.java)
                         context.startActivity(userExclusiveActivity)
                     } else {
-                        val homeActivity = Intent(context, HomeActivity::class.java)
-                        context.startActivity(homeActivity)
+                        val storeActivity = Intent(context, StoreActivity::class.java)
+                        context.startActivity(storeActivity)
                     }
                 } else {
                     sessionManager.logout()
-                    val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+                    val onboardingActivity = Intent(context, CarouselActivity::class.java)
                     context.startActivity(onboardingActivity)
                 }
             }
-
         } else {
-            val onboardingActivity = Intent(context, OnboardingActivity::class.java)
+            val onboardingActivity = Intent(context, CarouselActivity::class.java)
             context.startActivity(onboardingActivity)
         }
     }

@@ -8,19 +8,21 @@ import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class PikappApiService {
 
-    private val api = Retrofit.Builder()
+    val api = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
         .create(PikappApi::class.java)
 
+    //Merchant LOGIN, LOGOUT, REGISTER
     // AUTH
     fun loginUser(email: String, password: String, fcmToken: String): Single<LoginResponse> {
         val uuid = getUUID()
@@ -29,8 +31,19 @@ class PikappApiService {
         return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
     }
 
+    fun loginMerchant(username: String, pin: String, token: String): Single<LoginResponseV2> {
+        val uuid = getUUID()
+        val loginData = LoginRequestV2(username, pin, token)
+        Log.d("Debug", "fcm token : $token")
+        return api.loginMerchant(uuid, getTimestamp(), getClientID(), loginData)
+    }
+
     fun logoutUser(sessionID: String): Single<LogoutResponse> {
         return api.logoutUser(getUUID(), getTimestamp(), getClientID(), sessionID)
+    }
+
+    fun logoutMerchant(sessionID: String): Single<LogoutResponseV2> {
+        return api.logoutMerchant(getUUID(), getClientID(), getTimestamp(), sessionID)
     }
 
     fun registerUser(email: String, password: String, fullName: String, phoneNumber: String, birthday: String, gender: String): Single<RegisterResponse> {
