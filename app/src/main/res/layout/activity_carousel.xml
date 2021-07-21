@@ -1,30 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".view.CarouselActivity">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/carousel_viewpager"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/nextBtn"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="25dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <ImageView
+            android:id="@+id/carouselBackgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/carouselViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Next button -->
+        <ImageView
+            android:id="@+id/nextButton"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginBottom="28dp"
+            android:src="@drawable/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Page numbering -->
+        <ImageView
+            android:id="@+id/carouselPage1"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="32dp"
+            android:src="@drawable/button_white"
+            app:layout_constraintBottom_toBottomOf="@id/nextButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/nextButton"
+            app:tint="@color/colorGreen" />
+
+        <ImageView
+            android:id="@+id/carouselPage2"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/button_white"
+            app:layout_constraintBottom_toBottomOf="@id/carouselPage1"
+            app:layout_constraintStart_toEndOf="@id/carouselPage1"
+            app:layout_constraintTop_toTopOf="@id/carouselPage1" />
+
+        <ImageView
+            android:id="@+id/carouselPage3"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/button_white"
+            app:layout_constraintBottom_toBottomOf="@id/carouselPage1"
+            app:layout_constraintStart_toEndOf="@id/carouselPage2"
+            app:layout_constraintTop_toTopOf="@id/carouselPage1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

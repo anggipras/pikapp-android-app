@@ -1,263 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:orientation="vertical"
     tools:context=".view.onboarding.login.SignupV2First">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="192dp"
-        android:background="@drawable/header"
-        app:layout_constraintBottom_toTopOf="@id/box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageHeader"
+            android:layout_width="0dp"
+            android:layout_height="192dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/judul"
+            android:id="@+id/textHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="72dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="Registrasi Restoran"
             android:textColor="#ffffff"
-            android:textSize="23dp"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutInputGroup"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/border"
+            android:elevation="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.200"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.379" />
+            app:layout_constraintTop_toBottomOf="@id/textHeader">
 
+            <!-- Email input group -->
+            <TextView
+                android:id="@+id/emailHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Email "
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/emailRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="*"
+                android:textColor="#DC6A84"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/emailHeaderText"
+                app:layout_constraintStart_toEndOf="@id/emailHeaderText"
+                app:layout_constraintTop_toTopOf="@id/emailHeaderText" />
+
+            <EditText
+                android:id="@+id/emailInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="#aaaaaa"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="Contoh: example@gmail.com"
+                android:inputType="textEmailAddress"
+                android:textColorHint="#aaaaaa"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailHeaderText" />
+
+            <TextView
+                android:id="@+id/emailErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="#DC6A84"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/emailInputText"
+                app:layout_constraintTop_toBottomOf="@id/emailInputText" />
+
+            <!-- Full name input group -->
+            <TextView
+                android:id="@+id/fullNameHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Full Name "
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailErrorText" />
+
+            <TextView
+                android:id="@+id/fullNameRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="*"
+                android:textColor="#DC6A84"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/fullNameHeaderText"
+                app:layout_constraintStart_toEndOf="@id/fullNameHeaderText"
+                app:layout_constraintTop_toTopOf="@id/fullNameHeaderText" />
+
+            <EditText
+                android:id="@+id/fullNameInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="#aaaaaa"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="Masukkan nama anda"
+                android:inputType="textPersonName"
+                android:textColorHint="#aaaaaa"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fullNameHeaderText" />
+
+            <TextView
+                android:id="@+id/fullNameErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="#DC6A84"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/fullNameInputText"
+                app:layout_constraintTop_toBottomOf="@id/fullNameInputText" />
+
+            <!-- Phone input group -->
+            <TextView
+                android:id="@+id/phoneHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="No. HP "
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fullNameErrorText" />
+
+            <TextView
+                android:id="@+id/phoneRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="*"
+                android:textColor="#DC6A84"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/phoneHeaderText"
+                app:layout_constraintStart_toEndOf="@id/phoneHeaderText"
+                app:layout_constraintTop_toTopOf="@id/phoneHeaderText" />
+
+            <EditText
+                android:id="@+id/phoneInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="#aaaaaa"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="Masukkan nama anda"
+                android:inputType="phone"
+                android:textColorHint="#aaaaaa"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneHeaderText" />
+
+            <TextView
+                android:id="@+id/phoneErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="#DC6A84"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/phoneInputText"
+                app:layout_constraintTop_toBottomOf="@id/phoneInputText" />
+
+            <!-- PIN input group -->
+            <TextView
+                android:id="@+id/pinHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="PIN "
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneErrorText" />
+
+            <TextView
+                android:id="@+id/pinRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="*"
+                android:textColor="#DC6A84"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/pinHeaderText"
+                app:layout_constraintStart_toEndOf="@id/pinHeaderText"
+                app:layout_constraintTop_toTopOf="@id/pinHeaderText" />
+
+            <EditText
+                android:id="@+id/pinInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="#aaaaaa"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="Masukkan 6 digit PIN"
+                android:inputType="numberPassword"
+                android:textColorHint="#aaaaaa"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pinHeaderText" />
+
+            <TextView
+                android:id="@+id/pinErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="#DC6A84"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/pinInputText"
+                app:layout_constraintTop_toBottomOf="@id/pinInputText" />
+
+            <!-- Next button -->
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/button_green_small"
+                android:backgroundTint="#4BB7AC"
+                android:fontFamily="@font/montserrat"
+                android:text="Selanjutnya"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="5:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/box"
-        android:layout_width="321dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/border"
-        android:elevation="50dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="Email"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="*"
-                android:textColor="#DC6A84"
-                android:textSize="15dp" />
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="40dp"
-            android:backgroundTint="#aaaaaa"
-            android:fontFamily="@font/proximanova_regular"
-            android:hint="Contoh: example@gmail.com"
-            android:inputType="textEmailAddress"
-            android:textColorHint="#aaaaaa"
-            android:textSize="13dp" />
-
-        <TextView
-            android:id="@+id/emailerror"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/proximanova_regular"
-            android:text="Nama Lengkap"
-            android:textColor="#ffffff"
-            android:textSize="13dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="Nama Lengkap"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="*"
-                android:textColor="#DC6A84"
-                android:textSize="15dp" />
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/nama"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="40dp"
-            android:backgroundTint="#aaaaaa"
-            android:fontFamily="@font/proximanova_regular"
-            android:hint="Masukkan nama anda"
-            android:inputType="text"
-            android:maxLength="50"
-            android:textColorHint="#aaaaaa"
-            android:textSize="13dp" />
-
-        <TextView
-            android:id="@+id/namaerror"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/proximanova_regular"
-            android:text="Nama Lengkap"
-            android:textColor="#ffffff"
-            android:textSize="13dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="No. HP"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="*"
-                android:textColor="#DC6A84"
-                android:textSize="15dp" />
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/telp"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="40dp"
-            android:backgroundTint="#aaaaaa"
-            android:fontFamily="@font/proximanova_regular"
-            android:hint="Contoh: 08xxxxxxxxxx"
-            android:inputType="number"
-            android:textColorHint="#aaaaaa"
-            android:textSize="13dp" />
-
-        <TextView
-            android:id="@+id/phoneerror"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/proximanova_regular"
-            android:text="Nama Lengkap"
-            android:textColor="#ffffff"
-            android:textSize="13dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="PIN"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="*"
-                android:textColor="#DC6A84"
-                android:textSize="15dp" />
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/pass"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="40dp"
-            android:backgroundTint="#aaaaaa"
-            android:fontFamily="@font/proximanova_regular"
-            android:hint="Masukkan 6 digit PIN"
-            android:inputType="numberPassword"
-            android:maxLength="6"
-            android:textColorHint="#aaaaaa"
-            android:textSize="13dp" />
-
-        <TextView
-            android:id="@+id/pworderror"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/proximanova_regular"
-            android:text="Nama Lengkap"
-            android:textColor="#ffffff"
-            android:textSize="13dp" />
-
-        <ImageButton
-            android:id="@+id/btnNext"
-            android:layout_width="307dp"
-            android:layout_height="77dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/buttonext" />
-
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

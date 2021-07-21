@@ -1,23 +1,20 @@
 package com.tsab.pikapp.view.onboarding.login
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentLoginOnboardingBinding
 import com.tsab.pikapp.databinding.FragmentLoginV2SecondBinding
-import com.tsab.pikapp.view.HomeV2Activity
-import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.StoreActivity
-import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModel
 import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModelV2
 
 class LoginV2Second : Fragment() {
@@ -35,7 +32,8 @@ class LoginV2Second : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_v2_second, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_v2_second,
+                container, false)
         return dataBinding.root
     }
 
@@ -47,7 +45,7 @@ class LoginV2Second : Fragment() {
         dataBinding.logPin.setPinViewEventListener { pinview, fromUser ->
             val email = email
             val password = dataBinding.logPin.value.toString()
-            Log.d("Debug", "email : " + email)
+
             viewModel.login(email, password)
         }
         observeViewModel()
@@ -62,5 +60,18 @@ class LoginV2Second : Fragment() {
             }
         })
 
+        viewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) hideKeyboard()
+            dataBinding.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
+        })
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = activity?.getSystemService(
+                Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        if (inputManager.isAcceptingText) {
+            inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        }
     }
 }
