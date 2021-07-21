@@ -6,39 +6,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentCarouselThreeBinding
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.RegisterV2Activity
-import kotlinx.android.synthetic.main.fragment_carousel_three.*
 
 class CarouselThreeFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+    lateinit var dataBinding: FragmentCarouselThreeBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_carousel_three, container, false)
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_carousel_three, container,
+                false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textMasuk.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-
-        textMasuk.setOnClickListener {
+        dataBinding.masukButton.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        dataBinding.masukButton.setOnClickListener {
             val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
             activity?.startActivity(intent)
         }
 
-        daftarBtn.setOnClickListener {
+        dataBinding.daftarButton.setOnClickListener {
             val intent = Intent(activity?.baseContext, RegisterV2Activity::class.java)
             activity?.startActivity(intent)
         }

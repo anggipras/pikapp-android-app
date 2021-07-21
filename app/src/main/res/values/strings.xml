@@ -1,8 +1,24 @@
 <resources>
     <string name="app_name">Pikapp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="kebijakan_privasi">
         Dengan memilih salah satu pilihan, anda setuju
     </string>
+
+    <string name="carousel_1_header">Menu Digital, \nScan QR</string>
+    <string name="carousel_1_header_preview">Menu Digital, <br />Scan QR</string>
+    <string name="carousel_1_body">Permudah bisnis Anda dengan QR digital menu yang terhubung langsung dengan PikApp.</string>
+
+    <string name="carousel_2_header">Mudah dalam satu \ngenggaman</string>
+    <string name="carousel_2_header_preview">Mudah dalam satu <br />genggaman</string>
+    <string name="carousel_2_body">Atur menu, pencatatan, terima order, pilihan pembayaran, hanya dalam satu aplikasi.</string>
+
+    <string name="carousel_3_header">Selamat Datang di \nPikApp!</string>
+    <string name="carousel_3_header_preview">Selamat Datang di <br />PikApp!</string>
+
+    <string name="daftar">Daftar</string>
+    <string name="masuk">Masuk</string>
+    <string name="sudah_punya_akun">Sudah punya akun?&#160;</string>
+    <string name="setuju_kebijakan_privasi">Dengan mendaftar, Anda setuju dengan Aturan Penggunan dan Kebijakan Privasi yang berlaku</string>
 </resources>

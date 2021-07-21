@@ -5,23 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.tsab.pikapp.R
-import com.tsab.pikapp.viewmodel.CarouselViewModel
-import kotlinx.android.synthetic.main.fragment_carousel_two.*
 
 class CarouselTwoFragment : Fragment() {
-    private val viewModel: CarouselViewModel by activityViewModels()
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_carousel_two, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        nextBtn.setOnClickListener { viewModel.nextPage() }
     }
 }
