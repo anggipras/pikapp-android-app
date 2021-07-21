@@ -32,6 +32,7 @@ class StoreHomeFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
+                        activity?.moveTaskToBack(true)
                         exitProcess(-1)
                     }
                 })

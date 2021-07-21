@@ -6,6 +6,15 @@
         Dengan memilih salah satu pilihan, anda setuju
     </string>
 
+    <!-- General -->
+    <string name="daftar">Daftar</string>
+    <string name="masuk">Masuk</string>
+
+    <string name="selanjutnya">Selanjutnya</string>
+
+    <string name="star">*</string>
+
+    <!-- Carousel screens -->
     <string name="carousel_1_header">Menu Digital, \nScan QR</string>
     <string name="carousel_1_header_preview">Menu Digital, <br />Scan QR</string>
     <string name="carousel_1_body">Permudah bisnis Anda dengan QR digital menu yang terhubung langsung dengan PikApp.</string>
@@ -17,8 +26,29 @@
     <string name="carousel_3_header">Selamat Datang di \nPikApp!</string>
     <string name="carousel_3_header_preview">Selamat Datang di <br />PikApp!</string>
 
-    <string name="daftar">Daftar</string>
-    <string name="masuk">Masuk</string>
     <string name="sudah_punya_akun">Sudah punya akun?&#160;</string>
     <string name="setuju_kebijakan_privasi">Dengan mendaftar, Anda setuju dengan Aturan Penggunan dan Kebijakan Privasi yang berlaku</string>
+
+    <!-- Sign up screens -->
+    <string name="registrasi_restoran_header">Registrasi Restoran</string>
+    <string name="registrasi_required_input">*</string>
+
+    <string name="registrasi_nama_restoran_header">Nama Restoran&#160;</string>
+    <string name="registrasi_nama_restoran_hint">Masukkan nama restoran anda</string>
+
+    <string name="registrasi_nama_foodcourt_header">Nama Foodcourt&#160;</string>
+    <string name="registrasi_nama_foodcourt_hint">Isi jika restoran anda berada dalam foodcourt</string>
+
+    <string name="registrasi_alamat_header">Alamat&#160;</string>
+    <string name="registrasi_alamat_hint">Contoh: AEON Mall, Jl. abcd No. 14</string>
+
+    <string name="registrasi_nama_bank_header">Nama Bank&#160;</string>
+    <string name="registrasi_nama_bank_hint">Pilih bank yang digunakan</string>
+
+    <string name="registrasi_nomor_rekening_header">Nomor Rekening Restoran&#160;</string>
+    <string name="registrasi_nomor_rekening_hint">Masukkan nomor rekening bank</string>
+
+    <string name="registrasi_nama_rekening_header">Nama Pemilik Rekening&#160;</string>
+    <string name="registrasi_nama_rekening_hint">Masukkan nama pemilik rekening</string>
+
 </resources>

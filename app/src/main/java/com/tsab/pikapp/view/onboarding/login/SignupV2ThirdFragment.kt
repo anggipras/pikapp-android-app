@@ -201,6 +201,7 @@ class SignupV2ThirdFragment : Fragment() {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
                     activity?.startActivity(intent)
+                    this@SignupV2ThirdFragment.activity?.finish()
                 } else {
                     val errorResponse: BaseResponse? = gson.fromJson(
                             response.errorBody()!!.charStream(), typeToken)
