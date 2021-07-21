@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tsab.pikapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,12 +15,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".view.StoreOrderListActivity"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity android:name=".view.RegisterV2Activity"></activity>
+        <activity android:name=".view.HomeV2Activity" />
+        <activity android:name=".view.LoginV2Activity" />
+        <activity android:name=".view.onboarding.login.LoginV2Page2" />
+        <activity android:name=".view.onboarding.login.LoginV2Page1" />
+        <activity android:name=".view.CarouselActivity" />
+        <activity
+            android:name=".view.StoreOrderListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="StoreOrderListActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -29,6 +39,7 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="OrderListActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -61,6 +72,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>

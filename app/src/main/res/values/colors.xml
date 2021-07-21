@@ -4,10 +4,14 @@
     <color name="colorPrimaryDark">#4056C6</color>
     <color name="colorSecondary">#FEB614</color>
     <color name="colorAccent">#4056C6</color>
+
     <color name="placeholderBackground">#DDDDDD</color>
-    <color name="colorRed">#FF4057</color>
-    <color name="colorGrey">#323232</color>
+
     <color name="colorGreen">#4BB7AC</color>
-    <color name="colorLightGrey">#EDEDED</color>
+    <color name="colorGrey">#323232</color>
     <color name="colorGold">#D39C22</color>
+    <color name="colorLightGrey">#EDEDED</color>
+    <color name="colorRed">#DC6A84</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBorderSubtle">#AAAAAA</color>
 </resources>

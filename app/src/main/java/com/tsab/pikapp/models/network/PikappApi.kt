@@ -5,21 +5,46 @@ import com.tsab.pikapp.models.model.MerchantListResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface PikappApi {
-
-    // Merchant LOGIN, REGISTER, AND LOGOUT
+    // AUTH
     @POST("merchant/v1/merchant-login/")
-    fun login(
+    fun loginMerchant(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Body loginRequest: LoginRequestV2
     ): Single<LoginResponseV2>
 
+    @Multipart
+    @POST("merchant/v1/merchant-registration/")
+    fun uploadRegister(
+            @Header("x-request-id") uuid: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-request-timestamp") time: String,
+            @Part file_01: MultipartBody.Part,
+            @Part file_02: MultipartBody.Part,
+            @Part file_03: MultipartBody.Part,
+            @Part ("address") address: RequestBody,
+            @Part ("category") category: RequestBody,
+            @Part ("bank_name") bank_name: RequestBody,
+            @Part ("merchant_name") merchant_name: RequestBody,
+            @Part ("bank_account_no") bank_account_no: RequestBody,
+            @Part ("bank_account_name") bank_account_name: RequestBody,
+            @Part ("email") email: RequestBody,
+            @Part ("phone_number") phone_number: RequestBody,
+            @Part ("restaurant_name") restaurant_name: RequestBody,
+            @Part ("fcm_token") fcm_token: RequestBody,
+            @Part ("pin") pin: RequestBody,
+            @Part ("bank_branch") bank_branch: RequestBody,
+            @Part ("food_court_name") food_court_name: RequestBody
+    ): Call<BaseResponse>
 
-    // AUTH
     @POST("auth/login")
     fun loginUser(
         @Header("x-request-id") uuid: String,
@@ -43,6 +68,14 @@ interface PikappApi {
         @Header("x-client-id") clientID: String,
         @Header("x-session-id") sessionID: String
     ): Single<LogoutResponse>
+
+    @GET("merchant/exit/")
+    fun logoutMerchant(
+            @Header("x-request-id") uuid: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-session-id") sessionID: String
+    ): Single<LogoutResponseV2>
 
     // HOME
     @POST("home/v1/exclusive-member")
