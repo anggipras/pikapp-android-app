@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentSignupOnboardingBinding
 import com.tsab.pikapp.view.OnboardingActivity
-import com.tsab.pikapp.viewmodel.onboarding.login.SignupOnboardingViewModel
+import com.tsab.pikapp.viewmodel.onboarding.signup.SignupOnboardingViewModel
 
 
 class SignupOnboardingFragment : Fragment() {
