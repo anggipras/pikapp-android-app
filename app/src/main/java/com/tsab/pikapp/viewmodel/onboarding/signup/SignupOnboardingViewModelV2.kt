@@ -1,6 +1,7 @@
 package com.tsab.pikapp.viewmodel.onboarding.signup
 
 import android.app.Application
+import android.net.Uri
 import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
@@ -81,6 +82,25 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
     private val isNamaRekeningValid = MutableLiveData(false)
     val namaRekening: LiveData<String> get() = mutableNamaRekening
     val namaRekeningError: LiveData<String> get() = mutableNamaRekeningError
+
+    /* Variables for the third sign up screen */
+    private val mutableKtp = MutableLiveData(Uri.EMPTY)
+    private val mutableKtpError = MutableLiveData("")
+    private val isKtpValid = MutableLiveData(false)
+    val ktp: LiveData<Uri> get() = mutableKtp
+    val ktpError: LiveData<String> get() = mutableKtpError
+
+    private val mutableLogo = MutableLiveData(Uri.EMPTY)
+    private val mutableLogoError = MutableLiveData("")
+    private val isLogoValid = MutableLiveData(false)
+    val logo: LiveData<Uri> get() = mutableLogo
+    val logoError: LiveData<String> get() = mutableLogoError
+
+    private val mutableLatar = MutableLiveData(Uri.EMPTY)
+    private val mutableLatarError = MutableLiveData("")
+    private val isLatarValid = MutableLiveData(false)
+    val latar: LiveData<Uri> get() = mutableLatar
+    val latarError: LiveData<String> get() = mutableLatarError
 
     /* Validation functions for the first sign up screen */
     fun validateEmail(email: String): Boolean {
@@ -232,4 +252,43 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
     fun validateSecondPage(): Boolean = isNamaRestoranValid.value!! && isNamaFoodcourtValid.value!!
             && isAlamatValid.value!! && isNamaBankValid.value!! && isNomorRekeningValid.value!!
             && isNamaRekeningValid.value!!
+
+    /* Validation functions for the third sign up screen */
+    fun validateKtp(ktp: Uri?): Boolean {
+        if (ktp == null || ktp == Uri.EMPTY) {
+            mutableKtpError.value = "KTP tidak boleh kosong"
+            isKtpValid.value = false
+        } else {
+            mutableKtpError.value = ""
+            mutableKtp.value = ktp
+            isKtpValid.value = true
+        }
+        return isKtpValid.value!!
+    }
+
+    fun validateLogo(logo: Uri?): Boolean {
+        if (logo == null || logo == Uri.EMPTY) {
+            mutableLogoError.value = "Logo restoran tidak boleh kosong"
+            isLogoValid.value = false
+        } else {
+            mutableLogoError.value = ""
+            mutableLogo.value = logo
+            isLogoValid.value = true
+        }
+        return isLogoValid.value!!
+    }
+
+    fun validateLatar(latar: Uri?): Boolean {
+        if (latar == null || latar == Uri.EMPTY) {
+            mutableLatarError.value = "Gambar latar tidak boleh kosong"
+            isLatarValid.value = false
+        } else {
+            mutableLatarError.value = ""
+            mutableLatar.value = latar
+            isLatarValid.value = true
+        }
+        return isLatarValid.value!!
+    }
+
+    fun validateThirdPage(): Boolean = isKtpValid.value!! && isLogoValid.value!! && isLatarValid.value!!
 }
