@@ -184,7 +184,7 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
     private fun goToOnboarding(context: Context) {
         val onboardingActivity = Intent(context, CarouselActivity::class.java)
         context?.startActivity(onboardingActivity)
-        (context as StoreActivity).finish()
+        (context as StoreActivity).finishAffinity()
     }
 
     fun createToast(m: String) {
