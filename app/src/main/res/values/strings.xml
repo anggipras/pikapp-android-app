@@ -70,5 +70,6 @@
 
     <string name="registrasi_latar_header">Gambar Latar&#160;</string>
     <string name="registrasi_latar_hint">(Format .png, .jpg, max. 2MB)</string>
+    <string name="title_activity_bottom_navigation">MainActivity</string>
 
 </resources>

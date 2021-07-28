@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityCarouselBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.onboarding.CarouselViewPagerAdapter
 import com.tsab.pikapp.view.onboarding.screens.CarouselOneFragment
 import com.tsab.pikapp.view.onboarding.screens.CarouselThreeFragment
@@ -20,11 +21,15 @@ class CarouselActivity : AppCompatActivity() {
     private val viewModel: CarouselViewModel by viewModels()
     private lateinit var dataBinding: ActivityCarouselBinding
 
+    private var sessionManager = SessionManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         dataBinding = ActivityCarouselBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
+
+        sessionManager.setFirstApp(1)
 
         setupViewPager()
         attachInputListener()

@@ -331,4 +331,15 @@ interface PikappApi {
         @Part("transaction_id") transactionID: RequestBody,
         @Part("status") status: RequestBody
     ): Single<UpdateStatusResponse>
+
+    @GET("/home/v2/detail/merchant/{longitude}/{latitude}/")
+    fun getMerchantProfile(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Path("longitude") longitude: String,
+            @Path("latitude") latitude: String
+    ): Single<MerchantProfileResponse>
 }
