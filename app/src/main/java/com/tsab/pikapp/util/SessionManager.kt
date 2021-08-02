@@ -79,8 +79,6 @@ class SessionManager {
         saveUserData(userData)
     }
 
-    fun getFirstApp() = prefs?.getInt(PREF_FIRST_USER, 0)
-
     fun logout() {
         deleteUserData()
     }
@@ -98,4 +96,6 @@ class SessionManager {
             putInt(PREF_FIRST_USER, intData)
         }
     }
+
+    fun getFirstApp() = prefs?.getInt(PREF_FIRST_USER, 0)
 }

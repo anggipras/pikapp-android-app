@@ -1,10 +1,10 @@
-package com.tsab.pikapp.viewmodel.homev2
+package com.tsab.pikapp.viewmodel.other
 
 import android.app.Application
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LogoutResponseV2
@@ -16,10 +16,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
-import kotlin.reflect.KClass
 
-class HomeNavigationViewModel(application: Application) : BaseViewModel(application) {
-
+class SettingViewModel(application: Application) : BaseViewModel(application) {
     private val pikappService = PikappApiService()
     private val disposable = CompositeDisposable()
     val loading = MutableLiveData<Boolean>()

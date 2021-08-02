@@ -23,18 +23,6 @@
         app:labelVisibilityMode="labeled"
         />
 
-    <ImageButton
-        android:id="@+id/logout_button"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:background="@drawable/ic_logout_button"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        android:layout_marginRight="21dp"
-        android:layout_marginBottom="18dp"
-        android:visibility="gone"
-        />
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -42,19 +30,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         />
-
-    <RelativeLayout
-        android:id="@+id/loadingView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#99FFFFFF"
-        android:visibility="gone">
-
-        <ProgressBar
-            style="@android:style/Widget.Material.ProgressBar.Small"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

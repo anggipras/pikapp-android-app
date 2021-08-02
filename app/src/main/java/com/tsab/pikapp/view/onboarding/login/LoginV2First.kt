@@ -92,12 +92,5 @@ class LoginV2First : Fragment(){
         viewModel.emailError.observe(viewLifecycleOwner, Observer { emailError ->
             dataBinding.emailerror.text = if (emailError.isEmpty()) "" else emailError
         })
-
-//        viewModel.firstAppData.observe(viewLifecycleOwner, Observer { firstAppData ->
-//            if (firstAppData == 1) {
-//                activity?.moveTaskToBack(true)
-//                exitProcess(-1)
-//            }
-//        })
     }
 }

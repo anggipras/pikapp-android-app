@@ -124,6 +124,7 @@ dependencies {
     implementation "com.android.support:palette-v7:$supportVersion"
 
     implementation 'com.github.GoodieBag:Pinview:v1.4'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation "androidx.preference:preference:$preferencesVersion"
     // Dynamic Feature Module Support

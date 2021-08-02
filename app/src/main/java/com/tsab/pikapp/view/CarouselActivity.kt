@@ -2,6 +2,7 @@ package com.tsab.pikapp.view
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -38,8 +39,11 @@ class CarouselActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        val firstApp = sessionManager.getFirstApp()
         if (viewModel.currentPage.value == 0) {
-            super.onBackPressed()
+            if (firstApp == 1) {
+                finishAffinity()
+            }
         } else {
             viewModel.previousPage()
         }

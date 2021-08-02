@@ -3,7 +3,6 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tsab.pikapp.models.model.MerchantDetail
 import com.tsab.pikapp.models.model.MerchantProfileResponse
 import com.tsab.pikapp.models.model.ProfileResponse
 import com.tsab.pikapp.models.network.PikappApiService
@@ -18,11 +17,14 @@ import io.reactivex.schedulers.Schedulers
 
 class OtherViewModel : ViewModel() {
     private val disposable = CompositeDisposable()
+    private var sessionManager = SessionManager()
 
     val merchantResult = MutableLiveData<ProfileResponse>()
+    val merchantEmail = MutableLiveData<String>()
+    val merchantPhone = MutableLiveData<String>()
+    val merchantCustomer = MutableLiveData<String>()
 
     fun getMerchantProfile() {
-        var sessionManager = SessionManager()
         val token = "PUBLIC"
         val timeStamp = getTimestamp()
         val mid = sessionManager.getUserData()!!.mid!!
@@ -37,11 +39,13 @@ class OtherViewModel : ViewModel() {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
                             override fun onSuccess(t: MerchantProfileResponse) {
-                                t.results?.let { res -> merchantProfileRetrieved(res) }
+                                t.results?.let { res ->
+                                    merchantProfileRetrieved(res)
+                                }
                             }
 
                             override fun onError(e: Throwable) {
-
+                                //Should print out error
                             }
 
                         })
@@ -51,5 +55,15 @@ class OtherViewModel : ViewModel() {
 
     fun merchantProfileRetrieved(response: ProfileResponse) {
         merchantResult.value = response
+    }
+
+    fun showMerchantProfile() {
+        val email = sessionManager.getUserData()!!.email!!
+        val phoneNumber = sessionManager.getUserData()!!.phoneNumber!!
+        val ownerName = sessionManager.getUserData()!!.customerName
+
+        merchantEmail.value = email
+        merchantPhone.value = phoneNumber
+        merchantCustomer.value = ownerName
     }
 }
