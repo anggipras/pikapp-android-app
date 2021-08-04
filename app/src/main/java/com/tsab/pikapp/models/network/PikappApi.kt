@@ -343,7 +343,7 @@ interface PikappApi {
     ): Call<MerchantListCategoryResponse>
 
     @Multipart
-    @POST("merchant/v1/product-action/")
+    @POST("merchant/v2/product-action/")
     fun uploadMenu(
             @Header("x-request-id") uuid: String,
             @Header("x-request-timestamp") time: String,
