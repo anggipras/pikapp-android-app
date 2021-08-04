@@ -5,6 +5,9 @@
     <color name="colorSecondary">#FEB614</color>
     <color name="colorAccent">#4056C6</color>
 
+    <color name="tooltipText">#767676</color>
+    <color name="tooltipBackground">#F8FAFC</color>
+
     <color name="placeholderBackground">#DDDDDD</color>
 
     <color name="colorGreen">#4BB7AC</color>

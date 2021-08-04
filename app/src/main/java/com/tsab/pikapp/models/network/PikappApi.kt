@@ -331,4 +331,39 @@ interface PikappApi {
         @Part("transaction_id") transactionID: RequestBody,
         @Part("status") status: RequestBody
     ): Single<UpdateStatusResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    fun getMenuCategoryList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Call<MerchantListCategoryResponse>
+
+    @Multipart
+    @POST("merchant/v1/product-action/")
+    fun uploadMenu(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Part file_01: MultipartBody.Part,
+            @Part file_02: MultipartBody.Part,
+            @Part file_03: MultipartBody.Part,
+            @Part ("product_name") product_name: RequestBody,
+            @Part ("product_desc")product_desc: RequestBody,
+            @Part ("menu_category_id") id: RequestBody,
+            @Part ("price") price: RequestBody,
+            @Part ("condition") condition: RequestBody,
+            @Part ("action") action: RequestBody,
+            @Part ("status") status: RequestBody,
+            @Part ("product_qty") qty: RequestBody
+    ): Call<BaseResponse>
+
+
+
 }
