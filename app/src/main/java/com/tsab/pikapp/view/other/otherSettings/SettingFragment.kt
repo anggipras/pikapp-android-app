@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.other
+package com.tsab.pikapp.view.other.otherSettings
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,10 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.SettingFragmentBinding
-import com.tsab.pikapp.view.CarouselActivity
 import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
-import com.tsab.pikapp.viewmodel.other.SettingViewModel
+import com.tsab.pikapp.viewmodel.other.otherSettings.SettingViewModel
 
 class SettingFragment : Fragment() {
 
@@ -31,6 +32,10 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.informationSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_informationFragment) }
+        dataBinding.profilSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_profileFragment) }
+        dataBinding.pinSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_currentPinFragment) }
 
         dataBinding.backButton.setOnClickListener {
             requireActivity().onBackPressed()

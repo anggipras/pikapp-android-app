@@ -1,10 +1,9 @@
-package com.tsab.pikapp.viewmodel.other
+package com.tsab.pikapp.viewmodel.other.otherSettings
 
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LogoutResponseV2

@@ -7,8 +7,70 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.tsab.pikapp.view.other.SettingFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.SettingFragment"
         android:label="setting_fragment"
         tools:layout="@layout/setting_fragment" >
+        <action
+            android:id="@+id/navigateTo_informationFragment"
+            app:destination="@id/informationFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/navigateTo_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/navigateTo_currentPinFragment"
+            app:destination="@id/currentPinFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/informationFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.informationSetting.InformationFragment"
+        android:label="information_fragment"
+        tools:layout="@layout/information_fragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/openDialogTo_profileGenderFragment"
+            app:destination="@id/profileGenderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentPinFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.pinSetting.CurrentPinFragment"
+        android:label="fragment_current_pin"
+        tools:layout="@layout/fragment_current_pin" >
+        <action
+            android:id="@+id/navigateTo_newPinFragment"
+            app:destination="@id/newPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPinFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.pinSetting.NewPinFragment"
+        android:label="fragment_new_pin"
+        tools:layout="@layout/fragment_new_pin" >
+        <action
+            android:id="@+id/navigateTo_confirmPinFragment"
+            app:destination="@id/confirmPinFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmPinFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.pinSetting.ConfirmPinFragment"
+        android:label="fragment_confirm_pin"
+        tools:layout="@layout/fragment_confirm_pin" >
+        <action
+            android:id="@+id/navigateBackTo_settingFragment"
+            app:popUpTo="@id/settingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/profileGenderFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileGenderFragment"
+        android:label="fragment_profile_gender"
+        tools:layout="@layout/fragment_profile_gender" >
+    </dialog>
 </navigation>
