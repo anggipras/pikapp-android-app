@@ -103,7 +103,6 @@ class AddMenuFragment : Fragment() {
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
                         viewModel.backBtn()
-                        navController?.navigate(R.id.action_addMenuFragment_to_storeHomeFragment)
                     }
                 })
 

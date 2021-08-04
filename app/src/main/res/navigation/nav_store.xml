@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_store"
+    app:startDestination="@id/storeHomeFragment">
+
+    <fragment
+        android:id="@+id/storeHomeFragment"
+        android:name="com.tsab.pikapp.view.store.StoreHomeFragment"
+        android:label="StoreHomeFragment">
+        <action
+            android:id="@+id/actionToStoreMyProductFragment"
+            app:destination="@id/storeMyProductFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeMyProductFragment"
+        android:name="com.tsab.pikapp.view.store.myProduct.StoreMyProductFragment"
+        android:label="StoreMyProductFragment">
+        <action
+            android:id="@+id/actionToStoreMyProductFormFragment"
+            app:destination="@id/storeMyProductFormFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeMyProductFormFragment"
+        android:name="com.tsab.pikapp.view.store.myProduct.StoreMyProductFormFragment"
+        android:label="fragment_store_my_product_form"
+        tools:layout="@layout/fragment_store_my_product_form" >
+        <argument
+            android:name="isAdd"
+            app:argType="boolean" />
+        <argument
+            android:name="pid"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/addMenuFragment"
+        android:name="com.tsab.pikapp.view.menu.AddMenuFragment"
+        android:label="AddMenuFragment" >
+        <action
+            android:id="@+id/action_addMenuFragment_to_categoryNameFragment"
+            app:destination="@id/categoryNameFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/categoryNameFragment"
+        android:name="com.tsab.pikapp.view.menu.CategoryNameFragment"
+        android:label="fragment_category_name"
+        tools:layout="@layout/fragment_category_name" >
+        <action
+            android:id="@+id/action_categoryNameFragment_to_addMenuFragment"
+            app:destination="@id/addMenuFragment" />
+    </dialog>
+</navigation>
