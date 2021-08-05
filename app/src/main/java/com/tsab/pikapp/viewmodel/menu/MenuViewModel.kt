@@ -2,12 +2,8 @@ package com.tsab.pikapp.viewmodel.menu
 
 import android.app.Application
 import android.content.Context
-import android.graphics.Color
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -24,8 +20,6 @@ import com.tsab.pikapp.models.model.MerchantListCategoryResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.CategoryAdapter
-import com.tsab.pikapp.view.menu.CategoryNameFragment
-import com.tsab.pikapp.view.onboarding.login.gson
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.MediaType
@@ -116,11 +110,11 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return name1
     }
 
-    fun backBtn(){
+    fun backBtn() {
         mutableImg.value = null
     }
 
-    fun firstOpen(){
+    fun firstOpen() {
         mutableMenuError.value = ""
         mutableHargaError.value = ""
         mutableNamaError.value = ""
@@ -138,7 +132,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isMenuValid.value!!
     }
 
-    fun validateImg(img: Uri?): Uri?{
+    fun validateImg(img: Uri?): Uri? {
         if (menu == null || menu == Uri.EMPTY) {
             Log.e("Kosong", "Kosongg")
         } else {
@@ -193,7 +187,11 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isHargaValid.value!!
     }
 
-    fun getCategory(baseContext: Context, recyclerview_category: RecyclerView, listener1: CategoryAdapter.OnItemClickListener){
+    fun getCategory(
+        baseContext: Context,
+        recyclerview_category: RecyclerView,
+        listener1: CategoryAdapter.OnItemClickListener
+    ) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -203,12 +201,15 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
         PikappApiService().api.getMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
-        ).enqueue(object : Callback<MerchantListCategoryResponse>{
+        ).enqueue(object : Callback<MerchantListCategoryResponse> {
             override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
                 Log.e("failed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantListCategoryResponse>, response: Response<MerchantListCategoryResponse>) {
+            override fun onResponse(
+                call: Call<MerchantListCategoryResponse>,
+                response: Response<MerchantListCategoryResponse>
+            ) {
 
                 val categoryResponse = response.body()
                 var categoryResult = response.body()?.results
@@ -217,7 +218,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 Log.e("response body", response.body().toString())
                 Log.d("SUCCEED", "succeed")
                 Log.e("uuid", getUUID())
-                Log.e("timestamp",timestamp)
+                Log.e("timestamp", timestamp)
                 Log.e("client id", getClientID())
                 Log.e("signature", signature)
                 Log.e("token", token)
@@ -227,7 +228,11 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 size = categoryResponse?.results?.size.toString()
                 Log.e("size on response", size)
 
-                categoryAdapter = CategoryAdapter(baseContext, categoryResult as MutableList<CategoryListResult>, listener1)
+                categoryAdapter = CategoryAdapter(
+                    baseContext,
+                    categoryResult as MutableList<CategoryListResult>,
+                    listener1
+                )
                 name1 = categoryAdapter.name
                 categoryAdapter.notifyDataSetChanged()
                 recyclerview_category.adapter = categoryAdapter
@@ -237,7 +242,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!!
 
-    fun postMenu(){
+    fun postMenu() {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -248,38 +253,55 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val gson = Gson()
         val type = object : TypeToken<BaseResponse>() {}.type
 
-        val menuParcelFileDescriptor = application.contentResolver.openFileDescriptor(menu.value!!,
-                "r", null) ?: return
+        val menuParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+            menu.value!!,
+            "r", null
+        ) ?: return
         val menuInputStream = FileInputStream(menuParcelFileDescriptor.fileDescriptor)
-        val menuFile = File(application.cacheDir, application.contentResolver.getFileName(
-                menu.value!!))
+        val menuFile = File(
+            application.cacheDir, application.contentResolver.getFileName(
+                menu.value!!
+            )
+        )
         val menuOutputStream = FileOutputStream(menuFile)
         menuInputStream.copyTo(menuOutputStream)
 
         apiService.api.uploadMenu(
-                getUUID(), timestamp, getClientID(), signature, token, mid,
-                MultipartBody.Part.createFormData("file_01", menuFile.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)),
-                MultipartBody.Part.createFormData("file_02", menuFile.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)),
-                MultipartBody.Part.createFormData("file_03", menuFile.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)),
-                RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "Desc Makanan"),
-                RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
-                RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "GOOD"),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "1")
+            getUUID(), timestamp, getClientID(), signature, token, mid,
+            MultipartBody.Part.createFormData(
+                "file_01", menuFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+            ),
+            MultipartBody.Part.createFormData(
+                "file_02", menuFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+            ),
+            MultipartBody.Part.createFormData(
+                "file_03", menuFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+            ),
+            RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "Desc Makanan"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
+            RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "GOOD"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "1")
         ).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if(response.code() == 200 && response.body()!!.errCode.toString() == "EC0000"){
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Log.e("SUCCEED", categoryId.value)
-                }else {
-                    var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Log.e("Result",generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage))
-                }}
+                } else {
+                    var errorResponse: BaseResponse? =
+                        gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Log.e(
+                        "Result",
+                        generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
+                    )
+                }
+            }
+
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Log.e("UploadRegisterError", t.message.toString())
             }

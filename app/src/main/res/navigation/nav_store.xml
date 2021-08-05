@@ -14,9 +14,6 @@
             app:destination="@id/storeMyProductFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
-        <action
-            android:id="@+id/action_storeHomeFragment_to_addMenuFragment"
-            app:destination="@id/addMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/storeMyProductFragment"
@@ -40,21 +37,4 @@
             android:name="pid"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/addMenuFragment"
-        android:name="com.tsab.pikapp.view.menu.AddMenuFragment"
-        android:label="AddMenuFragment" >
-        <action
-            android:id="@+id/action_addMenuFragment_to_categoryNameFragment"
-            app:destination="@id/categoryNameFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/categoryNameFragment"
-        android:name="com.tsab.pikapp.view.menu.CategoryNameFragment"
-        android:label="fragment_category_name"
-        tools:layout="@layout/fragment_category_name" >
-        <action
-            android:id="@+id/action_categoryNameFragment_to_addMenuFragment"
-            app:destination="@id/addMenuFragment" />
-    </dialog>
 </navigation>

@@ -1,14 +1,10 @@
 package com.tsab.pikapp.models.network
 
 import com.tsab.pikapp.models.model.*
-import com.tsab.pikapp.models.model.MerchantListResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface PikappApi {
@@ -147,6 +143,59 @@ interface PikappApi {
         @Path("latitude") latitude: String
     ): Single<ProductDetailResponse>
 
+    @POST("merchant/v1/menu/category/")
+    fun menuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body MenuCategoryRequest: MenuCategoryRequest
+    ): Call<BaseResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    fun getMenuCategoryList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Call<MerchantListCategoryResponse>
+
+    @POST("merchant/v1/menu/category/update/")
+    fun updateMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body UpdateMenuCategoryRequest: UpdateMenuCategoryRequest
+    ): Call<BaseResponse>
+
+    @GET("merchant/v1/menu/{id}/category/delete/")
+    fun deleteMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Path("id") id: String
+    ): Call<BaseResponse>
+
+    @POST("merchant/v1/menu/category/bulk/update/")
+    fun sortMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body SortCategoryRequest: SortCategoryRequest
+    ): Call<BaseResponse>
 
     // STORE
 
@@ -332,35 +381,36 @@ interface PikappApi {
         @Part("status") status: RequestBody
     ): Single<UpdateStatusResponse>
 
-    @GET("merchant/v1/menu/{mid}/category/list/")
-    fun getMenuCategoryList(
+    @Multipart
+    @POST("merchant/v2/product-action/")
+    fun uploadMenu(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
-        @Path("mid") mid: String
-    ): Call<MerchantListCategoryResponse>
-
-    @Multipart
-    @POST("merchant/v2/product-action/")
-    fun uploadMenu(
-            @Header("x-request-id") uuid: String,
-            @Header("x-request-timestamp") time: String,
-            @Header("x-client-id") clientID: String,
-            @Header("x-signature") signature: String,
-            @Header("token") token: String,
-            @Header("mid") mid: String,
-            @Part file_01: MultipartBody.Part,
-            @Part file_02: MultipartBody.Part,
-            @Part file_03: MultipartBody.Part,
-            @Part ("product_name") product_name: RequestBody,
-            @Part ("product_desc")product_desc: RequestBody,
-            @Part ("menu_category_id") id: RequestBody,
-            @Part ("price") price: RequestBody,
-            @Part ("condition") condition: RequestBody,
-            @Part ("action") action: RequestBody,
-            @Part ("status") status: RequestBody,
-            @Part ("product_qty") qty: RequestBody
+        @Header("mid") mid: String,
+        @Part file_01: MultipartBody.Part,
+        @Part file_02: MultipartBody.Part,
+        @Part file_03: MultipartBody.Part,
+        @Part("product_name") product_name: RequestBody,
+        @Part("product_desc") product_desc: RequestBody,
+        @Part("menu_category_id") id: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("condition") condition: RequestBody,
+        @Part("action") action: RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("product_qty") qty: RequestBody
     ): Call<BaseResponse>
+
+    @GET("/home/v2/detail/merchant/{longitude}/{latitude}/")
+    fun getMerchantProfile(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Path("longitude") longitude: String,
+        @Path("latitude") latitude: String
+    ): Single<MerchantProfileResponse>
 }

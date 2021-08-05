@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreHomeBinding
 import com.tsab.pikapp.view.StoreActivity
@@ -59,7 +58,7 @@ class StoreHomeFragment : Fragment() {
             viewModel.goToOrderList(activity as StoreActivity, 2)
         }
         dataBinding.buttonMyProduct.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_storeHomeFragment_to_addMenuFragment)
+//            Navigation.findNavController(view).navigate(R.id.action_storeHomeFragment_to_addMenuFragment)
         }
 
         observeViewModel()

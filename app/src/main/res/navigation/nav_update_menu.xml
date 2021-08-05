@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_update_menu"
+    app:startDestination="@id/updateMenuAddFragment">
+
+    <fragment
+        android:id="@+id/updateMenuAddFragment"
+        android:name="com.tsab.pikapp.view.menu.AddMenuFragment"
+        android:label="AddMenuFragment">
+        <action
+            android:id="@+id/action_update_menu_add_to_category_name"
+            app:destination="@id/updateMenuCategoryNameFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateMenuEditFragment"
+        android:name="com.tsab.pikapp.view.menu.EditMenuFragment"
+        android:label="EditMenuFragment">
+        <action
+            android:id="@+id/action_update_menu_edit_to_category_name"
+            app:destination="@id/updateMenuCategoryNameFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/updateMenuCategoryNameFragment"
+        android:name="com.tsab.pikapp.view.menu.CategoryNameFragment"
+        android:label="fragment_category_name"
+        tools:layout="@layout/fragment_category_name" />
+
+</navigation>

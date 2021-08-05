@@ -1,9 +1,9 @@
 package com.tsab.pikapp.view.homev2
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
@@ -29,7 +29,7 @@ class HomeNavigation : AppCompatActivity() {
         replaceFragment(transactionFragment)
 
         bottom_navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.nav_transaction -> replaceFragment(transactionFragment)
                 R.id.nav_menu -> replaceFragment(menuFragment)
                 R.id.nav_promo -> replaceFragment(promoFragment)
@@ -40,11 +40,9 @@ class HomeNavigation : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        if (fragment != null) {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.commit()
-        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
     }
 
     fun hideKeyboard() {
@@ -56,10 +54,10 @@ class HomeNavigation : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (bottom_navigation.getSelectedItemId()==R.id.nav_transaction) {
+        if (bottom_navigation.selectedItemId == R.id.nav_transaction) {
             finishAffinity()
         } else {
-            bottom_navigation.setSelectedItemId(R.id.nav_transaction)
+            bottom_navigation.selectedItemId = R.id.nav_transaction
         }
     }
 }
