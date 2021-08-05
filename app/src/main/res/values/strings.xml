@@ -2,6 +2,8 @@
     <string name="app_name">Pikapp</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="tooltip">"Harga belum termasuk \n pajak dan biaya layanan"</string>
+
     <string name="kebijakan_privasi">
         Dengan memilih salah satu pilihan, anda setuju
     </string>

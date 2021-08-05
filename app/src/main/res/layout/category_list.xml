@@ -1,0 +1,25 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:id="@+id/listData"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BANK CIMB NIAGA"
+            android:textAllCaps="true"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="20dp"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line"/>
+
+</LinearLayout>

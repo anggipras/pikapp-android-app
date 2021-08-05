@@ -213,3 +213,24 @@ data class ProductDetail(
     val merchantID: String?
 )
 
+data class MerchantListCategoryResponse(
+    @SerializedName("err_message")
+    val errMessage: String? = null,
+    @SerializedName("err_code")
+    val errCode: String? = null,
+    @SerializedName("results")
+    val results: List<CategoryListResult>?
+)
+
+data class CategoryListResult(
+    @SerializedName("category_name")
+    val category_name: String?,
+    @SerializedName("category_order")
+    val category_order: Int?,
+    @SerializedName("is_active")
+    val is_active: Boolean?,
+    @SerializedName("id")
+    val id: Long
+)
+
+

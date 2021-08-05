@@ -59,8 +59,7 @@ class StoreHomeFragment : Fragment() {
             viewModel.goToOrderList(activity as StoreActivity, 2)
         }
         dataBinding.buttonMyProduct.setOnClickListener {
-            val action = StoreHomeFragmentDirections.actionToStoreMyProductFragment()
-            Navigation.findNavController(view).navigate(action)
+            Navigation.findNavController(view).navigate(R.id.action_storeHomeFragment_to_addMenuFragment)
         }
 
         observeViewModel()

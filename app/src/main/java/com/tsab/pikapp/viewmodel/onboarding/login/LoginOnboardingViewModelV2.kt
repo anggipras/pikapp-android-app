@@ -13,7 +13,9 @@ import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.models.model.UserAccess
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.*
+import com.tsab.pikapp.view.OnboardingActivity
+import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -31,7 +33,6 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     val loginResponse = MutableLiveData<LoginResponseV2>()
     val loginErrorResponse = MutableLiveData<ErrorResponse>()
     val loading = MutableLiveData<Boolean>()
-    val firstAppData = MutableLiveData<Int>()
 
     private val mutableEmailError = MutableLiveData("")
     val emailError: LiveData<String> get() = mutableEmailError
@@ -147,15 +148,6 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
         context.startActivity(userExclusiveActivity)
         (context as OnboardingActivity).finish()
-    }
-
-    fun onBackPressed() {
-        val firstApp = sessionManager.getFirstApp()
-        if (firstApp == 1) {
-            firstAppData.value = 1
-        } else {
-            firstAppData.value = 0
-        }
     }
 
     fun createToast(m: String) {
