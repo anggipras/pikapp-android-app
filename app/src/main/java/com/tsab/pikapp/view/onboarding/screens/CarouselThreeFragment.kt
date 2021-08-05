@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.onboarding.screens
 
 import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,12 @@ class CarouselThreeFragment : Fragment() {
         dataBinding.daftarButton.setOnClickListener {
             val intent = Intent(activity?.baseContext, RegisterV2Activity::class.java)
             activity?.startActivity(intent)
+        }
+
+        dataBinding.privacyText.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse("https://pikapp.id/ketentuan-dan-kebijakan-privasi/"))
+            startActivity(intent)
         }
     }
 }

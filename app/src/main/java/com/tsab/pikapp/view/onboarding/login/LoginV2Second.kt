@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentLoginV2SecondBinding
 import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModelV2
 
 class LoginV2Second : Fragment() {
@@ -55,7 +56,7 @@ class LoginV2Second : Fragment() {
     private fun observeViewModel() {
         viewModel.loginResponse.observe(this, Observer { response ->
             response?.let {
-                val intent = Intent(activity?.baseContext, StoreActivity::class.java)
+                val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
                 activity?.startActivity(intent)
             }
         })

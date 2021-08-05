@@ -15,6 +15,7 @@ class SessionManager {
         private const val PREF_LOGIN_HISTORY_TIME = "login history"
         private const val PREF_USER_TOKEN = "user token"
         private const val PREF_USER_DATA = "user data"
+        private const val PREF_FIRST_USER = "first user"
 
         private var prefs: SharedPreferences? = null
 
@@ -89,4 +90,12 @@ class SessionManager {
             putString(PREF_USER_DATA, "") //delete data
         }
     }
+
+    fun setFirstApp(intData: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_FIRST_USER, intData)
+        }
+    }
+
+    fun getFirstApp() = prefs?.getInt(PREF_FIRST_USER, 0)
 }

@@ -5,19 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.models.model.UserAccess
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.util.SharedPreferencesUtil
-import com.tsab.pikapp.util.decodeJWT
-import com.tsab.pikapp.util.isUsernameValid
-import com.tsab.pikapp.view.OnboardingActivity
-import com.tsab.pikapp.view.StoreActivity
-import com.tsab.pikapp.view.UserExclusiveActivity
+import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.*
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -35,11 +31,13 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     val loginResponse = MutableLiveData<LoginResponseV2>()
     val loginErrorResponse = MutableLiveData<ErrorResponse>()
     val loading = MutableLiveData<Boolean>()
+    val firstAppData = MutableLiveData<Int>()
 
-    val emailError = MutableLiveData<String>()
+    private val mutableEmailError = MutableLiveData("")
+    val emailError: LiveData<String> get() = mutableEmailError
     val passwordError = MutableLiveData<String>()
 
-    private var isEmailValid = false
+    var isEmailValid = false
     private var isPasswordValid = false
 
     fun login(username: String, pin: String) {
@@ -49,15 +47,28 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         }
     }
 
-    private fun checkUserInput(username: String, pin: String) {
-        if (username.isEmpty()) {
-            emailError.value = "Silakan masukkan email anda"
+    fun validateEmail(email: String){
+        if (email.isEmpty()) {
+            mutableEmailError.value = "Silakan masukkan nomor telepon anda"
             isEmailValid = false
-        } else if (!isUsernameValid(username)) {
-            emailError.value = "Silakan masukkan username anda secara valid"
+        } else if (email.trim().length <= 8) {
+            mutableEmailError.value = "Nomor telepon harus lebih dari 8 digit"
             isEmailValid = false
         } else {
-            emailError.value = ""
+            mutableEmailError.value = ""
+            isEmailValid = true
+        }
+    }
+
+    private fun checkUserInput(username: String, pin: String) {
+        if (username.isEmpty()) {
+            mutableEmailError.value = "Silakan masukkan email anda"
+            isEmailValid = false
+        } else if (!isUsernameValid(username)) {
+            mutableEmailError.value = "Silakan masukkan username anda secara valid"
+            isEmailValid = false
+        } else {
+            mutableEmailError.value = ""
             isEmailValid = true
         }
 
@@ -136,6 +147,15 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
         context.startActivity(userExclusiveActivity)
         (context as OnboardingActivity).finish()
+    }
+
+    fun onBackPressed() {
+        val firstApp = sessionManager.getFirstApp()
+        if (firstApp == 1) {
+            firstAppData.value = 1
+        } else {
+            firstAppData.value = 0
+        }
     }
 
     fun createToast(m: String) {

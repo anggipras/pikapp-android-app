@@ -11,10 +11,9 @@ import com.tsab.pikapp.util.CartUtil
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.util.decodeJWT
-import com.tsab.pikapp.view.CarouselActivity
-import com.tsab.pikapp.view.OnboardingActivity
-import com.tsab.pikapp.view.StoreActivity
-import com.tsab.pikapp.view.UserExclusiveActivity
+import com.tsab.pikapp.view.*
+import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
 
 class SplashViewModel(application: Application) : BaseViewModel(application) {
     private var prefHelper = SharedPreferencesUtil(getApplication())
@@ -65,18 +64,26 @@ class SplashViewModel(application: Application) : BaseViewModel(application) {
                                 UserExclusiveActivity::class.java)
                         context.startActivity(userExclusiveActivity)
                     } else {
-                        val storeActivity = Intent(context, StoreActivity::class.java)
+                        val storeActivity = Intent(context, HomeNavigation::class.java)
                         context.startActivity(storeActivity)
                     }
                 } else {
                     sessionManager.logout()
-                    val onboardingActivity = Intent(context, CarouselActivity::class.java)
+                    val onboardingActivity = Intent(context, LoginRegisterActivity::class.java)
                     context.startActivity(onboardingActivity)
                 }
             }
         } else {
-            val onboardingActivity = Intent(context, CarouselActivity::class.java)
-            context.startActivity(onboardingActivity)
+            val routeOnBoard = sessionManager.getFirstApp()
+            routeOnBoard?.let {
+                if (routeOnBoard == 1) {
+                    val onboardingActivity = Intent(context, LoginRegisterActivity::class.java)
+                    context.startActivity(onboardingActivity)
+                } else {
+                    val onboardingActivity = Intent(context, CarouselActivity::class.java)
+                    context.startActivity(onboardingActivity)
+                }
+            }
         }
     }
 }
