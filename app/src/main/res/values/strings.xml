@@ -34,6 +34,18 @@
     <!-- Sign up screens -->
     <string name="registrasi_restoran_header">Registrasi Restoran</string>
 
+    <string name="registrasi_email_header">Email&#160;</string>
+    <string name="registrasi_email_hint">Contoh: example@gmail.com</string>
+
+    <string name="registrasi_nama_lengkap_header">Nama Lengkap&#160;</string>
+    <string name="registrasi_nama_lengkap_hint">Masukkan nama anda</string>
+
+    <string name="registrasi_nomor_hp_header">No. HP&#160;</string>
+    <string name="registrasi_nomor_hp_hint">Contoh: 08xxxxxxxxxx</string>
+
+    <string name="registrasi_pin_header">PIN&#160;</string>
+    <string name="registrasi_pin_hint">Masukkan 6 digit PIN</string>
+
     <string name="registrasi_nama_restoran_header">Nama Restoran&#160;</string>
     <string name="registrasi_nama_restoran_hint">Masukkan nama restoran anda</string>
 
@@ -51,5 +63,20 @@
 
     <string name="registrasi_nama_rekening_header">Nama Pemilik Rekening&#160;</string>
     <string name="registrasi_nama_rekening_hint">Masukkan nama pemilik rekening</string>
+
+    <string name="registrasi_ktp_header">KTP Pemilik Restoran&#160;</string>
+    <string name="registrasi_ktp_hint">(Format .png, .jpg, max. 2MB)</string>
+
+    <string name="registrasi_logo_header">Logo Restoran&#160;</string>
+    <string name="registrasi_logo_hint">(Format .png, .jpg, max. 2MB)</string>
+
+    <string name="registrasi_latar_header">Gambar Latar&#160;</string>
+    <string name="registrasi_latar_hint">(Format .png, .jpg, max. 2MB)</string>
+    <string name="title_activity_bottom_navigation">MainActivity</string>
+
+    <!-- Sign up screens -->
+    <string name="edit_kategori">Menu yang ada di kategori ini akan tidak  <br />terlihat oleh pembeli. Anda yakin ingin <br />menonaktifkan kategori?</string>
+    <string name="delete_kategori_warning">Kosongan menu pada kategori ini <br />terlebih dahulu</string>
+    <string name="delete_kategori_popup">Anda yakin ingin menghapus kategori <br />ini dari menu restoran Anda</string>
 
 </resources>

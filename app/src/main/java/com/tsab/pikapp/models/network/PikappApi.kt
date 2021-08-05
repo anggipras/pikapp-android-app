@@ -363,7 +363,4 @@ interface PikappApi {
             @Part ("status") status: RequestBody,
             @Part ("product_qty") qty: RequestBody
     ): Call<BaseResponse>
-
-
-
 }

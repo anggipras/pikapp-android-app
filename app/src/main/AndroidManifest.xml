@@ -17,7 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".view.RegisterV2Activity"></activity>
+        <activity android:name=".view.categoryMenu.SortActivity"></activity>
+        <activity android:name=".view.categoryMenu.CategoryNavigation" />
+        <activity android:name=".view.loginv2.LoginRegisterActivity" />
+        <activity android:name=".view.other.OtherActivity" />
+        <activity android:name=".view.homev2.menu.MenuActivity" />
+        <activity
+            android:name=".view.homev2.HomeNavigation"
+            android:label="@string/title_activity_bottom_navigation" />
+        <activity android:name=".view.RegisterV2Activity" />
         <activity android:name=".view.HomeV2Activity" />
         <activity android:name=".view.LoginV2Activity" />
         <activity android:name=".view.CarouselActivity" />

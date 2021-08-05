@@ -1,4 +1,4 @@
-package com.tsab.pikapp.viewmodel.onboarding.login
+package com.tsab.pikapp.viewmodel.onboarding.signup
 
 import android.app.Application
 import android.view.View

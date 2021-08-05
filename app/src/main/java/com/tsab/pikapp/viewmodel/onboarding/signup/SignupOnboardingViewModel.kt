@@ -1,4 +1,4 @@
-package com.tsab.pikapp.viewmodel.onboarding.login
+package com.tsab.pikapp.viewmodel.onboarding.signup
 
 import android.app.Application
 import android.content.Context
@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LoginResponse
 import com.tsab.pikapp.models.model.RegisterResponse
@@ -19,7 +20,6 @@ import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.view.onboarding.login.SignupOnboardingFragmentDirections
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver

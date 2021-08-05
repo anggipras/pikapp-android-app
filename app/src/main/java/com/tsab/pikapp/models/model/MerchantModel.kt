@@ -58,6 +58,62 @@ data class MerchantListErrorResponse(
     val path: String?
 )
 
+data class MenuCategoryRequest(
+    @SerializedName("category_name")
+    var category_name: String? = null,
+    @SerializedName("category_order")
+    var category_order: Int? = null,
+    @SerializedName("activation")
+    var activation: Boolean? = true
+)
+
+data class MerchantListCategoryResponse(
+    @SerializedName("err_message")
+    val errMessage: String? = null,
+    @SerializedName("err_code")
+    val errCode: String? = null,
+    @SerializedName("results")
+    val results: List<CategoryListResult>?
+)
+
+data class CategoryListResult(
+    @SerializedName("category_name")
+    val category_name: String?,
+    @SerializedName("category_order")
+    val category_order: Int?,
+    @SerializedName("is_active")
+    val is_active: Boolean?,
+    @SerializedName("id")
+    val id: Long
+)
+
+data class UpdateMenuCategoryRequest(
+    @SerializedName("category_name")
+    var category_name: String? = null,
+    @SerializedName("category_order")
+    var category_order: Int? = null,
+    @SerializedName("activation")
+    var activation: Boolean? = true,
+    @SerializedName("id")
+    var id: Long? = null
+)
+
+data class SortCategoryRequest(
+    @SerializedName("categories_menu")
+    var categories_menu: MutableList<categories_name>? = null
+)
+
+data class categories_name(
+    @SerializedName("category_name")
+    var category_name: String? = null,
+    @SerializedName("category_order")
+    var category_order: Int? = null,
+    @SerializedName("activation")
+    var activation: Boolean? = null,
+    @SerializedName("id")
+    var id: Long? = null
+)
+
 // Merchant Detail API Specs
 data class MerchantDetailResponse(
     @SerializedName("err_code")
