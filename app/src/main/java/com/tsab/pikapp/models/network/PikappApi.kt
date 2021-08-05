@@ -147,6 +147,61 @@ interface PikappApi {
         @Path("latitude") latitude: String
     ): Single<ProductDetailResponse>
 
+    @POST("merchant/v1/menu/category/")
+    fun menuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body MenuCategoryRequest: MenuCategoryRequest
+    ): Call<BaseResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    fun getMenuCategoryList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Call<MerchantListCategoryResponse>
+
+    @POST("merchant/v1/menu/category/update/")
+    fun updateMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body UpdateMenuCategoryRequest: UpdateMenuCategoryRequest
+    ): Call<BaseResponse>
+
+    @GET("merchant/v1/menu/{id}/category/delete/")
+    fun deleteMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Path("id") id: String
+    ): Call<BaseResponse>
+
+    @POST("merchant/v1/menu/category/bulk/update/")
+    fun sortMenuCategory(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body SortCategoryRequest: SortCategoryRequest
+    ): Call<BaseResponse>
+
+
 
     // STORE
 
@@ -331,4 +386,15 @@ interface PikappApi {
         @Part("transaction_id") transactionID: RequestBody,
         @Part("status") status: RequestBody
     ): Single<UpdateStatusResponse>
+
+    @GET("/home/v2/detail/merchant/{longitude}/{latitude}/")
+    fun getMerchantProfile(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Path("longitude") longitude: String,
+            @Path("latitude") latitude: String
+    ): Single<MerchantProfileResponse>
 }

@@ -4,169 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_registerv2"
     app:startDestination="@id/signupV2First">
+
     <fragment
         android:id="@+id/signupV2First"
         android:name="com.tsab.pikapp.view.onboarding.login.SignupV2First"
         android:label="fragment_signup_v2_first"
-        tools:layout="@layout/fragment_signup_v2_first" >
+        tools:layout="@layout/fragment_signup_v2_first">
+
         <action
             android:id="@+id/action_signupV2First_to_signupV2Second"
             app:destination="@id/signupV2Second" />
     </fragment>
+
     <fragment
         android:id="@+id/signupV2Second"
         android:name="com.tsab.pikapp.view.onboarding.login.SignupV2Second"
         android:label="fragment_signup_v2_second"
-        tools:layout="@layout/fragment_signup_v2_second" >
+        tools:layout="@layout/fragment_signup_v2_second">
+
         <action
             android:id="@+id/action_signupV2Second_to_bankNameFragment2"
             app:destination="@id/bankNameFragment" />
+
         <action
             android:id="@+id/action_signupV2Second_to_signupV2ThirdFragment"
             app:destination="@id/signupV2ThirdFragment" />
-        <argument
-            android:name="email"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="name"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="phone"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="pin"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="bank"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="restaurant"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="foodcourt"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="alamat"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="norek"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="namarek"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
     </fragment>
+
     <dialog
         android:id="@+id/bankNameFragment"
         android:name="com.tsab.pikapp.view.onboarding.login.BankNameFragment"
         android:label="fragment_bank_name"
-        tools:layout="@layout/fragment_bank_name" >
+        tools:layout="@layout/fragment_bank_name">
+
         <action
             android:id="@+id/action_bankNameFragment_to_signupV2Second"
             app:destination="@id/signupV2Second" />
-        <argument
-            android:name="restaurant"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="foodcourt"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="alamat"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="norek"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="namarek"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="email"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="name"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="phone"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="pin"
-            app:argType="string"
-            android:defaultValue="None" />
     </dialog>
+
     <fragment
         android:id="@+id/signupV2ThirdFragment"
         android:name="com.tsab.pikapp.view.onboarding.login.SignupV2ThirdFragment"
         android:label="fragment_signup_v2_third"
-        tools:layout="@layout/fragment_signup_v2_third" >
-
-        <argument
-            android:name="email"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="name"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="phone"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="pin"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="bank"
-            app:argType="string"
-            android:defaultValue="None" />
-        <argument
-            android:name="restaurant"
-            app:argType="string"
-            android:defaultValue="None"/>
-        <argument
-            android:name="foodcourt"
-            app:argType="string"
-            android:defaultValue="None"/>
-        <argument
-            android:name="alamat"
-            app:argType="string"
-            android:defaultValue="None"/>
-        <argument
-            android:name="norek"
-            app:argType="string"
-            android:defaultValue="None"/>
-        <argument
-            android:name="namarek"
-            app:argType="string"
-            android:defaultValue="None"/>
-
-    </fragment>
+        tools:layout="@layout/fragment_signup_v2_third" />
 </navigation>

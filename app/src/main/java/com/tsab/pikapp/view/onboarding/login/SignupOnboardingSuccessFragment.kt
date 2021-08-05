@@ -1,13 +1,13 @@
 package com.tsab.pikapp.view.onboarding.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
-import com.tsab.pikapp.viewmodel.onboarding.login.SignupOnboardingSuccessViewModel
+import com.tsab.pikapp.viewmodel.onboarding.signup.SignupOnboardingSuccessViewModel
 import kotlinx.android.synthetic.main.fragment_signup_onboarding_success.view.*
 
 class SignupOnboardingSuccessFragment : Fragment() {
