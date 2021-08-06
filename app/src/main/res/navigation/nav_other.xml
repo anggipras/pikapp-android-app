@@ -13,16 +13,18 @@
         <action
             android:id="@+id/navigateTo_informationFragment"
             app:destination="@id/informationFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"/>
         <action
             android:id="@+id/navigateTo_profileFragment"
             app:destination="@id/profileFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"/>
         <action
             android:id="@+id/navigateTo_currentPinFragment"
-            app:destination="@id/currentPinFragment" />
+            app:destination="@id/currentPinFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
     </fragment>
     <fragment
         android:id="@+id/informationFragment"
@@ -46,7 +48,9 @@
         tools:layout="@layout/fragment_current_pin" >
         <action
             android:id="@+id/navigateTo_newPinFragment"
-            app:destination="@id/newPinFragment" />
+            app:destination="@id/newPinFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/newPinFragment"
@@ -55,7 +59,12 @@
         tools:layout="@layout/fragment_new_pin" >
         <action
             android:id="@+id/navigateTo_confirmPinFragment"
-            app:destination="@id/confirmPinFragment" />
+            app:destination="@id/confirmPinFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+        <action
+            android:id="@+id/navigateBackTo_currentPinFragment"
+            app:popUpTo="@id/currentPinFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmPinFragment"
@@ -65,7 +74,11 @@
         <action
             android:id="@+id/navigateBackTo_settingFragment"
             app:popUpTo="@id/settingFragment"
-            app:popUpToInclusive="true" />
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/navigateBackTo_newPinFragment"
+            app:popUpTo="@id/newPinFragment" />
     </fragment>
     <dialog
         android:id="@+id/profileGenderFragment"
