@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.tsab.pikapp">
+    package="com.tsab.pikapp" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -20,7 +20,8 @@
         <activity android:name=".view.menu.UpdateMenuActivity"></activity>
         <activity android:name=".view.categoryMenu.SortActivity" />
         <activity android:name=".view.categoryMenu.CategoryNavigation" />
-        <activity android:name=".view.loginv2.LoginRegisterActivity" />
+        <activity android:name=".view.loginv2.LoginRegisterActivity" >
+        </activity>
         <activity android:name=".view.other.OtherActivity" />
         <activity android:name=".view.homev2.menu.MenuActivity" />
         <activity
@@ -33,7 +34,7 @@
         <activity
             android:name=".view.StoreOrderListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="StoreOrderListActivity" />
 
@@ -43,7 +44,7 @@
         <activity
             android:name=".view.OrderListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="OrderListActivity" />
 
@@ -76,7 +77,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -108,7 +109,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".services.PikappMessagingService">
+        <service android:name=".services.PikappMessagingService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

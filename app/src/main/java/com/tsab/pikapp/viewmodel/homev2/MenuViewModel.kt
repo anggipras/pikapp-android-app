@@ -27,7 +27,7 @@ class MenuViewModel (application: Application) : BaseViewModel(application) {
 
     var size: String = "0"
 
-    fun getMenuCategoryList(baseContext: Context, recyclerview_category: RecyclerView){
+    fun getMenuCategoryList(baseContext: Context, recyclerview_category: RecyclerView) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -42,7 +42,10 @@ class MenuViewModel (application: Application) : BaseViewModel(application) {
                 Log.e("failed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantListCategoryResponse>, response: Response<MerchantListCategoryResponse>) {
+            override fun onResponse(
+                call: Call<MerchantListCategoryResponse>,
+                response: Response<MerchantListCategoryResponse>
+            ) {
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
@@ -55,7 +58,8 @@ class MenuViewModel (application: Application) : BaseViewModel(application) {
                 size = categoryResponse?.results?.size.toString()
                 Log.e("size on response", size)
 
-                categoryAdapter = CategoryAdapter(baseContext, categoryResult as MutableList<CategoryListResult>)
+                categoryAdapter =
+                    CategoryAdapter(baseContext, categoryResult as MutableList<CategoryListResult>)
                 categoryAdapter.notifyDataSetChanged()
                 recyclerview_category.adapter = categoryAdapter
 
@@ -63,7 +67,4 @@ class MenuViewModel (application: Application) : BaseViewModel(application) {
 
         })
     }
-
-
-
 }

@@ -27,10 +27,7 @@ class MenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.menu_fragment,
-            container, false
-        )
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.menu_fragment, container, false)
         return dataBinding.root
     }
 

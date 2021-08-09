@@ -1,5 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tsab.pikapp.models.model.MerchantProfileResponse
@@ -33,15 +34,7 @@ class OtherViewModel : ViewModel() {
         val latitude = "109382"
 
         disposable.add(
-            PikappApiService().api.getMerchantProfile(
-                uuid,
-                timeStamp,
-                clientId,
-                token,
-                mid,
-                longitude,
-                latitude
-            )
+            PikappApiService().api.getMerchantProfile(uuid, timeStamp, clientId, token, mid, longitude, latitude)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
@@ -54,8 +47,10 @@ class OtherViewModel : ViewModel() {
                     override fun onError(e: Throwable) {
                         //Should print out error
                     }
+
                 })
         )
+
     }
 
     fun merchantProfileRetrieved(response: ProfileResponse) {
@@ -65,10 +60,10 @@ class OtherViewModel : ViewModel() {
     fun showMerchantProfile() {
         val email = sessionManager.getUserData()!!.email!!
         val phoneNumber = sessionManager.getUserData()!!.phoneNumber!!
-        val ownerName = sessionManager.getUserData()!!.customerName ?: ""
+        val ownerName = sessionManager.getUserData()!!.customerName
 
         merchantEmail.value = email
         merchantPhone.value = phoneNumber
-        merchantCustomer.value = ownerName
+        merchantCustomer.value = ownerName!!
     }
 }
