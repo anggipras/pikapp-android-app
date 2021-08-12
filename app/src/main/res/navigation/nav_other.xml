@@ -25,6 +25,9 @@
             app:destination="@id/currentPinFragment"
             app:enterAnim="@anim/fade_in_balloon_library"
             app:exitAnim="@anim/fade_out_balloon_library" />
+        <action
+            android:id="@+id/navigateTo_shopManagementFragment"
+            app:destination="@id/shopManagementFragment" />
     </fragment>
     <fragment
         android:id="@+id/informationFragment"
@@ -49,8 +52,8 @@
         <action
             android:id="@+id/navigateTo_newPinFragment"
             app:destination="@id/newPinFragment"
-            app:enterAnim="@anim/fade_in_balloon_library"
-            app:exitAnim="@anim/fade_out_balloon_library" />
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/newPinFragment"
@@ -60,11 +63,8 @@
         <action
             android:id="@+id/navigateTo_confirmPinFragment"
             app:destination="@id/confirmPinFragment"
-            app:enterAnim="@anim/fade_in_balloon_library"
-            app:exitAnim="@anim/fade_out_balloon_library" />
-        <action
-            android:id="@+id/navigateBackTo_currentPinFragment"
-            app:popUpTo="@id/currentPinFragment" />
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/confirmPinFragment"
@@ -74,11 +74,8 @@
         <action
             android:id="@+id/navigateBackTo_settingFragment"
             app:popUpTo="@id/settingFragment"
-            app:enterAnim="@anim/fade_in_balloon_library"
-            app:exitAnim="@anim/fade_out_balloon_library" />
-        <action
-            android:id="@+id/navigateBackTo_newPinFragment"
-            app:popUpTo="@id/newPinFragment" />
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <dialog
         android:id="@+id/profileGenderFragment"
@@ -86,4 +83,18 @@
         android:label="fragment_profile_gender"
         tools:layout="@layout/fragment_profile_gender" >
     </dialog>
+    <fragment
+        android:id="@+id/shopManagementFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementFragment"
+        android:label="fragment_shop_management"
+        tools:layout="@layout/fragment_shop_management" >
+        <action
+            android:id="@+id/navigateTo_shopMgmtStatusFragment"
+            app:destination="@id/shopMgmtStatusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopMgmtStatusFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopMgmtStatusFragment"
+        android:label="fragment_shop_mgmt_status"
+        tools:layout="@layout/fragment_shop_mgmt_status" />
 </navigation>

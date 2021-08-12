@@ -53,8 +53,8 @@ class ProfileGenderFragment : BottomSheetDialogFragment() {
 
     private fun attachInputListeners() {
         val isGenderSelected = when(dataBinding.genderSelection.checkedRadioButtonId) {
-            R.id.female_gender -> "Female"
-            else -> "Male"
+            R.id.female_gender -> "Perempuan"
+            else -> "Laki-Laki"
         }
         viewModel.setGender(true, isGenderSelected)
     }

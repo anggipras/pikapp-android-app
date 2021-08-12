@@ -74,12 +74,8 @@
     <string name="registrasi_latar_hint">(Format .png, .jpg, max. 2MB)</string>
     <string name="title_activity_bottom_navigation">MainActivity</string>
 
-<<<<<<< HEAD
     <!-- Sign up screens -->
     <string name="edit_kategori">Menu yang ada di kategori ini akan tidak  <br />terlihat oleh pembeli. Anda yakin ingin <br />menonaktifkan kategori?</string>
     <string name="delete_kategori_warning">Kosongan menu pada kategori ini <br />terlebih dahulu</string>
     <string name="delete_kategori_popup">Anda yakin ingin menghapus kategori <br />ini dari menu restoran Anda</string>
-
-=======
->>>>>>> af45dac7b803f6e7b9a37e17239ae2174e8aa52f
 </resources>

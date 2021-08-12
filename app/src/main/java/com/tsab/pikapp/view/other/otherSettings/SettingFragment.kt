@@ -3,10 +3,10 @@ package com.tsab.pikapp.view.other.otherSettings
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -36,6 +36,7 @@ class SettingFragment : Fragment() {
         dataBinding.informationSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_informationFragment) }
         dataBinding.profilSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_profileFragment) }
         dataBinding.pinSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_currentPinFragment) }
+        dataBinding.openHourSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_shopManagementFragment) }
 
         dataBinding.backButton.setOnClickListener {
             requireActivity().onBackPressed()

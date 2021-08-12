@@ -18,7 +18,6 @@ class ProfileBirthdayFragment: DialogFragment(), DatePickerDialog.OnDateSetListe
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-
         return DatePickerDialog(requireActivity(), AlertDialog.THEME_HOLO_LIGHT, this, year, month, day)
     }
 
@@ -33,6 +32,6 @@ class ProfileBirthdayFragment: DialogFragment(), DatePickerDialog.OnDateSetListe
         selectedDateBundle.putString("SELECTED_DATE", selectedDate)
 
         setFragmentResult("REQUEST_KEY", selectedDateBundle)
-
     }
 }
+

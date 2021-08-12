@@ -8,7 +8,6 @@ import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -202,6 +201,5 @@ class PikappApiService {
         val signature = getSignature(email, timestamp)
         return api.postUpdateTransactionStatus(getUUID(), timestamp, getClientID(), signature, token, transactionID, status)
     }
-
 
 }

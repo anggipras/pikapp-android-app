@@ -45,8 +45,6 @@
     <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:textSize">12dp</item>
     </style>
-<<<<<<< HEAD
-=======
 
     <style name="RadioButtonStyle" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/green</item>
@@ -56,5 +54,4 @@
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
->>>>>>> af45dac7b803f6e7b9a37e17239ae2174e8aa52f
 </resources>

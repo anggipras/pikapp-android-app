@@ -74,3 +74,37 @@ data class MerchantProducts(
         @SerializedName("rating")
         val rating: Double?
 )
+
+//SHOP MANAGEMENT SETTINGS
+data class MerchantTimeManagement(
+        @SerializedName("err_code")
+        val errCode: String?,
+        @SerializedName("err_message")
+        val errMessage: String?,
+        val results: TimeManagementResponse?
+)
+
+data class TimeManagementResponse(
+        @SerializedName("auto_on_off")
+        val autoOnOff: Boolean?,
+
+        @SerializedName("time_management")
+        val timeManagement: MutableList<ShopSchedule>?
+)
+
+data class ShopSchedule(
+        @SerializedName("days")
+        val days: String?,
+
+        @SerializedName("close_time")
+        val closeTime: String?,
+
+        @SerializedName("open_time")
+        val openTime: String?,
+
+        @SerializedName("daily_status")
+        val dailyStatus: String?,
+
+        @SerializedName("is_force_close")
+        val isForceClose: Boolean?
+)

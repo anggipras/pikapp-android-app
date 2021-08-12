@@ -413,4 +413,14 @@ interface PikappApi {
         @Path("longitude") longitude: String,
         @Path("latitude") latitude: String
     ): Single<MerchantProfileResponse>
+
+    @GET("/merchant/v1/shop/management/list/")
+    fun getMerchantShopManagement(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String
+    ): Call<MerchantTimeManagement>
 }
