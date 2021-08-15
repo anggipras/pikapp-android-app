@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".view.menu.AddMenuFragment"
-            android:orientation="vertical">
+            tools:context=".view.menu.AddMenuFragment">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:id="@+id/header"
+                android:layout_width="0dp"
                 android:layout_height="122dp"
-                android:background="@drawable/menuheader">
+                android:background="@drawable/menuheader"
+                app:layout_constraintBottom_toTopOf="@id/menuText"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.55">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -30,18 +35,21 @@
                     app:layout_constraintVertical_bias="0.19">
 
                     <ImageView
+                        android:id="@+id/backImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                        android:src="@drawable/ic_back"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
+                        android:id="@+id/backText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:fontFamily="@font/montserrat"
-                        android:text="Kembali"
-                        android:textColor="#ffffff"
-                        android:textSize="15dp"/>
-
+                        android:text="@string/kembali"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <TextView
@@ -61,15 +69,20 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/menuText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/imgReq"
+                app:layout_constraintHorizontal_bias="0.08"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/header">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Gambar Menu"
@@ -88,67 +101,97 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/imgReq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/proximanova_regular"
                 android:text="(Format .png, .jpg, max. 2MB)"
                 android:textColor="#767676"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                app:layout_constraintBottom_toTopOf="@id/menuImg"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menuText" />
 
             <ImageView
                 android:id="@+id/menuImg"
-                android:layout_width="280dp"
+                android:layout_width="0dp"
                 android:layout_height="85dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/inputimage" />
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/inputimage"
+                app:layout_constraintBottom_toTopOf="@id/menuErrorText"
+                app:layout_constraintHorizontal_bias="0.19"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgReq" />
 
             <TextView
                 android:id="@+id/menuErrorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/proximanova_regular"
+                android:text="jqwfj"
                 android:textColor="@color/colorRed"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/categoryTxt"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menuImg" />
 
             <TextView
+                android:id="@+id/categoryTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Nama Kategori"
                 android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                app:layout_constraintBottom_toTopOf="@id/kategori"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menuErrorText" />
 
             <EditText
                 android:id="@+id/kategori"
-                android:layout_width="320dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:backgroundTint="#aaaaaa"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                 android:fontFamily="@font/proximanova_regular"
                 android:hint="Kategori"
                 android:textColorHint="#aaaaaa"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                app:layout_constraintBottom_toTopOf="@id/namaMenuTxt"
+                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/categoryTxt" />
 
             <LinearLayout
+                android:id="@+id/namaMenuTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/namaMenu"
+                app:layout_constraintHorizontal_bias="0.07"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kategori">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Nama Menu"
                     android:textColor="#000000"
@@ -157,7 +200,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="*"
                     android:textColor="#DC6A84"
@@ -167,37 +209,50 @@
 
             <EditText
                 android:id="@+id/namaMenu"
-                android:layout_width="320dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="40dp"
-                android:inputType="text"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 android:backgroundTint="#aaaaaa"
                 android:fontFamily="@font/proximanova_regular"
                 android:hint="Masukkan Nama Menu"
+                android:inputType="text"
                 android:textColorHint="#aaaaaa"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                app:layout_constraintBottom_toTopOf="@id/namaErrorText"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaMenuTxt" />
 
             <TextView
                 android:id="@+id/namaErrorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:fontFamily="@font/proximanova_regular"
+                android:text="eqbfjhqef"
                 android:textColor="@color/colorRed"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/hargaTxt"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaMenu" />
 
             <LinearLayout
+                android:id="@+id/hargaTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/hargaField"
+                app:layout_constraintHorizontal_bias="0.06"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaErrorText">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Harga"
                     android:textColor="#000000"
@@ -206,7 +261,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="*"
                     android:textColor="#DC6A84"
@@ -214,78 +268,131 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/hargaField"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hargaTxt">
 
                 <EditText
                     android:id="@+id/harga"
-                    android:layout_width="320dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:inputType="number"
-                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:backgroundTint="#aaaaaa"
                     android:fontFamily="@font/proximanova_regular"
                     android:hint="Contoh: Rp10.000"
+                    android:inputType="number"
                     android:textColorHint="#aaaaaa"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/infoBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/infobtn"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="-60dp"/>
+                    android:layout_marginLeft="376dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/infobtn"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintVertical_bias="0.13999999" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- <ImageView
+                 android:id="@+id/infoBtn"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 app:layout_constraintLeft_toLeftOf="parent"
+                 app:layout_constraintTop_toTopOf=""
+                 android:layout_marginLeft="-40dp"
+                 android:src="@drawable/infobtn" />-->
 
             <TextView
                 android:id="@+id/hargaErrorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:fontFamily="@font/proximanova_regular"
+                android:text="ehqbgqe"
                 android:textColor="@color/colorRed"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/pilihanLinear"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hargaField" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pilihanLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/btnNext"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hargaErrorText">
 
                 <TextView
                     android:id="@+id/pilihanMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginStart="20dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Pilihan Menu"
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <ImageView
                     android:id="@+id/pilihanMenuButton"
-                    android:layout_marginLeft="200dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageButton
+            <Button
                 android:id="@+id/btnNext"
-                android:layout_width="307dp"
-                android:layout_height="77dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/simpanbtn" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/button_green_small"
+                android:backgroundTint="@color/green"
+                android:fontFamily="@font/montserrat"
+                android:text="Simpan"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pilihanLinear" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

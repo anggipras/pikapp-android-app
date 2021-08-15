@@ -8,7 +8,7 @@ data class GetStoreOrderListResponse(
     @SerializedName("err_message")
     override val errMessage: String?,
     val results: List<StoreOrderList>?
-): Response
+) : Response
 
 data class StoreOrderList(
     @SerializedName("transaction_id")
@@ -35,7 +35,7 @@ data class GetStoreOrderDetailResponse(
     @SerializedName("err_message")
     override val errMessage: String?,
     val results: StoreOrderList?
-): Response
+) : Response
 
 data class UpdateOrderStatusModel(
     @SerializedName("transaction_id")
@@ -49,5 +49,5 @@ data class UpdateStatusResponse(
     override val errCode: String?,
     @SerializedName("err_message")
     override val errMessage: String?
-): Response
+) : Response
 

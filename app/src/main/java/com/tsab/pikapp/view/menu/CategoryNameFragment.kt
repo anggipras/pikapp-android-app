@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.menu
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,10 +22,6 @@ class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItem
 
     lateinit var linearLayoutManager: LinearLayoutManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +38,7 @@ class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItem
         recyclerview_category.layoutManager = linearLayoutManager
 
         val category: RecyclerView = requireView().findViewById(R.id.recyclerview_category)
-        activity?.let { viewModel.getCategory(it.baseContext, category, this)}
+        activity?.let { viewModel.getCategory(it.baseContext, category, this) }
 
         observeViewModel()
         attachInputListeners()
@@ -70,6 +65,7 @@ class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItem
         val categoryName = viewModel.categoryAdapter.categoryList[position].category_name
         val categoryId = viewModel.categoryAdapter.categoryList[position].id.toString()
         Log.e("category name", categoryName)
+        Log.e("category name", categoryId)
         viewModel.validateCategory(categoryName.toString())
         viewModel.validateCategoryId(categoryId)
         navController?.navigateUp()

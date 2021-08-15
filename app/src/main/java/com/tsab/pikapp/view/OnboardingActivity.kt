@@ -1,12 +1,12 @@
 package com.tsab.pikapp.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.tsab.pikapp.R
 
 class OnboardingActivity : AppCompatActivity() {
@@ -27,7 +27,8 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view: View? = currentFocus
-        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.getName().startsWith("android.webkit.")
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name
+                .startsWith("android.webkit.")
         ) {
             val scrcoords = IntArray(2)
             view.getLocationOnScreen(scrcoords)

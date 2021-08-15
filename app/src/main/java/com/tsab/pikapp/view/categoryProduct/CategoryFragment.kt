@@ -2,12 +2,12 @@ package com.tsab.pikapp.view.categoryProduct
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +25,14 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     private var categoryId: Long = 0
     var isPulled = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
         viewModel = ViewModelProviders.of(this).get(CategoryViewModel::class.java)
         return dataBinding.root
     }
@@ -55,7 +60,7 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     private fun observeViewModel() {
 
         viewModel.isLocation.observe(this, Observer {
-            if(it) {
+            if (it) {
                 viewModel.getAddress(activity as HomeActivity)
             } else {
                 startLocationUpdate()
@@ -98,7 +103,11 @@ class CategoryFragment : Fragment(), MerchantListAdapter.MerchantClickInterface 
     @SuppressLint("FragmentLiveDataObserve")
     private fun startLocationUpdate() {
         viewModel.getLocationData().observe(this, Observer {
-            viewModel.getAddress(activity as HomeActivity, it.latitude.toString(), it.longitude.toString())
+            viewModel.getAddress(
+                activity as HomeActivity,
+                it.latitude.toString(),
+                it.longitude.toString()
+            )
         })
     }
 

@@ -59,13 +59,13 @@ class StoreMyProductListAdapter(
 
         holder.view.buttonDelete.setOnClickListener {
             val pid = holder.view.productID.text.toString()
-            val pName =  holder.view.productName.text.toString()
+            val pName = holder.view.productName.text.toString()
             productListInterface.onDeleteTapped(pid, position, pName)
         }
     }
 
     interface ProductListInterface {
-        fun changeToOnOff(pid: String,position: Int, status: Boolean)
+        fun changeToOnOff(pid: String, position: Int, status: Boolean)
         fun onEditTapped(pid: String)
         fun onDeleteTapped(pid: String, position: Int, pName: String)
     }

@@ -1,8 +1,8 @@
 package com.tsab.pikapp.util
 
-fun generateResponseMessage (err_Code: String?, err_Message: String?): String? {
+fun generateResponseMessage(err_Code: String?, err_Message: String?): String? {
     var responseMessage: String? = ""
-    when(err_Code){
+    when (err_Code) {
         "EC0009" -> responseMessage = "Param not found"
         "EC0013" -> responseMessage = "Internal Server Error"
         "EC0014" -> responseMessage = "Email/Phone is used"

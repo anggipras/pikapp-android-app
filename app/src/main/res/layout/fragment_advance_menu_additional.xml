@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Header layout -->
+            <include
+                android:id="@+id/headerLayout"
+                layout="@layout/layout_header_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/headerHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/am_details_tambah_daftar_pilihan"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/headerLayout"
+                app:layout_constraintStart_toStartOf="@id/headerLayout" />
+
+            <!-- Nama daftar pilihan input group -->
+            <TextView
+                android:id="@+id/namaDaftarPilihanHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/am_additional_nama_daftar_pilihan_header"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+            <TextView
+                android:id="@+id/namaDaftarPilihanRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/star"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/namaDaftarPilihanHeaderText"
+                app:layout_constraintStart_toEndOf="@id/namaDaftarPilihanHeaderText"
+                app:layout_constraintTop_toTopOf="@id/namaDaftarPilihanHeaderText" />
+
+            <EditText
+                android:id="@+id/namaDaftarPilihanInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/borderSubtle"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="@string/am_additional_nama_daftar_pilihan_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColorHint="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaDaftarPilihanHeaderText" />
+
+            <TextView
+                android:id="@+id/namaDaftarPilihanErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/namaDaftarPilihanInputText"
+                app:layout_constraintTop_toBottomOf="@id/namaDaftarPilihanInputText"
+                tools:text="Nama pilihan tidak boleh kosong!" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/namaDaftarPilihanInputBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="namaDaftarPilihanInputText,namaDaftarPilihanErrorText" />
+
+            <!-- Harga input group -->
+            <TextView
+                android:id="@+id/hargaHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/am_additional_harga_header"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaDaftarPilihanInputBarrier" />
+
+            <TextView
+                android:id="@+id/hargaRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/star"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/hargaHeaderText"
+                app:layout_constraintStart_toEndOf="@id/hargaHeaderText"
+                app:layout_constraintTop_toTopOf="@id/hargaHeaderText" />
+
+            <EditText
+                android:id="@+id/hargaInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/borderSubtle"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="@string/am_additional_harga_hint"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:textColorHint="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hargaHeaderText" />
+
+            <TextView
+                android:id="@+id/hargaErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/hargaInputText"
+                app:layout_constraintTop_toBottomOf="@id/hargaInputText"
+                tools:text="Nama pilihan tidak boleh kosong!" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/hargaInputBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="hargaInputText,hargaErrorText" />
+
+            <!-- Save button -->
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/button_green_small"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/simpan"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="6:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>

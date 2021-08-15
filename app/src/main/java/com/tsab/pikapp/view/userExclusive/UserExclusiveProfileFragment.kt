@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentUserExclusiveProfileBinding
 import com.tsab.pikapp.util.getInitial
 import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.userExclusive.UserExclusiveProfileViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class UserExclusiveProfileFragment : BottomSheetDialogFragment() {
 

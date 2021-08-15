@@ -11,7 +11,9 @@ import com.tsab.pikapp.util.CartUtil
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.util.decodeJWT
-import com.tsab.pikapp.view.*
+import com.tsab.pikapp.view.CarouselActivity
+import com.tsab.pikapp.view.OnboardingActivity
+import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
 
@@ -26,8 +28,10 @@ class SplashViewModel(application: Application) : BaseViewModel(application) {
         prefHelper.setNotificationDetail(NotificationModel(isMerchant, txn, tableNo))
     }
 
-    fun checkOnboardingFinished(context: Context, mid: String?, address: String?,
-                                tableNo: String?) {
+    fun checkOnboardingFinished(
+        context: Context, mid: String?, address: String?,
+        tableNo: String?
+    ) {
         prefHelper.clearOrderList()
         prefHelper.deleteStoredDeepLink()
         prefHelper.deleteDeeplinkUrl()
@@ -53,15 +57,17 @@ class SplashViewModel(application: Application) : BaseViewModel(application) {
                     if (userData.isMerchant == null) {
                         Log.d("Debug", "harus di logout nih")
                         Toast.makeText(getApplication(), "Silakan login kembali", Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                         sessionManager.logout()
                         val onboardingActivity = Intent(context, OnboardingActivity::class.java)
                         context.startActivity(onboardingActivity)
                     }
 
                     if (isUserExclusive) {
-                        val userExclusiveActivity = Intent(context,
-                                UserExclusiveActivity::class.java)
+                        val userExclusiveActivity = Intent(
+                            context,
+                            UserExclusiveActivity::class.java
+                        )
                         context.startActivity(userExclusiveActivity)
                     } else {
                         val storeActivity = Intent(context, HomeNavigation::class.java)

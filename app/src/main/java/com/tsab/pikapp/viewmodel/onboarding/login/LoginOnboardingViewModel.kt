@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LoginResponse
 import com.tsab.pikapp.models.model.UserAccess
@@ -18,7 +19,6 @@ import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver

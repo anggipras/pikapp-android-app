@@ -14,7 +14,10 @@ import com.tsab.pikapp.util.rupiahFormat
 import com.tsab.pikapp.view.categoryProduct.ProductListClickListener
 import kotlinx.android.synthetic.main.item_merchant_product_list.view.*
 
-class ProductListAdapter(var merchantProductList: ArrayList<ProductList>, val productAddInterface: ProductAddInterface) :
+class ProductListAdapter(
+    var merchantProductList: ArrayList<ProductList>,
+    val productAddInterface: ProductAddInterface
+) :
     RecyclerView.Adapter<ProductListAdapter.MerchantProductListViewHolder>(),
     ProductListClickListener {
 
@@ -49,7 +52,8 @@ class ProductListAdapter(var merchantProductList: ArrayList<ProductList>, val pr
     override fun onBindViewHolder(holder: MerchantProductListViewHolder, position: Int) {
         dataBinding.productList = merchantProductList[position]
         dataBinding.listener = this
-        dataBinding.textPrice.text = rupiahFormat(merchantProductList[position].productPrice!!.toLong())
+        dataBinding.textPrice.text =
+            rupiahFormat(merchantProductList[position].productPrice!!.toLong())
         dataBinding.buttonAdd.setOnClickListener {
             val mid = merchantProductList[position].merchantID
             val pid = merchantProductList[position].productID

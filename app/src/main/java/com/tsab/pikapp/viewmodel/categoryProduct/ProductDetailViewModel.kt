@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.MerchantListErrorResponse
 import com.tsab.pikapp.models.model.ProductDetail
 import com.tsab.pikapp.models.model.ProductDetailResponse
@@ -15,7 +16,6 @@ import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.LoginActivity
 import com.tsab.pikapp.view.categoryProduct.AddToCartFragment
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -23,7 +23,8 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
 
-class ProductDetailViewModel(application: Application) : BaseViewModel(application), AddToCartFragment.DialogDismissInterface {
+class ProductDetailViewModel(application: Application) : BaseViewModel(application),
+    AddToCartFragment.DialogDismissInterface {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
@@ -62,14 +63,26 @@ class ProductDetailViewModel(application: Application) : BaseViewModel(applicati
                             Log.d("Debug", "error Product Detail : " + e)
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
-                            errorResponse = Gson().fromJson<MerchantListErrorResponse>(body, MerchantListErrorResponse::class.java)
+                            errorResponse = Gson().fromJson<MerchantListErrorResponse>(
+                                body,
+                                MerchantListErrorResponse::class.java
+                            )
                         } catch (err: Throwable) {
-                            errorResponse = MerchantListErrorResponse("now", "503", "Unavailable", "Unavailable", "Unavailable")
+                            errorResponse = MerchantListErrorResponse(
+                                "now",
+                                "503",
+                                "Unavailable",
+                                "Unavailable",
+                                "Unavailable"
+                            )
                         }
 
                         productDetailFail(errorResponse)
 //                        createToastShort("${errorResponse.message} ${errorResponse.path}")
-                        Log.d("Debug", "error Product Detail : ${errorResponse.message} ${errorResponse.path}")
+                        Log.d(
+                            "Debug",
+                            "error Product Detail : ${errorResponse.message} ${errorResponse.path}"
+                        )
                     }
                 })
         )
@@ -91,7 +104,14 @@ class ProductDetailViewModel(application: Application) : BaseViewModel(applicati
         loading.value = false
     }
 
-    fun onAddProduct(pid: String, mid: String, pName: String, pImage: String, pPrice: String, context : Context) {
+    fun onAddProduct(
+        pid: String,
+        mid: String,
+        pName: String,
+        pImage: String,
+        pPrice: String,
+        context: Context
+    ) {
         val isLoggingIn = sessionManager.isLoggingIn() ?: false
         if (isLoggingIn) {
             val args = Bundle()
@@ -102,7 +122,10 @@ class ProductDetailViewModel(application: Application) : BaseViewModel(applicati
             args.putString(PRODUCT_PRICE, pPrice)
             val addToCartFragment = AddToCartFragment(this)
             addToCartFragment.arguments = args
-            addToCartFragment.show((context as HomeActivity).supportFragmentManager, addToCartFragment.tag)
+            addToCartFragment.show(
+                (context as HomeActivity).supportFragmentManager,
+                addToCartFragment.tag
+            )
         } else {
             val loginActivity = Intent(context, LoginActivity::class.java)
             context.startActivity(loginActivity)

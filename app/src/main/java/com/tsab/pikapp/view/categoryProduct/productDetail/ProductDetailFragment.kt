@@ -23,8 +23,13 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
     private lateinit var dataBinding: FragmentProductDetailBinding
     private var pid = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_product_detail, container, false)
         dataBinding.listener = this
         viewModel = ViewModelProviders.of(this).get(ProductDetailViewModel::class.java)
         return dataBinding.root
@@ -44,8 +49,10 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
         viewModel.productDetailResponse.observe(this, Observer { productDetail ->
             productDetail?.let {
                 dataBinding.productDetail = productDetail
-                dataBinding.toolbar.setTitle("${productDetail.productName} | ${productDetail.merchantName}")
-                dataBinding.textProductPrice.text = rupiahFormat(productDetail.productPrice!!.toLong())
+                dataBinding.toolbar.title =
+                    "${productDetail.productName} | ${productDetail.merchantName}"
+                dataBinding.textProductPrice.text =
+                    rupiahFormat(productDetail.productPrice!!.toLong())
             }
         })
         viewModel.cart.observe(this, Observer { cart ->
@@ -64,23 +71,25 @@ class ProductDetailFragment : Fragment(), ProductClickListener {
     override fun onResume() {
         super.onResume()
         viewModel.getCart()
-        val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        val buttonFloat: View? =
+            (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
         buttonFloat?.let { it ->
             if (it.isVisible) {
                 val param = it.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0,0,10,200)
+                param.setMargins(0, 0, 10, 200)
                 it.layoutParams = param
             }
         }
     }
 
     private fun setButtonCart(status: Boolean) {
-        val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        val buttonFloat: View? =
+            (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
         buttonFloat?.let {
-            if(status) {
+            if (status) {
                 buttonFloat.visibility = View.VISIBLE
                 val param = it.layoutParams as ViewGroup.MarginLayoutParams
-                param.setMargins(0,0,10,200)
+                param.setMargins(0, 0, 10, 200)
                 it.layoutParams = param
             } else {
                 buttonFloat.visibility = View.GONE

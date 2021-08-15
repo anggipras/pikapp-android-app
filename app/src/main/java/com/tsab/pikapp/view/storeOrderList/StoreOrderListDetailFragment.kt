@@ -13,16 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreOrderListDetailBinding
-import com.tsab.pikapp.models.model.OrderDetail
 import com.tsab.pikapp.models.model.StoreOrderList
 import com.tsab.pikapp.util.CONST_TABLE_NO
 import com.tsab.pikapp.util.CONST_TRANSACTION_ID
-import com.tsab.pikapp.util.rupiahFormat
 import com.tsab.pikapp.view.orderList.orderListDetail.OrderListDetailProductAdapter
-import com.tsab.pikapp.viewmodel.orderList.OrderListDetailViewModel
 import com.tsab.pikapp.viewmodel.storeOrderList.StoreOrderListDetailViewModel
 
-class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrderListDetailInterface) : BottomSheetDialogFragment() {
+class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrderListDetailInterface) :
+    BottomSheetDialogFragment() {
 
     private lateinit var dataBinding: FragmentStoreOrderListDetailBinding
     private lateinit var viewModel: StoreOrderListDetailViewModel
@@ -31,9 +29,18 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
     var txnID = ""
     var tableNo = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_order_list_detail, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_store_order_list_detail,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(StoreOrderListDetailViewModel::class.java)
         return dataBinding.root
     }
@@ -79,7 +86,7 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
             }
         })
         viewModel.loading.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dataBinding.containerAll.visibility = View.INVISIBLE
             } else dataBinding.containerAll.visibility = View.VISIBLE
         })
@@ -96,7 +103,7 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
         dataBinding.textMerchantName.text = it.customerName
 
         dataBinding.textBizType.text = it.bizType
-        if(it.bizType == "DINE_IN") {
+        if (it.bizType == "DINE_IN") {
             dataBinding.tableContainer.visibility = View.VISIBLE
             dataBinding.textBizType.text = "Makan di Tempat"
             dataBinding.imageBizType.setImageResource(R.drawable.ic_dinein)
@@ -109,35 +116,35 @@ class StoreOrderListDetailFragment(val storeOrderListDetailInterface: StoreOrder
         if (it.paymentWith == "WALLET_DANA") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_dana)
             dataBinding.textPaymentType.text = "DANA"
-        } else if(it.paymentWith == "WALLET_OVO") {
+        } else if (it.paymentWith == "WALLET_OVO") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_ovo)
             dataBinding.textPaymentType.text = "OVO"
-        } else if(it.paymentWith == "PAY_BY_CASHIER") {
+        } else if (it.paymentWith == "PAY_BY_CASHIER") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_cashier)
             dataBinding.textPaymentType.text = "Bayar di kasir"
         } else {
             dataBinding.imagePaymentType.visibility = View.GONE
             dataBinding.textPaymentType.visibility = View.GONE
         }
-        it.detailProduct?.let {products ->
+        it.detailProduct?.let { products ->
             orderListDetailProductAdapter.updateProductList(products)
         }
         dataBinding.detailPaymentContainer.visibility = View.GONE
         dataBinding.spacePayment.visibility = View.GONE
 
-        if(it.status == "OPEN") {
+        if (it.status == "OPEN") {
             dataBinding.buttonUpdateStatusPaid.visibility = View.VISIBLE
             dataBinding.buttonUpdateStatusReady.visibility = View.GONE
             dataBinding.buttonUpdateStatusFinish.visibility = View.GONE
-        }else if(it.status == "PAID") {
+        } else if (it.status == "PAID") {
             dataBinding.buttonUpdateStatusPaid.visibility = View.GONE
             dataBinding.buttonUpdateStatusReady.visibility = View.GONE
             dataBinding.buttonUpdateStatusFinish.visibility = View.GONE
-        } else if(it.status == "MERCHANT_CONFIRM") {
+        } else if (it.status == "MERCHANT_CONFIRM") {
             dataBinding.buttonUpdateStatusPaid.visibility = View.GONE
             dataBinding.buttonUpdateStatusReady.visibility = View.VISIBLE
             dataBinding.buttonUpdateStatusFinish.visibility = View.GONE
-        } else if(it.status == "FINALIZE") {
+        } else if (it.status == "FINALIZE") {
             dataBinding.buttonUpdateStatusPaid.visibility = View.GONE
             dataBinding.buttonUpdateStatusReady.visibility = View.GONE
             dataBinding.buttonUpdateStatusFinish.visibility = View.VISIBLE

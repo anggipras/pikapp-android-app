@@ -4,11 +4,14 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.tsab.pikapp.models.model.*
+import com.google.gson.Gson
+import com.tsab.pikapp.models.model.ErrorResponse
+import com.tsab.pikapp.models.model.StoreProductActionResponse
+import com.tsab.pikapp.models.model.StoreProductList
+import com.tsab.pikapp.models.model.StoreProductListResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -31,7 +34,7 @@ class StoreProductListViewModel(application: Application) : BaseViewModel(applic
     val loadingDelete = MutableLiveData<Boolean>()
     val deleteProductErrorResponse = MutableLiveData<ErrorResponse>()
 
-    fun getProductListAvailable(status : Boolean) {
+    fun getProductListAvailable(status: Boolean) {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!

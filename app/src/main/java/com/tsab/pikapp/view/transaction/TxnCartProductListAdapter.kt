@@ -10,7 +10,10 @@ import com.tsab.pikapp.databinding.ItemTxnCartProductBinding
 import com.tsab.pikapp.models.model.CartModel
 import com.tsab.pikapp.util.rupiahFormat
 
-class TxnCartProductListAdapter(private val cartList: ArrayList<CartModel>, private val cartListInterface: CartListInterface) : RecyclerView.Adapter<TxnCartProductListAdapter.ProductViewHolder>() {
+class TxnCartProductListAdapter(
+    private val cartList: ArrayList<CartModel>,
+    private val cartListInterface: CartListInterface
+) : RecyclerView.Adapter<TxnCartProductListAdapter.ProductViewHolder>() {
 
     fun updateProductList(newProductList: List<CartModel>) {
         cartList.clear()
@@ -20,11 +23,13 @@ class TxnCartProductListAdapter(private val cartList: ArrayList<CartModel>, priv
 
     private lateinit var dataBinding: ItemTxnCartProductBinding
 
-    class ProductViewHolder(var view: ItemTxnCartProductBinding) : RecyclerView.ViewHolder(view.root)
+    class ProductViewHolder(var view: ItemTxnCartProductBinding) :
+        RecyclerView.ViewHolder(view.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.item_txn_cart_product, parent, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.item_txn_cart_product, parent, false)
         return ProductViewHolder(dataBinding)
     }
 
@@ -51,7 +56,7 @@ class TxnCartProductListAdapter(private val cartList: ArrayList<CartModel>, priv
         }
 
         holder.view.buttonDecrement.setOnClickListener {
-            if(qty != 1) cartListInterface.decreaseQty(cartList[position])
+            if (qty != 1) cartListInterface.decreaseQty(cartList[position])
         }
 
         holder.view.buttonDelete.setOnClickListener {

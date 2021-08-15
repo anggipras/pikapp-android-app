@@ -38,21 +38,21 @@
                 android:layout_width="275dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="28dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/form"
                 android:drawableStart="@drawable/ic_baseline_search_24"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/montserrat"
-                android:textSize="15dp"
                 android:hint="Cari Menu yang Anda jual"
                 android:paddingLeft="10dp"
+                android:textSize="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/judul" />
 
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/icon_sort"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.307"
@@ -65,10 +65,10 @@
             android:id="@+id/categoryPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            android:layout_marginTop="10dp">
+            app:layout_constraintTop_toBottomOf="@+id/header">
 
             <LinearLayout
                 android:id="@+id/placeholder"
@@ -95,11 +95,11 @@
                     android:id="@+id/addCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
-                    android:text="+ Tambah Kategori"
+                    android:layout_marginLeft="10dp"
                     android:fontFamily="@font/montserrat_bold"
-                    android:textSize="20dp"
-                    android:layout_marginLeft="10dp"/>
+                    android:text="+ Tambah Kategori Menu"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20dp" />
 
             </LinearLayout>
 
@@ -135,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:text="Tambah Kategori untuk menambahkan menu"/>
+                    android:text="Tambah Kategori untuk menambahkan menu" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

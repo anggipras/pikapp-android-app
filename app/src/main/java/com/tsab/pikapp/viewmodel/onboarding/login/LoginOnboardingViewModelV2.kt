@@ -12,7 +12,10 @@ import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.models.model.UserAccess
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.util.*
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.SharedPreferencesUtil
+import com.tsab.pikapp.util.decodeJWT
+import com.tsab.pikapp.util.isUsernameValid
 import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
@@ -48,7 +51,7 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         }
     }
 
-    fun validateEmail(email: String){
+    fun validateEmail(email: String) {
         if (email.isEmpty()) {
             mutableEmailError.value = "Silakan masukkan nomor telepon anda"
             isEmailValid = false
@@ -88,35 +91,37 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     private fun loginProcess(username: String, pin: String) {
         loading.value = true
         disposable.add(
-                apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
-                            override fun onSuccess(t: LoginResponseV2) {
-                                loginSuccess(t)
-                            }
+            apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
+                    override fun onSuccess(t: LoginResponseV2) {
+                        loginSuccess(t)
+                    }
 
-                            override fun onError(e: Throwable) {
-                                Log.d("Debug", "error : " + e)
-                                var errorResponse: ErrorResponse
-                                try {
-                                    val responseBody = (e as HttpException)
-                                    val body = responseBody.response()?.errorBody()?.string()
-                                    errorResponse =
-                                            Gson().fromJson(body, ErrorResponse::class.java)
-                                } catch (err: Throwable) {
-                                    errorResponse =
-                                            ErrorResponse(
-                                                    "503",
-                                                    "Service Unavailable"
-                                            )
-                                }
-                                loginFail(errorResponse)
-                                createToastShort(getApplication(),
-                                        "error: ${errorResponse.errMessage}")
-                                //                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                    override fun onError(e: Throwable) {
+                        Log.d("Debug", "error : " + e)
+                        var errorResponse: ErrorResponse
+                        try {
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse =
+                                ErrorResponse(
+                                    "503",
+                                    "Service Unavailable"
+                                )
+                        }
+                        loginFail(errorResponse)
+                        createToastShort(
+                            getApplication(),
+                            "error: ${errorResponse.errMessage}"
+                        )
+                        //                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                })
         )
     }
 

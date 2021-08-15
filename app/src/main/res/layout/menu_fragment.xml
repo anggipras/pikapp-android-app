@@ -6,7 +6,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
@@ -24,9 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Menu"
+                android:text="@string/menu"
                 android:textColor="#FFFFFF"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.092"
@@ -38,21 +39,22 @@
                 android:layout_width="275dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="28dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/form"
                 android:drawableStart="@drawable/ic_baseline_search_24"
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/montserrat"
-                android:textSize="15dp"
-                android:hint="Cari Menu yang Anda jual"
-                android:paddingLeft="10dp"
+                android:hint="@string/cari_menu_yang_anda_jual"
+                android:paddingStart="10dp"
+                android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/judul" />
 
             <ImageView
+                android:id="@+id/buttonSort"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/icon_sort"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.307"
@@ -65,10 +67,137 @@
             android:id="@+id/categoryPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            android:layout_marginTop="10dp">
+            app:layout_constraintTop_toBottomOf="@+id/header">
+
+            <TextView
+                android:id="@+id/addCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:drawableStart="@drawable/icon_plus"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/colorPrimary"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/tambah_kategori_menu"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tabs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:tabGravity="fill"
+                                app:tabIndicatorColor="@color/colorPrimary"
+                                app:tabIndicatorHeight="4dp"
+                                app:tabMode="scrollable"
+                                app:tabTextAppearance="@style/MenuTabLayout"
+                                app:tabTextColor="@android:color/black" />
+
+                            <ImageButton
+                                android:id="@+id/plusBtn"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/plusbutton" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/scrollPanel"
+                            android:layout_width="match_parent"
+                            android:layout_height="450dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@drawable/category_box"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tabs">
+
+                            <ImageView
+                                android:id="@+id/imageView18"
+                                android:layout_width="128dp"
+                                android:layout_height="128dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="100dp"
+                                android:src="@drawable/icon_empty_category"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/textview2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/tambah_kategori_untuk_menambahkan_menu"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imageView18" />
+
+                            <TextView
+                                android:id="@+id/textview3"
+                                android:layout_width="250dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="50dp"
+                                android:background="@drawable/button_gray"
+                                android:fontFamily="@font/montserrat"
+                                android:text="@string/anda_belum_memiliki_menu"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imageView18" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.viewpager.widget.ViewPager>
+
+
+                </RelativeLayout>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <LinearLayout
                 android:id="@+id/placeholder"
@@ -86,66 +215,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="18dp"
-                    android:orientation="vertical">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <ImageButton
-                    android:id="@+id/plusBtn"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/plusbutton" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/scrollPanel"
-            android:layout_width="match_parent"
-            android:layout_height="450dp"
-            android:background="@drawable/category_box"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categoryPanel">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="100dp"
-                    android:src="@drawable/icon_empty_menu" />
-
-                <TextView
-                    android:id="@+id/textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:text="Anda belum memiliki menu untuk kategori ini" />
-
-                <ImageView
-                    android:id="@+id/tambahMenuButton"
-                    android:layout_width="160dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:src="@drawable/button_add_menu"/>
-
+                    android:layout_marginStart="18dp"
+                    android:orientation="vertical" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

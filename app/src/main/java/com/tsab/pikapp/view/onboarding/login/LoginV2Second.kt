@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentLoginV2SecondBinding
-import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModelV2
 
@@ -30,11 +29,13 @@ class LoginV2Second : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_v2_second,
-                container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_login_v2_second,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -69,7 +70,8 @@ class LoginV2Second : Fragment() {
 
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = activity?.getSystemService(
-                Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)

@@ -6,6 +6,6 @@
         app:constraintSetEnd="@layout/fragment_signup_end"
         app:constraintSetStart="@layout/fragment_signup_start"
         app:duration="@android:integer/config_mediumAnimTime"
-        app:motionInterpolator="easeOut"/>
+        app:motionInterpolator="easeOut" />
 
 </MotionScene>

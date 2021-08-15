@@ -1,8 +1,9 @@
 package com.tsab.pikapp.util
 
-const val BASE_URL= "https://dev-api.pikapp.id/"
+const val BASE_URL = "https://dev-api.pikapp.id/"
 
-const val JWT_SECRET= "Er3lzchUa489bdlg35PCaGMKk2YzflBHCMue2jIAy9nFENvokE0JUbwytMFSvrajK8gYDttMdvzWw0OBRydt7pXfAAd1DTxWvE0Hc"
+const val JWT_SECRET =
+    "Er3lzchUa489bdlg35PCaGMKk2YzflBHCMue2jIAy9nFENvokE0JUbwytMFSvrajK8gYDttMdvzWw0OBRydt7pXfAAd1DTxWvE0Hc"
 
 const val MERCHANT_ID = "merchant id"
 
@@ -24,6 +25,6 @@ const val CONST_TRANSACTION_ID = "transaction id"
 const val CONST_TABLE_NO = "table no"
 
 //DEEP LINK CONST
-const val DL_MERCHANTID= "deeplink merchant id"
-const val DL_TABLENO= "deeplink table no"
-const val DL_ADDRESS= "deeplink address"
+const val DL_MERCHANTID = "deeplink merchant id"
+const val DL_TABLENO = "deeplink table no"
+const val DL_ADDRESS = "deeplink address"

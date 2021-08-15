@@ -10,9 +10,14 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CategoryListResult
 import kotlinx.android.synthetic.main.category_items.view.*
 
-class MenuCategoryAdapter (private val context: Context, val menuCategoryList: MutableList<CategoryListResult>, private val listener: OnItemClickListener): RecyclerView.Adapter<MenuCategoryAdapter.ViewHolder>(){
+class MenuCategoryAdapter(
+    private val context: Context,
+    val menuCategoryList: MutableList<CategoryListResult>,
+    private val listener: OnItemClickListener
+) : RecyclerView.Adapter<MenuCategoryAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_menu_items, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.category_menu_items, parent, false)
         return ViewHolder(view)
     }
 
@@ -24,8 +29,8 @@ class MenuCategoryAdapter (private val context: Context, val menuCategoryList: M
         holder.resultText.text = menuCategoryList[position].category_name
     }
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView),
-        View.OnClickListener{
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
         var resultText: TextView = itemView.resultText
 
         init {

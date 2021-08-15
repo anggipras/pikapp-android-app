@@ -32,7 +32,8 @@ class UserExclusiveActivity : AppCompatActivity() {
         navGraph = graphInflater.inflate(R.navigation.nav_user_exclusive)
         navController = navHostFragment.navController
 
-        val destination = if (viewModel.getUserExclusiveFormFinished()) R.id.userExclusiveHomeFragment else R.id.userExclusiveFormFragment
+        val destination =
+            if (viewModel.getUserExclusiveFormFinished()) R.id.userExclusiveHomeFragment else R.id.userExclusiveFormFragment
         navGraph.startDestination = destination
         navController.graph = navGraph
     }
@@ -47,7 +48,8 @@ class UserExclusiveActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view: View? = currentFocus
-        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.getName().startsWith("android.webkit.")
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name
+                .startsWith("android.webkit.")
         ) {
             val scrcoords = IntArray(2)
             view.getLocationOnScreen(scrcoords)

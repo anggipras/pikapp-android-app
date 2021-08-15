@@ -6,14 +6,17 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
-import com.tsab.pikapp.models.model.*
+import com.google.gson.Gson
+import com.tsab.pikapp.models.model.ErrorResponse
+import com.tsab.pikapp.models.model.UserAccess
+import com.tsab.pikapp.models.model.UserExclusiveRecommendationRequest
+import com.tsab.pikapp.models.model.UserExclusiveRecommendationResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.util.containsForbiddenCharacter
 import com.tsab.pikapp.view.userExclusive.UserExclusiveFormFragmentDirections
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -52,21 +55,33 @@ class UserExclusiveFormViewModel(application: Application) : BaseViewModel(appli
         ma5: String
     ) {
 
-        if (m1.isEmpty() || m2.isEmpty() || m3.isEmpty()  || m4.isEmpty()  || m5.isEmpty() || ma1.isEmpty() || ma2.isEmpty() || ma3.isEmpty() || ma4.isEmpty() || ma5.isEmpty()) {
+        if (m1.isEmpty() || m2.isEmpty() || m3.isEmpty() || m4.isEmpty() || m5.isEmpty() || ma1.isEmpty() || ma2.isEmpty() || ma3.isEmpty() || ma4.isEmpty() || ma5.isEmpty()) {
             Toast.makeText(
                 getApplication(),
                 "Mohon isi seluruh form",
                 Toast.LENGTH_SHORT
             ).show()
-        } else if (containsForbiddenCharacter(m1) || containsForbiddenCharacter(m2) || containsForbiddenCharacter(m3) || containsForbiddenCharacter(m4) || containsForbiddenCharacter(m5) || containsForbiddenCharacter(ma1) || containsForbiddenCharacter(ma2) || containsForbiddenCharacter(ma3) || containsForbiddenCharacter(ma4) || containsForbiddenCharacter(ma5))  {
+        } else if (containsForbiddenCharacter(m1) || containsForbiddenCharacter(m2) || containsForbiddenCharacter(
+                m3
+            ) || containsForbiddenCharacter(m4) || containsForbiddenCharacter(m5) || containsForbiddenCharacter(
+                ma1
+            ) || containsForbiddenCharacter(ma2) || containsForbiddenCharacter(ma3) || containsForbiddenCharacter(
+                ma4
+            ) || containsForbiddenCharacter(ma5)
+        ) {
             Toast.makeText(
                 getApplication(),
                 "Karakter <>\"'=;() dilarang",
                 Toast.LENGTH_SHORT
             ).show()
-        }
-        else {
-            submitForm("${m1}|${ma1}", "${m2}|${ma2}", "${m3}|${ma3}", "${m4}|${ma4}", "${m5}|${ma5}")
+        } else {
+            submitForm(
+                "${m1}|${ma1}",
+                "${m2}|${ma2}",
+                "${m3}|${ma3}",
+                "${m4}|${ma4}",
+                "${m5}|${ma5}"
+            )
         }
     }
 

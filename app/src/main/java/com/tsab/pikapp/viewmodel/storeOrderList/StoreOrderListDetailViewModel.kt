@@ -44,7 +44,7 @@ class StoreOrderListDetailViewModel(application: Application) : BaseViewModel(ap
                     }
 
                     override fun onError(e: Throwable) {
-                        val errorResponse= try {
+                        val errorResponse = try {
                             Log.d("Debug", "error order detail : " + e + " ${e.message}")
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
@@ -54,8 +54,15 @@ class StoreOrderListDetailViewModel(application: Application) : BaseViewModel(ap
                         }
 
                         orderDetailFail(errorResponse)
-                        Toast.makeText(getApplication(), "${errorResponse.errCode} ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
-                        Log.d("Debug", "error order detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
+                        Toast.makeText(
+                            getApplication(),
+                            "${errorResponse.errCode} ${errorResponse.errMessage}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d(
+                            "Debug",
+                            "error order detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
+                        )
                     }
                 })
         )

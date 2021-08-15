@@ -17,10 +17,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         supportActionBar?.hide()
-        getIntent().getExtras()
+        intent.extras
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
-        if(intent != null && intent.hasExtra("is_merchant")) {
+        if (intent != null && intent.hasExtra("is_merchant")) {
             val isMerchant = intent.extras!!.getString("is_merchant")
             val transactionID = intent.extras!!.getString("transaction_id")
             val tableNo = intent.extras!!.getString("table_no")
@@ -31,14 +31,14 @@ class SplashActivity : AppCompatActivity() {
             var mid: String? = null
             var address: String? = null
             var tableNo: String? = null
-            if(uri != null) {
+            if (uri != null) {
                 val uriString = uri.toString()
-                if(uriString.contains("list")) {
-                    val params : List<String> = uri.pathSegments
+                if (uriString.contains("list")) {
+                    val params: List<String> = uri.pathSegments
                     address = params[2]
                     tableNo = params[3]
                 } else {
-                    val params : List<String> = uri.pathSegments
+                    val params: List<String> = uri.pathSegments
                     mid = params[1]
                     tableNo = params[2]
                 }

@@ -18,11 +18,13 @@ class CarouselThreeFragment : Fragment() {
     lateinit var dataBinding: FragmentCarouselThreeBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_carousel_three, container,
-                false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_carousel_three, container,
+            false
+        )
         return dataBinding.root
     }
 
@@ -42,7 +44,7 @@ class CarouselThreeFragment : Fragment() {
 
         dataBinding.privacyText.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setData(Uri.parse("https://pikapp.id/ketentuan-dan-kebijakan-privasi/"))
+            intent.data = Uri.parse("https://pikapp.id/ketentuan-dan-kebijakan-privasi/")
             startActivity(intent)
         }
     }

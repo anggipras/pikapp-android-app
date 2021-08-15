@@ -1,16 +1,16 @@
 package com.tsab.pikapp.view.store.myProduct
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreMyProductBinding
 import com.tsab.pikapp.view.home.HomeViewPagerAdapter
-import com.google.android.material.tabs.TabLayoutMediator
 
 class StoreMyProductFragment : Fragment() {
 
@@ -21,14 +21,16 @@ class StoreMyProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_my_product, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_store_my_product, container, false)
 
         val fragmentList = arrayListOf<Fragment>(
             StoreMyProductAvailableFragment(),
             StoreMyProductNotAvailableFragment()
         )
 
-        val adapter = HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        val adapter =
+            HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         dataBinding.myProductViewPager.adapter = adapter
         dataBinding.myProductViewPager.isUserInputEnabled = false
         return dataBinding.root
@@ -50,7 +52,8 @@ class StoreMyProductFragment : Fragment() {
         }.attach()
 
         dataBinding.buttonToAddProduct.setOnClickListener {
-            val action = StoreMyProductFragmentDirections.actionToStoreMyProductFormFragment(true, "")
+            val action =
+                StoreMyProductFragmentDirections.actionToStoreMyProductFormFragment(true, "")
             Navigation.findNavController(view).navigate(action)
         }
     }

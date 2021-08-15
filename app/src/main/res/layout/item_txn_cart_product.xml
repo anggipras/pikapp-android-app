@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="cartList"
             type="com.tsab.pikapp.models.model.CartModel" />
@@ -43,9 +44,9 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginStart="1dp"
                     android:layout_marginBottom="5dp"
                     app:cardCornerRadius="20dp">
 
@@ -77,9 +78,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="5"
-                            android:singleLine="true"
                             android:ellipsize="end"
                             android:fontFamily="@font/proximanova_semibold"
+                            android:singleLine="true"
                             android:text="@{String.valueOf(cartList.productName)}"
                             android:textColor="#000000"
                             android:textSize="16sp" />
@@ -95,7 +96,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="5dp"/>
+                        android:layout_height="5dp" />
 
 
                     <LinearLayout
@@ -134,12 +135,13 @@
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:padding="3dp"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:padding="3dp">
 
                                 <Button
                                     android:id="@+id/buttonDecrement"

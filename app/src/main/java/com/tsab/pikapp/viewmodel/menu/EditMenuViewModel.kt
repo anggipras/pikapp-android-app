@@ -16,7 +16,7 @@ import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-class EditMenuViewModel (application: Application) : BaseViewModel(application) {
+class EditMenuViewModel(application: Application) : BaseViewModel(application) {
 
     private var sessionManager = SessionManager(getApplication())
     private var prefHelper = SharedPreferencesUtil(getApplication())

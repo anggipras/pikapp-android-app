@@ -2,13 +2,12 @@ package com.tsab.pikapp.view.storeOrderList
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,15 +16,25 @@ import com.tsab.pikapp.databinding.FragmentStoreOrderListPreparedBinding
 import com.tsab.pikapp.view.StoreOrderListActivity
 import com.tsab.pikapp.viewmodel.storeOrderList.StoreOrderListCohortViewModel
 
-class StoreOrderListPreparedFragment : Fragment(), StoreOrderListCohortAdapter.StoreOrderListInterface {
+class StoreOrderListPreparedFragment : Fragment(),
+    StoreOrderListCohortAdapter.StoreOrderListInterface {
 
     private lateinit var dataBinding: FragmentStoreOrderListPreparedBinding
     private lateinit var viewModel: StoreOrderListCohortViewModel
     private val storeOrderListCohortAdapter = StoreOrderListCohortAdapter(arrayListOf(), this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_order_list_prepared, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_store_order_list_prepared,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(StoreOrderListCohortViewModel::class.java)
         return dataBinding.root
     }
@@ -70,21 +79,25 @@ class StoreOrderListPreparedFragment : Fragment(), StoreOrderListCohortAdapter.S
         })
 
         viewModel.loading.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dataBinding.loadingView.visibility = View.VISIBLE
             } else dataBinding.loadingView.visibility = View.GONE
         })
 
         viewModel.errorResponse.observe(this, Observer {
-            if(it.errCode == "EC0021") {
-                Toast.makeText(activity as StoreOrderListActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
+            if (it.errCode == "EC0021") {
+                Toast.makeText(
+                    activity as StoreOrderListActivity,
+                    "Kamu login di perangkat lain. Silakan login kembali",
+                    Toast.LENGTH_SHORT
+                ).show()
                 viewModel.clearSession(activity as StoreOrderListActivity)
                 viewModel.goToOnboardingFromStoreOrderList(activity as StoreOrderListActivity)
             }
         })
 
         viewModel.updateStatus.observe(this, Observer {
-            if(it) {
+            if (it) {
                 viewModel.getStoreOrderList()
             }
         })

@@ -22,7 +22,7 @@ data class LoginResponseV2(
     val results: LoginResultV2?
 )
 
-data class LoginResultV2 (
+data class LoginResultV2(
     @SerializedName("token")
     val token: String?,
 
@@ -95,11 +95,11 @@ data class ErrorResponse(
 )
 
 data class BaseResponse(
-        @SerializedName("err_code")
-        val errCode: String?,
+    @SerializedName("err_code")
+    val errCode: String?,
 
-        @SerializedName("err_message")
-        val errMessage: String?
+    @SerializedName("err_message")
+    val errMessage: String?
 )
 
 data class LogoutResponse(
@@ -110,8 +110,8 @@ data class LogoutResponse(
 ) : Response
 
 data class LogoutResponseV2(
-        @SerializedName("err_code")
-        override val errCode: String?,
-        @SerializedName("err_message")
-        override val errMessage: String?
+    @SerializedName("err_code")
+    override val errCode: String?,
+    @SerializedName("err_message")
+    override val errMessage: String?
 ) : Response

@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.transaction
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +10,14 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentTxnCartChoosePaymentTypeBinding
 import com.tsab.pikapp.util.SELECTED_PAYMENT
 import com.tsab.pikapp.viewmodel.transaction.TxnCartChoosePaymentTypeViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class TxnCartChoosePaymentTypeFragment(val dialogDismissInterface: DialogDismissInterface) : BottomSheetDialogFragment() {
+class TxnCartChoosePaymentTypeFragment(val dialogDismissInterface: DialogDismissInterface) :
+    BottomSheetDialogFragment() {
 
     private lateinit var dataBinding: FragmentTxnCartChoosePaymentTypeBinding
     private lateinit var viewModel: TxnCartChoosePaymentTypeViewModel
@@ -28,7 +28,12 @@ class TxnCartChoosePaymentTypeFragment(val dialogDismissInterface: DialogDismiss
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_txn_cart_choose_payment_type, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_txn_cart_choose_payment_type,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(TxnCartChoosePaymentTypeViewModel::class.java)
         return dataBinding.root
     }
@@ -46,7 +51,7 @@ class TxnCartChoosePaymentTypeFragment(val dialogDismissInterface: DialogDismiss
 
         viewModel.getBizType()
 
-        if (selected == "WALLET_OVO"){
+        if (selected == "WALLET_OVO") {
             dataBinding.radioOvo.isChecked = true
         } else if (selected == "WALLET_DANA") {
             dataBinding.radioDana.isChecked = true
@@ -68,14 +73,14 @@ class TxnCartChoosePaymentTypeFragment(val dialogDismissInterface: DialogDismiss
             selected = "PAY_BY_CASHIER"
         }
 
-        dataBinding.buttonOvo.setOnClickListener{
+        dataBinding.buttonOvo.setOnClickListener {
             dataBinding.radioCashier.isChecked = false
             dataBinding.radioOvo.isChecked = true
             dataBinding.radioDana.isChecked = false
             selected = "WALLET_OVO"
         }
 
-        dataBinding.radioOvo.setOnClickListener{
+        dataBinding.radioOvo.setOnClickListener {
             dataBinding.radioCashier.isChecked = false
             dataBinding.radioOvo.isChecked = true
             dataBinding.radioDana.isChecked = false
@@ -106,19 +111,22 @@ class TxnCartChoosePaymentTypeFragment(val dialogDismissInterface: DialogDismiss
     @SuppressLint("ResourceAsColor")
     private fun observeViewModel() {
         viewModel.success.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dismiss()
             }
         })
 
         viewModel.bizType.observe(this, Observer {
-            if(it == "TAKE_AWAY") {
+            if (it == "TAKE_AWAY") {
                 dataBinding.cashierContainer.isClickable = false
                 dataBinding.radioCashier.isClickable = false
                 dataBinding.buttonCashier.isClickable = false
                 dataBinding.cashierContainer.isEnabled = false
                 dataBinding.radioCashier.isEnabled = false
-                dataBinding.cashierContainer.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.colorLightGrey))
+                dataBinding.cashierContainer.backgroundTintList = ContextCompat.getColorStateList(
+                    requireContext(),
+                    R.color.colorLightGrey
+                )
             } else {
                 dataBinding.cashierContainer.isEnabled = true
                 dataBinding.radioCashier.isEnabled = true

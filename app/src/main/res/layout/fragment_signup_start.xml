@@ -207,8 +207,8 @@
                 android:id="@+id/textErrorSignupPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Masukkan nama anda."
                 android:fontFamily="@font/proximanova_regular"
+                android:text="Masukkan nama anda."
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
                 android:visibility="gone" />
@@ -218,8 +218,8 @@
                 android:id="@+id/textSignupConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Konfirmasi Password"
                 android:fontFamily="@font/proximanova_regular"
+                android:text="Konfirmasi Password"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:visibility="gone" />
@@ -237,8 +237,8 @@
                 android:id="@+id/textErrorSignupConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Masukkan nama anda."
                 android:fontFamily="@font/proximanova_regular"
+                android:text="Masukkan nama anda."
                 android:textColor="?attr/colorError"
                 android:textSize="13sp"
                 android:visibility="gone" />

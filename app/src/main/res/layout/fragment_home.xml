@@ -41,8 +41,8 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_notifications"
                     android:tint="@android:color/white"
-                    tools:layout_editor_absoluteX="16dp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible"
+                    tools:layout_editor_absoluteX="16dp" />
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -135,10 +135,10 @@
             android:id="@+id/layoutLocationPermission"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="#fff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="#fff"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <ImageView
@@ -147,10 +147,10 @@
                 android:layout_height="220dp"
                 android:layout_marginTop="50dp"
                 android:src="@drawable/imglocationpermission"
+                app:layout_constraintBottom_toTopOf="@id/textView2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/textView2"
                 app:srcCompat="@drawable/imglocationpermission" />
 
             <TextView
@@ -164,13 +164,13 @@
                 android:text="Aktifkan pengaturan lokasi kamu dahulu ya!"
                 android:textColor="#000000"
                 android:textStyle="bold"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="30sp"
                 app:autoSizeMaxTextSize="45sp"
+                app:autoSizeMinTextSize="30sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@id/textView3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewLocation"
-                app:layout_constraintBottom_toTopOf="@id/textView3"/>
+                app:layout_constraintTop_toBottomOf="@+id/imageViewLocation" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -183,13 +183,13 @@
                 android:lineSpacingExtra="4sp"
                 android:text="Supaya PikApp bisa ngasih kamu rekomendasi terbaik nih sesuai dengan lokasi kamu berada sekarang."
                 android:textColor="#000000"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="13sp"
                 app:autoSizeMaxTextSize="19sp"
+                app:autoSizeMinTextSize="13sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/buttonAccessLocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
-                app:layout_constraintBottom_toTopOf="@+id/buttonAccessLocation"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 
             <Button
@@ -202,8 +202,8 @@
                 android:background="@drawable/button_blue"
                 android:fontFamily="@font/proximanova_bold"
                 android:text="Pengaturan Lokasi"
-                android:textSize="18sp"
                 android:textColor="#fff"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

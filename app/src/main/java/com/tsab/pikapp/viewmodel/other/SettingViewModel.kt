@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LogoutResponseV2
@@ -29,39 +28,40 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
 
     fun logout() {
         val sessionId = sessionManager.getUserData()?.sessionId!!
-        Log.d("debug","sessionid : $sessionId")
+        Log.d("debug", "sessionid : $sessionId")
         logoutProcess(sessionId)
     }
 
     private fun logoutProcess(sessionid: String) {
         loading.value = true
         disposable.add(
-                pikappService.logoutMerchant(sessionid)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<LogoutResponseV2>() {
-                            override fun onSuccess(t: LogoutResponseV2) {
-                                logoutSuccess(t)
-                            }
-                            override fun onError(e: Throwable) {
-                                Log.d("Debug", "error : " + e)
-                                var errorResponse: ErrorResponse
-                                try {
-                                    val responseBody = (e as HttpException)
-                                    val body = responseBody.response()?.errorBody()?.string()
-                                    errorResponse =
-                                            Gson().fromJson(body, ErrorResponse::class.java)
-                                } catch (err: Throwable) {
-                                    errorResponse =
-                                            ErrorResponse(
-                                                    "503",
-                                                    "Service Unavailable"
-                                            )
-                                }
-                                logoutFail(errorResponse)
-                            }
+            pikappService.logoutMerchant(sessionid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<LogoutResponseV2>() {
+                    override fun onSuccess(t: LogoutResponseV2) {
+                        logoutSuccess(t)
+                    }
 
-                        })
+                    override fun onError(e: Throwable) {
+                        Log.d("Debug", "error : " + e)
+                        var errorResponse: ErrorResponse
+                        try {
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse =
+                                ErrorResponse(
+                                    "503",
+                                    "Service Unavailable"
+                                )
+                        }
+                        logoutFail(errorResponse)
+                    }
+
+                })
         )
     }
 

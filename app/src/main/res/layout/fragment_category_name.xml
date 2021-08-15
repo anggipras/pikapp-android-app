@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:elevation="50dp"
-    tools:context=".view.menu.CategoryNameFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".view.menu.CategoryNameFragment">
 
     <ImageView
-        android:layout_width="wrap_content"
         android:id="@+id/closeBtn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_baseline_close_24"
         android:layout_gravity="right"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="10dp"/>
+        android:background="@drawable/ic_baseline_close_24" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,29 +29,29 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/line"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"/>
+        android:background="@drawable/line" />
 
     <RadioGroup
-        android:layout_width="wrap_content"
         android:id="@+id/kategori"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="18dp"
-            android:orientation="vertical"/>
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" />
 
     </RadioGroup>
 
     <ImageButton
-        android:layout_width="307dp"
         android:id="@+id/btnoke"
+        android:layout_width="307dp"
         android:layout_height="77dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"

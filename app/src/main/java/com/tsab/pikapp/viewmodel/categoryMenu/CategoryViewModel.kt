@@ -3,10 +3,9 @@ package com.tsab.pikapp.viewmodel.categoryMenu
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import android.widget.*
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -21,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoryViewModel (application: Application) : BaseViewModel(application) {
+class CategoryViewModel(application: Application) : BaseViewModel(application) {
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
     var activation: Boolean = true
@@ -48,7 +47,11 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
     private val mutableCategoryId = MutableLiveData("")
     val categoryId: LiveData<String> get() = mutableCategoryId
 
-    fun getMenuCategoryListSort(baseContext: Context, recyclerview_category: RecyclerView, listener: SortCategoryAdapter.OnItemClickListener){
+    fun getMenuCategoryListSort(
+        baseContext: Context,
+        recyclerview_category: RecyclerView,
+        listener: SortCategoryAdapter.OnItemClickListener
+    ) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -63,7 +66,10 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
                 Log.e("failed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantListCategoryResponse>, response: Response<MerchantListCategoryResponse>) {
+            override fun onResponse(
+                call: Call<MerchantListCategoryResponse>,
+                response: Response<MerchantListCategoryResponse>
+            ) {
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
@@ -76,7 +82,11 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
                 size = categoryResponse?.results?.size.toString()
                 Log.e("size on response", size)
 
-                sortCategoryAdapter = SortCategoryAdapter(baseContext, categoryResult as MutableList<CategoryListResult>, listener)
+                sortCategoryAdapter = SortCategoryAdapter(
+                    baseContext,
+                    categoryResult as MutableList<CategoryListResult>,
+                    listener
+                )
                 sortCategoryAdapter.notifyDataSetChanged()
                 recyclerview_category.adapter = sortCategoryAdapter
 
@@ -85,7 +95,11 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
         })
     }
 
-    fun getMenuCategoryList(baseContext: Context, recyclerview_category: RecyclerView, listener: MenuCategoryAdapter.OnItemClickListener){
+    fun getMenuCategoryList(
+        baseContext: Context,
+        recyclerview_category: RecyclerView,
+        listener: MenuCategoryAdapter.OnItemClickListener
+    ) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -100,7 +114,10 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
                 Log.e("failed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantListCategoryResponse>, response: Response<MerchantListCategoryResponse>) {
+            override fun onResponse(
+                call: Call<MerchantListCategoryResponse>,
+                response: Response<MerchantListCategoryResponse>
+            ) {
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
@@ -113,7 +130,11 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
                 size = categoryResponse?.results?.size.toString()
                 Log.e("size on response", size)
 
-                menuCategoryAdapter = MenuCategoryAdapter(baseContext, categoryResult as MutableList<CategoryListResult>, listener)
+                menuCategoryAdapter = MenuCategoryAdapter(
+                    baseContext,
+                    categoryResult as MutableList<CategoryListResult>,
+                    listener
+                )
                 menuCategoryAdapter.notifyDataSetChanged()
                 recyclerview_category.adapter = menuCategoryAdapter
 
@@ -122,7 +143,7 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
         })
     }
 
-    fun postCategory(categoryName: String, baseContext: Context){
+    fun postCategory(categoryName: String, baseContext: Context) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -136,23 +157,31 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
 
         PikappApiService().api.menuCategory(
             getUUID(), timestamp, getClientID(), signature, token, mid, categoryReq
-        ).enqueue(object: retrofit2.Callback<BaseResponse> {
+        ).enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if(response.code() == 200 && response.body()!!.errCode.toString() == "EC0000"){
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Toast.makeText(baseContext, "added", Toast.LENGTH_SHORT).show()
-                }else {
-                    var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Toast.makeText(baseContext, generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage).toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    var errorResponse: BaseResponse? =
+                        gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Toast.makeText(
+                        baseContext,
+                        generateResponseMessage(
+                            errorResponse?.errCode,
+                            errorResponse?.errMessage
+                        ).toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
     }
 
-    fun updateCategory(categoryName: String, baseContext: Context){
+    fun updateCategory(categoryName: String, baseContext: Context) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -168,24 +197,32 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
         Log.e("id", categoryId.value.toString())
 
         PikappApiService().api.updateMenuCategory(
-                getUUID(), timestamp, getClientID(), signature, token, mid, categoryReq
-        ).enqueue(object: retrofit2.Callback<BaseResponse> {
+            getUUID(), timestamp, getClientID(), signature, token, mid, categoryReq
+        ).enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if(response.code() == 200 && response.body()!!.errCode.toString() == "EC0000"){
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Toast.makeText(baseContext, "changed", Toast.LENGTH_SHORT).show()
-                }else {
-                    var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Toast.makeText(baseContext, generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage).toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    var errorResponse: BaseResponse? =
+                        gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Toast.makeText(
+                        baseContext,
+                        generateResponseMessage(
+                            errorResponse?.errCode,
+                            errorResponse?.errMessage
+                        ).toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
     }
 
-    fun deleteCategoryPopup(categoryName: String, baseContext: Context){
+    fun deleteCategoryPopup(categoryName: String, baseContext: Context) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -202,23 +239,31 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
 
         PikappApiService().api.deleteMenuCategory(
             getUUID(), timestamp, getClientID(), signature, token, mid, id
-        ).enqueue(object: retrofit2.Callback<BaseResponse> {
+        ).enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if(response.code() == 200 && response.body()!!.errCode.toString() == "EC0000"){
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Toast.makeText(baseContext, "deleted", Toast.LENGTH_SHORT).show()
-                }else {
-                    var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Toast.makeText(baseContext, generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage).toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    var errorResponse: BaseResponse? =
+                        gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Toast.makeText(
+                        baseContext,
+                        generateResponseMessage(
+                            errorResponse?.errCode,
+                            errorResponse?.errMessage
+                        ).toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
     }
 
-    fun delete(){
+    fun delete() {
 
     }
 
@@ -236,19 +281,19 @@ class CategoryViewModel (application: Application) : BaseViewModel(application) 
         return isNamaCategoryValid.value!!
     }
 
-    fun getCategoryName(categoryName: String){
+    fun getCategoryName(categoryName: String) {
         mutableNamaCategory.value = categoryName
     }
 
-    fun getCategoryOrder(categoryOrder: String){
+    fun getCategoryOrder(categoryOrder: String) {
         mutableCategoryOrder.value = categoryOrder
     }
 
-    fun getCategoryActivation(activation: String){
+    fun getCategoryActivation(activation: String) {
         mutableActivationToggle.value = activation
     }
 
-    fun getCategoryId(id: String): String{
+    fun getCategoryId(id: String): String {
         mutableCategoryId.value = id
         return mutableCategoryId.value.toString()
     }

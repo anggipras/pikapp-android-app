@@ -4,10 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.model.ErrorResponse
+import com.tsab.pikapp.models.model.GetOrderListResponse
+import com.tsab.pikapp.models.model.OrderList
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.CONST_TRANSACTION_ID
 import com.tsab.pikapp.util.SessionManager
@@ -70,7 +71,10 @@ class OrderListCohortViewModel(application: Application) : BaseViewModel(applica
                         }
 
                         orderListFail(errorResponse)
-                        Log.d("Debug", "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
+                        Log.d(
+                            "Debug",
+                            "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
+                        )
                     }
                 })
         )
@@ -93,15 +97,15 @@ class OrderListCohortViewModel(application: Application) : BaseViewModel(applica
 
     fun setUnpaid() {
         val orderList = prefHelper.getOrderList()
-        val bufferOrderList =  arrayListOf<OrderList>()
+        val bufferOrderList = arrayListOf<OrderList>()
         orderList?.let {
-           if (it.isNotEmpty()) {
-               for(order in it) {
-                   if(order.status == "OPEN") {
-                       bufferOrderList.add(order)
-                   }
-               }
-           }
+            if (it.isNotEmpty()) {
+                for (order in it) {
+                    if (order.status == "OPEN") {
+                        bufferOrderList.add(order)
+                    }
+                }
+            }
         }
         loading.value = false
         unpaid.value = bufferOrderList
@@ -109,11 +113,11 @@ class OrderListCohortViewModel(application: Application) : BaseViewModel(applica
 
     fun setPrepared() {
         val orderList = prefHelper.getOrderList()
-        val bufferOrderList =  arrayListOf<OrderList>()
+        val bufferOrderList = arrayListOf<OrderList>()
         orderList?.let {
             if (it.isNotEmpty()) {
-                for(order in it) {
-                    if(order.status == "PAID" || order.status == "MERCHANT_CONFIRM") {
+                for (order in it) {
+                    if (order.status == "PAID" || order.status == "MERCHANT_CONFIRM") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -125,11 +129,11 @@ class OrderListCohortViewModel(application: Application) : BaseViewModel(applica
 
     fun setReady() {
         val orderList = prefHelper.getOrderList()
-        val bufferOrderList =  arrayListOf<OrderList>()
+        val bufferOrderList = arrayListOf<OrderList>()
         orderList?.let {
             if (it.isNotEmpty()) {
-                for(order in it) {
-                    if(order.status == "FINALIZE") {
+                for (order in it) {
+                    if (order.status == "FINALIZE") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -141,11 +145,11 @@ class OrderListCohortViewModel(application: Application) : BaseViewModel(applica
 
     fun setFinish() {
         val orderList = prefHelper.getOrderList()
-        val bufferOrderList =  arrayListOf<OrderList>()
+        val bufferOrderList = arrayListOf<OrderList>()
         orderList?.let {
             if (it.isNotEmpty()) {
-                for(order in it) {
-                    if(order.status == "CLOSE") {
+                for (order in it) {
+                    if (order.status == "CLOSE") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -160,7 +164,10 @@ class OrderListCohortViewModel(application: Application) : BaseViewModel(applica
         args.putString(CONST_TRANSACTION_ID, transactionID)
         val orderListDetailFragment = OrderListDetailFragment()
         orderListDetailFragment.arguments = args
-        orderListDetailFragment.show((context as OrderListActivity).supportFragmentManager, orderListDetailFragment.tag)
+        orderListDetailFragment.show(
+            (context as OrderListActivity).supportFragmentManager,
+            orderListDetailFragment.tag
+        )
     }
 
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="merchantProfile"
             type="com.tsab.pikapp.viewmodel.homev2.OtherViewModel" />
@@ -84,15 +85,15 @@
                     android:id="@+id/merchant_logo"
                     android:layout_width="61dp"
                     android:layout_height="61dp"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginLeft="19dp" />
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginTop="14dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginLeft="24dp"
                     android:layout_marginTop="14dp"
-                    android:layout_marginLeft="24dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/merchant_name"
@@ -146,10 +147,10 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="10dp"
-                            android:background="@color/borderSubtle"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_gravity="center" />
+                            android:background="@color/borderSubtle" />
 
                         <TextView
                             android:id="@+id/merchant_hour"
@@ -171,18 +172,18 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#D9CECE"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="#D9CECE" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="20dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/merchant_setting_click"
@@ -195,96 +196,96 @@
                         android:id="@+id/merchant_setting_icon"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/ic_store"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_store" />
 
                     <TextView
                         android:id="@+id/merchant_setting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Pengaturan"
                         android:textColor="@color/textSubtle"
-                        android:textSize="15dp"
-                        android:layout_marginTop="13dp" />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="25dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/merchant_setting_stock"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/ic_stock"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_stock" />
 
                     <TextView
                         android:id="@+id/merchant_stock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Stok Habis"
                         android:textColor="@color/textSubtle"
-                        android:textSize="15dp"
-                        android:layout_marginTop="13dp" />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="25dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/merchant_setting_report"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/ic_report"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_report" />
 
                     <TextView
                         android:id="@+id/merchant_report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Laporan"
                         android:textColor="@color/textSubtle"
-                        android:textSize="15dp"
-                        android:layout_marginTop="13dp" />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="25dp">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/merchant_setting_help"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/ic_help"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ic_help" />
 
                     <TextView
                         android:id="@+id/merchant_help"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
                         android:fontFamily="@font/proximanova_semibold"
                         android:text="Bantuan"
                         android:textColor="@color/textSubtle"
-                        android:textSize="15dp"
-                        android:layout_marginTop="13dp" />
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
@@ -303,48 +304,48 @@
             android:textColor="#494949"
             android:textFontWeight="800"
             android:textSize="15dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/merchant_profilebox"
-            android:visibility="gone" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:id="@+id/article_border"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/article_box"
-            app:layout_constraintTop_toBottomOf="@+id/information_title"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
+            android:background="@drawable/article_box"
             android:elevation="3dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone">
+            app:layout_constraintTop_toBottomOf="@+id/information_title">
 
             <ImageView
                 android:id="@+id/ic_article"
                 android:layout_width="69dp"
                 android:layout_height="69dp"
-                android:background="@drawable/article_img"
-                android:layout_marginTop="12dp"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="15dp"
-                android:layout_centerInParent="true" />
+                android:layout_marginTop="12dp"
+                android:background="@drawable/article_img" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginLeft="21dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginRight="30dp">
+                android:layout_marginRight="30dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Judul"
                     android:fontFamily="@font/montserrat_bold"
+                    android:text="Judul"
                     android:textColor="@color/black"
                     android:textFontWeight="800"
                     android:textSize="16dp" />
@@ -352,11 +353,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    android:layout_marginTop="3dp"
                     android:fontFamily="@font/proximanova_regular"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     android:textColor="@color/textSubtle"
-                    android:textSize="13dp"
-                    android:layout_marginTop="3dp" />
+                    android:textSize="13dp" />
 
             </LinearLayout>
 

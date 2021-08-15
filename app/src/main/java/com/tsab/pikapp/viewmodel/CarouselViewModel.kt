@@ -3,7 +3,6 @@ package com.tsab.pikapp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tsab.pikapp.util.SessionManager
 
 class CarouselViewModel : ViewModel() {
     private val mutableCurrentPage = MutableLiveData(0)

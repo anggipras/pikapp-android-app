@@ -8,7 +8,7 @@ import com.tsab.pikapp.view.login.SignupSuccessFragmentDirections
 import com.tsab.pikapp.view.onboarding.login.SignupOnboardingSuccessFragmentDirections
 import com.tsab.pikapp.viewmodel.BaseViewModel
 
-class SignupOnboardingSuccessViewModel(application: Application) : BaseViewModel(application)  {
+class SignupOnboardingSuccessViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
 

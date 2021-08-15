@@ -8,14 +8,23 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ItemMerchantProductListSmallBinding
 import com.tsab.pikapp.models.model.ProductListSmall
 
-class ProductListSmallAdapter(var productList: List<ProductListSmall>, val productClickInterface: ProductClickInterface) :
+class ProductListSmallAdapter(
+    var productList: List<ProductListSmall>,
+    val productClickInterface: ProductClickInterface
+) :
     RecyclerView.Adapter<ProductListSmallAdapter.ProductViewHolder>() {
 
-    class ProductViewHolder(var view: ItemMerchantProductListSmallBinding) : RecyclerView.ViewHolder(view.root)
+    class ProductViewHolder(var view: ItemMerchantProductListSmallBinding) :
+        RecyclerView.ViewHolder(view.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = DataBindingUtil.inflate<ItemMerchantProductListSmallBinding>(inflater, R.layout.item_merchant_product_list_small, parent, false)
+        val view = DataBindingUtil.inflate<ItemMerchantProductListSmallBinding>(
+            inflater,
+            R.layout.item_merchant_product_list_small,
+            parent,
+            false
+        )
         return ProductViewHolder(view)
     }
 

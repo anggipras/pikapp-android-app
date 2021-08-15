@@ -66,10 +66,10 @@
                 android:layout_height="25sp"
                 android:text="Email Anda:"
                 android:textColor="#000000"
-                app:autoSizeMaxTextSize="23sp"
-                app:autoSizeTextType="uniform"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="23sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textOnboardingEmailValid"
@@ -77,10 +77,10 @@
                 android:layout_height="22dp"
                 android:text="example@mail.com"
                 android:textColor="@color/colorAccent"
-                app:autoSizeMaxTextSize="20sp"
-                app:autoSizeTextType="uniform"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textOnboardingSignupEmail"

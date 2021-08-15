@@ -1,11 +1,11 @@
 package com.tsab.pikapp.view.homev2.menu
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.homev2.PromoViewModel
 

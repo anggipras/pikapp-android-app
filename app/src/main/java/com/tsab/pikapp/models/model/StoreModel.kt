@@ -46,7 +46,7 @@ data class StoreProductActionResponse(
     override val errCode: String?,
     @SerializedName("err_message")
     override val errMessage: String?
-): Response
+) : Response
 
 data class StoreProductDetailResponse(
     @SerializedName("err_code")

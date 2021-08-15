@@ -19,7 +19,6 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.NotificationModel
 import com.tsab.pikapp.util.NOTIFICATION_CHANNEL_ID
 import com.tsab.pikapp.util.SharedPreferencesUtil
-import com.tsab.pikapp.view.StoreOrderListActivity
 import java.util.*
 
 
@@ -50,7 +49,7 @@ class PikappMessagingService : FirebaseMessagingService() {
         val tableNo = data["table_no"].toString()
         var clickAction = data["click_action"].toString()
         var isMerchantSaved = false
-        if(isMerchant == "true") {
+        if (isMerchant == "true") {
             isMerchantSaved = true
             clickAction = "StoreOrderListActivity"
         } else {
@@ -62,10 +61,16 @@ class PikappMessagingService : FirebaseMessagingService() {
         val intent = Intent(clickAction)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        val customSound = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.pikapp_sound)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val customSound =
+            Uri.parse("android.resource://" + applicationContext.packageName + "/" + R.raw.pikapp_sound)
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT)
+            val notificationChannel = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                "Notification",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
             notificationChannel.description = ""
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.BLUE
@@ -78,7 +83,8 @@ class PikappMessagingService : FirebaseMessagingService() {
 
 //        setNotificationModel(isMerchant, transactionId)
 
-        val notificationBuilder: NotificationCompat.Builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+        val notificationBuilder: NotificationCompat.Builder =
+            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
         notificationBuilder.setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
             .setWhen(System.currentTimeMillis())
@@ -99,7 +105,8 @@ class PikappMessagingService : FirebaseMessagingService() {
                 NOTIFICATION_CHANNEL_ID, "Notification",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            val customSound = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.pikapp_sound)
+            val customSound =
+                Uri.parse("android.resource://" + applicationContext.packageName + "/" + R.raw.pikapp_sound)
 
             notificationChannel.description = ""
             notificationChannel.enableLights(true)

@@ -4,7 +4,7 @@ import android.app.Application
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.viewmodel.BaseViewModel
 
-class StoreOrderListStatusViewModel(application: Application) : BaseViewModel(application)  {
+class StoreOrderListStatusViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
 

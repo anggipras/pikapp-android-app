@@ -8,7 +8,7 @@ data class GetOrderListResponse(
     @SerializedName("err_message")
     override val errMessage: String?,
     val results: List<OrderList>?
-): Response
+) : Response
 
 data class OrderList(
     @SerializedName("transaction_id")
@@ -36,7 +36,7 @@ data class GetOrderDetailResponse(
     @SerializedName("err_message")
     override val errMessage: String?,
     val results: OrderDetail?
-): Response
+) : Response
 
 data class OrderDetail(
     @SerializedName("payment_with")

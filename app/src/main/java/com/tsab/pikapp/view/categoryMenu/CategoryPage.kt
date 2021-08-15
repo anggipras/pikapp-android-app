@@ -3,20 +3,19 @@ package com.tsab.pikapp.view.categoryMenu
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCategoryPageBinding
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
-import kotlinx.android.synthetic.main.menu_fragment.recyclerview_category
+import kotlinx.android.synthetic.main.menu_fragment.*
 
 class CategoryPage : Fragment(), MenuCategoryAdapter.OnItemClickListener {
 
@@ -31,8 +30,10 @@ class CategoryPage : Fragment(), MenuCategoryAdapter.OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_category_page,
-            container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_category_page,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -45,19 +46,17 @@ class CategoryPage : Fragment(), MenuCategoryAdapter.OnItemClickListener {
         linearLayoutManager = LinearLayoutManager(requireView().context)
         recyclerview_category.layoutManager = linearLayoutManager
 
-        activity?.let { viewModel.getMenuCategoryList(it.baseContext, recyclerview_category, this)}
+        activity?.let { viewModel.getMenuCategoryList(it.baseContext, recyclerview_category, this) }
 
         attachInputListeners()
-
     }
 
     private fun attachInputListeners() {
         dataBinding.backBtn.setOnClickListener {
-            val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
-            activity?.startActivity(intent)
+            requireActivity().onBackPressed()
         }
 
-        dataBinding.buttonSort.setOnClickListener{
+        dataBinding.buttonSort.setOnClickListener {
             val intent = Intent(activity?.baseContext, SortActivity::class.java)
             activity?.startActivity(intent)
         }
@@ -74,11 +73,13 @@ class CategoryPage : Fragment(), MenuCategoryAdapter.OnItemClickListener {
         Log.e("category name", categoryName)
         viewModel.getCategoryName(categoryName.toString())
 
-        val categoryOrder = viewModel.menuCategoryAdapter.menuCategoryList[position].category_order.toString()
+        val categoryOrder =
+            viewModel.menuCategoryAdapter.menuCategoryList[position].category_order.toString()
         Log.e("category order", categoryOrder)
         viewModel.getCategoryOrder(categoryOrder)
 
-        val activationToggle = viewModel.menuCategoryAdapter.menuCategoryList[position].is_active.toString()
+        val activationToggle =
+            viewModel.menuCategoryAdapter.menuCategoryList[position].is_active.toString()
         Log.e("activation", activationToggle)
         viewModel.getCategoryActivation(activationToggle)
 
@@ -88,5 +89,4 @@ class CategoryPage : Fragment(), MenuCategoryAdapter.OnItemClickListener {
 
         navController?.navigate(R.id.action_categoryPage_to_editCategoryPage)
     }
-
 }

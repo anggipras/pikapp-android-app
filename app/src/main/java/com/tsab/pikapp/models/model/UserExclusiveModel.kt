@@ -24,4 +24,5 @@ data class UserExclusiveRecommendationResponse(
     override val errCode: String?,
 
     @SerializedName("err_message")
-    override val errMessage: String?) : Response
+    override val errMessage: String?
+) : Response

@@ -21,20 +21,22 @@ class StoreHomeFragment : Fragment() {
     private var isFirstTime = true
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProviders.of(this).get(StoreHomeViewModel::class.java)
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container,
-                false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_store_home, container,
+            false
+        )
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        activity?.moveTaskToBack(true)
-                        exitProcess(-1)
-                    }
-                })
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.moveTaskToBack(true)
+                    exitProcess(-1)
+                }
+            })
 
         return dataBinding.root
     }

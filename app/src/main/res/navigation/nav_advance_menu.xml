@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_advanced_menu"
+    app:startDestination="@id/advanceMenuMainFragment">
+
+    <fragment
+        android:id="@+id/advanceMenuMainFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment"
+        android:label="fragment_advance_menu_main"
+        tools:layout="@layout/fragment_advance_menu_main">
+
+        <action
+            android:id="@+id/action_advanceMenuMainFragment_to_advanceMenuDetailsFragment"
+            app:destination="@id/advanceMenuDetailsFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/advanceMenuDetailsFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.AdvanceMenuDetailsFragment"
+        android:label="fragment_advance_menu_details"
+        tools:layout="@layout/fragment_advance_menu_details">
+
+        <action
+            android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuAdditionalFragment"
+            app:destination="@id/advanceMenuAdditionalFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/advanceMenuAdditionalFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.AdvanceMenuAdditionalFragment"
+        android:label="fragment_advance_menu_additional"
+        tools:layout="@layout/fragment_advance_menu_additional">
+        <argument
+            android:name="additionalMenuName"
+            app:argType="string" />
+        <argument
+            android:name="additionalMenuPrice"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

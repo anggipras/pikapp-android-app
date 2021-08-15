@@ -1,9 +1,9 @@
 package com.tsab.pikapp.view
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.tsab.pikapp.R
 
 class LoginActivity : AppCompatActivity() {

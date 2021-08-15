@@ -6,13 +6,22 @@ import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.util.SharedPreferencesUtil
-import com.tsab.pikapp.util.isEmailValid
-import com.tsab.pikapp.util.isPinValid
+import com.tsab.pikapp.util.*
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(application) {
     private var sessionManager = SessionManager(getApplication())
@@ -102,6 +111,13 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
     val latar: LiveData<Uri> get() = mutableLatar
     val latarError: LiveData<String> get() = mutableLatarError
 
+    private val mutableIsUploading = MutableLiveData(false)
+    val isUploading: LiveData<Boolean> get() = mutableIsUploading
+    private val mutableIsUploadingSuccess = MutableLiveData(false)
+    val isUploadingSuccess: LiveData<Boolean> get() = mutableIsUploadingSuccess
+    private val mutableIsUploadingFailed = MutableLiveData(false)
+    val isUploadingFailed: LiveData<Boolean> get() = mutableIsUploadingFailed
+
     /* Validation functions for the first sign up screen */
     fun validateEmail(email: String): Boolean {
         if (email.isEmpty() || email.isBlank()) {
@@ -165,7 +181,8 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
         return isPinValid.value!!
     }
 
-    fun validateFirstPage(): Boolean = isEmailValid.value!! && isFullNameValid.value!! && isPhoneValid.value!! && isPinValid.value!!
+    fun validateFirstPage(): Boolean =
+        isEmailValid.value!! && isFullNameValid.value!! && isPhoneValid.value!! && isPinValid.value!!
 
     /* Validation functions for the second sign up screen */
     fun validateNamaRestoran(namaRestoran: String): Boolean {
@@ -203,7 +220,6 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
     }
 
     fun validateNamaBank(namaBank: String): Boolean {
-        Log.d("Hai", namaBank)
         if (namaBank.isEmpty() || namaBank.isBlank()) {
             mutableNamaBankError.value = "Silakan pilih bank anda"
         } else {
@@ -290,5 +306,110 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
         return isLatarValid.value!!
     }
 
-    fun validateThirdPage(): Boolean = isKtpValid.value!! && isLogoValid.value!! && isLatarValid.value!!
+    fun validateThirdPage(): Boolean =
+        isKtpValid.value!! && isLogoValid.value!! && isLatarValid.value!!
+
+    fun uploadData(fcmToken: String) {
+        mutableIsUploading.value = true
+        mutableIsUploadingSuccess.value = false
+        mutableIsUploadingFailed.value = false
+
+        val application = getApplication<Application>()
+
+        val ktpParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+            ktp.value!!,
+            "r", null
+        ) ?: return
+        val ktpInputStream = FileInputStream(ktpParcelFileDescriptor.fileDescriptor)
+        val ktpFile = File(
+            application.cacheDir, application.contentResolver.getFileName(
+                ktp.value!!
+            )
+        )
+        val ktpOutputStream = FileOutputStream(ktpFile)
+        ktpInputStream.copyTo(ktpOutputStream)
+
+        val logoParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+            logo.value!!, "r", null
+        ) ?: return
+        val logoInputStream = FileInputStream(logoParcelFileDescriptor.fileDescriptor)
+        val logoFile = File(
+            application.cacheDir,
+            application.contentResolver.getFileName(logo.value!!)
+        )
+        val logoOutputStream = FileOutputStream(logoFile)
+        logoInputStream.copyTo(logoOutputStream)
+
+        val latarParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+            latar.value!!, "r", null
+        ) ?: return
+        val latarInputStream = FileInputStream(latarParcelFileDescriptor.fileDescriptor)
+        val latarFile = File(
+            application.cacheDir,
+            application.contentResolver.getFileName(latar.value!!)
+        )
+        val latarOutputStream = FileOutputStream(latarFile)
+        latarInputStream.copyTo(latarOutputStream)
+
+        val branch = "${namaRestoran.value} Branch"
+
+        apiService.api.uploadRegister(
+            getUUID(), getClientID(), getTimestamp(),
+
+            MultipartBody.Part.createFormData(
+                "file_01", ktpFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), ktpFile)
+            ),
+            MultipartBody.Part.createFormData(
+                "file_02", logoFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
+            ),
+            MultipartBody.Part.createFormData(
+                "file_03", latarFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
+            ),
+
+            RequestBody.create(MediaType.parse("multipart/form-data"), alamat.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), namaBank.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), branch),
+            RequestBody.create(MediaType.parse("multipart/form-data"), nomorRekening.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), namaRekening.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), email.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), phone.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), namaRestoran.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), fcmToken),
+            RequestBody.create(MediaType.parse("multipart/form-data"), pin.value!!),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "No Bank"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), namaFoodcourt.value!!)
+        ).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                mutableIsUploading.value = false
+
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    mutableIsUploadingSuccess.value = true
+                } else {
+                    mutableIsUploadingFailed.value = true
+
+                    val errorResponse: BaseResponse? = Gson().fromJson(
+                        response.errorBody()!!.charStream(),
+                        object : TypeToken<BaseResponse>() {}.type
+                    )
+                    Log.e(
+                        "UploadRegisterError", generateResponseMessage(
+                            errorResponse?.errCode,
+                            errorResponse?.errMessage
+                        ) ?: "Unknown error"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e("UploadRegisterError", t.message.toString())
+
+                mutableIsUploading.value = false
+                mutableIsUploadingFailed.value = true
+            }
+        })
+    }
 }

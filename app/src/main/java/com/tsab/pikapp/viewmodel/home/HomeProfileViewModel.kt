@@ -5,25 +5,25 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
+import com.tsab.pikapp.models.model.GetOrderListResponse
 import com.tsab.pikapp.models.model.LogoutResponse
 import com.tsab.pikapp.models.model.UserAccess
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
-import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
-import com.tsab.pikapp.models.model.GetOrderListResponse
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.OrderListActivity
 import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
-class HomeProfileViewModel(application: Application) : BaseViewModel(application)  {
+class HomeProfileViewModel(application: Application) : BaseViewModel(application) {
     val logoutResponse = MutableLiveData<LogoutResponse>()
     val errorResponse = MutableLiveData<ErrorResponse>()
 
@@ -45,11 +45,14 @@ class HomeProfileViewModel(application: Application) : BaseViewModel(application
     fun goToStoreHome(context: Context) {
         val user = sessionManager.getUserData()
         user?.let {
-            if(it.isMerchant!!) {
+            if (it.isMerchant!!) {
                 val storeActivity = Intent(context, StoreActivity::class.java)
                 (context as HomeActivity).startActivity(storeActivity)
             } else {
-                createToastShort(getApplication(), "Anda belum terdaftar sebagai merchant. Silakan hubungi CS kami")
+                createToastShort(
+                    getApplication(),
+                    "Anda belum terdaftar sebagai merchant. Silakan hubungi CS kami"
+                )
             }
         }
     }
@@ -101,7 +104,7 @@ class HomeProfileViewModel(application: Application) : BaseViewModel(application
 
     fun logout(context: Context) {
         val sessionId = sessionManager.getUserData()?.sessionId!!
-        Log.d("debug","sessionid : $sessionId")
+        Log.d("debug", "sessionid : $sessionId")
         logoutProcess(sessionId)
     }
 

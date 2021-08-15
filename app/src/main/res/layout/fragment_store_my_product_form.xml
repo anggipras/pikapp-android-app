@@ -26,7 +26,7 @@
                 android:text=""
                 android:textColor="#000"
                 android:textSize="20sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -103,6 +103,7 @@
                         android:layout_marginTop="5dp"
                         android:background="@android:color/white"
                         android:orientation="horizontal" />
+
                     <TextView
                         android:id="@+id/textErrorImage"
                         android:layout_width="match_parent"
@@ -137,6 +138,7 @@
                         android:maxLength="100"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/textErrorProductName"
                         android:layout_width="match_parent"
@@ -210,6 +212,7 @@
                         android:inputType="number"
                         android:textColor="#000000"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/textErrorPrice"
                         android:layout_width="match_parent"
@@ -247,10 +250,10 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center" />
 
                 <Button
                     android:id="@+id/buttonActionProduct"
@@ -267,7 +270,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:gravity="center"/>
+                    android:gravity="center" />
             </LinearLayout>
 
         </ScrollView>
