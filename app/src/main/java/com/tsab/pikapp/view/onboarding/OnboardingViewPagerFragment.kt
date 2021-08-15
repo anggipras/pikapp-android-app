@@ -1,18 +1,18 @@
 package com.tsab.pikapp.view.onboarding
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentOnboardingViewPagerBinding
 import com.tsab.pikapp.view.onboarding.screens.OnboardingSecond
 import com.tsab.pikapp.view.onboarding.screens.OnboardingStartFragment
 import com.tsab.pikapp.view.onboarding.screens.OnboardingThird
-import com.google.android.material.tabs.TabLayoutMediator
 
 class OnboardingViewPagerFragment : Fragment() {
 

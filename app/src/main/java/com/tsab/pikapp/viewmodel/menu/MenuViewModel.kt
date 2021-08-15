@@ -73,6 +73,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     val nama: LiveData<String> get() = mutableNama
     val namaError: LiveData<String> get() = mutableNamaError
 
+    private val mutableAdvance = MutableLiveData("None")
+    private val mutableAdvanceError = MutableLiveData("")
+    private val isAdvanceValid = MutableLiveData(false)
+    val advance: LiveData<String> get() = mutableAdvance
+    val advanceError: LiveData<String> get() = mutableAdvanceError
+
     private val mutableHarga = MutableLiveData("")
     private val mutableHargaError = MutableLiveData("")
     private val isHargaValid = MutableLiveData(false)
@@ -187,6 +193,18 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isHargaValid.value!!
     }
 
+    fun validateAdvance(advance: String): Boolean {
+        if (advance.isEmpty() || advance.isBlank()) {
+            mutableAdvanceError.value = "Harga tidak boleh kosong"
+        } else {
+            mutableAdvanceError.value = ""
+        }
+
+        mutableAdvance.value = advance
+        isAdvanceValid.value = mutableAdvanceError.value!!.isEmpty()
+        return isAdvanceValid.value!!
+    }
+
     fun getCategory(
         baseContext: Context,
         recyclerview_category: RecyclerView,
@@ -284,14 +302,16 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             RequestBody.create(MediaType.parse("multipart/form-data"), "Desc Makanan"),
             RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
             RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "GOOD"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "1")
+            RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), advance.value)
         ).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Log.e("SUCCEED", categoryId.value)
+                    Log.e("Advance", advance.value)
                 } else {
                     var errorResponse: BaseResponse? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)

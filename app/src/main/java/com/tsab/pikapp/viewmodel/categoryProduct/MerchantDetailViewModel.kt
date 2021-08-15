@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -14,14 +15,14 @@ import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.LoginActivity
 import com.tsab.pikapp.view.categoryProduct.AddToCartFragment
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
-class MerchantDetailViewModel(application: Application) : BaseViewModel(application), AddToCartFragment.DialogDismissInterface {
+class MerchantDetailViewModel(application: Application) : BaseViewModel(application),
+    AddToCartFragment.DialogDismissInterface {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
@@ -148,7 +149,14 @@ class MerchantDetailViewModel(application: Application) : BaseViewModel(applicat
         loadingProductList.value = false
     }
 
-    fun onAddProduct(mid: String, pid: String, pName: String, pImage: String, pPrice: String, context: Context) {
+    fun onAddProduct(
+        mid: String,
+        pid: String,
+        pName: String,
+        pImage: String,
+        pPrice: String,
+        context: Context
+    ) {
         val isLoggingIn = sessionManager.isLoggingIn() ?: false
         if (isLoggingIn) {
             val args = Bundle()

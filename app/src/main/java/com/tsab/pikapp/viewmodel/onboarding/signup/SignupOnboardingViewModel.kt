@@ -101,7 +101,7 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
         } else if (!isPhoneValid(phone)) {
             phoneError.value = "Gunakan format 08xxxxx"
             isPhoneValid = false
-        } else{
+        } else {
             phoneError.value = ""
             isPhoneValid = true
         }
@@ -239,7 +239,8 @@ class SignupOnboardingViewModel(application: Application) : BaseViewModel(applic
     }
 
     fun goToLogin(view: View) {
-        val action = SignupOnboardingFragmentDirections.actionFromSignupOnboardingFragmentToLoginOnboardingFragment()
+        val action =
+            SignupOnboardingFragmentDirections.actionFromSignupOnboardingFragmentToLoginOnboardingFragment()
         Navigation.findNavController(view).navigate(action)
     }
 

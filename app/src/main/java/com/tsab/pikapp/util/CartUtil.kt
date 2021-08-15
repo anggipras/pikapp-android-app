@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.tsab.pikapp.models.model.CartModel
 import com.google.gson.Gson
+import com.tsab.pikapp.models.model.CartModel
 
 class CartUtil {
 
@@ -68,7 +68,8 @@ class CartUtil {
         Log.d("Debug", "JSOn2 : $json")
         json?.let {
             if (json.isNotEmpty()) {
-                val cartList: List<CartModel> = gson.fromJson(json, Array<CartModel>::class.java).toList()
+                val cartList: List<CartModel> =
+                    gson.fromJson(json, Array<CartModel>::class.java).toList()
                 return cartList
             }
         }

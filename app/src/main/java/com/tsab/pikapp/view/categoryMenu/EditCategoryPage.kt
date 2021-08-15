@@ -1,32 +1,24 @@
 package com.tsab.pikapp.view.categoryMenu
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentAddCategoryPageBinding
 import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
-import kotlinx.android.synthetic.main.fragment_add_category_page.categoryName
-import kotlinx.android.synthetic.main.fragment_add_category_page.toggleButton
-import kotlinx.android.synthetic.main.fragment_edit_category_page.*
 
 class EditCategoryPage : Fragment() {
 
@@ -36,10 +28,14 @@ class EditCategoryPage : Fragment() {
     private val viewModel: CategoryViewModel by activityViewModels()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_category_page,
-            container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_edit_category_page,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -54,12 +50,17 @@ class EditCategoryPage : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.saveBtn.setOnClickListener{
+        dataBinding.saveBtn.setOnClickListener {
             viewModel.validateNama(categoryName.text.toString())
-            if(viewModel.validateNama(categoryName.text.toString())){
+            if (viewModel.validateNama(categoryName.text.toString())) {
                 Log.e("yes", "bisaaa")
-                activity?.let { viewModel.updateCategory(categoryName.text.toString(), it.baseContext)}
-                navController?.navigate(R.id.action_editCategoryPage_to_categoryPage)
+                activity?.let {
+                    viewModel.updateCategory(
+                        categoryName.text.toString(),
+                        it.baseContext
+                    )
+                }
+                requireActivity().onBackPressed()
             }
         }
 
@@ -68,12 +69,15 @@ class EditCategoryPage : Fragment() {
         }
 
         dataBinding.toggleButton.setOnClickListener {
-            if (viewModel.activation == true){
+            if (viewModel.activation == true) {
                 dataBinding.toggleButton.setBackgroundResource(R.drawable.toggle_on)
-                val inflater: LayoutInflater = activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                val view = inflater.inflate(R.layout.edit_category_popup,null)
+                val inflater: LayoutInflater =
+                    activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val view = inflater.inflate(R.layout.edit_category_popup, null)
                 val popupWindow = PopupWindow(
-                        view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                    view,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 )
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -93,7 +97,7 @@ class EditCategoryPage : Fragment() {
                 }
 
                 buttonContinue.setOnClickListener {
-                    Toast.makeText(requireView().context,"false",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireView().context, "false", Toast.LENGTH_SHORT).show()
                     viewModel.activation = false
                     popupWindow.dismiss()
                     dataBinding.toggleButton.setBackgroundResource(R.drawable.toggle_off)
@@ -104,14 +108,15 @@ class EditCategoryPage : Fragment() {
                     popupWindow.dismiss()
                     dataBinding.toggleButton.setBackgroundResource(R.drawable.toggle_on)
                 }
-            }else if (!viewModel.activation == false){
+            } else if (!viewModel.activation == false) {
                 dataBinding.toggleButton.setBackgroundResource(R.drawable.toggle_off)
             }
         }
 
         dataBinding.deleteCategory.setOnClickListener {
-            val inflater: LayoutInflater = activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.delete_category_popup,null)
+            val inflater: LayoutInflater =
+                activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val view = inflater.inflate(R.layout.delete_category_popup, null)
             val popupWindow = PopupWindow(
                 view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
             )
@@ -132,7 +137,12 @@ class EditCategoryPage : Fragment() {
 
             buttonContinue.setOnClickListener {
                 Log.e("activation", viewModel.activation.toString())
-                activity?.let { viewModel.deleteCategoryPopup(categoryName.text.toString(), it.baseContext)}
+                activity?.let {
+                    viewModel.deleteCategoryPopup(
+                        categoryName.text.toString(),
+                        it.baseContext
+                    )
+                }
                 navController?.navigate(R.id.action_editCategoryPage_to_categoryPage)
                 popupWindow.dismiss()
             }

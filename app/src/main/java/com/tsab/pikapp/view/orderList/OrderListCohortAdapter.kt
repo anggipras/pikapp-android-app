@@ -9,9 +9,13 @@ import com.tsab.pikapp.databinding.ItemOrderListCohortBinding
 import com.tsab.pikapp.models.model.OrderList
 import com.tsab.pikapp.util.rupiahFormat
 
-class OrderListCohortAdapter(private val orderList: ArrayList<OrderList>, private val orderListInterface: OrderListInterface): RecyclerView.Adapter<OrderListCohortAdapter.ProductViewHolder>() {
+class OrderListCohortAdapter(
+    private val orderList: ArrayList<OrderList>,
+    private val orderListInterface: OrderListInterface
+) : RecyclerView.Adapter<OrderListCohortAdapter.ProductViewHolder>() {
 
-    class ProductViewHolder(var view: ItemOrderListCohortBinding) : RecyclerView.ViewHolder(view.root)
+    class ProductViewHolder(var view: ItemOrderListCohortBinding) :
+        RecyclerView.ViewHolder(view.root)
 
     fun updateProductList(newOrderList: List<OrderList>) {
         orderList.clear()
@@ -23,7 +27,8 @@ class OrderListCohortAdapter(private val orderList: ArrayList<OrderList>, privat
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.item_order_list_cohort, parent, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.item_order_list_cohort, parent, false)
         return ProductViewHolder(dataBinding)
     }
 
@@ -33,7 +38,7 @@ class OrderListCohortAdapter(private val orderList: ArrayList<OrderList>, privat
         holder.view.orderList = orderList[position]
         val rupiah = rupiahFormat(orderList[position].totalPrice!!)
         holder.view.textOrderDetail.text = "${orderList[position].totalProduct} Produk - ${rupiah}"
-        if(orderList[position].bizType == "DINE_IN") {
+        if (orderList[position].bizType == "DINE_IN") {
             holder.view.imageBizType.setImageResource(R.drawable.ic_dinein)
             holder.view.textBizType.text = "Makan Di Tempat"
         } else {

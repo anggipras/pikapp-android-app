@@ -20,25 +20,25 @@ interface PikappApi {
     @Multipart
     @POST("merchant/v1/merchant-registration/")
     fun uploadRegister(
-            @Header("x-request-id") uuid: String,
-            @Header("x-client-id") clientID: String,
-            @Header("x-request-timestamp") time: String,
-            @Part file_01: MultipartBody.Part,
-            @Part file_02: MultipartBody.Part,
-            @Part file_03: MultipartBody.Part,
-            @Part ("address") address: RequestBody,
-            @Part ("category") category: RequestBody,
-            @Part ("bank_name") bank_name: RequestBody,
-            @Part ("merchant_name") merchant_name: RequestBody,
-            @Part ("bank_account_no") bank_account_no: RequestBody,
-            @Part ("bank_account_name") bank_account_name: RequestBody,
-            @Part ("email") email: RequestBody,
-            @Part ("phone_number") phone_number: RequestBody,
-            @Part ("restaurant_name") restaurant_name: RequestBody,
-            @Part ("fcm_token") fcm_token: RequestBody,
-            @Part ("pin") pin: RequestBody,
-            @Part ("bank_branch") bank_branch: RequestBody,
-            @Part ("food_court_name") food_court_name: RequestBody
+        @Header("x-request-id") uuid: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-request-timestamp") time: String,
+        @Part file_01: MultipartBody.Part,
+        @Part file_02: MultipartBody.Part,
+        @Part file_03: MultipartBody.Part,
+        @Part("address") address: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part("bank_name") bank_name: RequestBody,
+        @Part("merchant_name") merchant_name: RequestBody,
+        @Part("bank_account_no") bank_account_no: RequestBody,
+        @Part("bank_account_name") bank_account_name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("phone_number") phone_number: RequestBody,
+        @Part("restaurant_name") restaurant_name: RequestBody,
+        @Part("fcm_token") fcm_token: RequestBody,
+        @Part("pin") pin: RequestBody,
+        @Part("bank_branch") bank_branch: RequestBody,
+        @Part("food_court_name") food_court_name: RequestBody
     ): Call<BaseResponse>
 
     @POST("auth/login")
@@ -67,10 +67,10 @@ interface PikappApi {
 
     @GET("merchant/exit/")
     fun logoutMerchant(
-            @Header("x-request-id") uuid: String,
-            @Header("x-client-id") clientID: String,
-            @Header("x-request-timestamp") time: String,
-            @Header("x-session-id") sessionID: String
+        @Header("x-request-id") uuid: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-session-id") sessionID: String
     ): Single<LogoutResponseV2>
 
     // HOME
@@ -198,7 +198,6 @@ interface PikappApi {
     ): Call<BaseResponse>
 
     // STORE
-
     @GET("merchant/v1/product-list/")
     fun getStoreProductList(
         @Header("x-request-id") uuid: String,
@@ -293,9 +292,7 @@ interface PikappApi {
         @Part("action") action: RequestBody
     ): Single<StoreProductActionResponse>
 
-
     // TRANSACTIONS
-
     @POST("txn/v1/cart-post/")
     fun addToCart(
         @Header("x-request-id") uuid: String,
@@ -345,7 +342,6 @@ interface PikappApi {
     ): Single<GetOrderDetailResponse>
 
     // TRANSACTIONS - Merchant
-
     @GET("merchant/v1/mch-order-history/")
     fun getTransactionListMerchant(
         @Header("x-request-id") uuid: String,
@@ -367,8 +363,7 @@ interface PikappApi {
         @Path("tableNo") tableNo: String
     ): Single<GetStoreOrderDetailResponse>
 
-    //update status
-
+    // Update status
     @Multipart
     @POST("txn/v1/txn-update/")
     fun postUpdateTransactionStatus(
@@ -400,7 +395,8 @@ interface PikappApi {
         @Part("condition") condition: RequestBody,
         @Part("action") action: RequestBody,
         @Part("status") status: RequestBody,
-        @Part("product_qty") qty: RequestBody
+        @Part("product_qty") qty: RequestBody,
+        @Part("extra_menu") extra: RequestBody
     ): Call<BaseResponse>
 
     @GET("/home/v2/detail/merchant/{longitude}/{latitude}/")
@@ -413,4 +409,27 @@ interface PikappApi {
         @Path("longitude") longitude: String,
         @Path("latitude") latitude: String
     ): Single<MerchantProfileResponse>
+
+    // Advanced Menu
+    @POST("merchant/v1/menu/advance/add/")
+    fun addAdvanceMenu(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") merchantId: String,
+        @Body addAdvancedMenuRequest: AddAdvanceMenuRequest
+    ): Single<AddAdvanceMenuResponse>
+
+    @POST("merchant/v1/menu/advance/{pid}/list/")
+    fun listAdvanceMenu(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("pid") productId: String
+    ): Single<ListAdvanceMenuResponse>
 }

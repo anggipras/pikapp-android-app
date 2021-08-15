@@ -9,7 +9,7 @@
         android:id="@+id/loginV2First"
         android:name="com.tsab.pikapp.view.onboarding.login.LoginV2First"
         android:label="fragment_login_v2_first"
-        tools:layout="@layout/fragment_login_v2_first" >
+        tools:layout="@layout/fragment_login_v2_first">
         <action
             android:id="@+id/action_loginV2First_to_loginV2Second"
             app:destination="@id/loginV2Second" />
@@ -18,7 +18,7 @@
         android:id="@+id/loginV2Second"
         android:name="com.tsab.pikapp.view.onboarding.login.LoginV2Second"
         android:label="fragment_login_v2_second"
-        tools:layout="@layout/fragment_login_v2_second" >
+        tools:layout="@layout/fragment_login_v2_second">
 
         <argument
             android:name="email"

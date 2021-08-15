@@ -3,20 +3,20 @@ package com.tsab.pikapp.view.home
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentHomeHomeBinding
 import com.tsab.pikapp.viewmodel.home.HomeHomeViewModel
-import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.fragment_home_home.viewPagerSlider
+import kotlinx.android.synthetic.main.fragment_home_home.*
 import java.util.*
 
 class HomeHomeFragment : Fragment() {
@@ -48,21 +48,21 @@ class HomeHomeFragment : Fragment() {
         dataBinding.viewPagerSlider.apply {
             adapter = homeBannerSliderAdapter
             viewPagerSlider.requestDisallowInterceptTouchEvent(true)
-            TabLayoutMediator(dataBinding.tabLayout, dataBinding.viewPagerSlider)   {
-                    tab, position ->
+            TabLayoutMediator(dataBinding.tabLayout, dataBinding.viewPagerSlider) { tab, position ->
             }.attach()
         }
 
         // apply to home category
         dataBinding.recyclerViewCategory.apply {
-            val gridLayoutManager = GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
+            val gridLayoutManager =
+                GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
             layoutManager = gridLayoutManager
             adapter = homeCategoryListAdapter
-            val spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing)
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
             addItemDecoration(ItemHomeCategoryDecoration(spacingInPixels))
         }
 
-        dataBinding.homeHomeRefreshLayout.setOnRefreshListener{
+        dataBinding.homeHomeRefreshLayout.setOnRefreshListener {
             dataBinding.recyclerViewCategory.visibility = View.GONE
             dataBinding.homeBannerSliderLoadingShimmerView.visibility = View.VISIBLE
             dataBinding.homeCategoryLoadingShimmerView.visibility = View.VISIBLE
@@ -93,7 +93,8 @@ class HomeHomeFragment : Fragment() {
 
         viewModel.homeBannerSliderLoading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                dataBinding.homeBannerSliderLoadingShimmerView.visibility = if (it) View.VISIBLE else View.GONE
+                dataBinding.homeBannerSliderLoadingShimmerView.visibility =
+                    if (it) View.VISIBLE else View.GONE
                 if (it) {
                     dataBinding.homeBannerSliderLoadingShimmerView.startShimmer()
 //                    listError.visibility = View.GONE
@@ -123,7 +124,8 @@ class HomeHomeFragment : Fragment() {
 
         viewModel.homeCategoryLoading.observe(this, Observer { isLoading ->
             isLoading?.let {
-                dataBinding.homeCategoryLoadingShimmerView.visibility = if (it) View.VISIBLE else View.GONE
+                dataBinding.homeCategoryLoadingShimmerView.visibility =
+                    if (it) View.VISIBLE else View.GONE
                 if (it) {
                     dataBinding.homeCategoryLoadingShimmerView.startShimmer()
 //                    listError.visibility = View.GONE

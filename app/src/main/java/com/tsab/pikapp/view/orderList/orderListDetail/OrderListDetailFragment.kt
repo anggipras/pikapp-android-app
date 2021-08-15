@@ -25,9 +25,14 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
     private val orderListDetailProductAdapter = OrderListDetailProductAdapter(arrayListOf())
     var txnID = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_list_detail, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_order_list_detail, container, false)
         viewModel = ViewModelProviders.of(this).get(OrderListDetailViewModel::class.java)
         return dataBinding.root
     }
@@ -60,7 +65,7 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
         })
 
         viewModel.loading.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dataBinding.containerAll.visibility = View.INVISIBLE
             } else dataBinding.containerAll.visibility = View.VISIBLE
         })
@@ -72,7 +77,7 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
         dataBinding.textMerchantName.text = it.merchantName
 //                dataBinding.merchantAddress.text = it.merchantAddress
         dataBinding.textBizType.text = it.bizType
-        if(it.bizType == "DINE_IN") {
+        if (it.bizType == "DINE_IN") {
             dataBinding.tableContainer.visibility = View.VISIBLE
             dataBinding.textBizType.text = "Makan di Tempat"
             dataBinding.imageBizType.setImageResource(R.drawable.ic_dinein)
@@ -85,17 +90,17 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
         if (it.paymentWith == "WALLET_DANA") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_dana)
             dataBinding.textPaymentType.text = "DANA"
-        } else if(it.paymentWith == "WALLET_OVO") {
+        } else if (it.paymentWith == "WALLET_OVO") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_ovo)
             dataBinding.textPaymentType.text = "OVO"
-        } else if(it.paymentWith == "PAY_BY_CASHIER") {
+        } else if (it.paymentWith == "PAY_BY_CASHIER") {
             dataBinding.imagePaymentType.setImageResource(R.drawable.ic_cashier)
             dataBinding.textPaymentType.text = "Bayar di kasir"
         } else {
             dataBinding.imagePaymentType.visibility = View.GONE
             dataBinding.textPaymentType.visibility = View.GONE
         }
-        it.products?.let {products ->
+        it.products?.let { products ->
             orderListDetailProductAdapter.updateProductList(products)
         }
         dataBinding.textTotalPrice.text = rupiahFormat(it.price!!.toLong())
@@ -105,9 +110,10 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
                 dataBinding.buttonPay.visibility = View.GONE
                 dataBinding.orderStatusContainer.visibility = View.VISIBLE
                 dataBinding.textOrderStatus.text = "Menunggu Pembayaran"
-                if(it.paymentWith == "PAY_BY_CASHIER") {
+                if (it.paymentWith == "PAY_BY_CASHIER") {
                     dataBinding.textOrderGuide.visibility = View.VISIBLE
-                    dataBinding.textOrderGuide.text = "Silakan tunjukkan transaksi ini ke kasir untuk melakukan pembayaran"
+                    dataBinding.textOrderGuide.text =
+                        "Silakan tunjukkan transaksi ini ke kasir untuk melakukan pembayaran"
                 } else
                     dataBinding.textOrderGuide.visibility = View.GONE
             }
@@ -128,13 +134,15 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
                 dataBinding.buttonPay.visibility = View.GONE
                 dataBinding.orderStatusContainer.visibility = View.VISIBLE
                 dataBinding.textOrderStatus.text = "Pesanan Diproses"
-                if(it.bizType == "TAKE_AWAY") {
+                if (it.bizType == "TAKE_AWAY") {
                     dataBinding.textOrderGuide.visibility = View.VISIBLE
-                    dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
+                    dataBinding.textOrderGuide.text =
+                        "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
                 } else {
-                    if(it.tableNo == "0") {
+                    if (it.tableNo == "0") {
                         dataBinding.textOrderGuide.visibility = View.VISIBLE
-                        dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
+                        dataBinding.textOrderGuide.text =
+                            "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
                     } else {
                         dataBinding.textOrderGuide.visibility = View.VISIBLE
                         dataBinding.textOrderGuide.text = "Ditunggu yah!"
@@ -145,13 +153,15 @@ class OrderListDetailFragment : BottomSheetDialogFragment() {
                 dataBinding.buttonPay.visibility = View.GONE
                 dataBinding.orderStatusContainer.visibility = View.VISIBLE
                 dataBinding.textOrderStatus.text = "Pesanan Siap"
-                if(it.bizType == "TAKE_AWAY") {
+                if (it.bizType == "TAKE_AWAY") {
                     dataBinding.textOrderGuide.visibility = View.VISIBLE
-                    dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
+                    dataBinding.textOrderGuide.text =
+                        "Silakan tunjukan halaman ini ke kasir untuk pengambilan pesanan"
                 } else {
-                    if(it.tableNo == "0") {
+                    if (it.tableNo == "0") {
                         dataBinding.textOrderGuide.visibility = View.VISIBLE
-                        dataBinding.textOrderGuide.text = "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
+                        dataBinding.textOrderGuide.text =
+                            "Silakan tunjukan halaman ini ke kasir untuk mendapatkan nomor meja"
                     } else {
                         dataBinding.textOrderGuide.visibility = View.GONE
                     }

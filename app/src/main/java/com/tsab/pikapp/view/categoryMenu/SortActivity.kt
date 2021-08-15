@@ -14,7 +14,6 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import kotlinx.android.synthetic.main.activity_test.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,7 +21,6 @@ import retrofit2.Response
 import java.util.*
 
 class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListener {
-
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
 
@@ -36,7 +34,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
     var categoryOrder: String = ""
     var activationToggle: String = ""
     var categoryId: String = ""
-    //var list: List<CategoryListName>? = List()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +44,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         recyclerview_category.layoutManager = linearLayoutManager
 
 
-
-        val itemTouchHelper = object: ItemTouchHelper.Callback(){
+        val itemTouchHelper = object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
@@ -62,27 +58,37 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                Collections.swap(sortCategoryAdapter.menuCategoryList, viewHolder.adapterPosition, target.adapterPosition)
-                sortCategoryAdapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
-                //recyclerView.adapter?.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+                Collections.swap(
+                    sortCategoryAdapter.menuCategoryList,
+                    viewHolder.adapterPosition,
+                    target.adapterPosition
+                )
+
+                sortCategoryAdapter.notifyItemMoved(
+                    viewHolder.adapterPosition,
+                    target.adapterPosition
+                )
 
                 categoryListName = sortCategoryAdapter.menuCategoryList.map {
-                    categories_name(category_name = it.category_name, category_order = it.category_order, activation = it.is_active, id = it.id)
+                    categories_name(
+                        category_name = it.category_name,
+                        category_order = it.category_order,
+                        activation = it.is_active,
+                        id = it.id
+                    )
                 }.toMutableList()
-                Log.e("touchhelper", categoryListName.toString())
 
                 return true
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            }
-
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
         }
 
         val itemTouchHelperCallback = ItemTouchHelper(itemTouchHelper)
         itemTouchHelperCallback.attachToRecyclerView(recyclerview_category)
 
-        var sessionManager = SessionManager(getApplication())
+        val sessionManager = SessionManager(application)
+
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -96,7 +102,10 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                 Log.e("failed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantListCategoryResponse>, response: Response<MerchantListCategoryResponse>) {
+            override fun onResponse(
+                call: Call<MerchantListCategoryResponse>,
+                response: Response<MerchantListCategoryResponse>
+            ) {
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
@@ -109,20 +118,33 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                 size = categoryResponse?.results?.size.toString()
                 Log.e("size on response", size)
 
-                sortCategoryAdapter = SortCategoryAdapter(baseContext, categoryResult as MutableList<CategoryListResult>, this@SortActivity)
+                sortCategoryAdapter = SortCategoryAdapter(
+                    baseContext,
+                    categoryResult as MutableList<CategoryListResult>,
+                    this@SortActivity
+                )
                 sortCategoryAdapter.notifyDataSetChanged()
                 recyclerview_category.adapter = sortCategoryAdapter
 
                 categoryListName = sortCategoryAdapter.menuCategoryList.map {
-                    categories_name(category_name = it.category_name, category_order = it.category_order, activation = it.is_active, id = it.id)
+                    categories_name(
+                        category_name = it.category_name,
+                        category_order = it.category_order,
+                        activation = it.is_active,
+                        id = it.id
+                    )
                 }.toMutableList()
                 Log.e("get", categoryListName.toString())
+                val sort = sortCategoryAdapter.menuCategoryList.map {
+                    sort_name(category_name = it.category_name)
+                }
+                Log.e("sort_name", sort.toString())
             }
 
         })
 
         saveBtn.setOnClickListener {
-            var sessionManager = SessionManager(getApplication())
+            var sessionManager = SessionManager(application)
             val email = sessionManager.getUserData()!!.email!!
             val token = sessionManager.getUserToken()!!
             val timestamp = getTimestamp()
@@ -135,19 +157,29 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
             PikappApiService().api.sortMenuCategory(
                 getUUID(), timestamp, getClientID(), signature, token, mid, sortReq
-            ).enqueue(object: retrofit2.Callback<BaseResponse> {
+            ).enqueue(object : retrofit2.Callback<BaseResponse> {
                 override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                     Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                    if(response.code() == 200 && response.body()!!.errCode.toString() == "EC0000"){
+                override fun onResponse(
+                    call: Call<BaseResponse>,
+                    response: Response<BaseResponse>
+                ) {
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                         Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@SortActivity, HomeNavigation::class.java)
-                        startActivity(intent)
-                    }else {
-                        var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
-                        Toast.makeText(baseContext, generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage).toString(), Toast.LENGTH_LONG).show()
+                        onBackPressed()
+                    } else {
+                        var errorResponse: BaseResponse? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                        Toast.makeText(
+                            baseContext,
+                            generateResponseMessage(
+                                errorResponse?.errCode,
+                                errorResponse?.errMessage
+                            ).toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             })
@@ -160,9 +192,10 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
     }
 
+    data class sort_name(val category_name: String?)
+
     override fun onItemClick(position: Int) {
         Toast.makeText(this, "item $position clicked", Toast.LENGTH_SHORT).show()
-        //sortCategoryAdapter.notifyItemChanged(position)
 
         categoryName = sortCategoryAdapter.menuCategoryList[position].category_name.toString()
         Log.e("category name", categoryName)

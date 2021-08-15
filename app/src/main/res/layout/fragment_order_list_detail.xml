@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -195,7 +194,7 @@
                                         android:text="0.78km"
                                         android:textColor="#000"
                                         android:textSize="12sp"
-                                        android:visibility="gone"/>
+                                        android:visibility="gone" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -367,8 +366,8 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/productRecyclerView"
                             android:layout_width="match_parent"
-                            android:nestedScrollingEnabled="false"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:nestedScrollingEnabled="false" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -408,9 +407,9 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="#f0efef"
                             android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
+                            android:background="#f0efef"
                             android:orientation="horizontal" />
 
                         <LinearLayout
@@ -454,10 +453,10 @@
                                     android:layout_weight="1"
                                     android:fontFamily="@font/proximanova_semibold"
                                     android:text=""
-                                    android:visibility="gone"
                                     android:textAlignment="textEnd"
                                     android:textColor="#000"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:visibility="gone" />
 
                             </LinearLayout>
 
@@ -540,13 +539,13 @@
                             android:id="@+id/buttonPay"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:layout_marginTop="15dp"
                             android:layout_marginStart="30dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginEnd="30dp"
                             android:layout_marginBottom="15dp"
                             android:background="@drawable/button_green_rounded"
-                            android:orientation="vertical"
                             android:gravity="center"
+                            android:orientation="vertical"
                             android:visibility="gone">
 
                             <TextView
@@ -563,13 +562,13 @@
                             android:id="@+id/orderStatusContainer"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
-                            android:layout_marginTop="15dp"
                             android:layout_marginStart="30dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginEnd="30dp"
                             android:layout_marginBottom="30dp"
-                            android:orientation="vertical"
                             android:background="#fff"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/textOrderStatus"

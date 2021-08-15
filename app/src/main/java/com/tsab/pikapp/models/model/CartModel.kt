@@ -17,7 +17,8 @@ data class AddToCartResponse(
     @SerializedName("err_code")
     override val errCode: String?,
     @SerializedName("err_message")
-    override val errMessage: String?) : Response
+    override val errMessage: String?
+) : Response
 
 data class CartListResponse(
     @SerializedName("err_code")

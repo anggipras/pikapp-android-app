@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/userExclusiveFormFragment"
         android:name="com.tsab.pikapp.view.userExclusive.UserExclusiveFormFragment"
-        android:label="UserExclusiveFormFragment" >
+        android:label="UserExclusiveFormFragment">
         <action
             android:id="@+id/actionToUserExclusiveHomeFragment"
             app:destination="@id/userExclusiveHomeFragment"

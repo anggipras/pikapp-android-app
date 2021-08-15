@@ -19,16 +19,16 @@ class BankNameFragment : BottomSheetDialogFragment() {
     private var navController: NavController? = null
 
     private var namaBankArray: Array<Map<Int, String>> = arrayOf(
-            mapOf(R.id.BCA to "BANK CENTRAL ASIA (BCA)"),
-            mapOf(R.id.BNI to "BANK NEGARA INDONESIA (BNI)"),
-            mapOf(R.id.BRI to "BANK RAKYAT INDONESIA (BRI)"),
-            mapOf(R.id.Mandiri to "BANK MANDIRI"),
-            mapOf(R.id.CIMB to "BANK CIMB NIAGA")
+        mapOf(R.id.BCA to "BANK CENTRAL ASIA (BCA)"),
+        mapOf(R.id.BNI to "BANK NEGARA INDONESIA (BNI)"),
+        mapOf(R.id.BRI to "BANK RAKYAT INDONESIA (BRI)"),
+        mapOf(R.id.Mandiri to "BANK MANDIRI"),
+        mapOf(R.id.CIMB to "BANK CIMB NIAGA")
     )
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_bank_name, container, false)
     }

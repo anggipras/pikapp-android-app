@@ -1,11 +1,11 @@
 package com.tsab.pikapp.view.storeOrderList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -33,9 +33,15 @@ class StoreOrderListStatusFragment : Fragment() {
         )
 
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_order_list_status, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_store_order_list_status,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(StoreOrderListStatusViewModel::class.java)
-        val adapter = HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        val adapter =
+            HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         dataBinding.storeOrderListViewPager.adapter = adapter
         return dataBinding.root
     }

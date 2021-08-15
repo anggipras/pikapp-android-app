@@ -7,11 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ItemOrderListProductBinding
-import com.tsab.pikapp.models.model.CartModel
 import com.tsab.pikapp.models.model.OrderDetailDetail
-import com.tsab.pikapp.util.rupiahFormat
 
-class OrderListDetailProductAdapter(private val productList: ArrayList<OrderDetailDetail>) : RecyclerView.Adapter<OrderListDetailProductAdapter.ProductViewHolder>() {
+class OrderListDetailProductAdapter(private val productList: ArrayList<OrderDetailDetail>) :
+    RecyclerView.Adapter<OrderListDetailProductAdapter.ProductViewHolder>() {
 
     fun updateProductList(newProductList: List<OrderDetailDetail>) {
         productList.clear()
@@ -21,11 +20,13 @@ class OrderListDetailProductAdapter(private val productList: ArrayList<OrderDeta
 
     private lateinit var dataBinding: ItemOrderListProductBinding
 
-    class ProductViewHolder(var view: ItemOrderListProductBinding) : RecyclerView.ViewHolder(view.root)
+    class ProductViewHolder(var view: ItemOrderListProductBinding) :
+        RecyclerView.ViewHolder(view.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.item_order_list_product, parent, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.item_order_list_product, parent, false)
         return ProductViewHolder(dataBinding)
     }
 
@@ -36,7 +37,7 @@ class OrderListDetailProductAdapter(private val productList: ArrayList<OrderDeta
         holder.view.productName.text = productList[position].productName
         holder.view.productQty.text = "x${productList[position].productQty}"
         productList[position].productNote?.let {
-            if(it.isNotEmpty())
+            if (it.isNotEmpty())
                 holder.view.productNote.text = "Catatan : ${productList[position].productNote}"
             else
                 holder.view.productNote.visibility = View.GONE

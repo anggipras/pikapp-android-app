@@ -11,7 +11,7 @@ interface PikappDao {
 
     //Home Banner Slider
     @Insert
-    suspend fun insertAllHomeBannerSlider(vararg category: ItemHomeBannerSlider) : List<Long>
+    suspend fun insertAllHomeBannerSlider(vararg category: ItemHomeBannerSlider): List<Long>
 
     @Query("SELECT * FROM ItemHomeBannerSlider")
     suspend fun getAllHomeBannerSlider(): List<ItemHomeBannerSlider>
@@ -24,7 +24,7 @@ interface PikappDao {
 
     //Home Category
     @Insert
-    suspend fun insertAllHomeCategory(vararg category: ItemHomeCategory) : List<Long>
+    suspend fun insertAllHomeCategory(vararg category: ItemHomeCategory): List<Long>
 
     @Query("SELECT * FROM itemHomeCategory")
     suspend fun getAllHomeCategory(): List<ItemHomeCategory>

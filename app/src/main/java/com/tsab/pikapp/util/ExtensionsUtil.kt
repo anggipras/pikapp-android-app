@@ -9,7 +9,9 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.widget.Group
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -39,11 +41,11 @@ fun getProgressDrawable(context: Context): CircularProgressDrawable {
 
 fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
-            .placeholder(progressDrawable)
+        .placeholder(progressDrawable)
     Glide.with(context)
-            .setDefaultRequestOptions(options)
-            .load(uri)
-            .into(this)
+        .setDefaultRequestOptions(options)
+        .load(uri)
+        .into(this)
 }
 
 @BindingAdapter("android:imageUri")
@@ -210,4 +212,10 @@ fun isUsernameValid(str: String?): Boolean {
 
     //TODO : check only allow for digit
     return true
+}
+
+fun Group.setAllOnClickListener(listener: View.OnClickListener?, view: View? = null) {
+    referencedIds.forEach { id ->
+        (view ?: rootView).findViewById<View>(id).setOnClickListener(listener)
+    }
 }

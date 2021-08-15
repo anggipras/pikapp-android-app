@@ -9,6 +9,5 @@
         android:id="@+id/settingFragment"
         android:name="com.tsab.pikapp.view.other.SettingFragment"
         android:label="setting_fragment"
-        tools:layout="@layout/setting_fragment" >
-    </fragment>
+        tools:layout="@layout/setting_fragment"></fragment>
 </navigation>

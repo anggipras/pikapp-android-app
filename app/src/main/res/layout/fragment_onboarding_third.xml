@@ -15,8 +15,8 @@
             android:id="@+id/imageViewContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="right"
             android:layout_weight="4.7"
+            android:gravity="right"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/textView2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,9 +32,10 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/imgonboarding3" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:layout_height="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,25 +56,25 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Welcome to PikApp!"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"
                     android:textSize="38sp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/loginContainer"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/loginContainer"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/loginContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
-                    android:orientation="vertical"
                     android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomContainer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2"
-                    app:layout_constraintBottom_toTopOf="@+id/bottomContainer">
+                    app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                     <Button
                         android:id="@+id/buttonLogin"
@@ -167,13 +168,13 @@
                     android:id="@+id/bottomContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="4"
                     android:gravity="center"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/loginContainer">
 
                     <TextView

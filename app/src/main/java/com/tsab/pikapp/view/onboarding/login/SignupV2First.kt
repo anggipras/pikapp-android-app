@@ -24,11 +24,13 @@ class SignupV2First : Fragment() {
     private lateinit var dataBinding: FragmentSignupV2FirstBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_v2_first,
-                container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_signup_v2_first,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -80,7 +82,8 @@ class SignupV2First : Fragment() {
         dataBinding.emailInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateEmail(
-                        dataBinding.emailInputText.text.toString())
+                    dataBinding.emailInputText.text.toString()
+                )
             }
             false
         }
@@ -88,7 +91,8 @@ class SignupV2First : Fragment() {
         dataBinding.fullNameInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateFullName(
-                        dataBinding.fullNameInputText.text.toString())
+                    dataBinding.fullNameInputText.text.toString()
+                )
             }
             false
         }
@@ -96,7 +100,8 @@ class SignupV2First : Fragment() {
         dataBinding.phoneInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validatePhone(
-                        dataBinding.phoneInputText.text.toString())
+                    dataBinding.phoneInputText.text.toString()
+                )
             }
             false
         }
@@ -111,7 +116,8 @@ class SignupV2First : Fragment() {
 
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = activity?.getSystemService(
-                Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)

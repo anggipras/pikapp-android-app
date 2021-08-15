@@ -13,7 +13,7 @@ import com.tsab.pikapp.view.TransactionActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-class HomeActivityViewModel(application: Application): BaseViewModel(application) {
+class HomeActivityViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper = SharedPreferencesUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())

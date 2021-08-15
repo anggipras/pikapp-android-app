@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LogoutResponse
 import com.tsab.pikapp.models.model.UserAccess
@@ -15,7 +16,6 @@ import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -40,7 +40,7 @@ class UserExclusiveProfileViewModel(application: Application) : BaseViewModel(ap
 
     fun logout(context: Context) {
         val sessionId = sessionManager.getUserData()?.sessionId!!
-        Log.d("debug","sessionid : $sessionId")
+        Log.d("debug", "sessionid : $sessionId")
 //        clearSession(context)
         logoutProcess(sessionId)
     }
@@ -99,7 +99,7 @@ class UserExclusiveProfileViewModel(application: Application) : BaseViewModel(ap
 
     private fun goToOnboarding(context: Context) {
         val onboardingActivity = Intent(context, OnboardingActivity::class.java)
-        context?.startActivity(onboardingActivity)
+        context.startActivity(onboardingActivity)
         (context as UserExclusiveActivity).finish()
     }
 

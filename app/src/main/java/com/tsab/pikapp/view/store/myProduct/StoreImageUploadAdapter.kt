@@ -47,7 +47,7 @@ class StoreImageUploadAdapter(
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val uri = imageUriList[position].imageUri.toString()
-        if(uri.contains("https://")) {
+        if (uri.contains("https://")) {
             holder.view.imageDisplay.loadImage(uri, getProgressDrawable(dataBinding.root.context))
         } else {
             holder.view.storeImage = imageUriList[position]

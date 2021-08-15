@@ -2,7 +2,6 @@ package com.tsab.pikapp.view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -51,15 +50,15 @@ class CarouselActivity : AppCompatActivity() {
 
     private fun setupViewPager() {
         val fragments: ArrayList<Fragment> = arrayListOf(
-                CarouselOneFragment(),
-                CarouselTwoFragment(),
-                CarouselThreeFragment()
+            CarouselOneFragment(),
+            CarouselTwoFragment(),
+            CarouselThreeFragment()
         )
 
         val adapter = CarouselViewPagerAdapter(fragments, this)
         dataBinding.carouselViewPager.adapter = adapter
         dataBinding.carouselViewPager.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 viewModel.setCurrentPage(position)
                 super.onPageSelected(position)
@@ -82,19 +81,29 @@ class CarouselActivity : AppCompatActivity() {
             dataBinding.carouselViewPager.currentItem = currentPage
 
             dataBinding.carouselPage1.setColorFilter(
-                    if (currentPage == 0) ContextCompat.getColor(applicationContext,
-                            R.color.colorGreen)
-                    else Color.TRANSPARENT)
+                if (currentPage == 0) ContextCompat.getColor(
+                    applicationContext,
+                    R.color.colorGreen
+                )
+                else Color.TRANSPARENT
+            )
             dataBinding.carouselPage2.setColorFilter(
-                    if (currentPage == 1) ContextCompat.getColor(applicationContext,
-                            R.color.colorGreen)
-                    else Color.TRANSPARENT)
+                if (currentPage == 1) ContextCompat.getColor(
+                    applicationContext,
+                    R.color.colorGreen
+                )
+                else Color.TRANSPARENT
+            )
             dataBinding.carouselPage3.setColorFilter(
-                    if (currentPage == 2) ContextCompat.getColor(applicationContext,
-                            R.color.colorGreen)
-                    else Color.TRANSPARENT)
+                if (currentPage == 2) ContextCompat.getColor(
+                    applicationContext,
+                    R.color.colorGreen
+                )
+                else Color.TRANSPARENT
+            )
 
-            dataBinding.nextButton.visibility = if (currentPage == 2) View.INVISIBLE else View.VISIBLE
+            dataBinding.nextButton.visibility =
+                if (currentPage == 2) View.INVISIBLE else View.VISIBLE
         })
     }
 }

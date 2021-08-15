@@ -11,8 +11,12 @@ import com.tsab.pikapp.databinding.ItemMerchantListBinding
 import com.tsab.pikapp.models.model.MerchantList
 import com.tsab.pikapp.view.home.ItemHomeCategoryDecoration
 
-class MerchantListAdapter(private val merchantList: ArrayList<MerchantList>, val merchantClickInterface: MerchantClickInterface) :
-    RecyclerView.Adapter<MerchantListAdapter.MerchantViewHolder>(), ProductListSmallAdapter.ProductClickInterface {
+class MerchantListAdapter(
+    private val merchantList: ArrayList<MerchantList>,
+    val merchantClickInterface: MerchantClickInterface
+) :
+    RecyclerView.Adapter<MerchantListAdapter.MerchantViewHolder>(),
+    ProductListSmallAdapter.ProductClickInterface {
 
     class MerchantViewHolder(var view: ItemMerchantListBinding) : RecyclerView.ViewHolder(view.root)
 
@@ -33,7 +37,8 @@ class MerchantListAdapter(private val merchantList: ArrayList<MerchantList>, val
             false
         )
         view.productList.apply {
-            val gridLayoutManager = GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
+            val gridLayoutManager =
+                GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
             layoutManager = gridLayoutManager
             val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing2)
             addItemDecoration(ItemHomeCategoryDecoration(spacingInPixels))

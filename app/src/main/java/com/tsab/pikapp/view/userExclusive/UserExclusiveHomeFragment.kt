@@ -2,11 +2,11 @@ package com.tsab.pikapp.view.userExclusive
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
@@ -16,14 +16,19 @@ import com.tsab.pikapp.viewmodel.userExclusive.UserExclusiveHomeViewModel
 
 class UserExclusiveHomeFragment : Fragment() {
 
-    private lateinit var viewModel : UserExclusiveHomeViewModel
+    private lateinit var viewModel: UserExclusiveHomeViewModel
     private lateinit var dataBinding: FragmentUserExclusiveHomeBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_exclusive_home, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_user_exclusive_home,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(UserExclusiveHomeViewModel::class.java)
         return dataBinding.root
     }

@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.tsab.pikapp.models.model.UserAccess
 import com.google.gson.GsonBuilder
+import com.tsab.pikapp.models.model.UserAccess
 
 class SessionManager {
 
@@ -67,7 +67,7 @@ class SessionManager {
         }
     }
 
-    fun getUserData() : UserAccess? {
+    fun getUserData(): UserAccess? {
         val userData = prefs?.getString(PREF_USER_DATA, null)
         return GsonBuilder().create().fromJson(userData, UserAccess::class.java)
     }

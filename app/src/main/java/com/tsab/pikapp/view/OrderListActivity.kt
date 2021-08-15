@@ -16,7 +16,7 @@ class OrderListActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
-        if(intent != null && intent.hasExtra("is_merchant")) {
+        if (intent != null && intent.hasExtra("is_merchant")) {
             val isMerchant = intent.extras!!.getString("is_merchant")
             val transactionID = intent.extras!!.getString("transaction_id")
             val tableNo = intent.extras!!.getString("table_no")

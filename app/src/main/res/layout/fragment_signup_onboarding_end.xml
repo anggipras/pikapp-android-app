@@ -214,7 +214,7 @@
                 android:textSize="13sp"
                 android:visibility="invisible"
                 app:autoSizeMaxTextSize="13sp"
-                app:autoSizeTextType="uniform"/>
+                app:autoSizeTextType="uniform" />
 
             <!--           confirm password             -->
             <TextView
@@ -236,10 +236,10 @@
                 android:hint="Masukan password anda"
                 android:inputType="textPassword"
                 android:textColor="#000000"
-                android:visibility="visible"
                 android:textSize="14sp"
+                android:visibility="visible"
                 app:autoSizeMaxTextSize="18sp"
-                app:autoSizeTextType="uniform"/>
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/textErrorOnboardingSignupConfirmPassword"
@@ -250,7 +250,7 @@
                 android:textSize="13sp"
                 android:visibility="invisible"
                 app:autoSizeMaxTextSize="13sp"
-                app:autoSizeTextType="uniform"/>
+                app:autoSizeTextType="uniform" />
 
             <Button
                 android:id="@+id/buttonOnboardingSignupSignup"

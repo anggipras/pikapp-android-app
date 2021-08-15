@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="productList"
             type="com.tsab.pikapp.models.model.OrderDetailDetail" />
@@ -43,9 +44,9 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginStart="2dp"
                     android:layout_marginBottom="5dp"
                     app:cardCornerRadius="20dp">
 
@@ -77,11 +78,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:ellipsize="end"
                             android:fontFamily="@font/proximanova_semibold"
+                            android:singleLine="true"
                             android:text="@{String.valueOf(productList.productName)}"
                             android:textColor="#000000"
-                            android:singleLine="true"
-                            android:ellipsize="end"
                             android:textSize="18sp" />
 
                         <TextView
@@ -90,15 +91,15 @@
                             android:layout_height="match_parent"
                             android:layout_weight="5"
                             android:fontFamily="@font/proximanova_semibold"
-                            android:textAlignment="textEnd"
                             android:text=""
+                            android:textAlignment="textEnd"
                             android:textColor="#000000"
                             android:textSize="20sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="5dp"/>
+                        android:layout_height="5dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -133,10 +134,10 @@
                 android:id="@+id/productNote"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text=""
                 android:fontFamily="@font/proximanova_regular"
+                android:text=""
                 android:textColor="@color/colorGrey"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout

@@ -3,8 +3,8 @@ package com.tsab.pikapp.view.loginv2
 import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.tsab.pikapp.databinding.ActivityLoginRegisterBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
@@ -34,7 +34,7 @@ class LoginRegisterActivity : AppCompatActivity() {
 
         dataBinding.privacyTextAuth.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.setData(Uri.parse("https://pikapp.id/ketentuan-dan-kebijakan-privasi/"))
+            intent.data = Uri.parse("https://pikapp.id/ketentuan-dan-kebijakan-privasi/")
             startActivity(intent)
         }
     }

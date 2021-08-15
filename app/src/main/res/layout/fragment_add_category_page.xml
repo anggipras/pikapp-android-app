@@ -157,13 +157,20 @@
 
             </LinearLayout>
 
-            <ImageButton
+            <Button
                 android:id="@+id/saveBtn"
-                android:layout_width="307dp"
-                android:layout_height="77dp"
+                android:layout_width="280dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="250dp"
-                android:background="@drawable/buttonsave" />
+                android:background="@drawable/button_green_small"
+                android:backgroundTint="@color/green"
+                android:fontFamily="@font/montserrat"
+                android:text="Simpan"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

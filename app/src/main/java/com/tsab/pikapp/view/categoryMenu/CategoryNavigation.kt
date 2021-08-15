@@ -1,7 +1,7 @@
 package com.tsab.pikapp.view.categoryMenu
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.tsab.pikapp.R
 
 class CategoryNavigation : AppCompatActivity() {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="merchantDetail"
             type="com.tsab.pikapp.models.model.MerchantDetail" />
@@ -39,7 +40,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         android:imageUrl="@{merchantDetail.merchantPict}"
-                        android:scaleType="fitXY"/>
+                        android:scaleType="fitXY" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -127,8 +128,8 @@
                                     android:layout_height="40dp"
                                     android:scaleType="fitXY"
                                     android:src="@drawable/ic_favorite"
-                                    app:tint="@color/placeholderBackground"
-                                    android:visibility="gone"/>
+                                    android:visibility="gone"
+                                    app:tint="@color/placeholderBackground" />
 
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
@@ -137,8 +138,8 @@
                                     android:layout_marginTop="10dp"
                                     android:layout_marginEnd="5dp"
                                     android:layout_marginBottom="5dp"
-                                    app:cardCornerRadius="20dp"
-                                    android:visibility="gone">
+                                    android:visibility="gone"
+                                    app:cardCornerRadius="20dp">
 
                                     <ImageView
                                         android:id="@+id/imageViewMap"
@@ -240,14 +241,14 @@
                                     </LinearLayout>
 
                                     <TextView
-                                        android:visibility="gone"
                                         android:id="@+id/textDistanceMin"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/proximanova_regular"
                                         android:text="25 min"
                                         android:textColor="@color/colorGrey"
-                                        android:textSize="12sp" />
+                                        android:textSize="12sp"
+                                        android:visibility="gone" />
                                 </LinearLayout>
 
 
@@ -326,9 +327,9 @@
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_message"
             android:tint="@android:color/white"
+            android:visibility="gone"
             app:layout_anchor="@id/appBarLayout"
-            app:layout_anchorGravity="top|right|end"
-            android:visibility="gone"/>
+            app:layout_anchorGravity="top|right|end" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -346,8 +347,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="15dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Semua Produk"
                     android:textColor="#000000"

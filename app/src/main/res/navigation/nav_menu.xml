@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_menu"
+    app:startDestination="@id/addCategoryPage2">
+
+    <fragment
+        android:id="@+id/addCategoryPage2"
+        android:name="com.tsab.pikapp.view.categoryMenu.AddCategoryPage"
+        android:label="fragment_add_category_page"
+        tools:layout="@layout/fragment_add_category_page" />
+</navigation>

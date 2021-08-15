@@ -25,11 +25,13 @@ class SignupV2Second : Fragment() {
     private lateinit var dataBinding: FragmentSignupV2SecondBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_v2_second,
-                container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_signup_v2_second,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -101,7 +103,8 @@ class SignupV2Second : Fragment() {
         dataBinding.namaRestoranInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateNamaRestoran(
-                        dataBinding.namaRestoranInputText.text.toString())
+                    dataBinding.namaRestoranInputText.text.toString()
+                )
             }
             false
         }
@@ -109,7 +112,8 @@ class SignupV2Second : Fragment() {
         dataBinding.namaFoodcourtInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateNamaFoodcourt(
-                        dataBinding.namaFoodcourtInputText.text.toString())
+                    dataBinding.namaFoodcourtInputText.text.toString()
+                )
             }
             false
         }
@@ -117,7 +121,8 @@ class SignupV2Second : Fragment() {
         dataBinding.alamatInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateAlamat(
-                        dataBinding.alamatInputText.text.toString())
+                    dataBinding.alamatInputText.text.toString()
+                )
             }
             false
         }
@@ -125,7 +130,8 @@ class SignupV2Second : Fragment() {
         dataBinding.namaBankInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateNamaBank(
-                        dataBinding.namaBankInputText.text.toString())
+                    dataBinding.namaBankInputText.text.toString()
+                )
             }
             false
         }
@@ -133,7 +139,8 @@ class SignupV2Second : Fragment() {
         dataBinding.nomorRekeningInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateNomorRekening(
-                        dataBinding.nomorRekeningInputText.text.toString())
+                    dataBinding.nomorRekeningInputText.text.toString()
+                )
             }
             false
         }
@@ -148,7 +155,8 @@ class SignupV2Second : Fragment() {
 
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = activity?.getSystemService(
-                Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)

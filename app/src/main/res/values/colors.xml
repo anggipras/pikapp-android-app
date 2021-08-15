@@ -17,14 +17,17 @@
     <color name="colorRed">#DC6A84</color>
     <color name="colorWhite">#FFFFFF</color>
 
-    <!-- Colors from Figma -->
-    <color name="black">#111111</color>
-    <color name="darkGrey">#494949</color>
+    <!-- Figma colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="lightGrey">#EEEEEE</color>
+
     <color name="green">#4BB7AC</color>
     <color name="red">#DC6A84</color>
     <color name="yellow">#FBA83C</color>
-    <color name="white">#FFFFFF</color>
+    <color name="black">#111111</color>
+    <color name="darkGrey">#494949</color>
 
     <color name="textSubtle">#767676</color>
     <color name="borderSubtle">#AAAAAA</color>
+
 </resources>

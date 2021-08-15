@@ -140,7 +140,7 @@ class SignupOnboardingFragment : Fragment() {
             }
         })
 
-        viewModel.loginResponse.observe(this, Observer {response ->
+        viewModel.loginResponse.observe(this, Observer { response ->
             if (response.newEvent!!) {
                 viewModel.goToUserExclusive(activity as OnboardingActivity)
             } else {

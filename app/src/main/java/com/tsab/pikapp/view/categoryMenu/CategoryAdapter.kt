@@ -10,9 +10,13 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CategoryListResult
 import kotlinx.android.synthetic.main.category_items.view.*
 
-class CategoryAdapter(private val context: Context, val categoryList: MutableList<CategoryListResult>): RecyclerView.Adapter<CategoryAdapter.ViewHolder>(){
+class CategoryAdapter(
+    private val context: Context,
+    val categoryList: MutableList<CategoryListResult>
+) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_items, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.category_items, parent, false)
         return ViewHolder(view)
     }
 
@@ -24,7 +28,7 @@ class CategoryAdapter(private val context: Context, val categoryList: MutableLis
         holder.resultText.text = categoryList[position].category_name
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var resultText: TextView = itemView.resultText
 //        var resultText: TextView
 //

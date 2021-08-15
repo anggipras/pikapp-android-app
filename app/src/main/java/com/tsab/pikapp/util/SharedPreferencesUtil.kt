@@ -140,7 +140,7 @@ class SharedPreferencesUtil {
         }
     }
 
-    fun getStoredDeepLink() : DeepLinkModel? {
+    fun getStoredDeepLink(): DeepLinkModel? {
         val gson = Gson()
         val json: String? = prefs?.getString(DEEPLINK, "")
         json?.let {
@@ -221,7 +221,8 @@ class SharedPreferencesUtil {
         Log.d("Debug", "order list get : $json")
         json?.let {
             if (json.isNotEmpty()) {
-                val orderList: List<OrderList> = gson.fromJson(json, Array<OrderList>::class.java).toList()
+                val orderList: List<OrderList> =
+                    gson.fromJson(json, Array<OrderList>::class.java).toList()
                 return orderList
             }
         }
@@ -248,7 +249,8 @@ class SharedPreferencesUtil {
         Log.d("Debug", "order list get : $json")
         json?.let {
             if (json.isNotEmpty()) {
-                val orderList: List<StoreOrderList> = gson.fromJson(json, Array<StoreOrderList>::class.java).toList()
+                val orderList: List<StoreOrderList> =
+                    gson.fromJson(json, Array<StoreOrderList>::class.java).toList()
                 return orderList
             }
         }

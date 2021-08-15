@@ -3,14 +3,13 @@ package com.tsab.pikapp.view.other
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.databinding.SettingFragmentBinding
-import com.tsab.pikapp.view.CarouselActivity
 import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
 import com.tsab.pikapp.viewmodel.other.SettingViewModel
 

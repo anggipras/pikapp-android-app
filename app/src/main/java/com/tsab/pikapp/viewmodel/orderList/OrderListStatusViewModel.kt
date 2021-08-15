@@ -2,9 +2,8 @@ package com.tsab.pikapp.viewmodel.orderList
 
 import android.app.Application
 import android.content.Context
-import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.tsab.pikapp.util.*
+import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.view.OrderListActivity
 import com.tsab.pikapp.view.orderList.orderListDetail.OrderListDetailFragment
 import com.tsab.pikapp.viewmodel.BaseViewModel
@@ -24,15 +23,18 @@ class OrderListStatusViewModel(application: Application) : BaseViewModel(applica
     fun checkNotificationOrder() {
         val notif = prefHelper.getNotificationDetail()
         notif?.let {
-            it.transactionId?.let {transactionID ->
+            it.transactionId?.let { transactionID ->
                 if (transactionID.isNotEmpty()) notificationActive.value = transactionID
             }
         }
     }
 
-    fun goToOrderListDetail(context:Context) {
+    fun goToOrderListDetail(context: Context) {
         val orderListDetailFragment = OrderListDetailFragment()
-        orderListDetailFragment.show((context as OrderListActivity).supportFragmentManager, orderListDetailFragment.tag)
+        orderListDetailFragment.show(
+            (context as OrderListActivity).supportFragmentManager,
+            orderListDetailFragment.tag
+        )
     }
 
 

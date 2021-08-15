@@ -13,6 +13,8 @@
     <string name="masuk">Masuk</string>
 
     <string name="selanjutnya">Selanjutnya</string>
+    <string name="kembali">Kembali</string>
+    <string name="simpan">Simpan</string>
 
     <string name="star">*</string>
 
@@ -78,5 +80,42 @@
     <string name="edit_kategori">Menu yang ada di kategori ini akan tidak  <br />terlihat oleh pembeli. Anda yakin ingin <br />menonaktifkan kategori?</string>
     <string name="delete_kategori_warning">Kosongan menu pada kategori ini <br />terlebih dahulu</string>
     <string name="delete_kategori_popup">Anda yakin ingin menghapus kategori <br />ini dari menu restoran Anda</string>
+    <string name="menu">Menu</string>
+    <string name="cari_menu_yang_anda_jual">Cari Menu yang Anda jual</string>
+    <string name="tambah_kategori_menu">Tambah Kategori Menu</string>
+    <string name="tambah_kategori_untuk_menambahkan_menu">Tambah Kategori Untuk Menambahkan Menu</string>
+    <string name="anda_belum_memiliki_menu">Anda belum memiliki menu</string>
+
+    <!-- Advanced menu (am) screens -->
+    <string name="am_main_header">Pilihan Menu</string>
+    <string name="am_details_tambah_header">Tambah Pilihan</string>
+    <string name="am_details_ubah_header">Ubah Pilihan</string>
+
+    <string name="am_main_aktifkan_header">Aktifkan pilihan menu</string>
+    <string name="am_main_aktifkan_help">Apa itu pilihan menu?</string>
+
+    <string name="am_daftar_pilihan_header">Daftar pilihan menu</string>
+    <string name="am_tambah_pilihan_header">Tambah Pilihan</string>
+    <string name="am_tambah_daftar_pilihan_header">Tambah Daftar Pilihan</string>
+    <string name="am_ubah_daftar_pilihan_header">Ubah Daftar Pilihan</string>
+
+    <string name="am_details_nama_pilihan_header">Nama Pilihan</string>
+    <string name="am_details_nama_pilihan_hint">contoh: Tingkat Kepedasan, Pilihan Topping</string>
+
+    <string name="am_details_aktif_header">Aktif</string>
+    <string name="am_details_wajib_header">Wajib Diisi</string>
+
+    <string name="am_details_pilihan_maksimal_header">Pilihan Maksimal</string>
+    <string name="am_details_pilihan_maksimal_kosong">Anda belum menambahkan daftar pilihan</string>
+    <string name="am_details_pilihan_maksimal_hint">Masukkan jumlah pilihan maksimal</string>
+
+    <string name="am_details_daftar_pilihan_header">Daftar Pilihan</string>
+    <string name="am_details_tambah_daftar_pilihan">Tambah Daftar Pilihan</string>
+
+    <string name="am_additional_nama_daftar_pilihan_header">Nama Daftar Pilihan</string>
+    <string name="am_additional_nama_daftar_pilihan_hint">contoh: Pedas, Boba</string>
+
+    <string name="am_additional_harga_header">Harga</string>
+    <string name="am_additional_harga_hint">contoh: 6000</string>
 
 </resources>
