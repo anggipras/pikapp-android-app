@@ -134,9 +134,9 @@
 
             <ToggleButton
                 android:id="@+id/autoTurn_toggle"
-                android:layout_width="42dp"
+                android:layout_width="53dp"
                 android:layout_height="30dp"
-                android:background="@drawable/toggle_selector"
+                android:background="@drawable/switch_selector"
                 android:checked="true"
                 android:textOff=""
                 android:textOn=""

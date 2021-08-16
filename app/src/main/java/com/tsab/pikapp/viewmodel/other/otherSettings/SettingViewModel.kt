@@ -83,6 +83,15 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
         Toast.makeText(getApplication(), m, Toast.LENGTH_SHORT).show()
     }
 
+    fun setUserNotif() {
+        val userNotif = sessionManager.getProfileNum()
+        when(userNotif) {
+            0 -> createToast("Mohon isi tanggal lahir dan jenis kelamin")
+            1 -> createToast("Mohon upload ulang banner dan logo restoran")
+            else -> Log.d("DONEUPDATE", "DONE ALL FIRST UPDATE")
+        }
+    }
+
     override fun onCleared() {
         disposable.clear()
         super.onCleared()

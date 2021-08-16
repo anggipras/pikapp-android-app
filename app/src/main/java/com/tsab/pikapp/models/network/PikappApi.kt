@@ -403,15 +403,14 @@ interface PikappApi {
         @Part("product_qty") qty: RequestBody
     ): Call<BaseResponse>
 
-    @GET("/home/v2/detail/merchant/{longitude}/{latitude}/")
+    @GET("/merchant/v1/merchant/{mid}/profile/")
     fun getMerchantProfile(
-        @Header("x-request-id") uuid: String,
-        @Header("x-request-timestamp") time: String,
-        @Header("x-client-id") clientID: String,
-        @Header("token") token: String,
-        @Header("mid") mid: String,
-        @Path("longitude") longitude: String,
-        @Path("latitude") latitude: String
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Path("mid") mid: String
     ): Single<MerchantProfileResponse>
 
     @GET("/merchant/v1/shop/management/list/")

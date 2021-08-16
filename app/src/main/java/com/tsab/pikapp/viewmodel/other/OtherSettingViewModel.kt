@@ -14,46 +14,65 @@ import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAd
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class OtherSettingViewModel : ViewModel() {
 
     private var sessionManager = SessionManager()
 
-    //Profile Setting
+    //Profile Setting Variable
+    val profileFullName = MutableLiveData<String>()
+    val profileDOB = MutableLiveData<String>()
+    val profileGender = MutableLiveData<String>()
+    val profileEmail = MutableLiveData<String>()
+    val profilePhone = MutableLiveData<String>()
     val _genderConfirmation = MutableLiveData<Boolean>()
-    val _genderSelection = MutableLiveData<String>()
+    val _genderSelection = MutableLiveData<String?>()
     val _genderDialogAlert = MutableLiveData<Boolean>()
     val _birthdaySelection = MutableLiveData<String>()
 
-    //Information Setting
+    //Information Setting Variable
     val _restaurantBanner = MutableLiveData(Uri.EMPTY)
     val _restaurantLogo = MutableLiveData(Uri.EMPTY)
     val _restaurantName = MutableLiveData<String>()
     val _restaurantAddress = MutableLiveData<String>()
 
-    //Pin Setting
+    //Pin Setting Variable
     val _newPin = MutableLiveData<String>()
 
-    //Shop Management Setting
+    //Shop Management Setting Variable
     lateinit var shopManagementAdapter: ShopManagementAdapter
     var _shopStatus = MutableLiveData<String>()
 
-    fun setGender(bool: Boolean, gender: String) {
-        _genderConfirmation.value = bool
-        _genderSelection.value = gender
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Profile Setting Method
+    fun getProfileDetail() {
+        val fullName = sessionManager.getMerchantProfile()?.fullName!!
+        val dateOfBirth = sessionManager.getDOBProfile()!!
+        val gender = sessionManager.getGenderProfile()!!
+        val email = sessionManager.getMerchantProfile()!!.email!!
+        val phone = sessionManager.getMerchantProfile()!!.phoneNumber!!
+        profileFullName.value = fullName
+        profileDOB.value = dateOfBirth
+        profileGender.value = gender
+        profileEmail.value = email
+        profilePhone.value = phone
     }
 
-    fun setBirthday(date: String?) {
-        _birthdaySelection.value = date!!
+    fun setGenderAndDOB() {
+        sessionManager.setDOBProfile(_birthdaySelection.value)
+        sessionManager.setGenderProfile(_genderSelection.value)
+        sessionManager.setProfileNum(1)
     }
 
-    fun confirmGender(bool: Boolean) {
-        _genderDialogAlert.value = bool
+    fun setDefaultGender() {
+        _genderSelection.value = null
     }
 
-    fun restartFragment() {
-        _genderConfirmation.value = false
-        _genderDialogAlert.value = false
+    //Pin Setting Method
+    fun setNewPin(pin: String?) {
+        _newPin.value = pin!!
     }
 
     //Information Setting Method
@@ -70,12 +89,24 @@ class OtherSettingViewModel : ViewModel() {
         _restaurantAddress.value = merchAddress!!
     }
 
-    //Pin Setting Method
-    fun setNewPin(pin: String?) {
-        _newPin.value = pin!!
+    fun uploadMerchantProfile(banner: File, logo: File) {
+
     }
 
-    //Shop Management Method
+    //Shop Management Setting Method
+    fun setGender(bool: Boolean, gender: String) {
+        _genderConfirmation.value = bool
+        _genderSelection.value = gender
+    }
+
+    fun setBirthday(date: String?) {
+        _birthdaySelection.value = date!!
+    }
+
+    fun confirmGender(bool: Boolean) {
+        _genderDialogAlert.value = bool
+    }
+
     fun getMerchantSchedule(baseContext: Context, shopSchedule_recyclerView: RecyclerView, listener: ShopManagementAdapter.OnItemClickListener) {
         val uuid = getUUID()
         val timestamp = getTimestamp()
@@ -112,5 +143,11 @@ class OtherSettingViewModel : ViewModel() {
 
     fun setShopStatus(status: String) {
         _shopStatus.value = status
+    }
+
+    //RESTART GENDER DIALOG
+    fun restartFragment() {
+        _genderConfirmation.value = false
+        _genderDialogAlert.value = false
     }
 }

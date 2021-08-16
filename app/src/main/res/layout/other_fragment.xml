@@ -48,7 +48,6 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="87dp"
                 android:fontFamily="@font/proximanova_regular"
-                android:text="@{merchantProfile.merchantCustomer}"
                 android:textColor="@color/white"
                 android:textFontWeight="800"
                 android:textSize="25dp"
@@ -122,7 +121,6 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="@font/proximanova_semibold"
-                        android:text="@{merchantProfile.merchantPhone}"
                         android:textColor="@color/borderSubtle"
                         android:textSize="13dp" />
 
@@ -133,7 +131,6 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="@font/proximanova_semibold"
-                        android:text="@{merchantProfile.merchantEmail}"
                         android:textColor="@color/borderSubtle"
                         android:textSize="13dp" />
 

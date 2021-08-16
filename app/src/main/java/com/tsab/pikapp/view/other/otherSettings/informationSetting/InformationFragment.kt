@@ -13,13 +13,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.databinding.InformationFragmentBinding
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.getFileName
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.information_fragment.*
+import java.io.File
 
 class InformationFragment : Fragment() {
 
     private lateinit var dataBinding: InformationFragmentBinding
     private val viewModel: OtherSettingViewModel by activityViewModels()
+    private val sessionManager = SessionManager()
 
     private val pickImg = 100
     private var bannerUri: Uri? = null
@@ -38,8 +42,8 @@ class InformationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Picasso.get().load("https://miro.medium.com/max/4000/1*n3ofTxFXY-LahEVLyAgloQ.jpeg").into(information_banner)
-        Picasso.get().load("https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin_Icon.png").into(information_img)
+        Picasso.get().load(sessionManager.getMerchantProfile()?.merchantBanner).into(information_banner)
+        Picasso.get().load(sessionManager.getMerchantProfile()?.merchantLogo).into(information_img)
         dataBinding.restaurantNameInput.setText("PIKAPP RESTO")
         dataBinding.restaurantAddressInput.setText("JALAN PIKAPP")
 
@@ -89,6 +93,8 @@ class InformationFragment : Fragment() {
             startActivityForResult(gallery, pickImg)
         }
 
+        uploadInformationData()
+
 ////        OTHER WAY TO GET IMAGE FROM LOCAL
 //        dataBinding.informationBannerIcChange.setOnClickListener {
 //            registerForActivityResult(ActivityResultContracts.GetContent(),
@@ -113,9 +119,15 @@ class InformationFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel._restaurantName.observe(viewLifecycleOwner, Observer { resultChange ->
-//            Toast.makeText(requireActivity(),"CHANGED",Toast.LENGTH_SHORT).show()
             requireActivity().onBackPressed()
         })
+    }
+
+    private fun uploadInformationData() {
+        val merchantBanner = File(requireActivity().cacheDir, requireActivity().contentResolver.getFileName(viewModel._restaurantBanner.value!!))
+        val merchantLogo = File(requireActivity().cacheDir, requireActivity().contentResolver.getFileName(viewModel._restaurantLogo.value!!))
+
+        viewModel.uploadMerchantProfile(merchantBanner, merchantLogo)
     }
 
 }

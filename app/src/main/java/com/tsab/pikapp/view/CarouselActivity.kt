@@ -2,7 +2,6 @@ package com.tsab.pikapp.view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +30,7 @@ class CarouselActivity : AppCompatActivity() {
         setContentView(dataBinding.root)
 
         sessionManager.setFirstApp(1)
+        sessionManager.setProfileNum(0)
 
         setupViewPager()
         attachInputListener()

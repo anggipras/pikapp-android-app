@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.FragmentResultOwner
@@ -20,26 +23,38 @@ import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.profile_birthday_dialog.view.*
 import kotlinx.android.synthetic.main.profile_gender_dialog.view.*
 
+
 class ProfileFragment : Fragment() {
 
     private lateinit var dataBinding: ProfileFragmentBinding
     private val viewModel: OtherSettingViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        dataBinding = ProfileFragmentBinding.inflate(inflater, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.profile_fragment, container, false)
 
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataBinding = ProfileFragmentBinding.bind(view)
 
-        dataBinding.profileBirthday.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-        dataBinding.profileGender.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        if (!viewModel._genderSelection.value.isNullOrEmpty() && !viewModel._birthdaySelection.value.isNullOrEmpty()) {
+                            viewModel.setGenderAndDOB()
+                            Navigation.findNavController(view).popBackStack()
+                        } else {
+                            Toast.makeText(requireActivity(), "Mohon perbarui juga jenis kelamin atau tanggal lahir", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+
+        viewModel.getProfileDetail()
+        dataBinding.merchantProfileDetail = viewModel
 
         dataBinding.profileGender.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.openDialogTo_profileGenderFragment)
@@ -50,10 +65,9 @@ class ProfileFragment : Fragment() {
             val supportFragmentManager = requireActivity().supportFragmentManager
 
             supportFragmentManager.setFragmentResultListener(
-                "REQUEST_KEY",
-                viewLifecycleOwner
-            ) {
-                    resultKey, bundle ->
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+            ) { resultKey, bundle ->
                 if (resultKey == "REQUEST_KEY") {
                     val date = bundle.getString("SELECTED_DATE")
                     openBirthdayDialog(date)
@@ -64,7 +78,12 @@ class ProfileFragment : Fragment() {
         }
 
         dataBinding.backButtonProfile.setOnClickListener {
-            requireActivity().onBackPressed()
+            if (viewModel._genderSelection.value.isNullOrEmpty() || viewModel._birthdaySelection.value.isNullOrEmpty()) {
+                Toast.makeText(requireActivity(), "Mohon perbarui juga jenis kelamin atau tanggal lahir", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.setGenderAndDOB()
+                Navigation.findNavController(view).popBackStack()
+            }
         }
 
         observeViewModel()
@@ -76,10 +95,10 @@ class ProfileFragment : Fragment() {
             .setView(mDialogView)
         val mAlertDialog = mBuilder.show()
         mAlertDialog.getWindow()?.setBackgroundDrawable(
-            AppCompatResources.getDrawable(
-                requireActivity(),
-                R.drawable.dialog_background
-            )
+                AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.dialog_background
+                )
         )
         mDialogView.dialog_birthday_back.setOnClickListener {
             mAlertDialog.dismiss()
@@ -99,17 +118,19 @@ class ProfileFragment : Fragment() {
             .setView(mDialogView)
         val mAlertDialog = mBuilder.show()
         mAlertDialog.getWindow()?.setBackgroundDrawable(
-            AppCompatResources.getDrawable(
-                requireActivity(),
-                R.drawable.dialog_background
-            )
+                AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.dialog_background
+                )
         )
         mDialogView.dialog_gender_back.setOnClickListener {
             mAlertDialog.dismiss()
+            viewModel.setDefaultGender()
             viewModel.restartFragment()
         }
         mDialogView.dialog_gender_close.setOnClickListener {
             mAlertDialog.dismiss()
+            viewModel.setDefaultGender()
             viewModel.restartFragment()
         }
         mDialogView.dialog_gender_ok.setOnClickListener {
@@ -126,11 +147,27 @@ class ProfileFragment : Fragment() {
             gender?.let {
                 if (gender) {
                     openGenderDialog()
-                } else {
-//                    dataBinding.profileGender.visibility = View.GONE
-//                    dataBinding.profileGenderExist.text = viewModel._genderSelection.value
-//                    dataBinding.profileGenderExist.visibility = View.VISIBLE
                 }
+            }
+        })
+
+        viewModel.profileGender.observe(viewLifecycleOwner, Observer { gender ->
+            if (gender == "DEFAULT_GENDER") {
+                dataBinding.profileGender.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            } else {
+                dataBinding.profileGender.visibility = View.GONE
+                dataBinding.profileGenderExist.text = gender
+                dataBinding.profileGenderExist.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.profileDOB.observe(viewLifecycleOwner, Observer { date ->
+            if (date == "DEFAULT_DOB") {
+                dataBinding.profileBirthday.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            } else {
+                dataBinding.profileBirthday.visibility = View.GONE
+                dataBinding.profileBirthdayExist.text = date
+                dataBinding.profileBirthdayExist.visibility = View.VISIBLE
             }
         })
 

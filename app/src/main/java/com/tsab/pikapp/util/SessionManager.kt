@@ -4,8 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.tsab.pikapp.models.model.UserAccess
 import com.google.gson.GsonBuilder
+import com.tsab.pikapp.models.model.MerchantProfileData
+import com.tsab.pikapp.models.model.UserAccess
 
 class SessionManager {
 
@@ -16,6 +17,10 @@ class SessionManager {
         private const val PREF_USER_TOKEN = "user token"
         private const val PREF_USER_DATA = "user data"
         private const val PREF_FIRST_USER = "first user"
+        private const val PREF_PROFILE_UPDATE = "first profile update"
+        private const val PREF_MERCHANT_DATA = "merchant data"
+        private const val PREF_MERCHANT_DOB = "merchant dob"
+        private const val PREF_MERCHANT_GENDER = "merchant gender"
 
         private var prefs: SharedPreferences? = null
 
@@ -91,6 +96,7 @@ class SessionManager {
         }
     }
 
+    //USER USING APP FOR FIRST TIME
     fun setFirstApp(intData: Int) {
         prefs?.edit(commit = true) {
             putInt(PREF_FIRST_USER, intData)
@@ -98,4 +104,44 @@ class SessionManager {
     }
 
     fun getFirstApp() = prefs?.getInt(PREF_FIRST_USER, 0)
+
+    //USER NEED TO UPDATE THEIR PROFILE FOR FIRST TIME
+    fun setProfileNum(intData: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_PROFILE_UPDATE, intData)
+        }
+    }
+
+    fun getProfileNum() = prefs?.getInt(PREF_PROFILE_UPDATE, 0)
+
+    //SETTER GETTER MERCHANT PROFILE
+    fun setMerchantProfile(merchantData: MerchantProfileData) {
+        val jsonString = GsonBuilder().create().toJson(merchantData)
+        prefs?.edit(commit = true) {
+            putString(PREF_MERCHANT_DATA, jsonString)
+        }
+
+        if (getProfileNum() == 0) {
+            prefs?.edit(commit = true) {
+                putString(PREF_MERCHANT_DOB, "DEFAULT_DOB")
+                putString(PREF_MERCHANT_GENDER, "DEFAULT_GENDER")
+            }
+        } else {
+            prefs?.edit(commit = true) {
+                putString(PREF_MERCHANT_DOB, merchantData.dateOfBirth)
+                putString(PREF_MERCHANT_GENDER, merchantData.gender)
+            }
+        }
+    }
+
+    fun getMerchantProfile() : MerchantProfileData? {
+        val merchantData = prefs?.getString(PREF_MERCHANT_DATA, null)
+        return GsonBuilder().create().fromJson(merchantData, MerchantProfileData::class.java)
+    }
+
+    //SETTER AND GETTER DOB AND BIRTHDAY
+    fun setDOBProfile(dob: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_DOB, dob) }
+    fun setGenderProfile(gender: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_GENDER, gender) }
+    fun getDOBProfile() = prefs?.getString(PREF_MERCHANT_DOB, null)
+    fun getGenderProfile() = prefs?.getString(PREF_MERCHANT_GENDER, null)
 }

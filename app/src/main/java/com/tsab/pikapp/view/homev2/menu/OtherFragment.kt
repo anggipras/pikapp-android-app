@@ -36,7 +36,6 @@ class OtherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getMerchantProfile()
-        viewModel.showMerchantProfile()
         dataBinding.merchantProfile = viewModel
 
         dataBinding.merchantSettingClick.setOnClickListener {
@@ -49,16 +48,15 @@ class OtherFragment : Fragment() {
         observeViewModel()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//    }
-
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
         viewModel.merchantResult.observe(this, Observer { merchantProfile ->
             merchantProfile?.let {
-                dataBinding.merchantName.text = merchantProfile.merchantName.toString()
+                dataBinding.personName.text = merchantProfile.fullName.toString()
                 Picasso.get().load(merchantProfile.merchantLogo).into(merchant_logo)
+                dataBinding.merchantName.text = merchantProfile.merchantName.toString()
+                dataBinding.merchantPhone.text = merchantProfile.phoneNumber.toString()
+                dataBinding.merchantEmail.text = merchantProfile.email.toString()
             }
         })
 

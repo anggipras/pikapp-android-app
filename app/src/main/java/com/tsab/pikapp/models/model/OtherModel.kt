@@ -2,77 +2,55 @@ package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
 
+//MERCHANT PROFILE DATA
 data class MerchantProfileResponse(
         @SerializedName("err_code")
         val errCode: String?,
         @SerializedName("err_message")
         val errMessage: String?,
-//        @SerializedName("results")
-        val results: ProfileResponse?
+        val results: MerchantProfileData?
 )
 
-data class ProfileResponse (
-        @SerializedName("pickups")
-        val pickups: String? = null,
-
-        @SerializedName("products")
-        val products: MutableList<MerchantProducts>?,
-
+//MERCHANT PROFILE SET
+data class MerchantProfileData(
         @SerializedName("mid")
-        val mid: String?,
+        val mid: String? = null,
 
-        @SerializedName("merchant_pict")
-        val merchantPict: String?,
-
-        @SerializedName("merchant_logo")
-        val merchantLogo: String?,
+        @SerializedName("full_name")
+        val fullName: String? = null,
 
         @SerializedName("merchant_name")
-        val merchantName: String?,
+        val merchantName: String? = null,
 
-        @SerializedName("merchant_level")
-        val merchantLevel: String? = null,
+        @SerializedName("phone_number")
+        val phoneNumber: String? = null,
 
-        @SerializedName("merchant_rating")
-        val merchantRating: String? = null,
+        @SerializedName("email")
+        val email: String? = null,
 
-        @SerializedName("merchant_address")
-        val merchantAddress: String?,
+        @SerializedName("merchant_banner")
+        val merchantBanner: String? = null,
 
-        @SerializedName("merchant_distance")
-        val merchantDistance: String?,
+        @SerializedName("merchant_logo")
+        val merchantLogo: String? = null,
 
-        @SerializedName("merchant_categories")
-        val merchantCategories: List<String>?
-)
+        @SerializedName("address")
+        val address: String? = null,
 
-data class MerchantProducts(
-        @SerializedName("product_name")
-        val productName: String?,
+        @SerializedName("date_of_birth")
+        val dateOfBirth: String? = null,
 
-        @SerializedName("product_picture1")
-        val product_picture1: String?,
+        @SerializedName("gender")
+        val gender: String? = null,
 
-        @SerializedName("product_picture2")
-        val product_picture2: String?,
+        @SerializedName("bank_account_no")
+        val bankAccountNo: String? = null,
 
-        @SerializedName("product_picture3")
-        val product_picture3: String?,
+        @SerializedName("bank_account_name")
+        val bankAccountName: String? = null,
 
-        @SerializedName("product_price")
-        val product_price: Int?,
-
-        @SerializedName("product_status")
-        val product_status: String?,
-
-        @SerializedName("product_category")
-        val product_category: Int?,
-
-        @SerializedName("product_desc")
-        val product_desc: String?,
-
-        @SerializedName("rating")
-        val rating: Double?
+        @SerializedName("bank_name")
+        val bankName: String? = null
 )
 
 //SHOP MANAGEMENT SETTINGS
