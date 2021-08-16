@@ -26,7 +26,7 @@ class ProfileBirthdayFragment: DialogFragment(), DatePickerDialog.OnDateSetListe
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        val selectedDate = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(calendar.time)
+        val selectedDate = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(calendar.time)
 
         val selectedDateBundle = Bundle()
         selectedDateBundle.putString("SELECTED_DATE", selectedDate)

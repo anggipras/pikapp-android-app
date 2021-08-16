@@ -422,4 +422,23 @@ interface PikappApi {
             @Header("token") token: String,
             @Header("mid") mid: String
     ): Call<MerchantTimeManagement>
+
+    @Multipart
+    @POST("merchant/v1/merchant/update/profile/")
+    fun uploadMerchantProfile(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Part file_01: MultipartBody.Part,
+            @Part file_02: MultipartBody.Part,
+            @Part ("address") address: RequestBody,
+            @Part ("merchant_name") merchant_name: RequestBody,
+            @Part ("gender") gender: RequestBody,
+            @Part ("dob") dob: RequestBody,
+            @Part ("bank_account_no") bank_account_no: RequestBody,
+            @Part ("bank_account_name") bank_account_name: RequestBody,
+            @Part ("bank_name") bank_name: RequestBody
+    ): Call<BaseResponse>
 }
