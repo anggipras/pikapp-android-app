@@ -8,7 +8,6 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="android:windowAnimationStyle">@style/dialogAnimation</item>
         <item name="pinViewStyle">@style/PinWidget.PinView</item>
-
     </style>
 
     <style name="HomeCustomTabText" parent="TextAppearance.Design.Tab">
@@ -61,5 +60,4 @@
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
->>>>>>> a6532bec3a70e737a828482095f0f516ff8ea49f
 </resources>
