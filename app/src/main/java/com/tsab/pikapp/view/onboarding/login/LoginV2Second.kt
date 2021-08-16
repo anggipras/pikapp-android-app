@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,12 +45,23 @@ class LoginV2Second : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(LoginOnboardingViewModelV2::class.java)
 
-        dataBinding.logPin.setPinViewEventListener { pinview, fromUser ->
+        dataBinding.logPin.addTextChangedListener {
             val email = email
-            val password = dataBinding.logPin.value.toString()
+            val password = dataBinding.logPin.text.toString()
+
+            if (password.length == 6) {
+                hideKeyboard()
+            }
 
             viewModel.login(email, password)
         }
+
+//        dataBinding.logPin.setPinViewEventListener { pinview, fromUser ->
+//            val email = email
+//            val password = dataBinding.logPin.value.toString()
+//
+//            viewModel.login(email, password)
+//        }
         observeViewModel()
     }
 

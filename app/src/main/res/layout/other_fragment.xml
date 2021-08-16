@@ -49,7 +49,6 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="87dp"
                 android:fontFamily="@font/proximanova_regular"
-                android:text="@{merchantProfile.merchantCustomer}"
                 android:textColor="@color/white"
                 android:textFontWeight="800"
                 android:textSize="25dp"
@@ -81,12 +80,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/merchant_logo"
-                    android:layout_width="61dp"
-                    android:layout_height="61dp"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardImageOther_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="19dp"
-                    android:layout_marginTop="14dp" />
+                    android:layout_marginTop="14dp"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:id="@+id/merchant_logo"
+                        android:layout_width="61dp"
+                        android:layout_height="61dp"
+                        android:scaleType="centerCrop"/>
+
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -113,7 +122,6 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="@font/proximanova_semibold"
-                        android:text="@{merchantProfile.merchantPhone}"
                         android:textColor="@color/borderSubtle"
                         android:textSize="13dp" />
 
@@ -124,14 +132,14 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:fontFamily="@font/proximanova_semibold"
-                        android:text="@{merchantProfile.merchantEmail}"
                         android:textColor="@color/borderSubtle"
                         android:textSize="13dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="invisible">
 
                         <TextView
                             android:id="@+id/merchant_status"
