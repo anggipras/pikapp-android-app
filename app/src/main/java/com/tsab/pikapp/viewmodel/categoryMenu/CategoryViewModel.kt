@@ -13,8 +13,8 @@ import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.categoryMenu.MenuCategoryAdapter
-import com.tsab.pikapp.view.categoryMenu.SortCategoryAdapter
+import com.tsab.pikapp.view.menuCategory.MenuCategoryAdapter
+import com.tsab.pikapp.view.menuCategory.SortCategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback

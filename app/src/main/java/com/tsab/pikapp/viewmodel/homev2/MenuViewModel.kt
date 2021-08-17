@@ -11,7 +11,7 @@ import com.tsab.pikapp.models.model.CategoryListResult
 import com.tsab.pikapp.models.model.MerchantListCategoryResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.categoryMenu.CategoryAdapter
+import com.tsab.pikapp.view.menuCategory.CategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback

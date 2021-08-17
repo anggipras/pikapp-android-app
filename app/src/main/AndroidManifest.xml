@@ -18,12 +18,11 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
 
-        <activity android:name=".view.homev2.menu.DynamicActivity"/>
         <activity android:name=".view.homev2.menu.MenuNavigation" />
 
-        <activity android:name=".view.menu.UpdateMenuActivity"></activity>
-        <activity android:name=".view.categoryMenu.SortActivity" />
-        <activity android:name=".view.categoryMenu.CategoryNavigation" />
+        <activity android:name=".view.menu.UpdateMenuActivity" />
+        <activity android:name=".view.menuCategory.SortActivity" />
+        <activity android:name=".view.menuCategory.CategoryNavigation" />
 
         <activity android:name=".view.loginv2.LoginRegisterActivity" />
 
