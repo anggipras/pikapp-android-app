@@ -155,6 +155,17 @@ interface PikappApi {
     ): Call<BaseResponse>
 
     @GET("merchant/v1/menu/{mid}/category/list/")
+    fun listMenuCategory(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") merchantId: String
+    ): Single<ListMenuCategoryResponse>
+
+    // TODO: Delete old API call
+    @GET("merchant/v1/menu/{mid}/category/list/")
     fun getMenuCategoryList(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
