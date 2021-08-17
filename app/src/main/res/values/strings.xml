@@ -18,6 +18,9 @@
 
     <string name="star">*</string>
 
+    <!-- Image content descriptions -->
+    <string name="cd_change_order_button">Change order button</string>
+
     <!-- Carousel screens -->
     <string name="carousel_1_header">Menu Digital, \nScan QR</string>
     <string name="carousel_1_header_preview">Menu Digital, <br />Scan QR</string>
@@ -85,6 +88,11 @@
     <string name="tambah_kategori_menu">Tambah Kategori Menu</string>
     <string name="tambah_kategori_untuk_menambahkan_menu">Tambah Kategori Untuk Menambahkan Menu</string>
     <string name="anda_belum_memiliki_menu">Anda belum memiliki menu</string>
+
+    <!-- Category screens -->
+    <string name="category_header">Kategori</string>
+    <string name="category_daftar_kategori_header">Daftar Kategori</string>
+    <string name="category_tambah_kategori_header">Tambah Kategori</string>
 
     <!-- Advanced menu (am) screens -->
     <string name="am_main_header">Pilihan Menu</string>
