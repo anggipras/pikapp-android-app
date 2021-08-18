@@ -458,6 +458,7 @@ interface PikappApi {
             @Part ("dob") dob: RequestBody,
             @Part ("bank_account_no") bank_account_no: RequestBody,
             @Part ("bank_account_name") bank_account_name: RequestBody,
-            @Part ("bank_name") bank_name: RequestBody
+            @Part ("bank_name") bank_name: RequestBody,
+            @Part ("mid") mid: RequestBody
     ): Call<BaseResponse>
 }

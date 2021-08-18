@@ -6,11 +6,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.model.MerchantTimeManagement
 import com.tsab.pikapp.models.model.ShopSchedule
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,50 +88,6 @@ class OtherSettingViewModel : ViewModel() {
 
     fun setLogoImg(logo: Uri?) {
         _restaurantLogo.value = logo
-    }
-
-    fun uploadMerchantProfile(banner: File, logo: File, merchName: String?, merchAddress: String?) {
-        val timestamp = getTimestamp()
-        val email = sessionManager.getUserData()!!.email!!
-        val signature = getSignature(email, timestamp)
-        val token = sessionManager.getUserToken()!!
-
-        //from session
-        val gender = sessionManager.getGenderProfile()
-        val dob = sessionManager.getDOBProfile()
-        val bankAccountNo = sessionManager.getMerchantProfile()?.bankAccountNo
-        val bankAccountName = sessionManager.getMerchantProfile()?.bankAccountName
-        val bankName = sessionManager.getMerchantProfile()?.bankName
-
-        Log.d("GENDER", gender.toString())
-        Log.d("DOB", dob.toString())
-        Log.d("BANNER", banner.toString())
-        Log.d("LOGO", logo.toString())
-        Log.d("NAME", merchName.toString())
-        Log.d("ADDRESS", merchAddress.toString())
-
-//        PikappApiService().api.uploadMerchantProfile(getUUID(), timestamp, getClientID(), signature, token,
-//                MultipartBody.Part.createFormData("file_01", banner.name, RequestBody.create(MediaType.parse("multipart/form-data"), banner)),
-//                MultipartBody.Part.createFormData("file_01", logo.name, RequestBody.create(MediaType.parse("multipart/form-data"), logo)),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), merchName),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), merchAddress),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), gender),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), dob),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountNo),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountName),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), bankName)
-//        ).enqueue(object : Callback<BaseResponse> {
-//            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-//                Log.d("ONRESPONSE", response.body().toString())
-//                Log.d("UPLOAAAADEEED", "it's uploaded")
-//                sessionManager.setProfileNum(2)
-//            }
-//
-//            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-//                Log.d("FAAAILEEEEED", t.message.toString())
-//                Log.d("FAAAILEEEEED", "it's failed")
-//            }
-//        })
     }
 
     //Shop Management Setting Method
