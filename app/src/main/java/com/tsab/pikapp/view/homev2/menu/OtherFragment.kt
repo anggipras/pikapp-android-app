@@ -2,7 +2,10 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
@@ -21,10 +25,11 @@ class OtherFragment : Fragment() {
 
     private lateinit var dataBinding: OtherFragmentBinding
     private lateinit var viewModel: OtherViewModel
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.other_fragment, container, false)
         viewModel = ViewModelProviders.of(this).get(OtherViewModel::class.java)
@@ -35,7 +40,13 @@ class OtherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getMerchantProfile()
+        swipeRefreshLayout = swipeOtherMenu
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getMerchantProfile(requireActivity())
+        }
+
+        viewModel.getMerchantProfile(requireActivity())
+        viewModel.getMerchantShopStatus(requireActivity())
         dataBinding.merchantProfile = viewModel
 
         dataBinding.merchantSettingClick.setOnClickListener {
@@ -57,9 +68,36 @@ class OtherFragment : Fragment() {
                 dataBinding.merchantName.text = merchantProfile.merchantName.toString()
                 dataBinding.merchantPhone.text = merchantProfile.phoneNumber.toString()
                 dataBinding.merchantEmail.text = merchantProfile.email.toString()
+                swipeRefreshLayout.isRefreshing = false
+            }
+        })
+
+        viewModel.merchantShopStatus.observe(this, Observer { shopSchedule ->
+            shopSchedule?.let {
+                val merchantStatus = when(shopSchedule.dailyStatus) {
+                    "OPEN" -> "Buka"
+                    else -> "Tutup"
+                }
+
+                when(shopSchedule.dailyStatus) {
+                    "OPEN" -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#4BB7AC"))
+                    else -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#DC6A84"))
+                }
+
+                val merchantDay = when(shopSchedule.days) {
+                    "MONDAY" -> "Senin"
+                    "TUESDAY" -> "Selasa"
+                    "WEDNESDAY" -> "Rabu"
+                    "THURSDAY" -> "Kamis"
+                    "FRIDAY" -> "Jumat"
+                    "SATURDAY" -> "Sabtu"
+                    else -> "Minggu"
+                }
+
+                dataBinding.merchantStatus.text = merchantStatus
+                dataBinding.merchantHour.text = getString(R.string.shop_daily_status, merchantDay, shopSchedule.openTime, shopSchedule.closeTime)
             }
         })
 
     }
-
 }

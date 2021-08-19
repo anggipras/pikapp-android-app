@@ -6,12 +6,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.tsab.pikapp.models.model.BaseResponse
-import com.tsab.pikapp.models.model.MerchantTimeManagement
-import com.tsab.pikapp.models.model.ShopSchedule
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,6 +48,11 @@ class OtherSettingViewModel : ViewModel() {
     lateinit var shopManagementAdapter: ShopManagementAdapter
     var _shopStatus = MutableLiveData<String>()
 
+    //Loading
+    private val disposable = CompositeDisposable()
+    var isLoading = MutableLiveData<Boolean>()
+    var isLoadingBackButton = MutableLiveData(false)
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Profile Setting Method
@@ -69,7 +76,11 @@ class OtherSettingViewModel : ViewModel() {
         }
         sessionManager.setDOBProfile(_birthdaySelection.value)
         sessionManager.setGenderProfile(gender)
-        sessionManager.setProfileNum(1)
+        val isPositionOfAlert = sessionManager.getProfileNum()
+        when(isPositionOfAlert) {
+            0 -> sessionManager.setProfileNum(1)
+            1-> sessionManager.setProfileNum(2)
+        }
     }
 
     fun setDefaultGender() {
@@ -140,6 +151,48 @@ class OtherSettingViewModel : ViewModel() {
 
     fun setShopStatus(status: String) {
         _shopStatus.value = status
+    }
+
+    //LOADING
+    fun loadProcess(bool: Boolean) {
+        isLoading.value = bool
+    }
+
+    //Load merchant profile
+    fun getMerchantProfile() {
+        val timeStamp = getTimestamp()
+        val email = sessionManager.getUserData()!!.email!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        val signature = getSignature(email, timeStamp)
+        val token = sessionManager.getUserToken()!!
+        val uuid = getUUID()
+        val clientId = getClientID()
+
+        disposable.add(
+                PikappApiService().api.getMerchantProfile(uuid, timeStamp, clientId, signature, token, mid)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
+                            override fun onSuccess(t: MerchantProfileResponse) {
+                                t.results?.let { res ->
+                                    merchantProfileRetrieved(res)
+                                }
+                            }
+
+                            override fun onError(e: Throwable) {
+                                //Should print out error
+                            }
+
+                        })
+        )
+
+    }
+
+    fun merchantProfileRetrieved(response: MerchantProfileData) {
+        sessionManager.setMerchantProfile(response)
+        sessionManager.setProfileNum(2)
+        loadProcess(false)
+        isLoadingBackButton.value = true
     }
 
     //RESTART GENDER DIALOG

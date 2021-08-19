@@ -21,6 +21,7 @@ import com.tsab.pikapp.databinding.InformationFragmentBinding
 import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.information_fragment.*
 import okhttp3.MediaType
@@ -37,6 +38,7 @@ class InformationFragment : Fragment() {
 
     private lateinit var dataBinding: InformationFragmentBinding
     private val viewModel: OtherSettingViewModel by activityViewModels()
+    private lateinit var viewModelOther: OtherViewModel
     private val sessionManager = SessionManager()
 
     private val pickImg = 100
@@ -130,6 +132,21 @@ class InformationFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { load ->
+            if (load) {
+                dataBinding.loadingViewInformation.visibility = View.VISIBLE
+            } else {
+                dataBinding.loadingViewInformation.visibility = View.GONE
+            }
+        })
+
+        viewModel.isLoadingBackButton.observe(viewLifecycleOwner, Observer { load ->
+            if (load) {
+                view?.let { Navigation.findNavController(it).popBackStack() }
+                viewModel.isLoadingBackButton.value = false
+            }
+        })
+
 //        viewModel._restaurantBanner.observe(viewLifecycleOwner, Observer { banner ->
 //            dataBinding.informationBanner.setImageURI(banner)
 //            dataBinding.informationBanner.alpha = 1.toFloat()
@@ -150,6 +167,7 @@ class InformationFragment : Fragment() {
         if (dataBinding.informationBannerIcChange.visibility == View.VISIBLE || dataBinding.informationImgIcChange.visibility == View.VISIBLE) {
             Toast.makeText(requireActivity(), "Mohon upload kembali banner dan logo untuk mengganti nama resto atau alamat", Toast.LENGTH_SHORT).show()
         } else {
+            viewModel.loadProcess(true)
             val merchantBannerParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
                     viewModel._restaurantBanner.value!!, "r", null
             ) ?: return
@@ -208,8 +226,7 @@ class InformationFragment : Fragment() {
             ).enqueue(object : Callback<BaseResponse> {
                 override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                     Log.d("Succeed", response.body()?.errMessage)
-                    sessionManager.setProfileNum(2)
-                    view?.let { Navigation.findNavController(it).popBackStack() }
+                    viewModel.getMerchantProfile()
                 }
 
                 override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
