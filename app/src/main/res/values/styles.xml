@@ -6,6 +6,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:windowAnimationStyle">@style/dialogAnimation</item>
+        <item name="pinViewStyle">@style/PinWidget.PinView</item>
     </style>
 
     <style name="HomeCustomTabText" parent="TextAppearance.Design.Tab">
@@ -50,4 +52,12 @@
         <item name="android:fontFamily">@font/montserrat_bold</item>
     </style>
 
+    <style name="RadioButtonStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/green</item>
+        <item name="android:textColorSecondary">@color/borderSubtle</item>
+    </style>
+    <style name="dialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

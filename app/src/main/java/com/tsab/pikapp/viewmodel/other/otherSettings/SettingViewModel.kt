@@ -1,4 +1,4 @@
-package com.tsab.pikapp.viewmodel.other
+package com.tsab.pikapp.viewmodel.other.otherSettings
 
 import android.app.Application
 import android.util.Log
@@ -81,7 +81,16 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun createToast(m: String) {
-        Toast.makeText(getApplication(), m, Toast.LENGTH_SHORT).show()
+        Toast.makeText(getApplication(), m, Toast.LENGTH_LONG).show()
+    }
+
+    fun setUserNotif() {
+        val userNotif = sessionManager.getProfileNum()
+        when(userNotif) {
+            0 -> createToast("Mohon isi tanggal lahir dan jenis kelamin")
+            1 -> createToast("Mohon upload ulang banner dan logo restoran")
+            else -> Log.d("DONEUPDATE", "DONE ALL FIRST UPDATE")
+        }
     }
 
     override fun onCleared() {

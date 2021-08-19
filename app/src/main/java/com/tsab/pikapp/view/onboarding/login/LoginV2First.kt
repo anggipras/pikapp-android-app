@@ -34,6 +34,7 @@ class LoginV2First : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         dataBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login_v2_first,
             container, false
