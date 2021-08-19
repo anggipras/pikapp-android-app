@@ -33,13 +33,6 @@ class OtherViewModel : ViewModel() {
         val uuid = getUUID()
         val clientId = getClientID()
 
-//        Log.d("UUID", uuid)
-//        Log.d("TIMESTAMP", timeStamp)
-//        Log.d("CLIENTID", clientId)
-//        Log.d("TIMESTAMP", timeStamp)
-//        Log.d("SIGNATURE", signature)
-//        Log.d("TOKEN", token)
-
         disposable.add(
                 PikappApiService().api.getMerchantProfile(uuid, timeStamp, clientId, signature, token, mid)
                         .subscribeOn(Schedulers.newThread())
