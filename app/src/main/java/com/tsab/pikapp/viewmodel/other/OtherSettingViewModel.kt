@@ -53,8 +53,6 @@ class OtherSettingViewModel : ViewModel() {
     var isLoading = MutableLiveData<Boolean>()
     var isLoadingBackButton = MutableLiveData(false)
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
     //Profile Setting Method
     fun getProfileDetail() {
         val fullName = sessionManager.getMerchantProfile()?.fullName!!
@@ -123,13 +121,6 @@ class OtherSettingViewModel : ViewModel() {
         val signature = getSignature(email, timestamp)
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
-
-//        Log.d("uuid", uuid)
-//        Log.d("timestamp", timestamp)
-//        Log.d("clientId", clientId)
-//        Log.d("signature", signature)
-//        Log.d("token", token)
-//        Log.d("mid", mid)
 
         PikappApiService().api.getMerchantShopManagement(
                 uuid, timestamp, clientId, signature, token, mid

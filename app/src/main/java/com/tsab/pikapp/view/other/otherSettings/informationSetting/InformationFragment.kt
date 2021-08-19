@@ -5,13 +5,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -21,7 +18,6 @@ import com.tsab.pikapp.databinding.InformationFragmentBinding
 import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.information_fragment.*
 import okhttp3.MediaType
@@ -38,27 +34,12 @@ class InformationFragment : Fragment() {
 
     private lateinit var dataBinding: InformationFragmentBinding
     private val viewModel: OtherSettingViewModel by activityViewModels()
-    private lateinit var viewModelOther: OtherViewModel
     private val sessionManager = SessionManager()
 
     private val pickImg = 100
     private var bannerUri: Uri? = null
     private var logoUri: Uri? = null
     private var imgSelection = 0
-
-//    private val pickerBanner =
-//            registerForActivityResult(ActivityResultContracts.GetContent(),
-//                    ActivityResultCallback { uri: Uri ->
-//                        viewModel.setBannerImg(uri)
-//                    }
-//            )
-//
-//    private val pickerLogo =
-//            registerForActivityResult(ActivityResultContracts.GetContent(),
-//                    ActivityResultCallback { uri: Uri ->
-//                        viewModel.setLogoImg(uri)
-//                    }
-//            )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,15 +101,6 @@ class InformationFragment : Fragment() {
             val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, pickImg)
         }
-
-////        OTHER WAY TO GET IMAGE FROM LOCAL
-//        dataBinding.informationBannerIcChange.setOnClickListener {
-//            pickerBanner.launch("image/*")
-//        }
-//
-//        dataBinding.informationImgIcChange.setOnClickListener {
-//            pickerLogo.launch("image/*")
-//        }
     }
 
     private fun observeViewModel() {
@@ -146,18 +118,6 @@ class InformationFragment : Fragment() {
                 viewModel.isLoadingBackButton.value = false
             }
         })
-
-//        viewModel._restaurantBanner.observe(viewLifecycleOwner, Observer { banner ->
-//            dataBinding.informationBanner.setImageURI(banner)
-//            dataBinding.informationBanner.alpha = 1.toFloat()
-//            dataBinding.informationBannerIcChange.visibility = View.GONE
-//        })
-//
-//        viewModel._restaurantLogo.observe(viewLifecycleOwner, Observer { logo ->
-//            dataBinding.informationBanner.setImageURI(logo)
-//            dataBinding.informationImg.alpha = 1.toFloat()
-//            dataBinding.informationImgIcChange.visibility = View.GONE
-//        })
     }
 
     private fun uploadInformationData() {
@@ -198,20 +158,6 @@ class InformationFragment : Fragment() {
             val bankName = sessionManager.getMerchantProfile()?.bankName
             val mid = sessionManager.getMerchantProfile()?.mid
 
-//            Log.d("UUID", getUUID())
-//            Log.d("TIMESTAMP", timestamp)
-//            Log.d("SIGNATURE", signature)
-//            Log.d("TOKEN", token)
-//            Log.d("GENDER", gender.toString())
-//            Log.d("DOB", dob.toString())
-//            Log.d("BANNER", merchantBanner.toString())
-//            Log.d("LOGO", merchantLogo.toString())
-//            Log.d("NAME", restoName)
-//            Log.d("ADDRESS", restoAddress)
-//            Log.d("BANKNO", bankAccountNo)
-//            Log.d("BANKUSER", bankAccountName)
-//            Log.d("BANKNAME", bankName)
-
             PikappApiService().api.uploadMerchantProfile(getUUID(), timestamp, getClientID(), signature, token,
                     MultipartBody.Part.createFormData("file_01", merchantBanner.name, RequestBody.create(MediaType.parse("multipart/form-data"), merchantBanner)),
                     MultipartBody.Part.createFormData("file_02", merchantLogo.name, RequestBody.create(MediaType.parse("multipart/form-data"), merchantLogo)),
@@ -225,12 +171,11 @@ class InformationFragment : Fragment() {
                     RequestBody.create(MediaType.parse("multipart/form-data"), mid)
             ).enqueue(object : Callback<BaseResponse> {
                 override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                    Log.d("Succeed", response.body()?.errMessage)
                     viewModel.getMerchantProfile()
                 }
 
                 override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                    Log.d("Failed", t.message.toString())
+
                 }
             })
         }

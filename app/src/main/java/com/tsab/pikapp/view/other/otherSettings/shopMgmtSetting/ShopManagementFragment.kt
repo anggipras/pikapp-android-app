@@ -49,6 +49,5 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     override fun onItemClick(position: Int, shopScheduleDay: String?, closeTime: String?, openTime: String?) {
         otherSettingViewModel.shopManagementAdapter.notifyItemChanged(position)
         navController?.navigate(R.id.navigateTo_shopMgmtStatusFragment)
-//        Toast.makeText(requireActivity(), shopScheduleDay + ", " + closeTime + "-" + openTime, Toast.LENGTH_SHORT).show()
     }
 }
