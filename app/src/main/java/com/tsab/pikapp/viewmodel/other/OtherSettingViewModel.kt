@@ -77,7 +77,8 @@ class OtherSettingViewModel : ViewModel() {
         val isPositionOfAlert = sessionManager.getProfileNum()
         when(isPositionOfAlert) {
             0 -> sessionManager.setProfileNum(1)
-            1-> sessionManager.setProfileNum(2)
+            1 -> sessionManager.setProfileNum(1)
+            2 -> sessionManager.setProfileNum(2)
         }
     }
 
