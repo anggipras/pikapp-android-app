@@ -119,6 +119,6 @@
     <string name="am_additional_harga_hint">contoh: 6000</string>
 
     <!--    Other Fragment Screen-->
-    <string name="shop_daily_status">%s, %s - %s</string>
+    <string name="shop_daily_status">%s, %s</string>
 
 </resources>

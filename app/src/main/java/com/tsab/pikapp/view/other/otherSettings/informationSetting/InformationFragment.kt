@@ -126,6 +126,10 @@ class InformationFragment : Fragment() {
 
         if (dataBinding.informationBannerIcChange.visibility == View.VISIBLE || dataBinding.informationImgIcChange.visibility == View.VISIBLE) {
             Toast.makeText(requireActivity(), "Mohon upload kembali banner dan logo untuk mengganti nama resto atau alamat", Toast.LENGTH_SHORT).show()
+        } else if(restoName.isNullOrEmpty()) {
+            Toast.makeText(requireActivity(), "Nama Restoran tidak boleh kosong", Toast.LENGTH_SHORT).show()
+        } else if(restoAddress.isNullOrEmpty()) {
+            Toast.makeText(requireActivity(), "Alamat Restoran tidak boleh kosong", Toast.LENGTH_SHORT).show()
         } else {
             viewModel.loadProcess(true)
             val merchantBannerParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(

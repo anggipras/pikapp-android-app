@@ -95,7 +95,18 @@ class OtherFragment : Fragment() {
                 }
 
                 dataBinding.merchantStatus.text = merchantStatus
-                dataBinding.merchantHour.text = getString(R.string.shop_daily_status, merchantDay, shopSchedule.openTime, shopSchedule.closeTime)
+                dataBinding.shopScheduleSeparator.visibility = View.VISIBLE
+
+                if (shopSchedule.dailyStatus == "OPEN") {
+                    var theHours = if (shopSchedule.openTime == "00.00" && shopSchedule.closeTime == "23.59") {
+                        "24 jam"
+                    } else {
+                        "${shopSchedule.openTime} - ${shopSchedule.closeTime}"
+                    }
+                    dataBinding.merchantHour.text = getString(R.string.shop_daily_status, merchantDay, theHours)
+                } else {
+                    dataBinding.merchantHour.text = merchantDay
+                }
             }
         })
 

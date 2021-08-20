@@ -55,6 +55,7 @@ class OtherViewModel : ViewModel() {
     }
 
     fun merchantProfileRetrieved(response: MerchantProfileData) {
+        Log.d("RESPONSEE", response.toString())
         merchantResult.value = response
         sessionManager.setMerchantProfile(response)
     }
