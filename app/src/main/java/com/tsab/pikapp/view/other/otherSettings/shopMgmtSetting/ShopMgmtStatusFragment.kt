@@ -2,16 +2,20 @@ package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopMgmtStatusBinding
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
+import kotlinx.android.synthetic.main.fragment_shop_management.*
 import kotlinx.android.synthetic.main.fragment_shop_mgmt_status.*
 
 
@@ -19,6 +23,8 @@ class ShopMgmtStatusFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentShopMgmtStatusBinding
     private val otherSettingViewModel: OtherSettingViewModel by activityViewModels()
+    private var open: String = ""
+    private var close: String = ""
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +38,58 @@ class ShopMgmtStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("autoTurn", otherSettingViewModel.autoOnOff.value.toString())
+
         shopStatus_selection.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
-            if (checkedId == dataBinding.openStatus.id) {
-                dataBinding.shopStatusOpenHour.visibility = View.VISIBLE
-            } else {
-                dataBinding.shopStatusOpenHour.visibility = View.GONE
-                hideKeyboard()
+            when (checkedId) {
+                dataBinding.openStatus.id -> {
+                    dataBinding.shopStatusOpenHour.visibility = View.VISIBLE
+                    Log.e("message", "buka")
+                    dataBinding.saveBtn.setOnClickListener {
+                        open = dataBinding.openStatusInput.text.toString()
+                        close = dataBinding.closeStatusInput.text.toString()
+                        when {
+                            open.isEmpty() -> {
+                                dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+                            }
+                            close.isEmpty() -> {
+                                dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+                            }
+                            else -> {
+                                Log.e("open", open)
+                                Log.e("close", close)
+                                otherSettingViewModel.getOpenTime(open)
+                                Log.e("open vm", otherSettingViewModel.openTime.value)
+                                otherSettingViewModel.getCLoseTime(close)
+                                Log.e("close vm", otherSettingViewModel.closeTime.value)
+                                dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
+                                dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
+                                //activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
+                            }
+                        }
+                    }
+                }
+                dataBinding.closeStatus.id -> {
+                    dataBinding.shopStatusOpenHour.visibility = View.GONE
+                    hideKeyboard()
+                    Log.e("message", "tutup")
+                }
+                dataBinding.hours24Status.id -> {
+                    dataBinding.shopStatusOpenHour.visibility = View.GONE
+                    hideKeyboard()
+                    Log.e("message", "24 jam")
+                    dataBinding.saveBtn.setOnClickListener {
+                        open = "00:00"
+                        close = "23:59"
+                        Log.e("open", open)
+                        Log.e("close", close)
+                        otherSettingViewModel.getOpenTime(open)
+                        Log.e("open vm", otherSettingViewModel.openTime.value)
+                        otherSettingViewModel.getCLoseTime(close)
+                        Log.e("close vm", otherSettingViewModel.closeTime.value)
+                        //activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
+                    }
+                }
             }
         })
 
@@ -45,8 +97,12 @@ class ShopMgmtStatusFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
+
+
+        dataBinding.shopStatusOpenHour.visibility = View.GONE
         attachInputListeners()
         observeViewModel()
+        hideKeyboard()
     }
 
     private fun attachInputListeners() {
@@ -68,6 +124,15 @@ class ShopMgmtStatusFragment : Fragment() {
 //                }
 //            }
 //        })
+/*        otherSettingViewModel.openTimeError.observe(viewLifecycleOwner, Observer { openTimeError ->
+            //dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
+            dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+
+        })
+        otherSettingViewModel.closeTimeError.observe(viewLifecycleOwner, Observer { closeTimeError ->
+            //dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
+            dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+        })*/
     }
 
     private fun hideKeyboard() {

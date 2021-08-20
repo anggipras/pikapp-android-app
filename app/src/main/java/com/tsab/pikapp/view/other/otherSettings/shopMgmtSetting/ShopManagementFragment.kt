@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     private val otherSettingViewModel: OtherSettingViewModel by activityViewModels()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
+    var autoTurn: Boolean = true
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +46,33 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         dataBinding.backButtonShop.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        dataBinding.autoTurnToggle.setOnCheckedChangeListener { _, isChecked ->
+            autoTurn = isChecked
+            otherSettingViewModel.getAutoOnOff(autoTurn)
+            Log.e("autoTurn", autoTurn.toString())
+        }
     }
 
     override fun onItemClick(position: Int, shopScheduleDay: String?, closeTime: String?, openTime: String?) {
         otherSettingViewModel.shopManagementAdapter.notifyItemChanged(position)
+
+        val days = otherSettingViewModel.shopManagementAdapter.shopScheduleList[position].days
+        Log.e("days", days)
+        otherSettingViewModel.getDays(days.toString())
+
+        val openTime = otherSettingViewModel.shopManagementAdapter.shopScheduleList[position].openTime
+        Log.e("open time", openTime)
+        otherSettingViewModel.getOpenTime(openTime.toString())
+
+        val closeTime = otherSettingViewModel.shopManagementAdapter.shopScheduleList[position].closeTime
+        Log.e("close time", closeTime)
+        otherSettingViewModel.getCLoseTime(closeTime.toString())
+
+        val isForceClose = otherSettingViewModel.shopManagementAdapter.shopScheduleList[position].isForceClose
+        Log.e("force close", isForceClose.toString())
+        otherSettingViewModel.getForceClose(isForceClose!!)
+
         navController?.navigate(R.id.navigateTo_shopMgmtStatusFragment)
 //        Toast.makeText(requireActivity(), shopScheduleDay + ", " + closeTime + "-" + openTime, Toast.LENGTH_SHORT).show()
     }

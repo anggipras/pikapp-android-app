@@ -97,10 +97,10 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white">
 
-                    <HorizontalScrollView
+                    <!--<HorizontalScrollView
                         android:id="@+id/horizontalScrollView1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content">-->
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
 
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/tabs"
-                                android:layout_width="wrap_content"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
                                 app:tabGravity="fill"
                                 app:tabIndicatorColor="@color/colorPrimary"
@@ -128,7 +128,9 @@
                                 android:background="@drawable/plusbutton" />
 
                         </LinearLayout>
+<!--
                     </HorizontalScrollView>
+-->
 
 
                 </com.google.android.material.appbar.AppBarLayout>

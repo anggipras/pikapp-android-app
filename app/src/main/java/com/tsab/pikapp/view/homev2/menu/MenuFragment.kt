@@ -103,6 +103,11 @@ class MenuFragment : Fragment() {
                                     Intent(activity?.baseContext, CategoryNavigation::class.java)
                                 activity?.startActivity(intent)
                             }
+                            dataBinding.buttonSort.setOnClickListener {
+                                val intent =
+                                        Intent(activity?.baseContext, CategoryNavigation::class.java)
+                                activity?.startActivity(intent)
+                            }
                         }
                     })
                 }

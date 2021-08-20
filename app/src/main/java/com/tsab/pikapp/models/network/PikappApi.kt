@@ -460,4 +460,15 @@ interface PikappApi {
             @Part ("bank_account_name") bank_account_name: RequestBody,
             @Part ("bank_name") bank_name: RequestBody
     ): Call<BaseResponse>
+
+    @POST("merchant/v1/shop/management/update/")
+    fun updateShopManagement(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body shopManagementUpdateRequest: ShopManagementUpdateRequest
+    ): Call<BaseResponse>
 }
