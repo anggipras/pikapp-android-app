@@ -21,13 +21,40 @@ class ShopManagementAdapter(private val context: Context, val shopScheduleList: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.dayOfSchedule.text = shopScheduleList[position].days
+
+        when (shopScheduleList[position].days) {
+            "MONDAY" -> {
+                holder.dayOfSchedule.text = "Senin"
+            }
+            "TUESDAY" -> {
+                holder.dayOfSchedule.text = "Selasa"
+            }
+            "WEDNESDAY" -> {
+                holder.dayOfSchedule.text = "Rabu"
+            }
+            "THURSDAY" -> {
+                holder.dayOfSchedule.text = "Kamis"
+            }
+            "FRIDAY" -> {
+                holder.dayOfSchedule.text = "Jumat"
+            }
+            "SATURDAY" -> {
+                holder.dayOfSchedule.text = "Sabtu"
+            }
+            else -> {
+                holder.dayOfSchedule.text = "Minggu"
+            }
+        }
 
         if (shopScheduleList[position].openTime == "00:00" && shopScheduleList[position].closeTime == "23:59"){
             holder.openTime.text = "Buka 24 Jam"
             holder.closeTime.text = ""
             holder.connector.text = ""
-        }else{
+        } else if (shopScheduleList[position].openTime == "00:00" && shopScheduleList[position].closeTime == "23:59"){
+            holder.openTime.text = "Tutup"
+            holder.closeTime.text = ""
+            holder.connector.text = ""
+        } else{
             holder.openTime.text = shopScheduleList[position].openTime
             holder.closeTime.text = shopScheduleList[position].closeTime
         }

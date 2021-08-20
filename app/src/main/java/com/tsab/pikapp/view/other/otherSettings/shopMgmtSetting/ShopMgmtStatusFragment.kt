@@ -64,7 +64,7 @@ class ShopMgmtStatusFragment : Fragment() {
                                 Log.e("close vm", otherSettingViewModel.closeTime.value)
                                 dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
                                 dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
-                                //activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
+                                activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
                             }
                         }
                     }
@@ -73,6 +73,17 @@ class ShopMgmtStatusFragment : Fragment() {
                     dataBinding.shopStatusOpenHour.visibility = View.GONE
                     hideKeyboard()
                     Log.e("message", "tutup")
+                    dataBinding.saveBtn.setOnClickListener {
+                        open = "00:00"
+                        close = "00:00"
+                        Log.e("open", open)
+                        Log.e("close", close)
+                        otherSettingViewModel.getOpenTime(open)
+                        Log.e("open vm", otherSettingViewModel.openTime.value)
+                        otherSettingViewModel.getCLoseTime(close)
+                        Log.e("close vm", otherSettingViewModel.closeTime.value)
+                        activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
+                    }
                 }
                 dataBinding.hours24Status.id -> {
                     dataBinding.shopStatusOpenHour.visibility = View.GONE
@@ -87,7 +98,7 @@ class ShopMgmtStatusFragment : Fragment() {
                         Log.e("open vm", otherSettingViewModel.openTime.value)
                         otherSettingViewModel.getCLoseTime(close)
                         Log.e("close vm", otherSettingViewModel.closeTime.value)
-                        //activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
+                        activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
                     }
                 }
             }
@@ -96,8 +107,6 @@ class ShopMgmtStatusFragment : Fragment() {
         dataBinding.backButtonShopStatus.setOnClickListener {
             requireActivity().onBackPressed()
         }
-
-
 
         dataBinding.shopStatusOpenHour.visibility = View.GONE
         attachInputListeners()
