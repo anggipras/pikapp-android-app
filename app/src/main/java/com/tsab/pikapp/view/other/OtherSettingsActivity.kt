@@ -6,12 +6,12 @@ import androidx.activity.viewModels
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 
-class OtherActivity : AppCompatActivity() {
+class OtherSettingsActivity : AppCompatActivity() {
 
     val viewModel: OtherSettingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_other)
+        setContentView(R.layout.activity_other_settings)
     }
 }

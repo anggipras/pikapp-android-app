@@ -14,7 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
-import com.tsab.pikapp.view.other.OtherActivity
+import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import kotlinx.android.synthetic.main.other_fragment.*
 
@@ -47,7 +47,7 @@ class OtherFragment : Fragment() {
 
         dataBinding.merchantSettingClick.setOnClickListener {
             activity?.let {
-                val intent = Intent(it, OtherActivity::class.java)
+                val intent = Intent(it, OtherSettingsActivity::class.java)
                 it.startActivity(intent)
             }
         }
