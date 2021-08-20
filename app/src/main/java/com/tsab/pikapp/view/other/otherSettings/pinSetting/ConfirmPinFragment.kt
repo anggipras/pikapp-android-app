@@ -39,10 +39,12 @@ class ConfirmPinFragment : Fragment() {
             if (confirmPin.length == 6) {
                 hideKeyboard()
                 if (confirmPin == viewModel._newPin.value) {
+                    // Continue to add function to hit API change pin
                     Toast.makeText(requireActivity(),"Perubahan berhasil disimpan",Toast.LENGTH_SHORT).show();
                     dataBinding.confirmPinInput.setText("")
                     Navigation.findNavController(view).navigate(R.id.navigateBackTo_settingFragment)
                 } else {
+                    Toast.makeText(requireActivity(),"PIN salah, masukkan PIN yang sama dengan PIN baru Anda",Toast.LENGTH_SHORT).show();
                     dataBinding.confirmPinInput.setText("")
                     showKeyboard()
                 }

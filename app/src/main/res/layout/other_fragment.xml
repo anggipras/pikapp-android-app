@@ -154,12 +154,14 @@
                                 android:textSize="13dp" />
 
                             <View
+                                android:id="@+id/shopSchedule_separator"
                                 android:layout_width="1dp"
                                 android:layout_height="10dp"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
-                                android:background="@color/borderSubtle" />
+                                android:background="@color/borderSubtle"
+                                android:visibility="gone"/>
 
                             <TextView
                                 android:id="@+id/merchant_hour"
@@ -227,19 +229,19 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:id="@+id/merchant_setting_stock"
+                            android:id="@+id/merchant_setting_integration"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerInParent="true"
-                            android:background="@drawable/ic_stock" />
+                            android:background="@drawable/ic_integration" />
 
                         <TextView
-                            android:id="@+id/merchant_stock"
+                            android:id="@+id/merchant_integration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
                             android:fontFamily="@font/proximanova_semibold"
-                            android:text="Stok Habis"
+                            android:text="Integrasi"
                             android:textColor="@color/textSubtle"
                             android:textSize="15dp" />
 

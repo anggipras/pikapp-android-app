@@ -1,6 +1,7 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,6 +55,7 @@ class OtherViewModel : ViewModel() {
     }
 
     fun merchantProfileRetrieved(response: MerchantProfileData) {
+        Log.d("RESPONSEE", response.toString())
         merchantResult.value = response
         sessionManager.setMerchantProfile(response)
     }
