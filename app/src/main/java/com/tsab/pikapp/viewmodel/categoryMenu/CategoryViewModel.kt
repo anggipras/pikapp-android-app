@@ -121,24 +121,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                         Log.d(TAG, response.results.toString())
 
                         // TODO: Update sort functionality.
-//                        val categoryResponse = response.body()
-//                        val categoryResult = response.body()?.results
-//                        Log.e("result", categoryResponse?.results.toString())
-//                        Log.e("Response raw", response.raw().toString())
-//                        Log.e("response body", response.body().toString())
-//                        Log.d("SUCCEED", "succeed")
-//
-//                        Log.e("size", categoryResponse?.results?.size.toString())
-//                        size = response.results.size.toString()
-//                        Log.e("size on response", size)
-//
-//                        sortCategoryAdapter = SortCategoryAdapter(
-//                            baseContext,
-//                            categoryResult as MutableList<CategoryListResult>,
-//                            listener
-//                        )
-//                        sortCategoryAdapter.notifyDataSetChanged()
-//                        recyclerview_category.adapter = sortCategoryAdapter
                         setLoading(false)
                     }
 
