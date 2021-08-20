@@ -6,7 +6,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.model.MerchantProfileData
+import com.tsab.pikapp.models.model.MerchantProfileResponse
+import com.tsab.pikapp.models.model.MerchantTimeManagement
+import com.tsab.pikapp.models.model.ShopSchedule
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
@@ -14,19 +17,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class OtherSettingViewModel : ViewModel() {
-
     private var sessionManager = SessionManager()
+    private val disposable = CompositeDisposable()
 
-    //Profile Setting Variable
+    // Profile Setting Variable
     val profileFullName = MutableLiveData<String>()
     val profileDOB = MutableLiveData<String>()
     val profileGender = MutableLiveData<String>()
@@ -37,23 +36,22 @@ class OtherSettingViewModel : ViewModel() {
     val _genderDialogAlert = MutableLiveData<Boolean>()
     val _birthdaySelection = MutableLiveData<String>()
 
-    //Information Setting Variable
+    // Information Setting Variable
     val _restaurantBanner = MutableLiveData(Uri.EMPTY)
     val _restaurantLogo = MutableLiveData(Uri.EMPTY)
 
-    //Pin Setting Variable
+    // Pin Setting Variable
     val _newPin = MutableLiveData<String>()
 
-    //Shop Management Setting Variable
+    // Shop Management Setting Variable
     lateinit var shopManagementAdapter: ShopManagementAdapter
-    var _shopStatus = MutableLiveData<String>()
+    private var _shopStatus = MutableLiveData<String>()
 
-    //Loading
-    private val disposable = CompositeDisposable()
+    // Loading
     var isLoading = MutableLiveData<Boolean>()
     var isLoadingBackButton = MutableLiveData(false)
 
-    //Profile Setting Method
+    // Profile Setting Method
     fun getProfileDetail() {
         val fullName = sessionManager.getMerchantProfile()?.fullName!!
         val dateOfBirth = sessionManager.getDOBProfile()!!
@@ -68,14 +66,15 @@ class OtherSettingViewModel : ViewModel() {
     }
 
     fun setGenderAndDOB() {
-        val gender = when(_genderSelection.value) {
+        val gender = when (_genderSelection.value) {
             "Perempuan" -> "FEMALE"
             else -> "MALE"
         }
+
         sessionManager.setDOBProfile(_birthdaySelection.value)
         sessionManager.setGenderProfile(gender)
-        val isPositionOfAlert = sessionManager.getProfileNum()
-        when(isPositionOfAlert) {
+
+        when (sessionManager.getProfileNum()) {
             0 -> sessionManager.setProfileNum(1)
             1 -> sessionManager.setProfileNum(1)
             2 -> sessionManager.setProfileNum(2)
@@ -86,12 +85,12 @@ class OtherSettingViewModel : ViewModel() {
         _genderSelection.value = null
     }
 
-    //Pin Setting Method
+    // Pin Setting Method
     fun setNewPin(pin: String?) {
         _newPin.value = pin!!
     }
 
-    //Information Setting Method
+    // Information Setting Method
     fun setBannerImg(banner: Uri?) {
         _restaurantBanner.value = banner
     }
@@ -100,7 +99,7 @@ class OtherSettingViewModel : ViewModel() {
         _restaurantLogo.value = logo
     }
 
-    //Shop Management Setting Method
+    // Shop Management Setting Method
     fun setGender(bool: Boolean, gender: String) {
         _genderConfirmation.value = bool
         _genderSelection.value = gender
@@ -114,7 +113,11 @@ class OtherSettingViewModel : ViewModel() {
         _genderDialogAlert.value = bool
     }
 
-    fun getMerchantSchedule(baseContext: Context, shopSchedule_recyclerView: RecyclerView, listener: ShopManagementAdapter.OnItemClickListener) {
+    fun getMerchantSchedule(
+        baseContext: Context,
+        shopSchedule_recyclerView: RecyclerView,
+        listener: ShopManagementAdapter.OnItemClickListener
+    ) {
         val uuid = getUUID()
         val timestamp = getTimestamp()
         val clientId = getClientID()
@@ -124,20 +127,26 @@ class OtherSettingViewModel : ViewModel() {
         val mid = sessionManager.getUserData()!!.mid!!
 
         PikappApiService().api.getMerchantShopManagement(
-                uuid, timestamp, clientId, signature, token, mid
+            uuid, timestamp, clientId, signature, token, mid
         ).enqueue(object : Callback<MerchantTimeManagement> {
             override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
                 Log.e("getTimeManagementFailed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantTimeManagement>, response: Response<MerchantTimeManagement>) {
+            override fun onResponse(
+                call: Call<MerchantTimeManagement>,
+                response: Response<MerchantTimeManagement>
+            ) {
                 val timeManagementResult = response.body()?.results?.timeManagement
+                shopManagementAdapter = ShopManagementAdapter(
+                    baseContext,
+                    timeManagementResult as MutableList<ShopSchedule>,
+                    listener
+                )
 
-                shopManagementAdapter = ShopManagementAdapter(baseContext, timeManagementResult as MutableList<ShopSchedule>, listener)
                 shopManagementAdapter.notifyDataSetChanged()
                 shopSchedule_recyclerView.adapter = shopManagementAdapter
             }
-
         })
     }
 
@@ -145,12 +154,12 @@ class OtherSettingViewModel : ViewModel() {
         _shopStatus.value = status
     }
 
-    //LOADING
+    // Loading
     fun loadProcess(bool: Boolean) {
         isLoading.value = bool
     }
 
-    //Load merchant profile
+    // Load merchant profile
     fun getMerchantProfile() {
         val timeStamp = getTimestamp()
         val email = sessionManager.getUserData()!!.email!!
@@ -161,33 +170,32 @@ class OtherSettingViewModel : ViewModel() {
         val clientId = getClientID()
 
         disposable.add(
-                PikappApiService().api.getMerchantProfile(uuid, timeStamp, clientId, signature, token, mid)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
-                            override fun onSuccess(t: MerchantProfileResponse) {
-                                t.results?.let { res ->
-                                    merchantProfileRetrieved(res)
-                                }
-                            }
+            PikappApiService().api.getMerchantProfile(
+                uuid, timeStamp, clientId, signature, token, mid
+            )
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
+                    override fun onSuccess(t: MerchantProfileResponse) {
+                        t.results?.let { res ->
+                            merchantProfileRetrieved(res)
+                        }
+                    }
 
-                            override fun onError(e: Throwable) {
-                                //Should print out error
-                            }
-
-                        })
+                    override fun onError(e: Throwable) {}
+                })
         )
-
     }
 
     fun merchantProfileRetrieved(response: MerchantProfileData) {
         sessionManager.setMerchantProfile(response)
         sessionManager.setProfileNum(2)
+
         loadProcess(false)
         isLoadingBackButton.value = true
     }
 
-    //RESTART GENDER DIALOG
+    // Restart gender dialog
     fun restartFragment() {
         _genderConfirmation.value = false
         _genderDialogAlert.value = false
