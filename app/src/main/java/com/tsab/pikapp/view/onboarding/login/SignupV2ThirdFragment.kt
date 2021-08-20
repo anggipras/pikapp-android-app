@@ -181,12 +181,12 @@ class SignupV2ThirdFragment : Fragment() {
         PikappApiService().api.uploadRegister(
             getUUID(), getClientID(), getTimestamp(),
             MultipartBody.Part.createFormData(
-                "file_01", logoFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
+                "file_01", latarFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
             ),
             MultipartBody.Part.createFormData(
-                "file_02", latarFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
+                "file_02", logoFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
             ),
             MultipartBody.Part.createFormData(
                 "file_03", ktpFile.name,

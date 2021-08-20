@@ -27,7 +27,7 @@
         <activity
             android:name=".view.homev2.HomeNavigation"
             android:label="@string/title_activity_bottom_navigation" />
-        <activity android:name=".view.other.OtherActivity" />
+        <activity android:name=".view.other.OtherSettingsActivity" />
 
         <activity android:name=".view.RegisterV2Activity" />
         <activity android:name=".view.LoginV2Activity" />
