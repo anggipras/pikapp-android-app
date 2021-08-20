@@ -98,7 +98,7 @@ class OtherFragment : Fragment() {
                 dataBinding.shopScheduleSeparator.visibility = View.VISIBLE
 
                 if (shopSchedule.dailyStatus == "OPEN") {
-                    var theHours = if (shopSchedule.openTime == "00.00" && shopSchedule.closeTime == "23.59") {
+                    var theHours = if (shopSchedule.openTime == "00:00" && shopSchedule.closeTime == "23:59") {
                         "24 jam"
                     } else {
                         "${shopSchedule.openTime} - ${shopSchedule.closeTime}"
