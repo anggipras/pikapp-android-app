@@ -47,6 +47,11 @@ class CategoryListFragment : Fragment() {
         setupRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchCategoryList()
+    }
+
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             dataBinding.loadingOverlay.loadingView.visibility =
