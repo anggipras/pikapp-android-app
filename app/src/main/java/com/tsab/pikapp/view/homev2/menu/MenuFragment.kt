@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,8 +15,8 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
-import com.tsab.pikapp.view.categoryMenu.CategoryAdapter
-import com.tsab.pikapp.view.categoryMenu.CategoryNavigation
+import com.tsab.pikapp.view.menuCategory.CategoryAdapter
+import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
 
@@ -76,9 +75,9 @@ class MenuFragment : Fragment() {
                 if (viewModel.size.value == null) {
                     invisibleMenu()
                     Log.e("intent observe", "pindah gan")
-                    dataBinding.textview2.isVisible = true
-                    dataBinding.imageView18.isVisible = true
-                    dataBinding.addCategory.isVisible = true
+                    dataBinding.textview2.visibility = View.VISIBLE
+                    dataBinding.imageView18.visibility = View.VISIBLE
+                    dataBinding.addCategory.visibility = View.VISIBLE
 
                     dataBinding.addCategory.setOnClickListener {
                         val intent = Intent(activity?.baseContext, MenuNavigation::class.java)
@@ -86,7 +85,7 @@ class MenuFragment : Fragment() {
                     }
 
                     dataBinding.buttonSort.setOnClickListener {
-                        dataBinding.textview3.isVisible = true
+                        dataBinding.textview3.visibility = View.VISIBLE
                     }
                 } else if (viewModel.size.value != null) {
                     Log.e("!= null", viewModel.size.value.toString())
@@ -94,10 +93,10 @@ class MenuFragment : Fragment() {
                         ioo?.let {
                             invisibleMenuNull()
                             //initViews()
-                            dataBinding.viewpager.isVisible = true
-                            dataBinding.tabs.isVisible = true
-                            dataBinding.appbar.isVisible = true
-                            dataBinding.plusBtn.isVisible = true
+                            dataBinding.viewpager.visibility = View.VISIBLE
+                            dataBinding.tabs.visibility = View.VISIBLE
+                            dataBinding.appbar.visibility = View.VISIBLE
+                            dataBinding.plusBtn.visibility = View.VISIBLE
                             dataBinding.plusBtn.setOnClickListener {
                                 val intent =
                                     Intent(activity?.baseContext, CategoryNavigation::class.java)
@@ -111,29 +110,29 @@ class MenuFragment : Fragment() {
     }
 
     private fun invisibleMenuNull() {
-        dataBinding.textview2.isVisible = false
-        dataBinding.imageView18.isVisible = false
-        dataBinding.addCategory.isVisible = false
-        dataBinding.textview3.isVisible = false
-        dataBinding.recyclerviewCategory.isVisible = false
+        dataBinding.textview2.visibility = View.GONE
+        dataBinding.imageView18.visibility = View.GONE
+        dataBinding.addCategory.visibility = View.GONE
+        dataBinding.textview3.visibility = View.GONE
+        dataBinding.recyclerviewCategory.visibility = View.GONE
     }
 
     private fun invisibleMenu() {
-        dataBinding.plusBtn.isVisible = false
-        dataBinding.tabs.isVisible = false
-        dataBinding.viewpager.isVisible = false
-        dataBinding.appbar.isVisible = false
+        dataBinding.plusBtn.visibility = View.GONE
+        dataBinding.tabs.visibility = View.GONE
+        dataBinding.viewpager.visibility = View.GONE
+        dataBinding.appbar.visibility = View.GONE
     }
 
     private fun setMenuInvisible() {
-        dataBinding.tabs.isVisible = false
-        dataBinding.viewpager.isVisible = false
-        dataBinding.appbar.isVisible = false
-        dataBinding.textview2.isVisible = false
-        dataBinding.imageView18.isVisible = false
-        dataBinding.addCategory.isVisible = false
-        dataBinding.plusBtn.isVisible = false
-        dataBinding.textview3.isVisible = false
+        dataBinding.tabs.visibility = View.GONE
+        dataBinding.viewpager.visibility = View.GONE
+        dataBinding.appbar.visibility = View.GONE
+        dataBinding.textview2.visibility = View.GONE
+        dataBinding.imageView18.visibility = View.GONE
+        dataBinding.addCategory.visibility = View.GONE
+        dataBinding.plusBtn.visibility = View.GONE
+        dataBinding.textview3.visibility = View.GONE
     }
 
     private fun initViews() {

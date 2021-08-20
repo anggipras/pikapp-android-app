@@ -142,6 +142,24 @@ class PikappApiService {
         )
     }
 
+    // MENU CATEGORY
+    fun listMenuCategory(
+        email: String,
+        token: String,
+        merchantId: String
+    ): Single<ListMenuCategoryResponse> {
+        val timestamp = getTimestamp()
+
+        return api.listMenuCategory(
+            requestId = getUUID(),
+            requestTimestamp = timestamp,
+            clientId = getClientID(),
+            signature = getSignature(email, timestamp),
+            token = token,
+            merchantId = merchantId
+        )
+    }
+
     // MERCHANT
     fun getStoreProductList(
         email: String,

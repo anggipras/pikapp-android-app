@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.categoryMenu
+package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
 import android.os.Bundle
@@ -95,6 +95,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
+        // TODO: Update API call.
         PikappApiService().api.getMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {
