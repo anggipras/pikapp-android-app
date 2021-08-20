@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="merchantProfile"
             type="com.tsab.pikapp.viewmodel.homev2.OtherViewModel" />
@@ -13,7 +12,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeOtherMenu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,7 +38,7 @@
                     android:fontFamily="@font/proximanova_regular"
                     android:text="Selamat Datang,"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -55,14 +55,13 @@
                     android:fontFamily="@font/proximanova_regular"
                     android:textColor="@color/white"
                     android:textFontWeight="800"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -88,7 +87,7 @@
                         android:id="@+id/cardImageOther_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="19dp"
+                        android:layout_marginStart="19dp"
                         android:layout_marginTop="14dp"
                         app:cardCornerRadius="30dp"
                         app:cardElevation="0dp">
@@ -97,14 +96,14 @@
                             android:id="@+id/merchant_logo"
                             android:layout_width="61dp"
                             android:layout_height="61dp"
-                            android:scaleType="centerCrop"/>
+                            android:scaleType="centerCrop" />
 
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginTop="14dp"
                         android:orientation="vertical">
 
@@ -112,32 +111,26 @@
                             android:id="@+id/merchant_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
                             android:fontFamily="@font/montserrat_bold"
                             android:textColor="#494949"
-                            android:textSize="15dp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/merchant_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
                             android:fontFamily="@font/proximanova_semibold"
                             android:textColor="@color/borderSubtle"
-                            android:textSize="13dp" />
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/merchant_email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
                             android:fontFamily="@font/proximanova_semibold"
                             android:textColor="@color/borderSubtle"
-                            android:textSize="13dp" />
+                            android:textSize="13sp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -148,10 +141,8 @@
                                 android:id="@+id/merchant_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
                                 android:fontFamily="@font/proximanova_semibold"
-                                android:textSize="13dp" />
+                                android:textSize="13sp" />
 
                             <View
                                 android:id="@+id/shopSchedule_separator"
@@ -161,22 +152,18 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:background="@color/borderSubtle"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
 
                             <TextView
                                 android:id="@+id/merchant_hour"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
                                 android:fontFamily="@font/proximanova_semibold"
                                 android:textColor="@color/borderSubtle"
-                                android:textSize="13dp" />
+                                android:textSize="13sp" />
 
                         </LinearLayout>
-
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <View
@@ -206,7 +193,6 @@
                             android:id="@+id/merchant_setting_icon"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_centerInParent="true"
                             android:background="@drawable/ic_store" />
 
                         <TextView
@@ -217,14 +203,14 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Pengaturan"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -232,7 +218,6 @@
                             android:id="@+id/merchant_setting_integration"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_centerInParent="true"
                             android:background="@drawable/ic_integration" />
 
                         <TextView
@@ -243,14 +228,14 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Integrasi"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -258,7 +243,6 @@
                             android:id="@+id/merchant_setting_report"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_centerInParent="true"
                             android:background="@drawable/ic_report" />
 
                         <TextView
@@ -269,14 +253,14 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Laporan"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -284,7 +268,6 @@
                             android:id="@+id/merchant_setting_help"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:layout_centerInParent="true"
                             android:background="@drawable/ic_help" />
 
                         <TextView
@@ -295,12 +278,10 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Bantuan"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
 
             <TextView
@@ -313,7 +294,7 @@
                 android:text="Informasi terbaru"
                 android:textColor="#494949"
                 android:textFontWeight="800"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/merchant_profilebox"
@@ -338,17 +319,16 @@
                     android:id="@+id/ic_article"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/article_img" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="21dp"
+                    android:layout_marginStart="21dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -358,7 +338,7 @@
                         android:text="Judul"
                         android:textColor="@color/black"
                         android:textFontWeight="800"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -367,10 +347,9 @@
                         android:fontFamily="@font/proximanova_regular"
                         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                         android:textColor="@color/textSubtle"
-                        android:textSize="13dp" />
+                        android:textSize="13sp" />
 
                 </LinearLayout>
-
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

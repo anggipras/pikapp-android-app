@@ -1,6 +1,5 @@
 package com.tsab.pikapp.view.homev2.menu
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -20,18 +19,17 @@ import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import kotlinx.android.synthetic.main.other_fragment.*
 
 class OtherFragment : Fragment() {
-
     private lateinit var dataBinding: OtherFragmentBinding
     private lateinit var viewModel: OtherViewModel
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.other_fragment, container, false)
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         viewModel = ViewModelProviders.of(this).get(OtherViewModel::class.java)
 
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.other_fragment, container, false)
         return dataBinding.root
     }
 
@@ -57,9 +55,8 @@ class OtherFragment : Fragment() {
         observeViewModel()
     }
 
-    @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
-        viewModel.merchantResult.observe(this, Observer { merchantProfile ->
+        viewModel.merchantResult.observe(viewLifecycleOwner, Observer { merchantProfile ->
             merchantProfile?.let {
                 dataBinding.personName.text = merchantProfile.fullName.toString()
                 Picasso.get().load(merchantProfile.merchantLogo).into(merchant_logo)
@@ -70,19 +67,19 @@ class OtherFragment : Fragment() {
             }
         })
 
-        viewModel.merchantShopStatus.observe(this, Observer { shopSchedule ->
+        viewModel.merchantShopStatus.observe(viewLifecycleOwner, Observer { shopSchedule ->
             shopSchedule?.let {
-                val merchantStatus = when(shopSchedule.dailyStatus) {
+                val merchantStatus = when (shopSchedule.dailyStatus) {
                     "OPEN" -> "Buka"
                     else -> "Tutup"
                 }
 
-                when(shopSchedule.dailyStatus) {
+                when (shopSchedule.dailyStatus) {
                     "OPEN" -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#4BB7AC"))
                     else -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#DC6A84"))
                 }
 
-                val merchantDay = when(shopSchedule.days) {
+                val merchantDay = when (shopSchedule.days) {
                     "MONDAY" -> "Senin"
                     "TUESDAY" -> "Selasa"
                     "WEDNESDAY" -> "Rabu"
@@ -96,17 +93,18 @@ class OtherFragment : Fragment() {
                 dataBinding.shopScheduleSeparator.visibility = View.VISIBLE
 
                 if (shopSchedule.dailyStatus == "OPEN") {
-                    var theHours = if (shopSchedule.openTime == "00:00" && shopSchedule.closeTime == "23:59") {
-                        "24 jam"
-                    } else {
-                        "${shopSchedule.openTime} - ${shopSchedule.closeTime}"
-                    }
-                    dataBinding.merchantHour.text = getString(R.string.shop_daily_status, merchantDay, theHours)
+                    val theHours =
+                        if (shopSchedule.openTime == "00:00" && shopSchedule.closeTime == "23:59") {
+                            "24 jam"
+                        } else {
+                            "${shopSchedule.openTime} - ${shopSchedule.closeTime}"
+                        }
+                    dataBinding.merchantHour.text =
+                        getString(R.string.shop_daily_status, merchantDay, theHours)
                 } else {
                     dataBinding.merchantHour.text = merchantDay
                 }
             }
         })
-
     }
 }
