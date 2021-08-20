@@ -11,7 +11,7 @@ import com.tsab.pikapp.models.model.CategoryListResult
 import com.tsab.pikapp.models.model.MerchantListCategoryResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.categoryMenu.CategoryAdapter
+import com.tsab.pikapp.view.menuCategory.CategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,6 +49,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
+        // TODO: Update API call.
         PikappApiService().api.getMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {

@@ -34,7 +34,7 @@
         tools:text="Tingkat Kepedasan" />
 
     <TextView
-        android:id="@+id/itemPilihanText"
+        android:id="@+id/itemDescriptionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -47,13 +47,13 @@
         tools:text="3 pilihan" />
 
     <View
-        android:id="@+id/itemPilihanDivider"
+        android:id="@+id/itemDivider"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginTop="12dp"
         android:background="@color/lightGrey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/itemPilihanText" />
+        app:layout_constraintTop_toBottomOf="@id/itemDescriptionText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
