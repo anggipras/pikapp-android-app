@@ -428,7 +428,6 @@ class PikappApiService {
             status
         )
     }
-
     // Advanced menu
     fun addAdvanceMenu(
         email: String,

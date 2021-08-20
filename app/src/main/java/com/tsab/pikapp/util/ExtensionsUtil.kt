@@ -131,7 +131,6 @@ fun getSignature(email: String, timestamp: String): String {
     val sk: Key = SecretKeySpec(byte, "HmacSHA256")
     val mac = Mac.getInstance(sk.algorithm)
     val mess = "${getClientID()}:${email}:${getClientSecret()}:${timestamp}"
-    Log.d("debug", "kenapa ni : ${mess}")
     mac.init(sk)
     val hmac = mac.doFinal(mess.toByteArray(charset("UTF-8")))
     return toHexString(hmac)

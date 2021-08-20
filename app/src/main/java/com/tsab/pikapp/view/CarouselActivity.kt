@@ -30,6 +30,7 @@ class CarouselActivity : AppCompatActivity() {
         setContentView(dataBinding.root)
 
         sessionManager.setFirstApp(1)
+        sessionManager.setProfileNum(0)
 
         setupViewPager()
         attachInputListener()
