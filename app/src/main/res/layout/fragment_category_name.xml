@@ -50,7 +50,7 @@
     </RadioGroup>
 
     <ImageButton
-        android:id="@+id/btnoke"
+        android:id="@+id/okButton"
         android:layout_width="307dp"
         android:layout_height="77dp"
         android:layout_gravity="center"
