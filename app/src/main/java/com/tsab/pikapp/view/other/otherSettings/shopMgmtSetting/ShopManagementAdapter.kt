@@ -50,7 +50,7 @@ class ShopManagementAdapter(private val context: Context, val shopScheduleList: 
             holder.openTime.text = "Buka 24 Jam"
             holder.closeTime.text = ""
             holder.connector.text = ""
-        } else if (shopScheduleList[position].openTime == "00:00" && shopScheduleList[position].closeTime == "23:59"){
+        } else if (shopScheduleList[position].openTime == "00:00" && shopScheduleList[position].closeTime == "00:00"){
             holder.openTime.text = "Tutup"
             holder.closeTime.text = ""
             holder.connector.text = ""

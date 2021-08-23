@@ -152,7 +152,6 @@
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximanova_semibold"
-                android:text="11:00"
                 android:textColor="@color/black"
                 android:backgroundTint="#D9CECE"
                 android:textSize="17dp" />
@@ -179,7 +178,6 @@
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximanova_semibold"
-                android:text="18:00"
                 android:textColor="@color/black"
                 android:backgroundTint="#D9CECE"
                 android:textSize="17dp" />

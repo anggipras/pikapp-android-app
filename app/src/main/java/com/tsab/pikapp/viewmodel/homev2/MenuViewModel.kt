@@ -82,8 +82,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                     recyclerview_category.adapter = categoryAdapter
                     setCategoryList(categoryResult)
                     //val categoryName = categoryAdapter.categoryList
-                    mutableCategoryName.value =
-                        categoryAdapter.categoryList.elementAt(0).category_name
                     //val categoryFirst = categoryAdapter.categoryList.elementAt(1).category_name
                     //Log.e("second", categoryFirst)
                     mutableisLoading.value = false

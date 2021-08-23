@@ -63,6 +63,20 @@ class MenuFragment : Fragment() {
         observeViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        recyclerview_category.setHasFixedSize(true)
+        linearLayoutManager =
+                LinearLayoutManager(requireView().context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerview_category.layoutManager = linearLayoutManager
+
+        setMenuInvisible()
+
+        activity?.let { viewModel.getMenuCategoryList(it.baseContext, recyclerview_category) }
+
+        observeViewModel()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         viewModel.restartFragment()
@@ -73,7 +87,7 @@ class MenuFragment : Fragment() {
             if (!isLoading) {
                 Log.e("size observe", viewModel.size.value.toString())
                 Log.e("category name observe", viewModel.categoryName.value.toString())
-                if (viewModel.size.value == null) {
+                if (viewModel.size.value == 0) {
                     invisibleMenu()
                     Log.e("intent observe", "pindah gan")
                     dataBinding.textview2.isVisible = true
