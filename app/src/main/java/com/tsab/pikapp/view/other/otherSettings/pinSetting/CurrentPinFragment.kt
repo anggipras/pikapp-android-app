@@ -9,15 +9,17 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCurrentPinBinding
+import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 
 
 class CurrentPinFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentCurrentPinBinding
-    private val currentMockedPin = 123456
+    private val viewModel: OtherSettingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +38,9 @@ class CurrentPinFragment : Fragment() {
             val getCurrentPin = dataBinding.currentPinInput.text.toString()
             if (getCurrentPin.length == 6) {
                 hideKeyboard()
-                if (getCurrentPin == currentMockedPin.toString()) {
-                    Navigation.findNavController(view).navigate(R.id.navigateTo_newPinFragment)
-                    dataBinding.currentPinInput.setText("")
-                } else {
-                    dataBinding.currentPinInput.setText("")
-                    showKeyboard()
-                }
+                viewModel.setCurrentPin(getCurrentPin)
+                Navigation.findNavController(view).navigate(R.id.navigateTo_newPinFragment)
+                dataBinding.currentPinInput.setText("")
             }
         }
 

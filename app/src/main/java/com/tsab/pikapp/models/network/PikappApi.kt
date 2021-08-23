@@ -472,4 +472,26 @@ interface PikappApi {
             @Part ("bank_name") bank_name: RequestBody,
             @Part ("mid") mid: RequestBody
     ): Call<BaseResponse>
+
+    @POST("merchant/v1/merchant/change/pin/")
+    fun changePinMerchantDisposable(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body pinModel: pinMerchant
+    ): Single<OtherBaseResponse>
+
+    @POST("merchant/v1/merchant/change/pin/")
+    fun changePinMerchant(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body pinModel: pinMerchant
+    ): Call<OtherBaseResponse>
 }

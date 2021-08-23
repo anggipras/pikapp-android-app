@@ -86,3 +86,22 @@ data class ShopSchedule(
         @SerializedName("is_force_close")
         val isForceClose: Boolean?
 )
+
+//MERCHANT CHANGE PIN
+data class pinMerchant(
+        @SerializedName("old_pin")
+        val oldPin: String?,
+
+        @SerializedName("mid")
+        val mid: String?,
+
+        @SerializedName("pin")
+        val pin: String?
+)
+
+data class OtherBaseResponse(
+        @SerializedName("err_code")
+        val errCode: String?,
+        @SerializedName("err_message")
+        val errMessage: String?
+)

@@ -76,6 +76,11 @@
             app:popUpTo="@id/settingFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/navigateBackTo_currentPinFragment"
+            app:popUpTo="@id/currentPinFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
     <dialog
         android:id="@+id/profileGenderFragment"
