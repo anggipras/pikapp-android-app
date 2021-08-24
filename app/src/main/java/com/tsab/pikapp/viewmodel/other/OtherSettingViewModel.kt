@@ -6,10 +6,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.tsab.pikapp.models.model.MerchantProfileData
-import com.tsab.pikapp.models.model.MerchantProfileResponse
-import com.tsab.pikapp.models.model.MerchantTimeManagement
-import com.tsab.pikapp.models.model.ShopSchedule
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
@@ -17,13 +16,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
+import retrofit2.*
 import retrofit2.Response
 
 class OtherSettingViewModel : ViewModel() {
     private var sessionManager = SessionManager()
     private val disposable = CompositeDisposable()
+    private val apiService = PikappApiService()
 
     // Profile Setting Variable
     val profileFullName = MutableLiveData<String>()
@@ -41,7 +40,10 @@ class OtherSettingViewModel : ViewModel() {
     val _restaurantLogo = MutableLiveData(Uri.EMPTY)
 
     // Pin Setting Variable
+    val currentPin = MutableLiveData<String>()
     val _newPin = MutableLiveData<String>()
+    val loadPin = MutableLiveData<Boolean>()
+    val pinAlert = MutableLiveData<String>()
 
     // Shop Management Setting Variable
     lateinit var shopManagementAdapter: ShopManagementAdapter
@@ -86,8 +88,65 @@ class OtherSettingViewModel : ViewModel() {
     }
 
     // Pin Setting Method
+    fun setCurrentPin(pin: String?) {
+        currentPin.value = pin!!
+    }
+
     fun setNewPin(pin: String?) {
         _newPin.value = pin!!
+    }
+
+    fun onLoadChangePin(bool: Boolean) {
+        loadPin.value = bool
+    }
+
+    fun changePinAlert(alert: String) {
+        pinAlert.value = alert
+    }
+
+    fun changePin() {
+        onLoadChangePin(true)
+        val timeStamp = getTimestamp()
+        val email = sessionManager.getUserData()!!.email!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        val signature = getSignature(email, timeStamp)
+        val token = sessionManager.getUserToken()!!
+        val uuid = getUUID()
+        val clientId = getClientID()
+
+        val pinModel = createPinModel(mid)
+
+        PikappApiService().api.changePinMerchant("application/json", uuid, timeStamp, clientId, signature, token, pinModel)
+            .enqueue(object : Callback<OtherBaseResponse> {
+                override fun onResponse(call: Call<OtherBaseResponse>, response: Response<OtherBaseResponse>) {
+                    if (response.code() == 200) {
+                        changePinAlert("APPROVED/OK")
+                    } else {
+                        val gson = Gson()
+                        val type = object : TypeToken<OtherBaseResponse>() {}.type
+
+
+                        var errorResponse: OtherBaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
+
+                        if (errorResponse != null) {
+                            changePinAlert(errorResponse.errMessage!!)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<OtherBaseResponse>, t: Throwable) {
+                    Log.d("ONFAILURE", t.toString())
+                }
+
+            })
+    }
+
+    private fun createPinModel(mid: String) : pinMerchant {
+        return pinMerchant(
+            oldPin = currentPin.value,
+            mid = mid,
+            pin = _newPin.value
+        )
     }
 
     // Information Setting Method

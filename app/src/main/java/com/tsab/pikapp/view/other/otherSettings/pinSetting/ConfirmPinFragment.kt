@@ -3,6 +3,7 @@ package com.tsab.pikapp.view.other.otherSettings.pinSetting
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentConfirmPinBinding
@@ -37,20 +39,9 @@ class ConfirmPinFragment : Fragment() {
             if (confirmPin.length == 6) {
                 hideKeyboard()
                 if (confirmPin == viewModel._newPin.value) {
-                    // Continue to add function to hit API change pin
-                    Toast.makeText(
-                        requireActivity(),
-                        "Perubahan berhasil disimpan",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    dataBinding.confirmPinInput.setText("")
-                    Navigation.findNavController(view).navigate(R.id.navigateBackTo_settingFragment)
+                    viewModel.changePin()
                 } else {
-                    Toast.makeText(
-                        requireActivity(),
-                        "PIN salah, masukkan PIN yang sama dengan PIN baru Anda",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireActivity(), "PIN salah, masukkan PIN yang sama dengan PIN baru Anda", Toast.LENGTH_SHORT).show()
                     dataBinding.confirmPinInput.setText("")
                     showKeyboard()
                 }
@@ -60,6 +51,34 @@ class ConfirmPinFragment : Fragment() {
         dataBinding.backButtonPinThird.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        observeViewModel()
+    }
+
+    fun observeViewModel() {
+        viewModel.loadPin.observe(viewLifecycleOwner, Observer { bool ->
+            if (bool) {
+                dataBinding.loadingViewPin.visibility = View.VISIBLE
+            } else {
+                dataBinding.loadingViewPin.visibility = View.GONE
+            }
+        })
+
+        viewModel.pinAlert.observe(viewLifecycleOwner, Observer { alert ->
+            if (alert == "Your current pin is not correct") {
+                dataBinding.confirmPinInput.setText("")
+                view?.let { Navigation.findNavController(it).navigate(R.id.navigateBackTo_currentPinFragment) }
+                Toast.makeText(requireActivity(), alert, Toast.LENGTH_LONG).show()
+                viewModel.changePinAlert("")
+                viewModel.onLoadChangePin(false)
+            } else if(alert == "APPROVED/OK") {
+                dataBinding.confirmPinInput.setText("")
+                view?.let { Navigation.findNavController(it).navigate(R.id.navigateBackTo_settingFragment) }
+                Toast.makeText(requireActivity(), "Perubahan berhasil disimpan", Toast.LENGTH_SHORT).show()
+                viewModel.changePinAlert("")
+                viewModel.onLoadChangePin(false)
+            }
+        })
     }
 
     private fun hideKeyboard() {
