@@ -119,16 +119,17 @@ class OtherSettingViewModel : ViewModel() {
         PikappApiService().api.changePinMerchant("application/json", uuid, timeStamp, clientId, signature, token, pinModel)
             .enqueue(object : Callback<OtherBaseResponse> {
                 override fun onResponse(call: Call<OtherBaseResponse>, response: Response<OtherBaseResponse>) {
-                    val gson = Gson()
-                    val type = object : TypeToken<OtherBaseResponse>() {}.type
+                    if (response.code() == 200) {
+                        changePinAlert("APPROVED/OK")
+                    } else {
+                        val gson = Gson()
+                        val type = object : TypeToken<OtherBaseResponse>() {}.type
 
 
-                    var errorResponse: OtherBaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
-                    if (errorResponse != null) {
-                        if (errorResponse.errMessage == "Your current pin is not correct") {
+                        var errorResponse: OtherBaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
+
+                        if (errorResponse != null) {
                             changePinAlert(errorResponse.errMessage!!)
-                        } else {
-                            changePinAlert("APPROVED/OK")
                         }
                     }
                 }
