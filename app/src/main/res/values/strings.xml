@@ -129,4 +129,10 @@
     <!-- Other Fragment Screen-->
     <string name="shop_daily_status">%s, %s</string>
 
+    <!-- Omnichannel integration (oi) screens -->
+    <string name="oi_tambah_toko">Tambah Toko</string>
+
+    <string name="oi_main_header">Integrasi</string>
+    <string name="oi_empty_description">Anda belum memiliki toko yang terhubung</string>
+
 </resources>
