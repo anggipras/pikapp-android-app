@@ -17,6 +17,15 @@
     <string name="simpan">Simpan</string>
 
     <string name="star">*</string>
+    <string name="ok">OK</string>
+
+    <!-- Bank names -->
+    <string name="dialog_pilih_bank">Pilih Bank</string>
+    <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>
+    <string name="bank_bni">BANK NEGARA INDONESIA (BNI)</string>
+    <string name="bank_bri">BANK RAKYAT INDONESIA (BRI)</string>
+    <string name="bank_mandiri">BANK MANDIRI</string>
+    <string name="bank_cimb">BANK CIMB NIAGA</string>
 
     <!-- Image content descriptions -->
     <string name="cd_change_order_button">Change order button</string>

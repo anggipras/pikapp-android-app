@@ -54,7 +54,7 @@ class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItem
             navController?.navigateUp()
         }
 
-        btnoke.setOnClickListener {
+        okButton.setOnClickListener {
             Log.e("name", viewModel.getCategoryName().toString())
             navController?.navigateUp()
         }
