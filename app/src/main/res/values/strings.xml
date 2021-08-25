@@ -15,7 +15,7 @@
     <string name="selanjutnya">Selanjutnya</string>
     <string name="kembali">Kembali</string>
     <string name="simpan">Simpan</string>
-
+    <string name="ya">Ya</string>
     <string name="star">*</string>
 
     <!-- Carousel screens -->
@@ -117,5 +117,22 @@
 
     <string name="am_additional_harga_header">Harga</string>
     <string name="am_additional_harga_hint">contoh: 6000</string>
+
+    <!-- Shop Management (SM) screens -->
+    <string name="sm_header">Jam Buka Restoran</string>
+
+    <string name="sm_restaurant_status_title">Status Restoran</string>
+    <string name="sm_restaurant_status_detail_open">Restoran Anda sedang berada di jam buka</string>
+    <string name="sm_restaurant_status_detail_close">Restoran Anda sedang berada di jam tutup</string>
+    <string name="sm_restaurant_auto_status">Restoran akan buka dan tutup secara otomatis mengikuti jadwal restoran</string>
+    <string name="sm_restaurant_schedule_title">Jadwal Restoran</string>
+    <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis <br/>akan membuat status toko Anda tutup. <br/> Apakah Anda ingin melanjutkan?</string>
+
+    <string name="sm_status_header">Ubah Jadwal</string>
+
+    <string name="Buka_24_Jam">Buka 24 Jam</string>
+    <string name="Tutup">Tutup</string>
+    <string name="radio_button_3">Atur Jam</string>
+    <string name="open_status_title">Buka</string>
 
 </resources>

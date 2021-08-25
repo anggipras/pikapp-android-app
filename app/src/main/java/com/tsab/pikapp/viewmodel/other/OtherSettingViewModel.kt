@@ -68,6 +68,15 @@ class OtherSettingViewModel : ViewModel() {
     private val mutableAutoOnOff = MutableLiveData(true)
     val autoOnOff: LiveData<Boolean> get() = mutableAutoOnOff
 
+    private val mutableScheduleList = MutableLiveData<List<ShopSchedule>>(listOf())
+    val shopScheduleResult: LiveData<List<ShopSchedule>> = mutableScheduleList
+    fun setShopSchedule(shopScheduleResult: List<ShopSchedule>) {
+        mutableScheduleList.value = shopScheduleResult
+    }
+
+    private val mutableisLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> get() = mutableisLoading
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     //Profile Setting Method
@@ -199,6 +208,10 @@ class OtherSettingViewModel : ViewModel() {
                 shopManagementAdapter = ShopManagementAdapter(baseContext, timeManagementResult as MutableList<ShopSchedule>, listener)
                 shopManagementAdapter.notifyDataSetChanged()
                 shopSchedule_recyclerView.adapter = shopManagementAdapter
+                setShopSchedule(timeManagementResult)
+                mutableisLoading.value = false
+                Log.e("schedule vm", shopScheduleResult.value.toString())
+                Log.e("schdule", mutableScheduleList.value.toString())
             }
 
         })
@@ -303,7 +316,11 @@ class OtherSettingViewModel : ViewModel() {
         mutableIsForceClose.value = isForceClose
     }
 
-    fun getAutoOnOff(autoOnOff: Boolean){
-        mutableAutoOnOff.value = autoOnOff
+    fun setAutoOnOffTrue(autoOnOff: Boolean){
+        mutableAutoOnOff.value = true
+    }
+
+    fun setAutoOnOffFalse(autoOnOff: Boolean){
+        mutableAutoOnOff.value = false
     }
 }

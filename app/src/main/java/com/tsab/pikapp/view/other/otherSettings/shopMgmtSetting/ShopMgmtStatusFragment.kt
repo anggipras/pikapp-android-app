@@ -40,6 +40,8 @@ class ShopMgmtStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.e("auto turn", otherSettingViewModel.autoOnOff.value.toString())
+
         dataBinding.openStatusInput.append(otherSettingViewModel.openTime.value)
         dataBinding.closeStatusInput.append(otherSettingViewModel.closeTime.value)
 
@@ -63,7 +65,7 @@ class ShopMgmtStatusFragment : Fragment() {
                                 dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
                                 dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
                                 activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                                navController?.navigate(R.id.navigateTo_shopManagementFragment)
+                                requireActivity().onBackPressed()
                             }
                         }
                     }
@@ -77,7 +79,7 @@ class ShopMgmtStatusFragment : Fragment() {
                         otherSettingViewModel.getOpenTime(open)
                         otherSettingViewModel.getCLoseTime(close)
                         activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                        navController?.navigate(R.id.navigateTo_shopManagementFragment)
+                        requireActivity().onBackPressed()
                     }
                 }
                 dataBinding.hours24Status.id -> {
@@ -89,7 +91,7 @@ class ShopMgmtStatusFragment : Fragment() {
                         otherSettingViewModel.getOpenTime(open)
                         otherSettingViewModel.getCLoseTime(close)
                         activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                        navController?.navigate(R.id.navigateTo_shopManagementFragment)
+                        requireActivity().onBackPressed()
                     }
                 }
             }
@@ -101,7 +103,6 @@ class ShopMgmtStatusFragment : Fragment() {
 
         dataBinding.shopStatusOpenHour.visibility = View.GONE
         attachInputListeners()
-        observeViewModel()
         hideKeyboard()
     }
 
@@ -112,27 +113,6 @@ class ShopMgmtStatusFragment : Fragment() {
             else -> "OPEN"
         }
         otherSettingViewModel.setShopStatus(isStatusSelected)
-    }
-
-    private fun observeViewModel() {
-//        otherSettingViewModel._shopStatus.observe(viewLifecycleOwner, Observer { status ->
-//            status?.let {
-//                if (status == "OPEN") {
-////                dataBinding.shopStatusOpenHour.visibility = View.VISIBLE
-//                } else {
-////                dataBinding.shopStatusOpenHour.visibility = View.GONE
-//                }
-//            }
-//        })
-/*        otherSettingViewModel.openTimeError.observe(viewLifecycleOwner, Observer { openTimeError ->
-            //dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
-            dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
-
-        })
-        otherSettingViewModel.closeTimeError.observe(viewLifecycleOwner, Observer { closeTimeError ->
-            //dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
-            dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
-        })*/
     }
 
     private fun hideKeyboard() {

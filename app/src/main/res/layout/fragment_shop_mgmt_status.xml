@@ -19,17 +19,17 @@
             android:id="@+id/back_button_shopStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp"
             android:layout_marginTop="30dp"
-            android:drawableLeft="@drawable/ic_back_arrow"
             android:fontFamily="@font/montserrat"
-            android:text="Kembali"
+            android:text="@string/kembali"
             android:textColor="#FFFFFF"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:drawableLeftCompat="@drawable/ic_back_arrow" />
 
         <TextView
             android:id="@+id/shopStatus_title"
@@ -38,9 +38,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="65dp"
             android:fontFamily="@font/proximanova_bold"
-            android:text="Ubah Jadwal"
+            android:text="@string/sm_status_header"
             android:textColor="#FFFFFF"
-            android:textSize="25dp"
+            android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,6 @@
         android:layout_marginRight="35dp"
         android:layout_marginTop="27dp"
         android:layout_gravity="center"
-        android:checkedButton="@id/hours24_status"
         android:theme="@style/RadioButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,10 +67,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
             android:layoutDirection="rtl"
-            android:text="Buka 24 Jam"
+            android:text="@string/Buka_24_Jam"
             android:textAlignment="textStart"
             android:textColor="@color/textSubtle"
-            android:textSize="15dp" />
+            android:textSize="15sp"/>
 
         <View
             android:layout_width="match_parent"
@@ -87,10 +86,10 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat_bold"
             android:layoutDirection="rtl"
-            android:text="Tutup"
+            android:text="@string/Tutup"
             android:textAlignment="textStart"
             android:textColor="@color/textSubtle"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <View
             android:layout_width="match_parent"
@@ -106,10 +105,10 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat_bold"
             android:layoutDirection="rtl"
-            android:text="Atur Jam"
+            android:text="@string/radio_button_3"
             android:textAlignment="textStart"
             android:textColor="@color/textSubtle"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <View
             android:layout_width="match_parent"
@@ -143,9 +142,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Buka"
+                android:text="@string/open_status_title"
                 android:textColor="@color/textSubtle"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/openStatus_input"
@@ -154,7 +153,7 @@
                 android:fontFamily="@font/proximanova_semibold"
                 android:textColor="@color/black"
                 android:backgroundTint="#D9CECE"
-                android:textSize="17dp" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 
@@ -169,9 +168,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Tutup"
+                android:text="@string/Tutup"
                 android:textColor="@color/textSubtle"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/closeStatus_input"
@@ -180,7 +179,7 @@
                 android:fontFamily="@font/proximanova_semibold"
                 android:textColor="@color/black"
                 android:backgroundTint="#D9CECE"
-                android:textSize="17dp" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 
@@ -195,7 +194,7 @@
         android:background="@drawable/button_green_small"
         android:backgroundTint="@color/green"
         android:fontFamily="@font/montserrat"
-        android:text="Simpan"
+        android:text="@string/simpan"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="18sp"
