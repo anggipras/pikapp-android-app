@@ -86,8 +86,6 @@ class OtherSettingViewModel : ViewModel() {
     private val mutableLoading = MutableLiveData(true)
     val Loading: LiveData<Boolean> get() = mutableLoading
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Loading
     var isLoading = MutableLiveData<Boolean>()
     var isLoadingBackButton = MutableLiveData(false)
 

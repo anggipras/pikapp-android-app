@@ -162,4 +162,31 @@
     <string name="must">*</string>
     <string name="masukkan_nama_pemilik_rekening">Masukkan Nama Pemilik Rekening</string>
 
+    <!--    Setting Fragment Screen-->
+    <string name="profile_setting">Profile</string>
+    <string name="information_setting">Informasi Restoran</string>
+    <string name="pin_setting">Ubah PIN</string>
+
+    <!--    Setting Profile Fragment Screen-->
+    <string name="nama_lengkap_profile">Nama Lengkap</string>
+    <string name="tanggal_lahir">Tanggal Lahir</string>
+    <string name="tambahkan_tanggal_lahir">Tambahkan tanggal lahir</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="tambahkan_jenis_kelamin">Tambahkan jenis kelamin</string>
+    <string name="email">Email</string>
+    <string name="no_handphone">No. Handphone</string>
+    <string name="pilih_jenis_kelamin">Pilih jenis kelamin yang sesuai dengan KTP Anda</string>
+    <string name="perempuan">Perempuan</string>
+    <string name="laki_laki">Laki-laki</string>
+
+    <!--    Setting Information Fragment Screen-->
+    <string name="nama_restoran">Nama Restoran</string>
+    <string name="alamat_restoran">Alamat Restoran</string>
+
+    <!--    Setting Pin Fragment Screen-->
+    <string name="buat_pin_baru">Buat PIN baru</string>
+    <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
+    <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>
+
+
 </resources>
