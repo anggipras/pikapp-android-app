@@ -29,6 +29,9 @@ class OtherSettingViewModel : ViewModel() {
     val profileDOB = MutableLiveData<String>()
     val profileGender = MutableLiveData<String>()
     val profileEmail = MutableLiveData<String>()
+    val profileFullNameOwner = MutableLiveData<String>()
+    val profileAccNo = MutableLiveData<String>()
+    val profileBankName = MutableLiveData<String>()
     val profilePhone = MutableLiveData<String>()
     val _genderConfirmation = MutableLiveData<Boolean>()
     val _genderSelection = MutableLiveData<String?>()
@@ -60,10 +63,16 @@ class OtherSettingViewModel : ViewModel() {
         val gender = sessionManager.getGenderProfile()!!
         val email = sessionManager.getMerchantProfile()!!.email!!
         val phone = sessionManager.getMerchantProfile()!!.phoneNumber!!
+        val ownerName = sessionManager.getMerchantProfile()!!.bankAccountName!!
+        val bankNo = sessionManager.getMerchantProfile()!!.bankAccountNo!!
+        val bankName = sessionManager.getMerchantProfile()!!.bankName!!
         profileFullName.value = fullName
         profileDOB.value = dateOfBirth
         profileGender.value = gender
         profileEmail.value = email
+        profileFullNameOwner.value = ownerName
+        profileBankName.value = bankName
+        profileAccNo.value = bankNo
         profilePhone.value = phone
     }
 

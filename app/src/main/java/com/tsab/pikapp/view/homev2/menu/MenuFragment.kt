@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
+import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryAdapter
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
@@ -58,6 +59,11 @@ class MenuFragment : Fragment() {
                 initViews()
             })
         })
+
+        dataBinding.editText.setOnClickListener {
+            val intent = Intent(activity?.baseContext, SearchActivity::class.java)
+            activity?.startActivity(intent)
+        }
 
         observeViewModel()
     }
