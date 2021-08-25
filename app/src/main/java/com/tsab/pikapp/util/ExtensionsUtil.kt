@@ -110,6 +110,17 @@ fun getTimestamp(): String {
     return timeStamp
 }
 
+@SuppressLint("SimpleDateFormat")
+fun getHour(): String {
+    val hour: String = SimpleDateFormat("HH:mm").format(Date())
+    return hour
+}
+
+fun getDay(): String{
+    val day: String = SimpleDateFormat("EEEE").format(Date())
+    return day
+}
+
 fun getClientID(): String {
     val clientId = BuildConfig.CLIENT_ID
     return clientId

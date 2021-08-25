@@ -3,6 +3,8 @@ package com.tsab.pikapp.viewmodel.other
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,8 @@ import retrofit2.Response
 
 class OtherSettingViewModel : ViewModel() {
     private var sessionManager = SessionManager()
+    val gson = Gson()
+    val type = object : TypeToken<BaseResponse>() {}.type
     private val disposable = CompositeDisposable()
     private val apiService = PikappApiService()
 
@@ -49,6 +53,37 @@ class OtherSettingViewModel : ViewModel() {
     lateinit var shopManagementAdapter: ShopManagementAdapter
     private var _shopStatus = MutableLiveData<String>()
 
+    private val mutableDays = MutableLiveData("")
+    val days: LiveData<String> get() = mutableDays
+
+    private val mutableOpenTime = MutableLiveData("")
+    private val mutableOpenTimeError = MutableLiveData("")
+    val isOpenTimeValid = MutableLiveData(false)
+    val openTime: LiveData<String> get() = mutableOpenTime
+    val openTimeError: LiveData<String> get() = mutableOpenTimeError
+
+    private val mutableCloseTime = MutableLiveData("")
+    private val mutableCloseTimeError = MutableLiveData("")
+    val isCloseTimeValid = MutableLiveData(false)
+    val closeTime: LiveData<String> get() = mutableCloseTime
+    val closeTimeError: LiveData<String> get() = mutableOpenTimeError
+
+    private val mutableIsForceClose = MutableLiveData(true)
+    val isForceClose: LiveData<Boolean> get() = mutableIsForceClose
+
+    private val mutableAutoOnOff = MutableLiveData(true)
+    val autoOnOff: LiveData<Boolean> get() = mutableAutoOnOff
+
+    private val mutableScheduleList = MutableLiveData<List<ShopSchedule>>(listOf())
+    val shopScheduleResult: LiveData<List<ShopSchedule>> = mutableScheduleList
+    fun setShopSchedule(shopScheduleResult: List<ShopSchedule>) {
+        mutableScheduleList.value = shopScheduleResult
+    }
+
+    private val mutableLoading = MutableLiveData(true)
+    val Loading: LiveData<Boolean> get() = mutableLoading
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Loading
     var isLoading = MutableLiveData<Boolean>()
     var isLoadingBackButton = MutableLiveData(false)
@@ -205,8 +240,73 @@ class OtherSettingViewModel : ViewModel() {
 
                 shopManagementAdapter.notifyDataSetChanged()
                 shopSchedule_recyclerView.adapter = shopManagementAdapter
+                setShopSchedule(timeManagementResult)
+                mutableLoading.value = false
+            }
+
+        })
+    }
+
+    fun updateShopStatus(baseContext: Context){
+        //var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
+        var shopStatusReq = ShopManagementUpdateRequest()
+        shopStatusReq.days = days.value
+        shopStatusReq.closeTime = closeTime.value
+        shopStatusReq.openTime = openTime.value
+        shopStatusReq.isForceClose = isForceClose.value
+        shopStatusReq.autoOnOff = autoOnOff.value
+
+        PikappApiService().api.updateShopManagement(
+                getUUID(), timestamp, getClientID(), signature, token, mid, shopStatusReq
+        ).enqueue(object : retrofit2.Callback<BaseResponse> {
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    Toast.makeText(baseContext, "changes saved", Toast.LENGTH_SHORT).show()
+                } else {
+                    var errorResponse: BaseResponse? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Toast.makeText(
+                            baseContext,
+                            generateResponseMessage(
+                                    errorResponse?.errCode,
+                                    errorResponse?.errMessage
+                            ).toString(),
+                            Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         })
+    }
+
+    fun validateOpenTime(openTIme: String): Boolean {
+        if (openTIme.isEmpty() || openTIme.isBlank()) {
+            mutableOpenTimeError.value = "Jam Buka tidak boleh kosong"
+        } else {
+            mutableOpenTimeError.value = ""
+        }
+        mutableOpenTime.value = openTIme
+        isOpenTimeValid.value = mutableOpenTimeError.value!!.isEmpty()
+        return isOpenTimeValid.value!!
+    }
+
+    fun validateCloseTime(closeTime: String): Boolean {
+        if (closeTime.isEmpty() || closeTime.isBlank()) {
+            mutableCloseTimeError.value = "Jam Tutup tidak boleh kosong"
+        } else {
+            mutableCloseTimeError.value = ""
+        }
+        mutableCloseTime.value = closeTime
+        isCloseTimeValid.value = mutableCloseTime.value!!.isEmpty()
+        return isCloseTimeValid.value!!
     }
 
     fun setShopStatus(status: String) {
@@ -258,5 +358,29 @@ class OtherSettingViewModel : ViewModel() {
     fun restartFragment() {
         _genderConfirmation.value = false
         _genderDialogAlert.value = false
+    }
+
+    fun getDays(days: String) {
+        mutableDays.value = days
+    }
+
+    fun getOpenTime(openTime: String) {
+        mutableOpenTime.value = openTime
+    }
+
+    fun getCLoseTime(closeTime: String) {
+        mutableCloseTime.value = closeTime
+    }
+
+    fun getForceClose(isForceClose: Boolean) {
+        mutableIsForceClose.value = isForceClose
+    }
+
+    fun setAutoOnOffTrue(autoOnOff: Boolean){
+        mutableAutoOnOff.value = true
+    }
+
+    fun setAutoOnOffFalse(autoOnOff: Boolean){
+        mutableAutoOnOff.value = false
     }
 }

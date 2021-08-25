@@ -24,8 +24,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
 
-    //var size: String = "0"
-
     private val mutableSize = MutableLiveData(0)
     val size: LiveData<Int> get() = mutableSize
 
@@ -64,14 +62,8 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
 
-                Log.e("size", categoryResponse?.results?.size.toString())
                 mutableSize.value = categoryResponse?.results?.size
-                Log.e("size on response", mutableSize.value.toString())
                 mutableisLoading.value = false
 
                 if (categoryResult != null) {
@@ -82,11 +74,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                     categoryAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = categoryAdapter
                     setCategoryList(categoryResult)
-                    //val categoryName = categoryAdapter.categoryList
-                    mutableCategoryName.value =
-                        categoryAdapter.categoryList.elementAt(0).category_name
-                    //val categoryFirst = categoryAdapter.categoryList.elementAt(1).category_name
-                    //Log.e("second", categoryFirst)
                     mutableisLoading.value = false
                 }
             }
