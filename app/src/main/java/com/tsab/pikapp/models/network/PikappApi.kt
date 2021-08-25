@@ -155,6 +155,17 @@ interface PikappApi {
     ): Call<BaseResponse>
 
     @GET("merchant/v1/menu/{mid}/category/list/")
+    fun listMenuCategory(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") merchantId: String
+    ): Single<ListMenuCategoryResponse>
+
+    // TODO: Delete old API call
+    @GET("merchant/v1/menu/{mid}/category/list/")
     fun getMenuCategoryList(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
@@ -458,7 +469,8 @@ interface PikappApi {
             @Part ("dob") dob: RequestBody,
             @Part ("bank_account_no") bank_account_no: RequestBody,
             @Part ("bank_account_name") bank_account_name: RequestBody,
-            @Part ("bank_name") bank_name: RequestBody
+            @Part ("bank_name") bank_name: RequestBody,
+            @Part ("mid") mid: RequestBody
     ): Call<BaseResponse>
 
     @POST("merchant/v1/shop/management/update/")
@@ -471,4 +483,26 @@ interface PikappApi {
             @Header("mid") mid: String,
             @Body shopManagementUpdateRequest: ShopManagementUpdateRequest
     ): Call<BaseResponse>
+
+    @POST("merchant/v1/merchant/change/pin/")
+    fun changePinMerchantDisposable(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body pinModel: pinMerchant
+    ): Single<OtherBaseResponse>
+
+    @POST("merchant/v1/merchant/change/pin/")
+    fun changePinMerchant(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body pinModel: pinMerchant
+    ): Call<OtherBaseResponse>
 }

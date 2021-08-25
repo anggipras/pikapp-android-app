@@ -23,7 +23,7 @@ import com.tsab.pikapp.databinding.FragmentShopManagementBinding
 import com.tsab.pikapp.util.getDay
 import com.tsab.pikapp.util.getHour
 import com.tsab.pikapp.util.getTimestamp
-import com.tsab.pikapp.view.categoryMenu.CategoryNavigation
+import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.homev2.menu.MenuNavigation
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.fragment_shop_management.*
@@ -64,13 +64,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
             requireActivity().onBackPressed()
         }
 
-        /*dataBinding.autoTurnToggle.setOnCheckedChangeListener { _, isChecked ->
-            autoTurn = isChecked
-            otherSettingViewModel.getAutoOnOff(autoTurn)
-        }*/
-
         dataBinding.autoTurnToggle.setOnClickListener {
-            //showDialog()
             showPopup()
         }
 
@@ -84,8 +78,8 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     }
 
     private fun observeViewModel(){
-        otherSettingViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            if (!isLoading) {
+        otherSettingViewModel.Loading.observe(viewLifecycleOwner, Observer { loading ->
+            if (!loading) {
                 Log.e("observe result", otherSettingViewModel.shopScheduleResult.value.toString())
                 otherSettingViewModel.shopScheduleResult.value?.forEach { resSchedule ->
                     if (resSchedule.days == day){
@@ -125,36 +119,6 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         dataBinding.restaurantStatusNow.text = getString(R.string.open_status_title).toUpperCase()
         dataBinding.restaurantStatusNow.setTextColor(resources.getColor(R.color.green))
         dataBinding.restaurantStatusDetail.text = getString(R.string.sm_restaurant_status_detail_open)
-    }
-
-    private fun showDialog(){
-        val builder = AlertDialog.Builder(activity)
-        val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.open_close_restaurant_popup, null)
-        val popupWindow = PopupWindow(dialogLayout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        val closeBtn = dialogLayout.findViewById<ImageView>(R.id.closeBtn)
-        val continueBtn = dialogLayout.findViewById<TextView>(R.id.buttonContinue)
-        val backBtn = dialogLayout.findViewById<Button>(R.id.buttonBack)
-
-        with(builder){
-            val dialog = builder.create()
-            closeBtn.setOnClickListener{
-                dialog.dismiss()
-                Log.e("msg", "dismiss")
-            }
-
-            continueBtn.setOnClickListener {
-                dialog.dismiss()
-                Log.e("msg", "continue")
-            }
-
-            backBtn.setOnClickListener {
-                dialog.dismiss()
-                Log.e("msg", "dismiss")
-            }
-            setView(dialogLayout)
-            show()
-        }
     }
 
     private fun showPopup(){
@@ -223,6 +187,5 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         otherSettingViewModel.getForceClose(isForceClose!!)
 
         navController?.navigate(R.id.navigateTo_shopMgmtStatusFragment)
-//        Toast.makeText(requireActivity(), shopScheduleDay + ", " + closeTime + "-" + openTime, Toast.LENGTH_SHORT).show()
     }
 }

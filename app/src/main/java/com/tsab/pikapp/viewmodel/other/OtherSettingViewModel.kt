@@ -14,18 +14,21 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
-import retrofit2.Call
-import retrofit2.Callback
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import retrofit2.*
 import retrofit2.Response
-import java.io.File
 
 class OtherSettingViewModel : ViewModel() {
-
     private var sessionManager = SessionManager()
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
+    private val disposable = CompositeDisposable()
+    private val apiService = PikappApiService()
 
-    //Profile Setting Variable
+    // Profile Setting Variable
     val profileFullName = MutableLiveData<String>()
     val profileDOB = MutableLiveData<String>()
     val profileGender = MutableLiveData<String>()
@@ -36,16 +39,19 @@ class OtherSettingViewModel : ViewModel() {
     val _genderDialogAlert = MutableLiveData<Boolean>()
     val _birthdaySelection = MutableLiveData<String>()
 
-    //Information Setting Variable
+    // Information Setting Variable
     val _restaurantBanner = MutableLiveData(Uri.EMPTY)
     val _restaurantLogo = MutableLiveData(Uri.EMPTY)
 
-    //Pin Setting Variable
+    // Pin Setting Variable
+    val currentPin = MutableLiveData<String>()
     val _newPin = MutableLiveData<String>()
+    val loadPin = MutableLiveData<Boolean>()
+    val pinAlert = MutableLiveData<String>()
 
-    //Shop Management Setting Variable
+    // Shop Management Setting Variable
     lateinit var shopManagementAdapter: ShopManagementAdapter
-    var _shopStatus = MutableLiveData<String>()
+    private var _shopStatus = MutableLiveData<String>()
 
     private val mutableDays = MutableLiveData("")
     val days: LiveData<String> get() = mutableDays
@@ -74,12 +80,15 @@ class OtherSettingViewModel : ViewModel() {
         mutableScheduleList.value = shopScheduleResult
     }
 
-    private val mutableisLoading = MutableLiveData(true)
-    val isLoading: LiveData<Boolean> get() = mutableisLoading
+    private val mutableLoading = MutableLiveData(true)
+    val Loading: LiveData<Boolean> get() = mutableLoading
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Loading
+    var isLoading = MutableLiveData<Boolean>()
+    var isLoadingBackButton = MutableLiveData(false)
 
-    //Profile Setting Method
+    // Profile Setting Method
     fun getProfileDetail() {
         val fullName = sessionManager.getMerchantProfile()?.fullName!!
         val dateOfBirth = sessionManager.getDOBProfile()!!
@@ -94,25 +103,88 @@ class OtherSettingViewModel : ViewModel() {
     }
 
     fun setGenderAndDOB() {
-        val gender = when(_genderSelection.value) {
+        val gender = when (_genderSelection.value) {
             "Perempuan" -> "FEMALE"
             else -> "MALE"
         }
+
         sessionManager.setDOBProfile(_birthdaySelection.value)
         sessionManager.setGenderProfile(gender)
-        sessionManager.setProfileNum(1)
+
+        when (sessionManager.getProfileNum()) {
+            0 -> sessionManager.setProfileNum(1)
+            1 -> sessionManager.setProfileNum(1)
+            2 -> sessionManager.setProfileNum(2)
+        }
     }
 
     fun setDefaultGender() {
         _genderSelection.value = null
     }
 
-    //Pin Setting Method
+    // Pin Setting Method
+    fun setCurrentPin(pin: String?) {
+        currentPin.value = pin!!
+    }
+
     fun setNewPin(pin: String?) {
         _newPin.value = pin!!
     }
 
-    //Information Setting Method
+    fun onLoadChangePin(bool: Boolean) {
+        loadPin.value = bool
+    }
+
+    fun changePinAlert(alert: String) {
+        pinAlert.value = alert
+    }
+
+    fun changePin() {
+        onLoadChangePin(true)
+        val timeStamp = getTimestamp()
+        val email = sessionManager.getUserData()!!.email!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        val signature = getSignature(email, timeStamp)
+        val token = sessionManager.getUserToken()!!
+        val uuid = getUUID()
+        val clientId = getClientID()
+
+        val pinModel = createPinModel(mid)
+
+        PikappApiService().api.changePinMerchant("application/json", uuid, timeStamp, clientId, signature, token, pinModel)
+            .enqueue(object : Callback<OtherBaseResponse> {
+                override fun onResponse(call: Call<OtherBaseResponse>, response: Response<OtherBaseResponse>) {
+                    if (response.code() == 200) {
+                        changePinAlert("APPROVED/OK")
+                    } else {
+                        val gson = Gson()
+                        val type = object : TypeToken<OtherBaseResponse>() {}.type
+
+
+                        var errorResponse: OtherBaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
+
+                        if (errorResponse != null) {
+                            changePinAlert(errorResponse.errMessage!!)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<OtherBaseResponse>, t: Throwable) {
+                    Log.d("ONFAILURE", t.toString())
+                }
+
+            })
+    }
+
+    private fun createPinModel(mid: String) : pinMerchant {
+        return pinMerchant(
+            oldPin = currentPin.value,
+            mid = mid,
+            pin = _newPin.value
+        )
+    }
+
+    // Information Setting Method
     fun setBannerImg(banner: Uri?) {
         _restaurantBanner.value = banner
     }
@@ -121,51 +193,7 @@ class OtherSettingViewModel : ViewModel() {
         _restaurantLogo.value = logo
     }
 
-    fun uploadMerchantProfile(banner: File, logo: File, merchName: String?, merchAddress: String?) {
-        val timestamp = getTimestamp()
-        val email = sessionManager.getUserData()!!.email!!
-        val signature = getSignature(email, timestamp)
-        val token = sessionManager.getUserToken()!!
-
-        //from session
-        val gender = sessionManager.getGenderProfile()
-        val dob = sessionManager.getDOBProfile()
-        val bankAccountNo = sessionManager.getMerchantProfile()?.bankAccountNo
-        val bankAccountName = sessionManager.getMerchantProfile()?.bankAccountName
-        val bankName = sessionManager.getMerchantProfile()?.bankName
-
-        Log.d("GENDER", gender.toString())
-        Log.d("DOB", dob.toString())
-        Log.d("BANNER", banner.toString())
-        Log.d("LOGO", logo.toString())
-        Log.d("NAME", merchName.toString())
-        Log.d("ADDRESS", merchAddress.toString())
-
-//        PikappApiService().api.uploadMerchantProfile(getUUID(), timestamp, getClientID(), signature, token,
-//                MultipartBody.Part.createFormData("file_01", banner.name, RequestBody.create(MediaType.parse("multipart/form-data"), banner)),
-//                MultipartBody.Part.createFormData("file_01", logo.name, RequestBody.create(MediaType.parse("multipart/form-data"), logo)),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), merchName),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), merchAddress),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), gender),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), dob),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountNo),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountName),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), bankName)
-//        ).enqueue(object : Callback<BaseResponse> {
-//            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-//                Log.d("ONRESPONSE", response.body().toString())
-//                Log.d("UPLOAAAADEEED", "it's uploaded")
-//                sessionManager.setProfileNum(2)
-//            }
-//
-//            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-//                Log.d("FAAAILEEEEED", t.message.toString())
-//                Log.d("FAAAILEEEEED", "it's failed")
-//            }
-//        })
-    }
-
-    //Shop Management Setting Method
+    // Shop Management Setting Method
     fun setGender(bool: Boolean, gender: String) {
         _genderConfirmation.value = bool
         _genderSelection.value = gender
@@ -179,7 +207,11 @@ class OtherSettingViewModel : ViewModel() {
         _genderDialogAlert.value = bool
     }
 
-    fun getMerchantSchedule(baseContext: Context, shopSchedule_recyclerView: RecyclerView, listener: ShopManagementAdapter.OnItemClickListener) {
+    fun getMerchantSchedule(
+        baseContext: Context,
+        shopSchedule_recyclerView: RecyclerView,
+        listener: ShopManagementAdapter.OnItemClickListener
+    ) {
         val uuid = getUUID()
         val timestamp = getTimestamp()
         val clientId = getClientID()
@@ -188,28 +220,28 @@ class OtherSettingViewModel : ViewModel() {
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
 
-//        Log.d("uuid", uuid)
-//        Log.d("timestamp", timestamp)
-//        Log.d("clientId", clientId)
-//        Log.d("signature", signature)
-//        Log.d("token", token)
-//        Log.d("mid", mid)
-
         PikappApiService().api.getMerchantShopManagement(
-                uuid, timestamp, clientId, signature, token, mid
+            uuid, timestamp, clientId, signature, token, mid
         ).enqueue(object : Callback<MerchantTimeManagement> {
             override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
                 Log.e("getTimeManagementFailed", t.message.toString())
             }
 
-            override fun onResponse(call: Call<MerchantTimeManagement>, response: Response<MerchantTimeManagement>) {
+            override fun onResponse(
+                call: Call<MerchantTimeManagement>,
+                response: Response<MerchantTimeManagement>
+            ) {
                 val timeManagementResult = response.body()?.results?.timeManagement
+                shopManagementAdapter = ShopManagementAdapter(
+                    baseContext,
+                    timeManagementResult as MutableList<ShopSchedule>,
+                    listener
+                )
 
-                shopManagementAdapter = ShopManagementAdapter(baseContext, timeManagementResult as MutableList<ShopSchedule>, listener)
                 shopManagementAdapter.notifyDataSetChanged()
                 shopSchedule_recyclerView.adapter = shopManagementAdapter
                 setShopSchedule(timeManagementResult)
-                mutableisLoading.value = false
+                mutableLoading.value = false
                 Log.e("schedule vm", shopScheduleResult.value.toString())
                 Log.e("schdule", mutableScheduleList.value.toString())
             }
@@ -294,7 +326,48 @@ class OtherSettingViewModel : ViewModel() {
         _shopStatus.value = status
     }
 
-    //RESTART GENDER DIALOG
+    // Loading
+    fun loadProcess(bool: Boolean) {
+        isLoading.value = bool
+    }
+
+    // Load merchant profile
+    fun getMerchantProfile() {
+        val timeStamp = getTimestamp()
+        val email = sessionManager.getUserData()!!.email!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        val signature = getSignature(email, timeStamp)
+        val token = sessionManager.getUserToken()!!
+        val uuid = getUUID()
+        val clientId = getClientID()
+
+        disposable.add(
+            PikappApiService().api.getMerchantProfile(
+                uuid, timeStamp, clientId, signature, token, mid
+            )
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
+                    override fun onSuccess(t: MerchantProfileResponse) {
+                        t.results?.let { res ->
+                            merchantProfileRetrieved(res)
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {}
+                })
+        )
+    }
+
+    fun merchantProfileRetrieved(response: MerchantProfileData) {
+        sessionManager.setMerchantProfile(response)
+        sessionManager.setProfileNum(2)
+
+        loadProcess(false)
+        isLoadingBackButton.value = true
+    }
+
+    // Restart gender dialog
     fun restartFragment() {
         _genderConfirmation.value = false
         _genderDialogAlert.value = false

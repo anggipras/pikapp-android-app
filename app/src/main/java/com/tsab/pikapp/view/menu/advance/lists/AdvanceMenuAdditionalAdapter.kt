@@ -15,7 +15,7 @@ class AdvanceMenuAdditionalAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView = view.findViewById(R.id.itemTitleText)
-        val priceText: TextView = view.findViewById(R.id.itemPilihanText)
+        val priceText: TextView = view.findViewById(R.id.itemDescriptionText)
     }
 
     interface OnItemClickListener {
@@ -24,7 +24,8 @@ class AdvanceMenuAdditionalAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_advance_menu, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_title_description_action, parent, false)
         return ViewHolder(view)
     }
 

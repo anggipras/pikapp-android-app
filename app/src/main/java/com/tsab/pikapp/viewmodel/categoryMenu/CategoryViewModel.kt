@@ -13,14 +13,64 @@ import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.categoryMenu.MenuCategoryAdapter
-import com.tsab.pikapp.view.categoryMenu.SortCategoryAdapter
+import com.tsab.pikapp.view.menuCategory.MenuCategoryAdapter
+import com.tsab.pikapp.view.menuCategory.SortCategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
 class CategoryViewModel(application: Application) : BaseViewModel(application) {
+    private val TAG = javaClass.simpleName
+
+    private var sessionManager = SessionManager(getApplication())
+
+    private val apiService = PikappApiService()
+    private val disposable = CompositeDisposable()
+
+    /**
+     * General screen flow.
+     */
+    private val mutableIsLoading = MutableLiveData<Boolean>(true)
+    val isLoading: LiveData<Boolean> = mutableIsLoading
+    fun setLoading(isLoading: Boolean) {
+        mutableIsLoading.value = isLoading
+    }
+
+    private val mutableCategoryList = MutableLiveData<List<MenuCategory>>(listOf())
+    val categoryList: LiveData<List<MenuCategory>> = mutableCategoryList
+    fun setCategoryList(categoryList: List<MenuCategory>) {
+        mutableCategoryList.value = categoryList
+    }
+
+    fun fetchCategoryList() {
+        setLoading(true)
+        disposable.add(
+            apiService.listMenuCategory(
+                email = sessionManager.getUserData()?.email ?: "",
+                token = sessionManager.getUserToken() ?: "",
+                merchantId = sessionManager.getUserData()?.mid ?: ""
+            ).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<ListMenuCategoryResponse>() {
+                    override fun onSuccess(response: ListMenuCategoryResponse) {
+                        Log.d(TAG, response.results.toString())
+
+                        setCategoryList(response.results)
+                        setLoading(false)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.d(TAG, e.message.toString())
+                        setLoading(false)
+                    }
+                })
+        )
+    }
+
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
     var activation: Boolean = true
@@ -59,88 +109,27 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
-        PikappApiService().api.getMenuCategoryList(
-            getUUID(), timestamp, getClientID(), signature, token, mid
-        ).enqueue(object : Callback<MerchantListCategoryResponse> {
-            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
-                Log.e("failed", t.message.toString())
-            }
+        disposable.add(
+            apiService.listMenuCategory(
+                email = sessionManager.getUserData()?.email ?: "",
+                token = sessionManager.getUserToken() ?: "",
+                merchantId = sessionManager.getUserData()?.mid ?: ""
+            ).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<ListMenuCategoryResponse>() {
+                    override fun onSuccess(response: ListMenuCategoryResponse) {
+                        Log.d(TAG, response.results.toString())
 
-            override fun onResponse(
-                call: Call<MerchantListCategoryResponse>,
-                response: Response<MerchantListCategoryResponse>
-            ) {
+                        // TODO: Update sort functionality.
+                        setLoading(false)
+                    }
 
-                val categoryResponse = response.body()
-                val categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
-
-                Log.e("size", categoryResponse?.results?.size.toString())
-                size = categoryResponse?.results?.size.toString()
-                Log.e("size on response", size)
-
-                sortCategoryAdapter = SortCategoryAdapter(
-                    baseContext,
-                    categoryResult as MutableList<CategoryListResult>,
-                    listener
-                )
-                sortCategoryAdapter.notifyDataSetChanged()
-                recyclerview_category.adapter = sortCategoryAdapter
-
-            }
-
-        })
-    }
-
-    fun getMenuCategoryList(
-        baseContext: Context,
-        recyclerview_category: RecyclerView,
-        listener: MenuCategoryAdapter.OnItemClickListener
-    ) {
-        var sessionManager = SessionManager(getApplication())
-        val email = sessionManager.getUserData()!!.email!!
-        val token = sessionManager.getUserToken()!!
-        val timestamp = getTimestamp()
-        val signature = getSignature(email, timestamp)
-        val mid = sessionManager.getUserData()!!.mid!!
-
-        PikappApiService().api.getMenuCategoryList(
-            getUUID(), timestamp, getClientID(), signature, token, mid
-        ).enqueue(object : Callback<MerchantListCategoryResponse> {
-            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
-                Log.e("failed", t.message.toString())
-            }
-
-            override fun onResponse(
-                call: Call<MerchantListCategoryResponse>,
-                response: Response<MerchantListCategoryResponse>
-            ) {
-
-                val categoryResponse = response.body()
-                val categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
-
-                Log.e("size", categoryResponse?.results?.size.toString())
-                size = categoryResponse?.results?.size.toString()
-                Log.e("size on response", size)
-
-                menuCategoryAdapter = MenuCategoryAdapter(
-                    baseContext,
-                    categoryResult as MutableList<CategoryListResult>,
-                    listener
-                )
-                menuCategoryAdapter.notifyDataSetChanged()
-                recyclerview_category.adapter = menuCategoryAdapter
-
-            }
-
-        })
+                    override fun onError(e: Throwable) {
+                        Log.d(TAG, e.message.toString())
+                        setLoading(false)
+                    }
+                })
+        )
     }
 
     fun postCategory(categoryName: String, baseContext: Context) {
@@ -263,10 +252,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         })
     }
 
-    fun delete() {
-
-    }
-
     fun validateNama(categoryName: String): Boolean {
         if (categoryName.isEmpty() || categoryName.isBlank()) {
             mutableNamaCategoryError.value = "Nama Kategori Menu tidak boleh kosong"
@@ -297,5 +282,4 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         mutableCategoryId.value = id
         return mutableCategoryId.value.toString()
     }
-
 }

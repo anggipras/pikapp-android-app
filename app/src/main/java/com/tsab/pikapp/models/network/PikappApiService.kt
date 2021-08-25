@@ -142,6 +142,24 @@ class PikappApiService {
         )
     }
 
+    // MENU CATEGORY
+    fun listMenuCategory(
+        email: String,
+        token: String,
+        merchantId: String
+    ): Single<ListMenuCategoryResponse> {
+        val timestamp = getTimestamp()
+
+        return api.listMenuCategory(
+            requestId = getUUID(),
+            requestTimestamp = timestamp,
+            clientId = getClientID(),
+            signature = getSignature(email, timestamp),
+            token = token,
+            merchantId = merchantId
+        )
+    }
+
     // MERCHANT
     fun getStoreProductList(
         email: String,
@@ -443,4 +461,25 @@ class PikappApiService {
         token = token,
         productId = pid
     )
+
+    fun changePinOfMerchant(
+        email: String,
+        token: String,
+        oldPin: String?,
+        mid: String?,
+        newPin: String?
+    ): Single<OtherBaseResponse> {
+        val timeStamp = getTimestamp()
+        val signature = getSignature(email, timeStamp)
+        val pinModel = pinMerchant(oldPin, mid, newPin)
+
+        return api.changePinMerchantDisposable(
+            uuid = getUUID(),
+            time = timeStamp,
+            clientID = getClientID(),
+            signature = signature,
+            token = token,
+            pinModel = pinModel
+        )
+    }
 }

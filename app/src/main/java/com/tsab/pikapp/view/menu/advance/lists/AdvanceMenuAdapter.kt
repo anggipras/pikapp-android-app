@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.AdvanceMenu
 
-
 class AdvanceMenuAdapter(
     private var advanceMenuList: MutableList<AdvanceMenu>,
     private val onItemClickListener: OnItemClickListener
@@ -16,7 +15,7 @@ class AdvanceMenuAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView = view.findViewById(R.id.itemTitleText)
-        val priceText: TextView = view.findViewById(R.id.itemPilihanText)
+        val priceText: TextView = view.findViewById(R.id.itemDescriptionText)
     }
 
     interface OnItemClickListener {
@@ -25,7 +24,8 @@ class AdvanceMenuAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_advance_menu, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_title_description_action, parent, false)
         return ViewHolder(view)
     }
 

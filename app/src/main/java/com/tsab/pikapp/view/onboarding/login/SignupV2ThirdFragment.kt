@@ -178,21 +178,19 @@ class SignupV2ThirdFragment : Fragment() {
         val latarOutputStream = FileOutputStream(latarFile)
         latarInputStream.copyTo(latarOutputStream)
 
-        val branch = "${viewModel.namaRestoran.value} Branch"
-
         PikappApiService().api.uploadRegister(
             getUUID(), getClientID(), getTimestamp(),
             MultipartBody.Part.createFormData(
-                "file_01", ktpFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), ktpFile)
+                "file_01", latarFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
             ),
             MultipartBody.Part.createFormData(
                 "file_02", logoFile.name,
                 RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
             ),
             MultipartBody.Part.createFormData(
-                "file_03", latarFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
+                "file_03", ktpFile.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"), ktpFile)
             ),
             RequestBody.create(
                 MediaType.parse("multipart/form-data"),
@@ -208,7 +206,7 @@ class SignupV2ThirdFragment : Fragment() {
             ),
             RequestBody.create(
                 MediaType.parse("multipart/form-data"),
-                branch
+                viewModel.fullName.value!!
             ),
             RequestBody.create(
                 MediaType.parse("multipart/form-data"),
@@ -240,7 +238,7 @@ class SignupV2ThirdFragment : Fragment() {
             ),
             RequestBody.create(
                 MediaType.parse("multipart/form-data"),
-                "No Bank"
+                viewModel.namaBank.value!!
             ),
             RequestBody.create(
                 MediaType.parse("multipart/form-data"),

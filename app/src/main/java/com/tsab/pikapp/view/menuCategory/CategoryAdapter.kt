@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.categoryMenu
+package com.tsab.pikapp.view.menuCategory
 
 import android.content.Context
 import android.view.LayoutInflater

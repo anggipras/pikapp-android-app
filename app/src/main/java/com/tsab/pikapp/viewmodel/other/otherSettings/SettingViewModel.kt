@@ -81,7 +81,7 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun createToast(m: String) {
-        Toast.makeText(getApplication(), m, Toast.LENGTH_SHORT).show()
+        Toast.makeText(getApplication(), m, Toast.LENGTH_LONG).show()
     }
 
     fun setUserNotif() {

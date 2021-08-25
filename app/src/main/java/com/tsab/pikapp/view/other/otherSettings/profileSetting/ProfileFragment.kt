@@ -47,6 +47,8 @@ class ProfileFragment : Fragment() {
                         if (!viewModel._genderSelection.value.isNullOrEmpty() && !viewModel._birthdaySelection.value.isNullOrEmpty()) {
                             viewModel.setGenderAndDOB()
                             Navigation.findNavController(view).popBackStack()
+                        } else if(viewModel.profileGender.value != "DEFAULT_GENDER" || viewModel.profileDOB.value != "DEFAULT_DOB") {
+                            Navigation.findNavController(view).popBackStack()
                         } else {
                             Toast.makeText(requireActivity(), "Mohon perbarui juga jenis kelamin atau tanggal lahir", Toast.LENGTH_SHORT).show()
                         }
@@ -78,11 +80,13 @@ class ProfileFragment : Fragment() {
         }
 
         dataBinding.backButtonProfile.setOnClickListener {
-            if (viewModel._genderSelection.value.isNullOrEmpty() || viewModel._birthdaySelection.value.isNullOrEmpty()) {
-                Toast.makeText(requireActivity(), "Mohon perbarui juga jenis kelamin atau tanggal lahir", Toast.LENGTH_SHORT).show()
-            } else {
+            if (!viewModel._genderSelection.value.isNullOrEmpty() && !viewModel._birthdaySelection.value.isNullOrEmpty()) {
                 viewModel.setGenderAndDOB()
                 Navigation.findNavController(view).popBackStack()
+            } else if(viewModel.profileGender.value != "DEFAULT_GENDER" || viewModel.profileDOB.value != "DEFAULT_DOB") {
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                Toast.makeText(requireActivity(), "Mohon perbarui juga jenis kelamin atau tanggal lahir", Toast.LENGTH_SHORT).show()
             }
         }
 

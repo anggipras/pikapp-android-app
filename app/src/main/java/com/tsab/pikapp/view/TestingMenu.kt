@@ -54,6 +54,7 @@ class TestingMenu : AppCompatActivity() {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
+        // TODO: Update API call.
         PikappApiService().api.getMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {
