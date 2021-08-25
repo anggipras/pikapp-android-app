@@ -145,5 +145,21 @@
 
     <!-- Other Fragment Screen-->
     <string name="shop_daily_status">%s, %s</string>
+    <string name="menu_yang_anda_cari_tidak_ditemukan">Menu Yang Anda Cari Tidak Ditemukan</string>
+    <string name="no_found">no found</string>
+    <string name="header">header</string>
+    <string name="test">test</string>
+    <string name="gambar_menu">gambar menu</string>
+    <string name="cari_menu">Cari Menu</string>
+    <string name="rekening_bank">Rekening Bank</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="nama_pemilik_rekening">Nama Pemilik Rekening</string>
+    <string name="nama_bank">Nama Bank</string>
+    <string name="nomor_rekening">Nomor Rekening</string>
+    <string name="ubah">Ubah</string>
+    <string name="masukkan_pin_anda">Masukkan Pin Anda</string>
+    <string name="ubah_rekening_bank">Ubah Rekening Bank</string>
+    <string name="must">*</string>
+    <string name="masukkan_nama_pemilik_rekening">Masukkan Nama Pemilik Rekening</string>
 
 </resources>

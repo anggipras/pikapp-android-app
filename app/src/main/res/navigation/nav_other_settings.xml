@@ -28,6 +28,9 @@
         <action
             android:id="@+id/navigateTo_shopManagementFragment"
             app:destination="@id/shopManagementFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_dataBankFragment"
+            app:destination="@id/dataBankFragment" />
     </fragment>
     <fragment
         android:id="@+id/informationFragment"
@@ -102,4 +105,37 @@
         android:name="com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopMgmtStatusFragment"
         android:label="fragment_shop_mgmt_status"
         tools:layout="@layout/fragment_shop_mgmt_status" />
+    <fragment
+        android:id="@+id/dataBankFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.DataBankFragment"
+        android:label="fragment_data_bank"
+        tools:layout="@layout/fragment_data_bank" >
+        <action
+            android:id="@+id/action_dataBankFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <action
+            android:id="@+id/action_dataBankFragment_to_pinBankFragment"
+            app:destination="@id/pinBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pinBankFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.PinBankFragment"
+        android:label="fragment_pin_bank"
+        tools:layout="@layout/fragment_pin_bank" >
+        <action
+            android:id="@+id/action_pinBankFragment_to_dataBankFragment"
+            app:destination="@id/dataBankFragment" />
+        <action
+            android:id="@+id/action_pinBankFragment_to_editRekFragment"
+            app:destination="@id/editRekFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editRekFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.EditRekFragment"
+        android:label="fragment_edit_rek"
+        tools:layout="@layout/fragment_edit_rek" >
+        <action
+            android:id="@+id/action_editRekFragment_to_dataBankFragment"
+            app:destination="@id/dataBankFragment" />
+    </fragment>
 </navigation>
