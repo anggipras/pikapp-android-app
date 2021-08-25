@@ -242,8 +242,6 @@ class OtherSettingViewModel : ViewModel() {
                 shopSchedule_recyclerView.adapter = shopManagementAdapter
                 setShopSchedule(timeManagementResult)
                 mutableLoading.value = false
-                Log.e("schedule vm", shopScheduleResult.value.toString())
-                Log.e("schdule", mutableScheduleList.value.toString())
             }
 
         })
@@ -262,17 +260,6 @@ class OtherSettingViewModel : ViewModel() {
         shopStatusReq.openTime = openTime.value
         shopStatusReq.isForceClose = isForceClose.value
         shopStatusReq.autoOnOff = autoOnOff.value
-
-        Log.e("token", token)
-        Log.e("timestamp", timestamp)
-        Log.e("signature", signature)
-        Log.e("mid", mid)
-
-        Log.e("status days", shopStatusReq.days)
-        Log.e("status close time", shopStatusReq.closeTime)
-        Log.e("status open time", shopStatusReq.openTime)
-        Log.e("status force close", shopStatusReq.isForceClose.toString())
-        Log.e("status auto on off", shopStatusReq.autoOnOff.toString())
 
         PikappApiService().api.updateShopManagement(
                 getUUID(), timestamp, getClientID(), signature, token, mid, shopStatusReq

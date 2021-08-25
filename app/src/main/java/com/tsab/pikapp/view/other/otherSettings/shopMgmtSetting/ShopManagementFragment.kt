@@ -69,10 +69,8 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         }
 
         hour = getHour()
-        Log.e("hour", hour)
 
         day = getDay().toUpperCase()
-        Log.e("day", day)
 
         observeViewModel()
     }
@@ -80,28 +78,22 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     private fun observeViewModel(){
         otherSettingViewModel.Loading.observe(viewLifecycleOwner, Observer { loading ->
             if (!loading) {
-                Log.e("observe result", otherSettingViewModel.shopScheduleResult.value.toString())
                 otherSettingViewModel.shopScheduleResult.value?.forEach { resSchedule ->
                     if (resSchedule.days == day){
-                        Log.e("bisa", "mantap")
                         if(resSchedule.dailyStatus == "OPEN"){
                             when {
                                 hour < resSchedule.openTime.toString() -> {
                                     closedShop()
-                                    Log.e("status", "tutup gan tokonya")
                                 }
                                 hour > resSchedule.closeTime.toString() -> {
                                     closedShop()
-                                    Log.e("status", "tutup gan tokonya")
                                 }
                                 else -> {
                                     openedShop()
-                                    Log.e("status", "buka gan tokonya")
                                 }
                             }
                         }else{
                             closedShop()
-                            Log.e("status", "tutup gan tokonya")
                         }
                     }
                 }
@@ -147,7 +139,6 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
                 otherSettingViewModel.setAutoOnOffTrue(autoTurn)
                 popupWindow.dismiss()
                 dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
-                Log.e("auto turn", otherSettingViewModel.autoOnOff.value.toString())
             }
 
             buttonContinue.setOnClickListener {
@@ -155,19 +146,16 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
                 otherSettingViewModel.setAutoOnOffFalse(autoTurn)
                 popupWindow.dismiss()
                 dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_off)
-                Log.e("auto turn", otherSettingViewModel.autoOnOff.value.toString())
             }
 
             buttonBack.setOnClickListener {
                 otherSettingViewModel.setAutoOnOffTrue(autoTurn)
                 popupWindow.dismiss()
                 dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
-                Log.e("auto turn", otherSettingViewModel.autoOnOff.value.toString())
             }
         } else if (otherSettingViewModel.autoOnOff.value == false) {
             dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
             otherSettingViewModel.setAutoOnOffTrue(autoTurn)
-            Log.e("auto turn", otherSettingViewModel.autoOnOff.value.toString())
         }
     }
 

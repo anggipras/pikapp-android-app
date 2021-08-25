@@ -84,7 +84,6 @@ class MenuFragment : Fragment() {
             if (!isLoading) {
                 if (viewModel.size.value == 0) {
                     invisibleMenu()
-                    Log.e("intent observe", "pindah gan")
                     dataBinding.textview2.visibility = View.VISIBLE
                     dataBinding.imageView18.visibility = View.VISIBLE
                     dataBinding.addCategory.visibility = View.VISIBLE

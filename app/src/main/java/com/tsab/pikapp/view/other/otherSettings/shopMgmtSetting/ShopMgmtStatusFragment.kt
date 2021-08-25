@@ -40,8 +40,6 @@ class ShopMgmtStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.e("auto turn", otherSettingViewModel.autoOnOff.value.toString())
-
         dataBinding.openStatusInput.append(otherSettingViewModel.openTime.value)
         dataBinding.closeStatusInput.append(otherSettingViewModel.closeTime.value)
 
