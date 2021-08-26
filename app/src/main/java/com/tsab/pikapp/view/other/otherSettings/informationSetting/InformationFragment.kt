@@ -1,15 +1,10 @@
 package com.tsab.pikapp.view.other.otherSettings.informationSetting
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,9 +27,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.*
-import java.net.URL
-import java.util.*
-
 
 class InformationFragment : Fragment() {
     private lateinit var dataBinding: InformationFragmentBinding
