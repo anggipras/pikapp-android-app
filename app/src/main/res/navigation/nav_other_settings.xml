@@ -112,7 +112,8 @@
         tools:layout="@layout/fragment_data_bank" >
         <action
             android:id="@+id/action_dataBankFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:popUpTo="@id/settingFragment" />
         <action
             android:id="@+id/action_dataBankFragment_to_pinBankFragment"
             app:destination="@id/pinBankFragment" />
@@ -124,7 +125,8 @@
         tools:layout="@layout/fragment_pin_bank" >
         <action
             android:id="@+id/action_pinBankFragment_to_dataBankFragment"
-            app:destination="@id/dataBankFragment" />
+            app:destination="@id/dataBankFragment"
+            app:popUpTo="@id/dataBankFragment" />
         <action
             android:id="@+id/action_pinBankFragment_to_editRekFragment"
             app:destination="@id/editRekFragment" />
@@ -136,6 +138,7 @@
         tools:layout="@layout/fragment_edit_rek" >
         <action
             android:id="@+id/action_editRekFragment_to_dataBankFragment"
-            app:destination="@id/dataBankFragment" />
+            app:destination="@id/dataBankFragment"
+            app:popUpTo="@id/dataBankFragment" />
     </fragment>
 </navigation>
