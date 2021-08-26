@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import kotlinx.android.synthetic.main.other_fragment.*
@@ -22,6 +23,7 @@ class OtherFragment : Fragment() {
     private lateinit var dataBinding: OtherFragmentBinding
     private lateinit var viewModel: OtherViewModel
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,8 @@ class OtherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sessionManager.setHomeNav(3)
 
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
