@@ -203,14 +203,14 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Pengaturan"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="30sp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -228,14 +228,14 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Integrasi"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="30sp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -253,14 +253,14 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Laporan"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="30sp"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -278,7 +278,7 @@
                             android:fontFamily="@font/proximanova_semibold"
                             android:text="Bantuan"
                             android:textColor="@color/textSubtle"
-                            android:textSize="15sp" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
                 </LinearLayout>
