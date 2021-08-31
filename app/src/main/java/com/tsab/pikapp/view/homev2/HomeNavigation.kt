@@ -3,14 +3,20 @@ package com.tsab.pikapp.view.homev2
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.menu.OtherFragment
 import com.tsab.pikapp.view.homev2.menu.PromoFragment
 import com.tsab.pikapp.view.homev2.menu.TransactionFragment
+import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 
 class HomeNavigation : AppCompatActivity() {
@@ -19,6 +25,8 @@ class HomeNavigation : AppCompatActivity() {
     private val menuFragment = MenuFragment()
     private val promoFragment = PromoFragment()
     private val otherFragment = OtherFragment()
+    private val sessionManager = SessionManager()
+    val model: CategoryViewModel by viewModels()
 
     private lateinit var dataBinding: ActivityHomeNavigationBinding
 
@@ -26,7 +34,25 @@ class HomeNavigation : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         dataBinding = ActivityHomeNavigationBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
-        replaceFragment(transactionFragment)
+        when {
+            sessionManager.getHomeNav() == 0 -> {
+                replaceFragment(transactionFragment)
+                bottom_navigation.setSelectedItemId(R.id.nav_transaction)
+            }
+            sessionManager.getHomeNav() == 1 -> {
+                replaceFragment(menuFragment)
+                bottom_navigation.setSelectedItemId(R.id.nav_menu)
+            }
+            sessionManager.getHomeNav() == 2 -> {
+                replaceFragment(promoFragment)
+                bottom_navigation.setSelectedItemId(R.id.nav_promo)
+            }
+            sessionManager.getHomeNav() == 3 -> {
+                replaceFragment(otherFragment)
+                bottom_navigation.setSelectedItemId(R.id.nav_other)
+            }
+        }
+
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -60,6 +86,7 @@ class HomeNavigation : AppCompatActivity() {
             finishAffinity()
         } else {
             bottom_navigation.setSelectedItemId(R.id.nav_transaction)
+            sessionManager.setHomeNav(0)
         }
     }
 }

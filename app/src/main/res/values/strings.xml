@@ -15,7 +15,7 @@
     <string name="selanjutnya">Selanjutnya</string>
     <string name="kembali">Kembali</string>
     <string name="simpan">Simpan</string>
-
+    <string name="ya">Ya</string>
     <string name="star">*</string>
 
     <!-- Image content descriptions -->
@@ -126,8 +126,68 @@
     <string name="am_additional_harga_header">Harga</string>
     <string name="am_additional_harga_hint">contoh: 6000</string>
 
+    <!-- Shop Management (SM) screens -->
+    <string name="sm_header">Jam Buka Restoran</string>
+
+    <string name="sm_restaurant_status_title">Status Restoran</string>
+    <string name="sm_restaurant_status_detail_open">Restoran Anda sedang berada di jam buka</string>
+    <string name="sm_restaurant_status_detail_close">Restoran Anda sedang berada di jam tutup</string>
+    <string name="sm_restaurant_auto_status">Restoran akan buka dan tutup secara otomatis mengikuti jadwal restoran</string>
+    <string name="sm_restaurant_schedule_title">Jadwal Restoran</string>
+    <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis <br/>akan membuat status toko Anda tutup. <br/> Apakah Anda ingin melanjutkan?</string>
+
+    <string name="sm_status_header">Ubah Jadwal</string>
+
+    <string name="Buka_24_Jam">Buka 24 Jam</string>
+    <string name="Tutup">Tutup</string>
+    <string name="radio_button_3">Atur Jam</string>
+    <string name="open_status_title">Buka</string>
+
     <!-- Other Fragment Screen-->
     <string name="shop_daily_status">%s, %s</string>
+    <string name="menu_yang_anda_cari_tidak_ditemukan">Menu Yang Anda Cari Tidak Ditemukan</string>
+    <string name="no_found">no found</string>
+    <string name="header">header</string>
+    <string name="test">test</string>
+    <string name="gambar_menu">gambar menu</string>
+    <string name="cari_menu">Cari Menu</string>
+    <string name="rekening_bank">Rekening Bank</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="nama_pemilik_rekening">Nama Pemilik Rekening</string>
+    <string name="nama_bank">Nama Bank</string>
+    <string name="nomor_rekening">Nomor Rekening</string>
+    <string name="ubah">Ubah</string>
+    <string name="masukkan_pin_anda">Masukkan Pin Anda</string>
+    <string name="ubah_rekening_bank">Ubah Rekening Bank</string>
+    <string name="must">*</string>
+    <string name="masukkan_nama_pemilik_rekening">Masukkan Nama Pemilik Rekening</string>
+
+    <!--    Setting Fragment Screen-->
+    <string name="profile_setting">Profile</string>
+    <string name="information_setting">Informasi Restoran</string>
+    <string name="pin_setting">Ubah PIN</string>
+
+    <!--    Setting Profile Fragment Screen-->
+    <string name="nama_lengkap_profile">Nama Lengkap</string>
+    <string name="tanggal_lahir">Tanggal Lahir</string>
+    <string name="tambahkan_tanggal_lahir">Tambahkan tanggal lahir</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="tambahkan_jenis_kelamin">Tambahkan jenis kelamin</string>
+    <string name="email">Email</string>
+    <string name="no_handphone">No. Handphone</string>
+    <string name="pilih_jenis_kelamin">Pilih jenis kelamin yang sesuai dengan KTP Anda</string>
+    <string name="perempuan">Perempuan</string>
+    <string name="laki_laki">Laki-laki</string>
+
+    <!--    Setting Information Fragment Screen-->
+    <string name="nama_restoran">Nama Restoran</string>
+    <string name="alamat_restoran">Alamat Restoran</string>
+
+    <!--    Setting Pin Fragment Screen-->
+    <string name="buat_pin_baru">Buat PIN baru</string>
+    <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
+    <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>
+
 
     <!-- Omnichannel integration (oi) screens -->
     <string name="oi_tambah_toko">Tambah Toko</string>

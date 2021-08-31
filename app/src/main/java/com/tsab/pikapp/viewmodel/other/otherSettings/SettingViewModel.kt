@@ -93,6 +93,15 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
+    fun getUserNotif(): Int{
+        val userNotif = sessionManager.getProfileNum()
+        return if (userNotif != null) {
+            userNotif.toInt()
+        }else{
+            10
+        }
+    }
+
     override fun onCleared() {
         disposable.clear()
         super.onCleared()

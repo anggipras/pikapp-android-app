@@ -21,6 +21,7 @@ class SessionManager {
         private const val PREF_MERCHANT_DATA = "merchant data"
         private const val PREF_MERCHANT_DOB = "merchant dob"
         private const val PREF_MERCHANT_GENDER = "merchant gender"
+        private const val PREF_HOME_NAV = "home nav"
 
         private var prefs: SharedPreferences? = null
 
@@ -144,4 +145,12 @@ class SessionManager {
     fun setGenderProfile(gender: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_GENDER, gender) }
     fun getDOBProfile() = prefs?.getString(PREF_MERCHANT_DOB, null)
     fun getGenderProfile() = prefs?.getString(PREF_MERCHANT_GENDER, null)
+
+    fun setHomeNav(intData: Int){
+        prefs?.edit(commit = true) {
+            putInt(PREF_HOME_NAV, intData)
+        }
+    }
+
+    fun getHomeNav() = prefs?.getInt(PREF_HOME_NAV, 0)
 }

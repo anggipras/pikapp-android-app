@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -313,6 +314,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Log.e("SUCCEED", categoryId.value)
                     Log.e("Advance", advance.value)
+                    Toast.makeText(getApplication(), "Menu Berhasil Ditambahkan", Toast.LENGTH_LONG).show()
                 } else {
                     var errorResponse: BaseResponse? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)

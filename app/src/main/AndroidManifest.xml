@@ -20,6 +20,7 @@
 
         <activity android:name=".view.omni.integration.IntegrationActivity" />
 
+        <activity android:name=".view.homev2.SearchActivity"></activity>
         <activity android:name=".view.homev2.menu.MenuNavigation" />
         <activity android:name=".view.menu.UpdateMenuActivity" />
 
@@ -27,13 +28,16 @@
         <activity android:name=".view.menuCategory.CategoryNavigation" />
 
         <activity android:name=".view.loginv2.LoginRegisterActivity" />
+
         <activity
             android:name=".view.homev2.HomeNavigation"
             android:label="@string/title_activity_bottom_navigation" />
         <activity android:name=".view.other.OtherSettingsActivity" />
+
         <activity android:name=".view.RegisterV2Activity" />
         <activity android:name=".view.LoginV2Activity" />
         <activity android:name=".view.CarouselActivity" />
+
         <activity
             android:name=".view.AdvanceMenuActivity"
             android:screenOrientation="portrait"
@@ -45,7 +49,6 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="StoreOrderListActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -56,7 +59,6 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="OrderListActivity" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -93,7 +95,7 @@
 
         <activity
             android:name=".view.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

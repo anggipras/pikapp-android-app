@@ -473,6 +473,17 @@ interface PikappApi {
             @Part ("mid") mid: RequestBody
     ): Call<BaseResponse>
 
+    @POST("merchant/v1/shop/management/update/")
+    fun updateShopManagement(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body shopManagementUpdateRequest: ShopManagementUpdateRequest
+    ): Call<BaseResponse>
+
     @POST("merchant/v1/merchant/change/pin/")
     fun changePinMerchantDisposable(
         @Header("Content-Type") contentType: String? = "application/json",
@@ -494,6 +505,17 @@ interface PikappApi {
         @Header("token") token: String,
         @Body pinModel: pinMerchant
     ): Call<OtherBaseResponse>
+
+    @POST("merchant/v2/product-list/")
+    fun searchMenu(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body search: SearchRequest
+    ): Call<SearchResponse>
 
     // Omnichannel integration
     @DELETE("channel/v1/channel-integration/list")

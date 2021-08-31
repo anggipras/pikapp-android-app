@@ -2,9 +2,11 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,9 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCategoryListBinding
 import com.tsab.pikapp.models.model.MenuCategory
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
+import kotlinx.android.synthetic.main.activity_home_navigation.*
 
 class CategoryListFragment : Fragment() {
     private val viewModel: CategoryViewModel by activityViewModels()
@@ -25,6 +30,7 @@ class CategoryListFragment : Fragment() {
     private lateinit var dataBinding: FragmentCategoryListBinding
 
     private lateinit var categoryListAdapter: CategoryListAdapter
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +47,7 @@ class CategoryListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
+        sessionManager.setHomeNav(1)
 
         observeViewModel()
         attachInputListeners()
@@ -65,7 +72,9 @@ class CategoryListFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            activity?.finish()
+            Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                startActivity(this)
+            }
         }, view)
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {

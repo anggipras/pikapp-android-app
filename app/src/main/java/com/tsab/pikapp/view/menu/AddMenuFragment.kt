@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,15 @@ import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 
 class AddMenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
     private lateinit var navController: NavController
     private lateinit var dataBinding: FragmentAddMenuBinding
+    private var sessionManager = SessionManager()
 
     private val pickerContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -36,6 +40,7 @@ class AddMenuFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.firstOpen()
+        sessionManager.setHomeNav(1)
     }
 
     override fun onCreateView(
@@ -93,6 +98,8 @@ class AddMenuFragment : Fragment() {
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
+                val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
+                activity?.startActivity(intent)
             }
         }
     }

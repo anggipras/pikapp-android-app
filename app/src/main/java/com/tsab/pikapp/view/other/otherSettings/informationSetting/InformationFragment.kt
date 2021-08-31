@@ -26,9 +26,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
 
 class InformationFragment : Fragment() {
     private lateinit var dataBinding: InformationFragmentBinding
@@ -41,8 +39,8 @@ class InformationFragment : Fragment() {
     private var imgSelection = 0
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         dataBinding = InformationFragmentBinding.inflate(inflater, container, false)
         return dataBinding.root
@@ -121,47 +119,46 @@ class InformationFragment : Fragment() {
 
         if (dataBinding.informationBannerIcChange.visibility == View.VISIBLE || dataBinding.informationImgIcChange.visibility == View.VISIBLE) {
             Toast.makeText(
-                requireActivity(),
-                "Mohon upload kembali banner dan logo untuk mengganti nama resto atau alamat",
-                Toast.LENGTH_SHORT
+                    requireActivity(),
+                    "Mohon upload kembali banner dan logo untuk mengganti nama resto atau alamat",
+                    Toast.LENGTH_SHORT
             ).show()
         } else if (restoName.isNullOrEmpty()) {
             Toast.makeText(
-                requireActivity(),
-                "Nama Restoran tidak boleh kosong",
-                Toast.LENGTH_SHORT
+                    requireActivity(),
+                    "Nama Restoran tidak boleh kosong",
+                    Toast.LENGTH_SHORT
             ).show()
         } else if (restoAddress.isNullOrEmpty()) {
             Toast.makeText(
-                requireActivity(),
-                "Alamat Restoran tidak boleh kosong",
-                Toast.LENGTH_SHORT
+                    requireActivity(),
+                    "Alamat Restoran tidak boleh kosong",
+                    Toast.LENGTH_SHORT
             ).show()
         } else {
             viewModel.loadProcess(true)
             val merchantBannerParcelFileDescriptor =
                 requireActivity().contentResolver.openFileDescriptor(
-                    viewModel._restaurantBanner.value!!, "r", null
+                        viewModel._restaurantBanner.value!!, "r", null
                 ) ?: return
-
             val merchantBannerInputStream =
                 FileInputStream(merchantBannerParcelFileDescriptor.fileDescriptor)
             val merchantBanner = File(
-                requireActivity().cacheDir,
-                requireActivity().contentResolver.getFileName(viewModel._restaurantBanner.value!!)
+                    requireActivity().cacheDir,
+                    requireActivity().contentResolver.getFileName(viewModel._restaurantBanner.value!!)
             )
             val merchantBannerOutputStream = FileOutputStream(merchantBanner)
             merchantBannerInputStream.copyTo(merchantBannerOutputStream)
 
             val merchantLogoParcelFileDescriptor =
                 requireActivity().contentResolver.openFileDescriptor(
-                    viewModel._restaurantLogo.value!!, "r", null
+                        viewModel._restaurantLogo.value!!, "r", null
                 ) ?: return
             val merchantLogoInputStream =
                 FileInputStream(merchantLogoParcelFileDescriptor.fileDescriptor)
             val merchantLogo = File(
-                requireActivity().cacheDir,
-                requireActivity().contentResolver.getFileName(viewModel._restaurantLogo.value!!)
+                    requireActivity().cacheDir,
+                    requireActivity().contentResolver.getFileName(viewModel._restaurantLogo.value!!)
             )
             val merchantLogoOutputStream = FileOutputStream(merchantLogo)
             merchantLogoInputStream.copyTo(merchantLogoOutputStream)
@@ -180,29 +177,29 @@ class InformationFragment : Fragment() {
             val mid = sessionManager.getMerchantProfile()?.mid
 
             PikappApiService().api.uploadMerchantProfile(
-                getUUID(), timestamp, getClientID(), signature, token,
-                MultipartBody.Part.createFormData(
-                    "file_01",
-                    merchantBanner.name,
-                    RequestBody.create(MediaType.parse("multipart/form-data"), merchantBanner)
-                ),
-                MultipartBody.Part.createFormData(
-                    "file_02",
-                    merchantLogo.name,
-                    RequestBody.create(MediaType.parse("multipart/form-data"), merchantLogo)
-                ),
-                RequestBody.create(MediaType.parse("multipart/form-data"), restoAddress),
-                RequestBody.create(MediaType.parse("multipart/form-data"), restoName),
-                RequestBody.create(MediaType.parse("multipart/form-data"), gender),
-                RequestBody.create(MediaType.parse("multipart/form-data"), dob),
-                RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountNo),
-                RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountName),
-                RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
-                RequestBody.create(MediaType.parse("multipart/form-data"), mid)
+                    getUUID(), timestamp, getClientID(), signature, token,
+                    MultipartBody.Part.createFormData(
+                            "file_01",
+                            merchantBanner.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), merchantBanner)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_02",
+                            merchantLogo.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), merchantLogo)
+                    ),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), restoAddress),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), restoName),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), gender),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), dob),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountNo),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), bankAccountName),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), mid)
             ).enqueue(object : Callback<BaseResponse> {
                 override fun onResponse(
-                    call: Call<BaseResponse>,
-                    response: Response<BaseResponse>
+                        call: Call<BaseResponse>,
+                        response: Response<BaseResponse>
                 ) {
                     viewModel.getMerchantProfile()
                 }
