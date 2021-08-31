@@ -8,9 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDynamicBinding
 import com.tsab.pikapp.view.menu.UpdateMenuActivity
+import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
+import com.tsab.pikapp.viewmodel.homev2.SearchViewModel
 
 class DynamicFragment : Fragment() {
     companion object {
@@ -20,6 +24,8 @@ class DynamicFragment : Fragment() {
     }
 
     private lateinit var dataBinding: FragmentDynamicBinding
+    lateinit var linearLayoutManager: LinearLayoutManager
+    private val viewModel: DynamicViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +39,12 @@ class DynamicFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         attachInputListeners()
+
+        linearLayoutManager = LinearLayoutManager(requireView().context)
+        dataBinding.listMenuDetail.layoutManager = linearLayoutManager
+        val nama: String = arguments?.getString("position").toString()
+        activity?.let { viewModel.getSearchList(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
+                dataBinding.textview, nama) }
     }
 
     /**

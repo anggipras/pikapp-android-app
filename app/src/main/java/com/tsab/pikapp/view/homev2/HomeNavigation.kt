@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.homev2.Transaction.TransactionAdapter
 import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.menu.OtherFragment
 import com.tsab.pikapp.view.homev2.menu.PromoFragment
