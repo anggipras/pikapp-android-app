@@ -134,7 +134,7 @@
     <string name="sm_restaurant_status_detail_close">Restoran Anda sedang berada di jam tutup</string>
     <string name="sm_restaurant_auto_status">Restoran akan buka dan tutup secara otomatis mengikuti jadwal restoran</string>
     <string name="sm_restaurant_schedule_title">Jadwal Restoran</string>
-    <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis <br/>akan membuat status toko Anda tutup. <br/> Apakah Anda ingin melanjutkan?</string>
+    <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis <br />akan membuat status toko Anda tutup. <br /> Apakah Anda ingin melanjutkan?</string>
 
     <string name="sm_status_header">Ubah Jadwal</string>
 
@@ -187,6 +187,7 @@
     <string name="buat_pin_baru">Buat PIN baru</string>
     <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
     <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>
+    <string name="pesanan_masuk">Pesanan Masuk</string>
 
 
 </resources>

@@ -20,6 +20,7 @@ import com.tsab.pikapp.view.menuCategory.CategoryAdapter
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
+import kotlin.math.log
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -27,6 +28,8 @@ class MenuFragment : Fragment() {
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: MenuFragmentBinding
+
+    var categoryName: String = ""
 
     private var viewPager: ViewPager? = null
     private var mTabLayout: TabLayout? = null
@@ -166,6 +169,7 @@ class MenuFragment : Fragment() {
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 dataBinding.viewpager.currentItem = tab.position
+                categoryName = tab.text.toString()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -184,7 +188,7 @@ class MenuFragment : Fragment() {
         }
 
         val mDynamicFragmentAdapter =
-            DynamicFragmentAdapter(fragmentManager, tabs.tabCount)
+            DynamicFragmentAdapter(fragmentManager, tabs.tabCount, tabs)
 
         viewpager.adapter = mDynamicFragmentAdapter
 

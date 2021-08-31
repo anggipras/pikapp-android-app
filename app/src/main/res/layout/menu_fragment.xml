@@ -38,7 +38,10 @@
                 android:id="@+id/editText"
                 android:layout_width="275dp"
                 android:layout_height="37dp"
+                android:focusable="false"
+                android:inputType="none"
                 android:layout_marginStart="28dp"
+                android:cursorVisible="false"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/form"
                 android:drawableStart="@drawable/ic_baseline_search_24"
@@ -178,16 +181,20 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/viewpager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    </androidx.viewpager.widget.ViewPager>
-
-
+                        android:layout_height="wrap_content">
+                    </androidx.viewpager.widget.ViewPager>\
+                    </ScrollView>
                 </RelativeLayout>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -201,7 +208,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.100000024">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_category"
