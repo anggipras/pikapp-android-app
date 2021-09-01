@@ -167,20 +167,18 @@ class SignupV2ThirdFragment : Fragment() {
         val outputStream2 = FileOutputStream(file2)
         inputStream2.copyTo(outputStream2)
 
-        val branch = "$resto Branch"
-
         PikappApiService().api.uploadRegister(
                 getUUID(), getClientID(), getTimestamp(),
-                MultipartBody.Part.createFormData("file_01", file.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file)),
+                MultipartBody.Part.createFormData("file_01", file2.name,
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file2)),
                 MultipartBody.Part.createFormData("file_02", file1.name,
                         RequestBody.create(MediaType.parse("multipart/form-data"), file1)),
-                MultipartBody.Part.createFormData("file_03", file2.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file2)),
+                MultipartBody.Part.createFormData("file_03", file.name,
+                        RequestBody.create(MediaType.parse("multipart/form-data"), file)),
                 RequestBody.create(MediaType.parse("multipart/form-data"), alamat),
                 RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
                 RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
-                RequestBody.create(MediaType.parse("multipart/form-data"), branch),
+                RequestBody.create(MediaType.parse("multipart/form-data"), name),
                 RequestBody.create(MediaType.parse("multipart/form-data"), rekno),
                 RequestBody.create(MediaType.parse("multipart/form-data"), rekname),
                 RequestBody.create(MediaType.parse("multipart/form-data"), email),
