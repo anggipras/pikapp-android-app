@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view
+package com.tsab.pikapp.view.homev2.Transaction
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,12 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.ShopSchedule
+import com.tsab.pikapp.models.model.CategoryListResult
+import com.tsab.pikapp.models.model.SearchList
+import com.tsab.pikapp.models.model.StoreOrderList
+import com.tsab.pikapp.view.homev2.menu.MenuListAdapter
 import kotlinx.android.synthetic.main.transaction_list_items.view.*
 
-class TransactionListAdapter(private val context: Context, val shopScheduleList: MutableList<ShopSchedule>, private val listener: OnItemClickListener) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, val menuList: MutableList<CategoryListResult>, private val listener: OnItemClickListener) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+
+    lateinit var linearLayoutManager: LinearLayoutManager
+    var menuResult = ArrayList<CategoryListResult>()
+
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -24,19 +32,20 @@ class TransactionListAdapter(private val context: Context, val shopScheduleList:
 
         //ini diganti sesuai api
 
-        holder.tableNumer.text = "Buka 24 Jam"
-        holder.tableStatus.text = ""
-        holder.orderDate.text = ""
-        holder.orderTime.text = ""
-        holder.orderStatus.text = ""
-        holder.paymentStatus.text = ""
-        holder.menuCount.text = ""
+        holder.tableNumer.text = transactionList[position].tableNo
+        holder.tableStatus.text = transactionList[position].bizType
+        holder.orderDate.text = transactionList[position].transactionTime
+        //holder.orderTime.text = ""
+        holder.orderStatus.text = transactionList[position].status
+        //holder.paymentStatus.text = ""
+        //holder.menuCount.text = transactionList[position].
         holder.price.text = ""
+        //setMenu(holder.rView, menuList)
     }
 
     override fun getItemCount(): Int {
         //ganti yang ini sama di parameter
-        return shopScheduleList.size
+        return transactionList.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -50,6 +59,7 @@ class TransactionListAdapter(private val context: Context, val shopScheduleList:
         var price: TextView = itemView.totalPrice
         var acceptBtn: Button = itemView.acceptButton
         var rejectBtn: Button = itemView.rejectButton
+        var rView: RecyclerView = itemView.recyclerview_menu
 
         init {
             itemView.setOnClickListener(this)
@@ -59,13 +69,21 @@ class TransactionListAdapter(private val context: Context, val shopScheduleList:
             val position: Int = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 //diganti list nya sesuai api
-                listener.onItemClick(position, shopScheduleList[position].days, shopScheduleList[position].closeTime, shopScheduleList[position].openTime)
+                listener.onItemClick(position)
             }
         }
     }
 
+    private fun setMenu(recyclerView: RecyclerView, menuList: MutableList<CategoryListResult>){
+        linearLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.setHasFixedSize(false)
+        var menuList1 = TransactionMenuAdapter(context, menuList)
+        recyclerView.adapter = menuList1
+    }
+
     interface OnItemClickListener {
-        fun onItemClick(position: Int, shopScheduleDay: String?, closeTime: String?, openTime: String?)
+        fun onItemClick(position: Int)
     }
 
 }
