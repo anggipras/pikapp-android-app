@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.SettingFragmentBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
 import com.tsab.pikapp.viewmodel.other.otherSettings.SettingViewModel
 
@@ -20,6 +21,7 @@ class SettingFragment : Fragment() {
 
     private lateinit var dataBinding: SettingFragmentBinding
     private lateinit var viewModel: SettingViewModel
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +35,8 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sessionManager.setHomeNav(3)
 
         viewModel.setUserNotif()
 
