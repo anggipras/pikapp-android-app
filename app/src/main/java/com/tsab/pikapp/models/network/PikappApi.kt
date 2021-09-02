@@ -518,7 +518,7 @@ interface PikappApi {
     ): Call<SearchResponse>
 
     // Omnichannel integration
-    @DELETE("channel/v1/channel-integration/list")
+    @GET("channel/v1/channel-integration/list/")
     fun listIntegration(
         @Header("x-request-id") requestId: String,
         @Header("x-request-timestamp") requestTimestamp: String,

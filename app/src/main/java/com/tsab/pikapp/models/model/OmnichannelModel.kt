@@ -74,7 +74,7 @@ data class IntegrationArrayResponse(
     var errorMessage: String,
 
     @SerializedName("results")
-    var results: List<Omnichannel>
+    var results: List<Omnichannel>?
 )
 
 data class Omnichannel(

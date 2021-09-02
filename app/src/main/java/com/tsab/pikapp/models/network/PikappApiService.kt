@@ -487,12 +487,23 @@ class PikappApiService {
     // Omnichannel Integration
     fun listIntegration(
         merchantId: String
-    ): Single<IntegrationArrayResponse> = api.listIntegration(
-        requestId = getUUID(),
-        requestTimestamp = getTimestamp(),
-        clientId = getClientID(),
-        merchantId = merchantId
-    )
+    ): Single<IntegrationArrayResponse> {
+        val uuid = getUUID()
+        val timestamp = getTimestamp()
+        val clientId = getClientID()
+
+        Log.d(
+            "Hai",
+            "UUID: $uuid, timestamp: $timestamp, clientId: $clientId, merchantId: $merchantId"
+        )
+
+        return api.listIntegration(
+            requestId = getUUID(),
+            requestTimestamp = getTimestamp(),
+            clientId = getClientID(),
+            merchantId = merchantId
+        )
+    }
 
     fun connectIntegration(
         merchantId: String,
