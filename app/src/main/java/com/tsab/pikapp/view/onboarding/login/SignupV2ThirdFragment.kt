@@ -178,7 +178,7 @@ class SignupV2ThirdFragment : Fragment() {
                 RequestBody.create(MediaType.parse("multipart/form-data"), alamat),
                 RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
                 RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
-                RequestBody.create(MediaType.parse("multipart/form-data"), name),
+                RequestBody.create(MediaType.parse("multipart/form-data"), resto),
                 RequestBody.create(MediaType.parse("multipart/form-data"), rekno),
                 RequestBody.create(MediaType.parse("multipart/form-data"), rekname),
                 RequestBody.create(MediaType.parse("multipart/form-data"), email),
