@@ -10,12 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentIntegrationConnectSecondBinding
+import com.tsab.pikapp.databinding.FragmentIntegrationConnectSecondTokopediaBinding
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
 
 class TokopediaIntegrationConnectSecondFragment : Fragment() {
     private lateinit var navController: NavController
-    private lateinit var dataBinding: FragmentIntegrationConnectSecondBinding
+    private lateinit var dataBinding: FragmentIntegrationConnectSecondTokopediaBinding
     private val viewModel: IntegrationViewModel by activityViewModels()
 
     override fun onCreateView(
