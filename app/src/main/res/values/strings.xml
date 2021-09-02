@@ -16,7 +16,10 @@
     <string name="kembali">Kembali</string>
     <string name="simpan">Simpan</string>
     <string name="ya">Ya</string>
+    <string name="kirim">Kirim</string>
     <string name="star">*</string>
+
+    <string name="akan_datang">Akan Datang</string>
 
     <!-- Image content descriptions -->
     <string name="cd_change_order_button">Change order button</string>
@@ -134,7 +137,7 @@
     <string name="sm_restaurant_status_detail_close">Restoran Anda sedang berada di jam tutup</string>
     <string name="sm_restaurant_auto_status">Restoran akan buka dan tutup secara otomatis mengikuti jadwal restoran</string>
     <string name="sm_restaurant_schedule_title">Jadwal Restoran</string>
-    <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis <br/>akan membuat status toko Anda tutup. <br/> Apakah Anda ingin melanjutkan?</string>
+    <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis <br />akan membuat status toko Anda tutup. <br /> Apakah Anda ingin melanjutkan?</string>
 
     <string name="sm_status_header">Ubah Jadwal</string>
 
@@ -143,7 +146,7 @@
     <string name="radio_button_3">Atur Jam</string>
     <string name="open_status_title">Buka</string>
 
-    <!-- Other Fragment Screen-->
+    <!-- Other Fragment Screen -->
     <string name="shop_daily_status">%s, %s</string>
     <string name="menu_yang_anda_cari_tidak_ditemukan">Menu Yang Anda Cari Tidak Ditemukan</string>
     <string name="no_found">no found</string>
@@ -162,12 +165,12 @@
     <string name="must">*</string>
     <string name="masukkan_nama_pemilik_rekening">Masukkan Nama Pemilik Rekening</string>
 
-    <!--    Setting Fragment Screen-->
+    <!-- Setting Fragment Screen -->
     <string name="profile_setting">Profile</string>
     <string name="information_setting">Informasi Restoran</string>
     <string name="pin_setting">Ubah PIN</string>
 
-    <!--    Setting Profile Fragment Screen-->
+    <!-- Setting Profile Fragment Screen -->
     <string name="nama_lengkap_profile">Nama Lengkap</string>
     <string name="tanggal_lahir">Tanggal Lahir</string>
     <string name="tambahkan_tanggal_lahir">Tambahkan tanggal lahir</string>
@@ -179,20 +182,34 @@
     <string name="perempuan">Perempuan</string>
     <string name="laki_laki">Laki-laki</string>
 
-    <!--    Setting Information Fragment Screen-->
+    <!-- Setting Information Fragment Screen -->
     <string name="nama_restoran">Nama Restoran</string>
     <string name="alamat_restoran">Alamat Restoran</string>
 
-    <!--    Setting Pin Fragment Screen-->
+    <!-- Setting Pin Fragment Screen -->
     <string name="buat_pin_baru">Buat PIN baru</string>
     <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
     <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>
-
 
     <!-- Omnichannel integration (oi) screens -->
     <string name="oi_tambah_toko">Tambah Toko</string>
 
     <string name="oi_main_header">Integrasi</string>
     <string name="oi_empty_description">Anda belum memiliki toko yang terhubung</string>
+
+    <string name="oi_connect_first_header">Tambah Toko</string>
+
+    <string name="oi_connect_second_tokopedia_header">Integrasi Tokopedia</string>
+    <string name="oi_connect_tokopedia_akun_email_header">Akun Email</string>
+    <string name="oi_connect_tokopedia_akun_email_hint">Masukkan email yang terdaftar di Tokopedia</string>
+    <string name="oi_connect_tokopedia_nomor_telepon_header">Nomor Telepon</string>
+    <string name="oi_connect_tokopedia_nomor_telepon_hint">Masukkan nomor telepon yang terdaftar di Tokopedia</string>
+    <string name="oi_connect_tokopedia_nama_toko_header">Nama Toko</string>
+    <string name="oi_connect_tokopedia_nama_toko_hint">Masukkan nama toko</string>
+    <string name="oi_connect_tokopedia_domain_toko_header">Domain Toko</string>
+    <string name="oi_connect_tokopedia_domain_toko_hint">Contoh: www.tokopedia.com/domain</string>
+    <string name="oi_connect_tokopedia_kategori_akun_header">Kategori Akun Tokopedia</string>
+    <string name="oi_connect_tokopedia_kategori_akun_official_store_option">Official Store</string>
+    <string name="oi_connect_tokopedia_kategori_akun_power_merchant_option">Power Merchant</string>
 
 </resources>
