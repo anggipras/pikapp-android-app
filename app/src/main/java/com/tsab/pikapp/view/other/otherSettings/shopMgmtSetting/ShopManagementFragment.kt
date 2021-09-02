@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopManagementBinding
 import com.tsab.pikapp.util.getDay
@@ -39,6 +40,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     private var hour: String = ""
     private var day: String = ""
     var autoTurn: Boolean = true
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +54,8 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefreshLayout = swipeShopManagement
+
         navController = Navigation.findNavController(view)
 
         shopSchedule_recyclerView.setHasFixedSize(true)
@@ -59,6 +63,10 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         shopSchedule_recyclerView.layoutManager = linearLayoutManager
 
         activity?.let { otherSettingViewModel.getMerchantSchedule(it.baseContext, shopSchedule_recyclerView, this) }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            otherSettingViewModel.getMerchantSchedule(requireContext(), shopSchedule_recyclerView, this)
+        }
 
         dataBinding.backButtonShop.setOnClickListener {
             requireActivity().onBackPressed()
@@ -97,6 +105,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
                         }
                     }
                 }
+                swipeRefreshLayout.isRefreshing = false
             }
         })
     }

@@ -100,7 +100,7 @@
             android:id="@+id/navigateTo_shopMgmtStatusFragment"
             app:destination="@id/shopMgmtStatusFragment" />
         <action
-            android:id="@+id/action_shopManagementFragment_to_settingFragment"
+            android:id="@+id/navigateBackToFromShopManagementFragment_settingFragment"
             app:popUpTo="@id/settingFragment" />
     </fragment>
     <fragment
@@ -109,7 +109,7 @@
         android:label="fragment_shop_mgmt_status"
         tools:layout="@layout/fragment_shop_mgmt_status" >
         <action
-            android:id="@+id/action_shopMgmtStatusFragment_to_shopManagementFragment"
+            android:id="@+id/navigateToFromShopMgmtStatusFragment_shopManagementFragment"
             app:destination="@id/shopManagementFragment" />
     </fragment>
     <fragment
@@ -132,8 +132,7 @@
         tools:layout="@layout/fragment_pin_bank" >
         <action
             android:id="@+id/action_pinBankFragment_to_dataBankFragment"
-            app:destination="@id/dataBankFragment"
-            app:popUpTo="@id/dataBankFragment" />
+            app:destination="@id/dataBankFragment" />
         <action
             android:id="@+id/action_pinBankFragment_to_editRekFragment"
             app:destination="@id/editRekFragment" />
@@ -145,7 +144,6 @@
         tools:layout="@layout/fragment_edit_rek" >
         <action
             android:id="@+id/action_editRekFragment_to_dataBankFragment"
-            app:destination="@id/dataBankFragment"
-            app:popUpTo="@id/dataBankFragment" />
+            app:destination="@id/dataBankFragment" />
     </fragment>
 </navigation>
