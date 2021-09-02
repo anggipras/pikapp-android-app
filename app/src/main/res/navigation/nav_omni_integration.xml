@@ -12,13 +12,48 @@
 
         <action
             android:id="@+id/action_integrationEmptyFragment_to_integrationHomeFragment"
-            app:destination="@id/integrationHomeFragment" />
+            app:destination="@id/integrationHomeFragment"
+            app:popUpTo="@id/integrationEmptyFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_integrationEmptyFragment_to_integrationConnectFirstFragment"
+            app:destination="@id/integrationConnectFirstFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/integrationHomeFragment"
         android:name="com.tsab.pikapp.view.omni.integration.IntegrationListFragment"
         android:label="fragment_integration_home"
-        tools:layout="@layout/fragment_integration_list" />
+        tools:layout="@layout/fragment_integration_list">
+
+        <action
+            android:id="@+id/action_integrationHomeFragment_to_integrationConnectFirstFragment"
+            app:destination="@id/integrationConnectFirstFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/integrationConnectFirstFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.connect.IntegrationConnectFirstFragment"
+        android:label="fragment_integration_connect_first"
+        tools:layout="@layout/fragment_integration_connect_first">
+
+        <action
+            android:id="@+id/action_integrationConnectFirstFragment_to_integrationConnectSecondFragment"
+            app:destination="@id/integrationConnectSecondFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/integrationConnectSecondFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.connect.TokopediaIntegrationConnectSecondFragment"
+        android:label="fragment_integration_connect_second"
+        tools:layout="@layout/fragment_integration_connect_second_tokopedia">
+
+        <action
+            android:id="@+id/action_integrationConnectSecondFragment_to_integrationHomeFragment3"
+            app:destination="@id/integrationHomeFragment"
+            app:popUpTo="@id/integrationEmptyFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>
