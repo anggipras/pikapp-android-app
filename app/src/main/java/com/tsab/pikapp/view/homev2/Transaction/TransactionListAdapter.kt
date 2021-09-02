@@ -9,16 +9,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.CategoryListResult
+import com.tsab.pikapp.models.model.OrderDetailDetail
 import com.tsab.pikapp.models.model.SearchList
 import com.tsab.pikapp.models.model.StoreOrderList
 import com.tsab.pikapp.view.homev2.menu.MenuListAdapter
 import kotlinx.android.synthetic.main.transaction_list_items.view.*
 
-class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, val menuList: MutableList<CategoryListResult>, private val listener: OnItemClickListener) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val listener: OnItemClickListener) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
     lateinit var linearLayoutManager: LinearLayoutManager
-    var menuResult = ArrayList<CategoryListResult>()
+    var menuResult = ArrayList<OrderDetailDetail>()
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -40,7 +40,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
         //holder.paymentStatus.text = ""
         //holder.menuCount.text = transactionList[position].
         holder.price.text = ""
-        //setMenu(holder.rView, menuList)
+        setMenu(holder.rView, transactionList1[position] as MutableList<OrderDetailDetail>)
     }
 
     override fun getItemCount(): Int {
@@ -74,11 +74,11 @@ class TransactionListAdapter(private val context: Context, private val transacti
         }
     }
 
-    private fun setMenu(recyclerView: RecyclerView, menuList: MutableList<CategoryListResult>){
+    private fun setMenu(recyclerView: RecyclerView, transactionList1: MutableList<OrderDetailDetail>){
         linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(false)
-        var menuList1 = TransactionMenuAdapter(context, menuList)
+        var menuList1 = TransactionMenuAdapter(context, transactionList1)
         recyclerView.adapter = menuList1
     }
 

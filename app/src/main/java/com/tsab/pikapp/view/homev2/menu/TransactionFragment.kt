@@ -50,13 +50,25 @@ class TransactionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpTabs()
         Handler().postDelayed({
-            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.size.value!!.toInt()
+            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
+        }, 2000)
+        Handler().postDelayed({
+            dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
+        }, 2000)
+        Handler().postDelayed({
+            dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
         }, 2000)
         swipeRefreshLayout = swipeTransactionMenu
         swipeRefreshLayout.setOnRefreshListener {
             refreshPage()
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.size.value!!.toInt()
+                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
+            }, 2000)
+            Handler().postDelayed({
+                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
+            }, 2000)
+            Handler().postDelayed({
+                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
             }, 2000)
             swipeRefreshLayout.isRefreshing = false
         }

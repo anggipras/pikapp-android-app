@@ -37,6 +37,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableSize = MutableLiveData(0)
     val size: LiveData<Int> get() = mutableSize
 
+    private val mutableProses = MutableLiveData(0)
+    val proses: LiveData<Int> get() = mutableProses
+
+    private val mutableBatal = MutableLiveData(0)
+    val batal: LiveData<Int> get() = mutableBatal
+
+    private val mutableDone = MutableLiveData(0)
+    val done: LiveData<Int> get() = mutableDone
+
     private val mutableCategoryList = MutableLiveData<List<CategoryListResult>>(listOf())
     val categoryListResult: LiveData<List<CategoryListResult>> = mutableCategoryList
     fun setCategoryList(categoryListResult: List<CategoryListResult>) {
@@ -49,53 +58,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
-    /*fun getMenuCategoryList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener) {
-        val email = sessionManager.getUserData()!!.email!!
-        val token = sessionManager.getUserToken()!!
-        val timestamp = getTimestamp()
-        val signature = getSignature(email, timestamp)
-        val mid = sessionManager.getUserData()!!.mid!!
-
-        // TODO: Update API call.
-        PikappApiService().api.getMenuCategoryList(
-                getUUID(), timestamp, getClientID(), signature, token, mid
-        ).enqueue(object : Callback<MerchantListCategoryResponse> {
-            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
-                Log.e("failed", t.message.toString())
-            }
-
-            override fun onResponse(
-                    call: Call<MerchantListCategoryResponse>,
-                    response: Response<MerchantListCategoryResponse>
-            ) {
-
-                val categoryResponse = response.body()
-                val categoryResult = response.body()?.results
-
-                mutableSize.value = categoryResponse?.results?.size
-                mutableisLoading.value = false
-
-                if (categoryResult != null) {
-                    categoryAdapter = TransactionListAdapter(
-                            baseContext,
-                            categoryResult as MutableList<StoreOrderList>, categoryResult as MutableList<CategoryListResult>, listener)
-                    categoryAdapter.notifyDataSetChanged()
-                    recyclerview_transaction.adapter = categoryAdapter
-                    setCategoryList(categoryResult)
-                    mutableisLoading.value = false
-                }
-            }
-
-        })
-    }*/
-
-    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener) {
+    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener, status: String) {
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
-        //loading.value = true
 
         disposable.add(
                 pikappService.getTransactionListMerchant(email, token, mid)
@@ -104,44 +72,64 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
                             override fun onSuccess(t: GetStoreOrderListResponse) {
                                 val transactionList = t.results
+                                var prosesList = ArrayList<StoreOrderList>()
+                                var batalList = ArrayList<StoreOrderList>()
+                                var doneList = ArrayList<StoreOrderList>()
+                                var menuList = ArrayList<ArrayList<OrderDetailDetail>>()
+                                var menuList1 = ArrayList<ArrayList<OrderDetailDetail>>()
+                                var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
                                 if (transactionList != null) {
-                                    Log.e("jumlah", transactionList.size.toString())
-                                    mutableSize.value = transactionList.size
+                                    for(transaction in transactionList){
+                                        if(transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS"){
+                                            prosesList.add(transaction)
+                                            transaction.detailProduct?.let { menuList.add(it as ArrayList<OrderDetailDetail>) }
+                                        }else if(transaction.status == "FAILED" || transaction.status == "ERROR"){
+                                            batalList.add(transaction)
+                                            transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
+                                        }else{
+                                            doneList.add(transaction)
+                                            transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
+                                        }
+                                    }
                                 }
+                                mutableProses.value = prosesList.size
+                                mutableBatal.value = batalList.size
                                 Log.e("list transaction", t.results.toString())
                                 Log.e("error msg", t.errCode.toString())
+                                Log.e("Proses", prosesList.toString())
                                 Log.e("error code", t.errMessage.toString())
-                                categoryAdapter = TransactionListAdapter(
-                                        baseContext,
-                                        transactionList as MutableList<StoreOrderList>, transactionList as MutableList<CategoryListResult>, listener)
-                                categoryAdapter.notifyDataSetChanged()
-                                recyclerview_transaction.adapter = categoryAdapter
-                                setCategoryList(transactionList)
-                                categoryAdapter.notifyDataSetChanged()
-                                mutableisLoading.value = false
+                                if(status == "Proses"){
+                                    categoryAdapter = TransactionListAdapter(
+                                            baseContext,
+                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>,listener)
+                                    categoryAdapter.notifyDataSetChanged()
+                                    recyclerview_transaction.adapter = categoryAdapter
+                                    categoryAdapter.notifyDataSetChanged()
+                                    mutableisLoading.value = false
+                                }
+                                if(status == "Batal"){
+                                    categoryAdapter = TransactionListAdapter(
+                                            baseContext,
+                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>,listener)
+                                    categoryAdapter.notifyDataSetChanged()
+                                    recyclerview_transaction.adapter = categoryAdapter
+                                    categoryAdapter.notifyDataSetChanged()
+                                    mutableisLoading.value = false
+                                }
+                                if(status == "Done"){
+                                    categoryAdapter = TransactionListAdapter(
+                                            baseContext,
+                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>,listener)
+                                    categoryAdapter.notifyDataSetChanged()
+                                    recyclerview_transaction.adapter = categoryAdapter
+                                    categoryAdapter.notifyDataSetChanged()
+                                    mutableisLoading.value = false
+                                }
                             }
 
                             override fun onError(e: Throwable) {
                                 var errorResponse: ErrorResponse
                                 Log.e("failed", e.message.toString())
-                                /*try {
-                                    Log.d("Debug", "error merchant detail : " + e)
-                                    val responseBody = (e as HttpException)
-                                    val body = responseBody.response()?.errorBody()?.string()
-                                    errorResponse =
-                                            Gson().fromJson(
-                                                    body,
-                                                    ErrorResponse::class.java
-                                            )
-                                } catch (err: Throwable) {
-                                    errorResponse = ErrorResponse("503", "Unavailable")
-                                }
-
-                                storeOrderListFail(errorResponse)
-                                Log.d(
-                                        "Debug",
-                                        "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
-                                )*/
                             }
                         })
         )

@@ -11,10 +11,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CategoryListResult
+import com.tsab.pikapp.models.model.OrderDetailDetail
 import com.tsab.pikapp.models.model.ShopSchedule
 import kotlinx.android.synthetic.main.item_transaction_menu.view.*
 
-class TransactionMenuAdapter(private val context: Context, val results: MutableList<CategoryListResult>) : RecyclerView.Adapter<TransactionMenuAdapter.ViewHolder>() {
+class TransactionMenuAdapter(private val context: Context, private val transactionList1: MutableList<OrderDetailDetail>) : RecyclerView.Adapter<TransactionMenuAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -25,14 +26,14 @@ class TransactionMenuAdapter(private val context: Context, val results: MutableL
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        holder.menuName.text = results[position].category_name
-/*        holder.itemNumber.text = "Buka 24 Jam"
-        holder.orderNote.text = ""*/
+        holder.menuName.text = transactionList1[position].productName
+        holder.itemNumber.text = transactionList1[position].productQty.toString()
+        holder.orderNote.text = transactionList1[position].productNote
     }
 
     override fun getItemCount(): Int {
         //ganti yang ini sama di parameter
-        return results.size
+        return transactionList1.size
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

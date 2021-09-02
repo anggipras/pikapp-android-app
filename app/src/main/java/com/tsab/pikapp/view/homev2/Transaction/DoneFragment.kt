@@ -33,7 +33,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
 
-        //activity?.let { viewModel.getMenuCategoryList(it.baseContext, recyclerview_transaction, this) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Done") }
     }
 
     override fun onItemClick(position: Int) {
