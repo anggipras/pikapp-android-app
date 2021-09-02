@@ -76,41 +76,41 @@ def preferencesVersion = '1.1.1'
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
     implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.activity:activity:1.2.0-alpha05'
+    implementation 'androidx.activity:activity-ktx:1.2.0-alpha05'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.fragment:fragment:1.3.0-alpha05'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-alpha05'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVersion"
+    implementation "androidx.preference:preference:$preferencesVersion"
+
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+    implementation "com.android.support:design:$supportVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
+
+    implementation "com.google.android.material:material:1.2.1"
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
     apply plugin: 'com.android.application'
     apply plugin: 'kotlin-android'
     apply plugin: 'androidx.navigation.safeargs.kotlin'
     apply plugin: 'kotlin-android-extensions'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation "com.android.support:design:$supportVersion"
-
-    implementation 'androidx.activity:activity:1.2.0-alpha05'
-    implementation 'androidx.activity:activity-ktx:1.2.0-alpha05'
-
-    implementation 'androidx.fragment:fragment:1.3.0-alpha05'
-    implementation 'androidx.fragment:fragment-ktx:1.3.0-alpha05'
-
-    implementation "android.arch.lifecycle:extensions:$lifeCycleExtensionVersion"
-    implementation 'com.github.Deishelon:RoundedBottomSheet:1.0.1'
-
-    implementation "androidx.room:room-runtime:$roomVersion"
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    kapt "androidx.room:room-compiler:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
-
-    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
-
-    implementation "com.google.android.material:material:1.2.1"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
@@ -119,23 +119,21 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
 
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "android.arch.lifecycle:extensions:$lifeCycleExtensionVersion"
 
     implementation "com.android.support:palette-v7:$supportVersion"
 
+    implementation 'com.github.Deishelon:RoundedBottomSheet:1.0.1'
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation 'com.github.GoodieBag:Pinview:v1.4'
-    implementation 'io.github.chaosleung:pinview:1.4.4'
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
     implementation "com.github.skydoves:balloon:1.3.5"
-
     implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'
+    implementation 'io.github.chaosleung:pinview:1.4.4'
 
-    implementation "androidx.preference:preference:$preferencesVersion"
-    // Dynamic Feature Module Support
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVersion"
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
-    //JJWT
+
+    // JJWT
     api 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
     runtimeOnly('io.jsonwebtoken:jjwt-orgjson:0.11.2') {
