@@ -45,7 +45,7 @@ class SplashActivity : AppCompatActivity() {
                     this,
                     // Include a request code to later monitor this update request.
                     MY_REQUEST_CODE)
-            } else if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_NOT_AVAILABLE) {
+            } else {
                 runSplash()
             }
         }
@@ -113,7 +113,7 @@ class SplashActivity : AppCompatActivity() {
                         this,
                         MY_REQUEST_CODE
                     )
-                } else if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_NOT_AVAILABLE) {
+                } else {
                     runSplash()
                 }
             }
