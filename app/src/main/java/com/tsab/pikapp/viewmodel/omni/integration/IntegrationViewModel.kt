@@ -41,13 +41,13 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
         setLoading(true)
         disposable.add(
             apiService.listIntegration(
-                sessionManager.getMerchantProfile()?.mid ?: ""
+                merchantId = sessionManager.getMerchantProfile()?.mid ?: ""
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<IntegrationArrayResponse>() {
                     override fun onSuccess(response: IntegrationArrayResponse) {
-                        if (response.results.isNotEmpty()) {
-                            setIntegrationList(response.results)
+                        if (!response.results.isNullOrEmpty()) {
+                            setIntegrationList(response.results ?: listOf())
                         }
                         setLoading(false)
                     }

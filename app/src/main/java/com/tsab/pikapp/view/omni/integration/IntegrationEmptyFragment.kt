@@ -24,8 +24,9 @@ class IntegrationEmptyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_integration_empty, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_integration_empty, container, false
+        )
         return dataBinding.root
     }
 
