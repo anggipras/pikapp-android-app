@@ -25,4 +25,9 @@ class TransactionAdapter(supportFragmentManager: FragmentManager) : FragmentPage
         mFragmentList.add(fragment)
         mFragmentTitleList.add(title)
     }
+
+    fun rmFragment(fragment: Fragment, title: String){
+        mFragmentList.remove(fragment)
+        mFragmentTitleList.remove(title)
+    }
 }

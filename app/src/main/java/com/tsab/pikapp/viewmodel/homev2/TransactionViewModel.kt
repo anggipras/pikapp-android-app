@@ -104,6 +104,10 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
                             override fun onSuccess(t: GetStoreOrderListResponse) {
                                 val transactionList = t.results
+                                if (transactionList != null) {
+                                    Log.e("jumlah", transactionList.size.toString())
+                                    mutableSize.value = transactionList.size
+                                }
                                 Log.e("list transaction", t.results.toString())
                                 Log.e("error msg", t.errCode.toString())
                                 Log.e("error code", t.errMessage.toString())
@@ -113,6 +117,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 categoryAdapter.notifyDataSetChanged()
                                 recyclerview_transaction.adapter = categoryAdapter
                                 setCategoryList(transactionList)
+                                categoryAdapter.notifyDataSetChanged()
                                 mutableisLoading.value = false
                             }
 
