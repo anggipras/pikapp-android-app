@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import kotlinx.android.synthetic.main.other_fragment.*
@@ -53,6 +54,12 @@ class OtherFragment : Fragment() {
             activity?.let {
                 val intent = Intent(it, OtherSettingsActivity::class.java)
                 it.startActivity(intent)
+            }
+        }
+
+        dataBinding.integrasiButton.setOnClickListener {
+            Intent(activity?.baseContext, IntegrationActivity::class.java).apply {
+                activity?.startActivity(this)
             }
         }
 
