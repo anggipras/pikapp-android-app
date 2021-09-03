@@ -175,15 +175,15 @@ class SignupV2ThirdFragment : Fragment() {
 
         var imageValidation = false
         if (ktpFileSize > 1024) {
-            ktpErrorText.text = "Ukuran gambar tidak lebih dari 1 mb"
+            ktpErrorText.text = "Ukuran gambar harus kurang dari 1MB"
         }
 
         if (logoFileSize > 1024) {
-            logoRestoranErrorText.text = "Ukuran gambar tidak lebih dari 1 mb"
+            logoRestoranErrorText.text = "Ukuran gambar harus kurang dari 1MB"
         }
 
         if (bannerFileSize > 1024) {
-            latarRestoranErrorText.text = "Ukuran gambar tidak lebih dari 1 mb"
+            latarRestoranErrorText.text = "Ukuran gambar harus kurang dari 1MB"
         }
 
         if (ktpFileSize < 1024 && logoFileSize < 1024 && bannerFileSize < 1024) {
