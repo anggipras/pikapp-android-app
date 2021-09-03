@@ -89,6 +89,7 @@ class SignupV2ThirdFragment : Fragment() {
                     ActivityResultCallback { uri ->
                         ktpImageSelector.setImageURI(uri)
                         ktpImage = uri
+                        ktpErrorText.text = ""
                     }
             ).launch("image/*")
         }
@@ -98,6 +99,7 @@ class SignupV2ThirdFragment : Fragment() {
                     ActivityResultCallback { uri ->
                         logoRestoranImageSelector.setImageURI(uri)
                         logoImage = uri
+                        logoRestoranErrorText.text = ""
                     }
             ).launch("image/*")
         }
@@ -107,6 +109,7 @@ class SignupV2ThirdFragment : Fragment() {
                     ActivityResultCallback { uri ->
                         latarRestoranImageSelector.setImageURI(uri)
                         latarImage = uri
+                        latarRestoranErrorText.text = ""
                     }
             ).launch("image/*")
         }
@@ -128,7 +131,6 @@ class SignupV2ThirdFragment : Fragment() {
             }
 
             if (ktpImage != null && logoImage != null && latarImage != null) {
-                toggleLoadingView(true)
                 uploadData()
             }
         }
@@ -167,47 +169,71 @@ class SignupV2ThirdFragment : Fragment() {
         val outputStream2 = FileOutputStream(file2)
         inputStream2.copyTo(outputStream2)
 
-        PikappApiService().api.uploadRegister(
-                getUUID(), getClientID(), getTimestamp(),
-                MultipartBody.Part.createFormData("file_01", file2.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file2)),
-                MultipartBody.Part.createFormData("file_02", file1.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file1)),
-                MultipartBody.Part.createFormData("file_03", file.name,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), file)),
-                RequestBody.create(MediaType.parse("multipart/form-data"), alamat),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
-                RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
-                RequestBody.create(MediaType.parse("multipart/form-data"), resto),
-                RequestBody.create(MediaType.parse("multipart/form-data"), rekno),
-                RequestBody.create(MediaType.parse("multipart/form-data"), rekname),
-                RequestBody.create(MediaType.parse("multipart/form-data"), email),
-                RequestBody.create(MediaType.parse("multipart/form-data"), phone),
-                RequestBody.create(MediaType.parse("multipart/form-data"), resto),
-                RequestBody.create(MediaType.parse("multipart/form-data"), fcm.toString()),
-                RequestBody.create(MediaType.parse("multipart/form-data"), pin),
-                RequestBody.create(MediaType.parse("multipart/form-data"), "No Bank"),
-                RequestBody.create(MediaType.parse("multipart/form-data"), fcourt)
-        ).enqueue(object : Callback<BaseResponse> {
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                toggleLoadingView(false)
-            }
+        val ktpFileSize = (file.length() / 1024).toString().toInt()
+        val logoFileSize = (file1.length() / 1024).toString().toInt()
+        val bannerFileSize = (file2.length() / 1024).toString().toInt()
 
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                toggleLoadingView(false)
+        var imageValidation = false
+        if (ktpFileSize > 1024) {
+            ktpErrorText.text = "Ukuran gambar tidak lebih dari 1 mb"
+        }
 
-                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
-                    activity?.startActivity(intent)
-                    this@SignupV2ThirdFragment.activity?.finish()
-                } else {
-                    val errorResponse: BaseResponse? = gson.fromJson(
-                            response.errorBody()!!.charStream(), typeToken)
-                    Toast.makeText(context, generateResponseMessage(errorResponse?.errCode,
-                            errorResponse?.errMessage), Toast.LENGTH_LONG).show()
+        if (logoFileSize > 1024) {
+            logoRestoranErrorText.text = "Ukuran gambar tidak lebih dari 1 mb"
+        }
+
+        if (bannerFileSize > 1024) {
+            latarRestoranErrorText.text = "Ukuran gambar tidak lebih dari 1 mb"
+        }
+
+        if (ktpFileSize < 1024 && logoFileSize < 1024 && bannerFileSize < 1024) {
+            imageValidation = true
+        }
+
+        if (imageValidation) {
+            toggleLoadingView(true)
+            PikappApiService().api.uploadRegister(
+                    getUUID(), getClientID(), getTimestamp(),
+                    MultipartBody.Part.createFormData("file_01", file2.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file2)),
+                    MultipartBody.Part.createFormData("file_02", file1.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file1)),
+                    MultipartBody.Part.createFormData("file_03", file.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), file)),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), alamat),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), resto),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), rekno),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), rekname),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), email),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), phone),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), resto),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), fcm.toString()),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), pin),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "No Bank"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), fcourt)
+            ).enqueue(object : Callback<BaseResponse> {
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    toggleLoadingView(false)
                 }
-            }
-        })
+
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    toggleLoadingView(false)
+
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                        val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
+                        activity?.startActivity(intent)
+                        this@SignupV2ThirdFragment.activity?.finish()
+                    } else {
+                        val errorResponse: BaseResponse? = gson.fromJson(
+                                response.errorBody()!!.charStream(), typeToken)
+                        Toast.makeText(context, generateResponseMessage(errorResponse?.errCode,
+                                errorResponse?.errMessage), Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+        }
     }
 
     private fun toggleLoadingView(isLoading: Boolean) {
