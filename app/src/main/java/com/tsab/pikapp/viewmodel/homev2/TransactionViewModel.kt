@@ -3,6 +3,7 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -47,10 +50,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val done: LiveData<Int> get() = mutableDone
 
     private val mutableCategoryList = MutableLiveData<List<CategoryListResult>>(listOf())
-    val categoryListResult: LiveData<List<CategoryListResult>> = mutableCategoryList
-    fun setCategoryList(categoryListResult: List<CategoryListResult>) {
-        mutableCategoryList.value = categoryListResult
-    }
 
     private val mutableisLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> get() = mutableisLoading
@@ -58,7 +57,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
-    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener, status: String) {
+    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener, status: String, support: FragmentManager) {
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
@@ -94,6 +93,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 }
                                 mutableProses.value = prosesList.size
                                 mutableBatal.value = batalList.size
+                                mutableDone.value = doneList.size
                                 Log.e("list transaction", t.results.toString())
                                 Log.e("error msg", t.errCode.toString())
                                 Log.e("Proses", prosesList.toString())
@@ -101,7 +101,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 if(status == "Proses"){
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>,listener)
+                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -110,7 +110,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 if(status == "Batal"){
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>,listener)
+                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -119,7 +119,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 if(status == "Done"){
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>,listener)
+                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -130,6 +130,29 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             override fun onError(e: Throwable) {
                                 var errorResponse: ErrorResponse
                                 Log.e("failed", e.message.toString())
+                            }
+                        })
+        )
+    }
+
+    fun postUpdate(id: String, status: String){
+        var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+
+        disposable.add(
+                pikappService.postUpdateOrderStatus(email, token,
+                        RequestBody.create(MediaType.parse("multipart/form-data"), id)
+                        , RequestBody.create(MediaType.parse("multipart/form-data"), status))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>(){
+                            override fun onSuccess(t: UpdateStatusResponse) {
+                                Log.e("Berhasil", "Sukses")
+                            }
+
+                            override fun onError(e: Throwable) {
+                                Log.e("Gagal", "Fail")
                             }
                         })
         )

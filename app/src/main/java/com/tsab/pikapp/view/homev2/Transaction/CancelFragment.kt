@@ -33,7 +33,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
 
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Batal") }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Batal",  requireActivity().supportFragmentManager) }
     }
 
     override fun onItemClick(position: Int) {

@@ -21,7 +21,7 @@ class SessionManager {
         private const val PREF_MERCHANT_DATA = "merchant data"
         private const val PREF_MERCHANT_DOB = "merchant dob"
         private const val PREF_MERCHANT_GENDER = "merchant gender"
-        private const val PREF_HOME_NAV = "home nav"
+        private var PREF_HOME_NAV = "home nav"
 
         private var prefs: SharedPreferences? = null
 
@@ -49,6 +49,10 @@ class SessionManager {
     }
 
     fun isLoggingIn() = prefs?.getBoolean(PREF_ISLOGGINGIN, false)
+
+    fun transactionUpdate(){
+        PREF_HOME_NAV = "0"
+    }
 
     private fun saveUserToken(token: String) {
         prefs?.edit(commit = true) {
