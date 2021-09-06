@@ -1,17 +1,13 @@
 package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -23,13 +19,8 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopManagementBinding
 import com.tsab.pikapp.util.getDay
 import com.tsab.pikapp.util.getHour
-import com.tsab.pikapp.util.getTimestamp
-import com.tsab.pikapp.view.menuCategory.CategoryNavigation
-import com.tsab.pikapp.view.homev2.menu.MenuNavigation
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.fragment_shop_management.*
-import kotlinx.android.synthetic.main.menu_fragment.*
-import org.w3c.dom.Text
 
 class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickListener {
 
@@ -124,7 +115,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
 
     private fun showPopup(){
         if (otherSettingViewModel.autoOnOff.value == true) {
-            dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
+            dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
             val inflater: LayoutInflater =
                     activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val view = inflater.inflate(R.layout.open_close_restaurant_popup, null)
@@ -147,23 +138,23 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
             closeBtn.setOnClickListener {
                 otherSettingViewModel.setAutoOnOffTrue(autoTurn)
                 popupWindow.dismiss()
-                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
+                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
             }
 
             buttonContinue.setOnClickListener {
                 Toast.makeText(requireView().context, "false", Toast.LENGTH_SHORT).show()
                 otherSettingViewModel.setAutoOnOffFalse(autoTurn)
                 popupWindow.dismiss()
-                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_off)
+                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_off)
             }
 
             buttonBack.setOnClickListener {
                 otherSettingViewModel.setAutoOnOffTrue(autoTurn)
                 popupWindow.dismiss()
-                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
+                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
             }
         } else if (otherSettingViewModel.autoOnOff.value == false) {
-            dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.toggle_on)
+            dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
             otherSettingViewModel.setAutoOnOffTrue(autoTurn)
         }
     }
