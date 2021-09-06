@@ -22,6 +22,8 @@ class SessionManager {
         private const val PREF_MERCHANT_DOB = "merchant dob"
         private const val PREF_MERCHANT_GENDER = "merchant gender"
         private const val PREF_HOME_NAV = "home nav"
+        private const val PREF_MERCHANT_BANNER = "merchant banner"
+        private const val PREF_MERCHANT_LOGO = "merchant logo"
 
         private var prefs: SharedPreferences? = null
 
@@ -146,6 +148,7 @@ class SessionManager {
     fun getDOBProfile() = prefs?.getString(PREF_MERCHANT_DOB, null)
     fun getGenderProfile() = prefs?.getString(PREF_MERCHANT_GENDER, null)
 
+    //HOME NAVIGATION STATUS
     fun setHomeNav(intData: Int){
         prefs?.edit(commit = true) {
             putInt(PREF_HOME_NAV, intData)
@@ -153,4 +156,11 @@ class SessionManager {
     }
 
     fun getHomeNav() = prefs?.getInt(PREF_HOME_NAV, 0)
+
+    //SET AND GET CONTENT URI
+    fun setBannerUri(banner: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_BANNER, banner) }
+    fun setLogoUri(logo: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_LOGO, logo) }
+
+    fun getBannerUri() = prefs?.getString(PREF_MERCHANT_BANNER, null)
+    fun getLogoUri() = prefs?.getString(PREF_MERCHANT_LOGO, null)
 }
