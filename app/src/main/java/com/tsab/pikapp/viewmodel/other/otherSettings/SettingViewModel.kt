@@ -28,6 +28,7 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
 
     fun logout() {
         val sessionId = sessionManager.getUserData()?.sessionId!!
+        sessionManager.setHomeNav(0)
         Log.d("debug", "sessionid : $sessionId")
         logoutProcess(sessionId)
     }

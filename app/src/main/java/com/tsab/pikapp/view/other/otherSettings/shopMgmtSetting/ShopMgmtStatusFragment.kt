@@ -2,22 +2,21 @@ package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopMgmtStatusBinding
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
-import kotlinx.android.synthetic.main.fragment_shop_management.*
 import kotlinx.android.synthetic.main.fragment_shop_mgmt_status.*
+import java.text.SimpleDateFormat
 
 
 class ShopMgmtStatusFragment : Fragment() {
@@ -48,23 +47,40 @@ class ShopMgmtStatusFragment : Fragment() {
                 dataBinding.openStatus.id -> {
                     dataBinding.shopStatusOpenHour.visibility = View.VISIBLE
                     dataBinding.saveBtn.setOnClickListener {
+                        val dateFormat = SimpleDateFormat("HH:mm")
                         open = dataBinding.openStatusInput.text.toString()
                         close = dataBinding.closeStatusInput.text.toString()
-                        when {
-                            open.isEmpty() -> {
-                                dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+
+                        var validationTime: Boolean
+                        if (open.get(2).toString() == ":" && close.get(2).toString() == ":") {
+                            val getOpenTime = dateFormat.parse(open)
+                            val getCloseTime = dateFormat.parse(close)
+                            val openTimeResult = dateFormat.format(getOpenTime)
+                            val closeTimeResult = dateFormat.format(getCloseTime)
+                            validationTime = openTimeResult == open && closeTimeResult == close
+                        } else {
+                            validationTime = false
+                        }
+
+                        if (validationTime) {
+                            when {
+                                open.isEmpty() -> {
+                                    dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+                                }
+                                close.isEmpty() -> {
+                                    dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
+                                }
+                                else -> {
+                                    otherSettingViewModel.getOpenTime(open)
+                                    otherSettingViewModel.getCLoseTime(close)
+                                    dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
+                                    dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
+                                    activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
+                                    requireActivity().onBackPressed()
+                                }
                             }
-                            close.isEmpty() -> {
-                                dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.red)
-                            }
-                            else -> {
-                                otherSettingViewModel.getOpenTime(open)
-                                otherSettingViewModel.getCLoseTime(close)
-                                dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
-                                dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
-                                activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                                requireActivity().onBackPressed()
-                            }
+                        } else {
+                            Toast.makeText(requireActivity(), "Penulisan format waktu salah", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
