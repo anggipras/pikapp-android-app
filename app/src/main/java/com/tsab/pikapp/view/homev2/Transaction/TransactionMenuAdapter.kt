@@ -27,7 +27,7 @@ class TransactionMenuAdapter(private val context: Context, private val transacti
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.menuName.text = transactionList1[position].productName
-        holder.itemNumber.text = transactionList1[position].productQty.toString()
+        holder.itemNumber.text = transactionList1[position].productQty.toString() + "x"
         holder.orderNote.text = transactionList1[position].productNote
     }
 
