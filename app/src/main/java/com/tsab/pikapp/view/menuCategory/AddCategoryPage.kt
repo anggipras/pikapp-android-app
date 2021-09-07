@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.menuCategory
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddCategoryPageBinding
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
 
@@ -20,6 +23,7 @@ class AddCategoryPage : Fragment() {
     private var navController: NavController? = null
     private lateinit var dataBinding: FragmentAddCategoryPageBinding
     private val viewModel: CategoryViewModel by activityViewModels()
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +40,8 @@ class AddCategoryPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        sessionManager.setHomeNav(1)
+
         observeViewModel()
         attachInputListeners()
     }
@@ -43,6 +49,17 @@ class AddCategoryPage : Fragment() {
     private fun observeViewModel() {
         viewModel.namaCategoryError.observe(viewLifecycleOwner, Observer { namaCategoryError ->
             dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
+        })
+
+        viewModel.isLoadingIcon.observe(viewLifecycleOwner, Observer { load ->
+            if (load) {
+                dataBinding.loadingViewAddCategory.visibility = View.VISIBLE
+            } else {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                    startActivity(this)
+                }
+                dataBinding.loadingViewAddCategory.visibility = View.GONE
+            }
         })
     }
 
@@ -56,11 +73,11 @@ class AddCategoryPage : Fragment() {
                         it.baseContext
                     )
                 }
-                requireActivity().onBackPressed()
             }
         }
 
         dataBinding.backBtn.setOnClickListener {
+//            navController?.navigate(R.id.action_addCategoryPage_to_categoryPage)
             requireActivity().onBackPressed()
         }
 

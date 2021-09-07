@@ -46,6 +46,14 @@ class CategoryListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
+
         navController = Navigation.findNavController(view)
         sessionManager.setHomeNav(1)
 

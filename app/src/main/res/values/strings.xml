@@ -18,6 +18,14 @@
     <string name="ya">Ya</string>
     <string name="star">*</string>
 
+    <!-- Bank names -->
+    <string name="dialog_pilih_bank">Pilih Bank</string>
+    <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>
+    <string name="bank_bni">BANK NEGARA INDONESIA (BNI)</string>
+    <string name="bank_bri">BANK RAKYAT INDONESIA (BRI)</string>
+    <string name="bank_mandiri">BANK MANDIRI</string>
+    <string name="bank_cimb">BANK CIMB NIAGA</string>
+
     <!-- Local Notification -->
     <string name="general_notif_id">pikappnotif</string>
     <string name="general_notif_title">Halo, $s</string>
