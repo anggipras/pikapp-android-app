@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,8 +99,10 @@ class AddMenuFragment : Fragment() {
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
-                val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
-                activity?.startActivity(intent)
+                Handler().postDelayed({
+                    val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
+                    activity?.startActivity(intent)
+                }, 500)
             }
         }
     }

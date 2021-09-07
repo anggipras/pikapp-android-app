@@ -1,8 +1,8 @@
 package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,7 @@ import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
-import kotlinx.android.synthetic.main.activity_home_navigation.*
+
 
 class CategoryListFragment : Fragment() {
     private val viewModel: CategoryViewModel by activityViewModels()
@@ -57,6 +57,14 @@ class CategoryListFragment : Fragment() {
         navController = Navigation.findNavController(view)
         sessionManager.setHomeNav(1)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
+
         observeViewModel()
         attachInputListeners()
         setupRecyclerView()
@@ -65,6 +73,8 @@ class CategoryListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.fetchCategoryList()
+
+
     }
 
     private fun observeViewModel() {

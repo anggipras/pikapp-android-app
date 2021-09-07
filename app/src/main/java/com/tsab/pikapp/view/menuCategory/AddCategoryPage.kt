@@ -2,9 +2,12 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +20,7 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
+import java.util.*
 
 class AddCategoryPage : Fragment() {
 
@@ -67,12 +71,14 @@ class AddCategoryPage : Fragment() {
         dataBinding.saveBtn.setOnClickListener {
             viewModel.validateNama(categoryName.text.toString())
             if (viewModel.validateNama(categoryName.text.toString())) {
+
                 activity?.let {
                     viewModel.postCategory(
                         categoryName.text.toString(),
                         it.baseContext
                     )
                 }
+
             }
         }
 
