@@ -144,47 +144,49 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
         })
 
-        saveBtn.setOnClickListener {
-            var sessionManager = SessionManager(application)
-            val email = sessionManager.getUserData()!!.email!!
-            val token = sessionManager.getUserToken()!!
-            val timestamp = getTimestamp()
-            val signature = getSignature(email, timestamp)
-            val mid = sessionManager.getUserData()!!.mid!!
-
-            var sortReq = SortCategoryRequest()
-            sortReq.categories_menu = categoryListName
-            Log.e("sort", sortReq.categories_menu.toString())
-
-            PikappApiService().api.sortMenuCategory(
-                getUUID(), timestamp, getClientID(), signature, token, mid, sortReq
-            ).enqueue(object : retrofit2.Callback<BaseResponse> {
-                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                    Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onResponse(
-                    call: Call<BaseResponse>,
-                    response: Response<BaseResponse>
-                ) {
-                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                        Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
-                    } else {
-                        var errorResponse: BaseResponse? =
-                            gson.fromJson(response.errorBody()!!.charStream(), type)
-                        Toast.makeText(
-                            baseContext,
-                            generateResponseMessage(
-                                errorResponse?.errCode,
-                                errorResponse?.errMessage
-                            ).toString(),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            })
-        }
+//        saveBtn.setOnClickListener {
+//            var sessionManager = SessionManager(application)
+//            val email = sessionManager.getUserData()!!.email!!
+//            val token = sessionManager.getUserToken()!!
+//            val timestamp = getTimestamp()
+//            val signature = getSignature(email, timestamp)
+//            val mid = sessionManager.getUserData()!!.mid!!
+//
+//            var sortReq = SortCategoryRequest()
+//            sortReq.categories_menu = categoryListName
+//            Log.e("sort", sortReq.categories_menu.toString())
+//
+//            PikappApiService().api.sortMenuCategory(
+//                getUUID(), timestamp, getClientID(), signature, token, mid, sortReq
+//            ).enqueue(object : retrofit2.Callback<BaseResponse> {
+//                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+//                    Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                override fun onResponse(
+//                    call: Call<BaseResponse>,
+//                    response: Response<BaseResponse>
+//                ) {
+//                    Log.d("SORTRESPONSE", response.toString())
+//                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+//                        Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
+//                        val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
+//                        startActivity(intent)
+//                    } else {
+//                        var errorResponse: BaseResponse? =
+//                            gson.fromJson(response.errorBody()!!.charStream(), type)
+//                        Toast.makeText(
+//                            baseContext,
+//                            generateResponseMessage(
+//                                errorResponse?.errCode,
+//                                errorResponse?.errMessage
+//                            ).toString(),
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    }
+//                }
+//            })
+//        }
 
         backBtn.setOnClickListener {
             val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
