@@ -3,6 +3,8 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -57,7 +59,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
-    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener, status: String, support: FragmentManager) {
+    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener, status: String, support: FragmentManager, empty: ConstraintLayout) {
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
@@ -99,6 +101,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 Log.e("Proses", prosesList.toString())
                                 Log.e("error code", t.errMessage.toString())
                                 if(status == "Proses"){
+                                    empty.isVisible = prosesList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
                                             prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
@@ -108,6 +111,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     mutableisLoading.value = false
                                 }
                                 if(status == "Batal"){
+                                    empty.isVisible = batalList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
                                             batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
@@ -117,6 +121,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     mutableisLoading.value = false
                                 }
                                 if(status == "Done"){
+                                    empty.isVisible = doneList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
                                             doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)

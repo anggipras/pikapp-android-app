@@ -33,7 +33,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Proses", requireActivity().supportFragmentManager) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Proses", requireActivity().supportFragmentManager, emptyState) }
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -43,7 +43,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Proses", requireActivity().supportFragmentManager) }
+            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
     }
 

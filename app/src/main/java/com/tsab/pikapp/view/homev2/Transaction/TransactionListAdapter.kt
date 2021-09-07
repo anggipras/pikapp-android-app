@@ -29,6 +29,10 @@ import kotlinx.android.synthetic.main.transaction_list_items.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.HttpException
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val listener: OnItemClickListener, private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
@@ -62,6 +66,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.orderTime.visibility = View.GONE
                 holder.orderStatus.visibility = View.GONE
                 holder.paymentStatus.text = "NEW"
+                timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
@@ -87,6 +92,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 setDate(position)
                 holder.orderTime.visibility = View.GONE
                 holder.orderStatus.text = "NEW"
+                timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
@@ -111,6 +117,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 setDate(position)
                 holder.orderTime.visibility = View.GONE
                 holder.orderStatus.visibility = View.GONE
+                timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.paymentStatus.text = "Diproses"
                 holder.paymentStatus.backgroundTintList = context.resources.getColorStateList(R.color.orange)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
@@ -272,6 +279,24 @@ class TransactionListAdapter(private val context: Context, private val transacti
 
         for(count in transactionList1[position]){
             jumlah = jumlah + count.productQty!!.toInt()
+        }
+    }
+
+    fun timeAgo(time: String, holder:TextView){
+        var format: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
+        var txnTime : Date = format.parse(time)
+        var timeNow : Date = Date()
+        var seconds : Long = TimeUnit.MILLISECONDS.toSeconds(timeNow.time - txnTime.time)
+        var minutes : Long = TimeUnit.MILLISECONDS.toMinutes(timeNow.time - txnTime.time)
+        var hours : Long = TimeUnit.MILLISECONDS.toHours(timeNow.time - txnTime.time)
+        var days : Long = TimeUnit.MILLISECONDS.toDays(timeNow.time - txnTime.time)
+
+        if(seconds < 60){
+            holder.text = "Baru Saja"
+        }else if(minutes < 60){
+            holder.text = minutes.toString() + " Menit Yang Lalu"
+        }else{
+            holder.text = hours.toString() + " Jam Yang Lalu"
         }
     }
 
