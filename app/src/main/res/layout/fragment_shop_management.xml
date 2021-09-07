@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.other.otherSettings.shopMgmtSetting.ShopManagementFragment"
-    android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -11,7 +10,10 @@
         android:id="@+id/constraintLayout_shopSetting"
         android:layout_width="match_parent"
         android:layout_height="122dp"
-        android:background="@drawable/headersettings">
+        android:background="@drawable/headersettings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/back_button_shop"
@@ -23,11 +25,11 @@
             android:text="@string/kembali"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
+            app:drawableLeftCompat="@drawable/ic_back_arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:drawableLeftCompat="@drawable/ic_back_arrow" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/shop_title"
@@ -46,139 +48,150 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/restaurant_status"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeShopManagement"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/constraintLayout_shopSetting"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_marginTop="122dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_shopSetting">
 
-        <TextView
-            android:id="@+id/restaurant_status_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="@string/sm_restaurant_status_title"
-            android:textColor="#494949"
-            android:textSize="18dp" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/restaurant_status_layout"
+            android:id="@+id/restaurant_status"
             android:layout_width="match_parent"
-            android:layout_height="71dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/restaurant_status_now"
+                android:id="@+id/restaurant_status_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:fontFamily="@font/proximanova_bold"
-                android:textColor="@color/green"
-                android:textSize="16sp" />
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="@string/sm_restaurant_status_title"
+                android:textColor="#494949"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:id="@+id/restaurant_status_layout"
+                android:layout_width="match_parent"
+                android:layout_height="71dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/restaurant_status_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:fontFamily="@font/proximanova_bold"
+                    android:textColor="@color/green"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/restaurant_status_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text=""
+                    android:textColor="@color/textSubtle"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/restaurant_status_detail"
+                android:id="@+id/restaurant_autostatus_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:fontFamily="@font/proximanova_regular"
-                android:text=""
-                android:textColor="@color/textSubtle"
-                android:textSize="16sp" />
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="@string/sm_restaurant_status_title"
+                android:textColor="#494949"
+                android:textSize="18sp" />
 
-        </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/restaurant_autostatus_layout"
+                android:layout_width="match_parent"
+                android:layout_height="71dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp">
 
-        <TextView
-            android:id="@+id/restaurant_autostatus_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="@string/sm_restaurant_status_title"
-            android:textColor="#494949"
-            android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/restaurant_autostatus_now"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text="@string/sm_restaurant_auto_status"
+                    android:textColor="@color/textSubtle"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/autoTurn_toggle"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/restaurant_autostatus_layout"
-            android:layout_width="match_parent"
-            android:layout_height="71dp"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/autoTurn_toggle"
+                    android:layout_width="53dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20sp"
+                    android:background="@drawable/switch_on"
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/restaurant_autostatus_now"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:fontFamily="@font/proximanova_regular"
-                android:text="@string/sm_restaurant_auto_status"
-                android:textColor="@color/textSubtle"
-                android:textSize="16sp"
-                android:layout_marginRight="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/autoTurn_toggle"
+                android:id="@+id/restaurant_schedule_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="7dp"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="@string/sm_restaurant_schedule_title"
+                android:textColor="#494949"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/autoTurn_toggle"
-                android:layout_width="53dp"
-                android:layout_height="30dp"
-                android:layout_marginRight="20sp"
-                android:background="@drawable/switch_on"
-                android:textOff=""
-                android:textOn=""
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/restaurant_schedule_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="7dp"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="@string/sm_restaurant_schedule_title"
-            android:textColor="#494949"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/restaurant_autostatus_layout" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeShopManagement"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                app:layout_constraintTop_toBottomOf="@id/restaurant_autostatus_layout" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shopSchedule_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
             </androidx.recyclerview.widget.RecyclerView>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

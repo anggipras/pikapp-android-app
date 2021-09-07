@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopMgmtStatusBinding
@@ -76,7 +77,7 @@ class ShopMgmtStatusFragment : Fragment() {
                                     dataBinding.openStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
                                     dataBinding.closeStatusInput.backgroundTintList = resources.getColorStateList(R.color.editTextGray)
                                     activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                                    requireActivity().onBackPressed()
+                                    Navigation.findNavController(view).navigate(R.id.navigateToFromShopMgmtStatusFragment_shopManagementFragment)
                                 }
                             }
                         } else {
@@ -93,7 +94,7 @@ class ShopMgmtStatusFragment : Fragment() {
                         otherSettingViewModel.getOpenTime(open)
                         otherSettingViewModel.getCLoseTime(close)
                         activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                        requireActivity().onBackPressed()
+                        Navigation.findNavController(view).navigate(R.id.navigateToFromShopMgmtStatusFragment_shopManagementFragment)
                     }
                 }
                 dataBinding.hours24Status.id -> {
@@ -105,14 +106,14 @@ class ShopMgmtStatusFragment : Fragment() {
                         otherSettingViewModel.getOpenTime(open)
                         otherSettingViewModel.getCLoseTime(close)
                         activity?.let { otherSettingViewModel.updateShopStatus(it.baseContext) }
-                        requireActivity().onBackPressed()
+                        Navigation.findNavController(view).navigate(R.id.navigateToFromShopMgmtStatusFragment_shopManagementFragment)
                     }
                 }
             }
         })
 
         dataBinding.backButtonShopStatus.setOnClickListener {
-            requireActivity().onBackPressed()
+            Navigation.findNavController(view).navigate(R.id.navigateToFromShopMgmtStatusFragment_shopManagementFragment)
         }
 
         dataBinding.shopStatusOpenHour.visibility = View.GONE

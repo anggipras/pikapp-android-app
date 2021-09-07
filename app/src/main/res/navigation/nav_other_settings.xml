@@ -29,7 +29,7 @@
             android:id="@+id/navigateTo_shopManagementFragment"
             app:destination="@id/shopManagementFragment" />
         <action
-            android:id="@+id/action_settingFragment_to_dataBankFragment"
+            android:id="@+id/navigateTo_dataBankFragment"
             app:destination="@id/dataBankFragment" />
     </fragment>
     <fragment

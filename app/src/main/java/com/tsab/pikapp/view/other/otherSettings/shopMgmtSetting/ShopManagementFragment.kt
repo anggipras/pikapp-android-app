@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -19,6 +21,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopManagementBinding
 import com.tsab.pikapp.util.getDay
 import com.tsab.pikapp.util.getHour
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.fragment_shop_management.*
 
@@ -45,6 +48,12 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Navigation.findNavController(view).navigate(R.id.navigateBackToFromShopManagementFragment_settingFragment)
+            }
+        })
+
         swipeRefreshLayout = swipeShopManagement
 
         navController = Navigation.findNavController(view)
@@ -60,7 +69,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         }
 
         dataBinding.backButtonShop.setOnClickListener {
-            requireActivity().onBackPressed()
+            Navigation.findNavController(view).navigate(R.id.navigateBackToFromShopManagementFragment_settingFragment)
         }
 
         dataBinding.autoTurnToggle.setOnClickListener {

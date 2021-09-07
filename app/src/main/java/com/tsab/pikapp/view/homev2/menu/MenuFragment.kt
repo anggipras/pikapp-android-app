@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.menu_fragment.*
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
 
-    lateinit var categoryAdapter: CategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: MenuFragmentBinding
 
