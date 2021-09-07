@@ -28,7 +28,7 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
 
     fun logout() {
         val sessionId = sessionManager.getUserData()?.sessionId!!
-        Log.d("debug", "sessionid : $sessionId")
+        sessionManager.setHomeNav(0)
         logoutProcess(sessionId)
     }
 
@@ -84,22 +84,10 @@ class SettingViewModel(application: Application) : BaseViewModel(application) {
         Toast.makeText(getApplication(), m, Toast.LENGTH_LONG).show()
     }
 
-    fun setUserNotif() {
-        val userNotif = sessionManager.getProfileNum()
-        when(userNotif) {
-            0 -> createToast("Mohon isi tanggal lahir dan jenis kelamin")
-            1 -> createToast("Mohon upload ulang banner dan logo restoran")
-            else -> Log.d("DONEUPDATE", "DONE ALL FIRST UPDATE")
-        }
-    }
-
     fun getUserNotif(): Int{
         val userNotif = sessionManager.getProfileNum()
-        return if (userNotif != null) {
-            userNotif.toInt()
-        }else{
-            10
-        }
+        return userNotif?.toInt() ?: 10
+
     }
 
     override fun onCleared() {

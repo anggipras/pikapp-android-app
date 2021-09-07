@@ -18,9 +18,10 @@ import com.google.firebase.messaging.RemoteMessage
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.NotificationModel
 import com.tsab.pikapp.util.NOTIFICATION_CHANNEL_ID
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import java.util.*
-
 
 class PikappMessagingService : FirebaseMessagingService() {
 
@@ -34,8 +35,9 @@ class PikappMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.d("Debug", "fcm notification : ${remoteMessage.data}")
-        showNotification(remoteMessage.data)
+//        Log.d("Debug", "fcm notification : ${remoteMessage.data}")
+        showNotifDev(remoteMessage.data)
+//        showNotification(remoteMessage.data)
 //        if (remoteMessage.data.isEmpty())
 //            showNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
 //        else showNotification(remoteMessage.data, remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
@@ -131,6 +133,48 @@ class PikappMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         prefHelper.setFcmToken(p0)
-        Log.d("Debug", "fcm token : $p0")
+//        Log.d("Debug", "fcm token : $p0")
+    }
+
+    private fun showNotifDev(data: Map<String, String>) {
+        val title = data["title"].toString()
+        val body = data["body"].toString()
+        val omnichannel = data["omnichannel"].toString()
+        val status = data["status"].toString()
+        var clickAction = Intent(applicationContext, HomeNavigation::class.java)
+        if (omnichannel == "true") {
+            SessionManager().setHomeNav(3)
+        } else {
+            SessionManager().setHomeNav(0)
+        }
+
+        val intent = clickAction
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_pikafood)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setContentInfo("Info")
+            .setAutoCancel(true)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT)
+//            notificationChannel.description = ""
+//            notificationChannel.enableLights(true)
+//            notificationChannel.lightColor = Color.BLUE
+//            notificationChannel.enableLights(true)
+//            notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
+//            notificationChannel.enableVibration(true)
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        notificationManager.notify(Random().nextInt(), notificationBuilder.build())
     }
 }

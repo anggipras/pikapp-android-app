@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.menuCategory
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddCategoryPageBinding
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
 import java.util.*
@@ -24,6 +27,7 @@ class AddCategoryPage : Fragment() {
     private var navController: NavController? = null
     private lateinit var dataBinding: FragmentAddCategoryPageBinding
     private val viewModel: CategoryViewModel by activityViewModels()
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +44,8 @@ class AddCategoryPage : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        sessionManager.setHomeNav(1)
+
         observeViewModel()
         attachInputListeners()
     }
@@ -48,20 +54,36 @@ class AddCategoryPage : Fragment() {
         viewModel.namaCategoryError.observe(viewLifecycleOwner, Observer { namaCategoryError ->
             dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
         })
+
+        viewModel.isLoadingIcon.observe(viewLifecycleOwner, Observer { load ->
+            if (load) {
+                dataBinding.loadingViewAddCategory.visibility = View.VISIBLE
+            } else {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                    startActivity(this)
+                }
+                dataBinding.loadingViewAddCategory.visibility = View.GONE
+            }
+        })
     }
 
     private fun attachInputListeners() {
         dataBinding.saveBtn.setOnClickListener {
             viewModel.validateNama(categoryName.text.toString())
             if (viewModel.validateNama(categoryName.text.toString())) {
-                activity?.let { viewModel.postCategory(categoryName.text.toString(), it.baseContext) }
-                Handler().postDelayed({
-                    requireActivity().onBackPressed()
-                }, 500)
+
+                activity?.let {
+                    viewModel.postCategory(
+                        categoryName.text.toString(),
+                        it.baseContext
+                    )
+                }
+
             }
         }
 
         dataBinding.backBtn.setOnClickListener {
+//            navController?.navigate(R.id.action_addCategoryPage_to_categoryPage)
             requireActivity().onBackPressed()
         }
 

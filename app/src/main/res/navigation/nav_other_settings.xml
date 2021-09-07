@@ -29,7 +29,7 @@
             android:id="@+id/navigateTo_shopManagementFragment"
             app:destination="@id/shopManagementFragment" />
         <action
-            android:id="@+id/action_settingFragment_to_dataBankFragment"
+            android:id="@+id/navigateTo_dataBankFragment"
             app:destination="@id/dataBankFragment" />
     </fragment>
     <fragment
@@ -99,12 +99,19 @@
         <action
             android:id="@+id/navigateTo_shopMgmtStatusFragment"
             app:destination="@id/shopMgmtStatusFragment" />
+        <action
+            android:id="@+id/navigateBackToFromShopManagementFragment_settingFragment"
+            app:popUpTo="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopMgmtStatusFragment"
         android:name="com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopMgmtStatusFragment"
         android:label="fragment_shop_mgmt_status"
-        tools:layout="@layout/fragment_shop_mgmt_status" />
+        tools:layout="@layout/fragment_shop_mgmt_status" >
+        <action
+            android:id="@+id/navigateToFromShopMgmtStatusFragment_shopManagementFragment"
+            app:destination="@id/shopManagementFragment" />
+    </fragment>
     <fragment
         android:id="@+id/dataBankFragment"
         android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.DataBankFragment"
@@ -112,7 +119,8 @@
         tools:layout="@layout/fragment_data_bank" >
         <action
             android:id="@+id/action_dataBankFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            app:destination="@id/settingFragment"
+            app:popUpTo="@id/settingFragment" />
         <action
             android:id="@+id/action_dataBankFragment_to_pinBankFragment"
             app:destination="@id/pinBankFragment" />

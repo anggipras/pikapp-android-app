@@ -26,7 +26,6 @@ class OtherSettingViewModel : ViewModel() {
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
     private val disposable = CompositeDisposable()
-    private val apiService = PikappApiService()
 
     // Profile Setting Variable
     val profileFullName = MutableLiveData<String>()
@@ -117,12 +116,6 @@ class OtherSettingViewModel : ViewModel() {
 
         sessionManager.setDOBProfile(_birthdaySelection.value)
         sessionManager.setGenderProfile(gender)
-
-        when (sessionManager.getProfileNum()) {
-            0 -> sessionManager.setProfileNum(1)
-            1 -> sessionManager.setProfileNum(1)
-            2 -> sessionManager.setProfileNum(2)
-        }
     }
 
     fun setDefaultGender() {
@@ -277,7 +270,7 @@ class OtherSettingViewModel : ViewModel() {
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Toast.makeText(baseContext, "changes saved", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Berhasil disimpan", Toast.LENGTH_SHORT).show()
                 } else {
                     var errorResponse: BaseResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)

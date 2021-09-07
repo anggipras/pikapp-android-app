@@ -25,7 +25,6 @@ import kotlin.math.log
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
 
-    lateinit var categoryAdapter: CategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: MenuFragmentBinding
 

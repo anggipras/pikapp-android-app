@@ -18,6 +18,21 @@
     <string name="ya">Ya</string>
     <string name="star">*</string>
 
+    <!-- Bank names -->
+    <string name="dialog_pilih_bank">Pilih Bank</string>
+    <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>
+    <string name="bank_bni">BANK NEGARA INDONESIA (BNI)</string>
+    <string name="bank_bri">BANK RAKYAT INDONESIA (BRI)</string>
+    <string name="bank_mandiri">BANK MANDIRI</string>
+    <string name="bank_cimb">BANK CIMB NIAGA</string>
+
+    <!-- Local Notification -->
+    <string name="general_notif_id">pikappnotif</string>
+    <string name="general_notif_title">Halo, $s</string>
+    <string name="general_notif_message">Mohon cek kembali email anda terkait integrasi dengan Tokopedia</string>
+    <string name="notification_channel_name">PikApp</string>
+    <string name="notification_channel_description">Email reminder</string>
+
     <!-- Image content descriptions -->
     <string name="cd_change_order_button">Change order button</string>
 
@@ -177,7 +192,7 @@
     <string name="no_handphone">No. Handphone</string>
     <string name="pilih_jenis_kelamin">Pilih jenis kelamin yang sesuai dengan KTP Anda</string>
     <string name="perempuan">Perempuan</string>
-    <string name="laki_laki">Laki-laki</string>
+    <string name="laki_laki">Laki-Laki</string>
 
     <!--    Setting Information Fragment Screen-->
     <string name="nama_restoran">Nama Restoran</string>
