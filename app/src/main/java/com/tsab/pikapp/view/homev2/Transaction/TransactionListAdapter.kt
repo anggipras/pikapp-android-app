@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.Transaction
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.homev2.menu.MenuListAdapter
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -58,6 +60,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         setMenu(holder.rView, transactionList1[position] as MutableList<OrderDetailDetail>)
+        val context: Context = holder.price.context
 
         //on_procces
         if (transactionList[position].status == "OPEN" || transactionList[position].status == "PAID" || transactionList[position].status == "ON_PROCESS"){
@@ -78,6 +81,8 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "ON_PROCESS")
+                    sessionManager.transactionUpdate()
+                    context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
@@ -103,6 +108,8 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "PAID")
+                    sessionManager.transactionUpdate()
+                    context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
@@ -131,6 +138,8 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "DELIVER")
+                    sessionManager.transactionUpdate()
+                    context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.visibility = View.GONE
@@ -173,6 +182,8 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "CLOSE")
+                    sessionManager.transactionUpdate()
+                    context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
                 jumlah = 0
@@ -305,20 +316,20 @@ class TransactionListAdapter(private val context: Context, private val transacti
         val token = sessionManager.getUserToken()!!
 
         disposable.add(
-            pikappService.postUpdateOrderStatus(email, token,
-                RequestBody.create(MediaType.parse("multipart/form-data"), id)
-                , RequestBody.create(MediaType.parse("multipart/form-data"), status))
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>(){
-                    override fun onSuccess(t: UpdateStatusResponse) {
-                        Log.e("Berhasil", "Sukses")
-                    }
+                pikappService.postUpdateOrderStatus(email, token,
+                        RequestBody.create(MediaType.parse("multipart/form-data"), id)
+                        , RequestBody.create(MediaType.parse("multipart/form-data"), status))
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>(){
+                            override fun onSuccess(t: UpdateStatusResponse) {
+                                Log.e("Berhasil", "Sukses")
+                            }
 
-                    override fun onError(e: Throwable) {
-                        Log.e("Gagal", "Fail")
-                    }
-                })
+                            override fun onError(e: Throwable) {
+                                Log.e("Gagal", "Fail")
+                            }
+                        })
         )
     }
 

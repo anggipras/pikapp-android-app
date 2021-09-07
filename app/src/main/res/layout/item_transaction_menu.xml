@@ -6,10 +6,10 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:id="@+id/itemWrap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.069"
@@ -51,16 +51,18 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
 
     <View
         android:id="@+id/divider"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="2dp"
+        android:layout_marginTop="10dp"
         android:background="@color/lightGrey"
-        app:layout_goneMarginBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemWrap"
-        android:layout_marginBottom="5dp"/>
+        app:layout_goneMarginBottom="5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

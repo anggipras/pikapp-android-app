@@ -28,7 +28,11 @@ class TransactionMenuAdapter(private val context: Context, private val transacti
 
         holder.menuName.text = transactionList1[position].productName
         holder.itemNumber.text = transactionList1[position].productQty.toString() + "x"
-        holder.orderNote.text = transactionList1[position].productNote
+        if(transactionList1[position].productNote == ""){
+            holder.orderNote.visibility = View.GONE
+        } else {
+            holder.orderNote.text = transactionList1[position].productNote
+        }
     }
 
     override fun getItemCount(): Int {
