@@ -167,9 +167,11 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     call: Call<BaseResponse>,
                     response: Response<BaseResponse>
                 ) {
+                    Log.d("SORTRESPONSE", response.toString())
                     if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                         Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
+                        startActivity(intent)
                     } else {
                         var errorResponse: BaseResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)

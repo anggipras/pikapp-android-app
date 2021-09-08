@@ -57,14 +57,6 @@ class CategoryListFragment : Fragment() {
         navController = Navigation.findNavController(view)
         sessionManager.setHomeNav(1)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
-                    startActivity(this)
-                }
-            }
-        })
-
         observeViewModel()
         attachInputListeners()
         setupRecyclerView()
@@ -73,8 +65,6 @@ class CategoryListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.fetchCategoryList()
-
-
     }
 
     private fun observeViewModel() {
