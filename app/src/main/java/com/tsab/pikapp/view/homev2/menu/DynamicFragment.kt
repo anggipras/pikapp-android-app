@@ -44,15 +44,21 @@ class DynamicFragment : Fragment() {
         dataBinding.listMenuDetail.layoutManager = linearLayoutManager
         val nama: String = arguments?.getString("position").toString()
         activity?.let { viewModel.getSearchList(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
-                dataBinding.textview, nama) }
+                dataBinding.textview, nama, dataBinding.tambahMenuEmptyButton, dataBinding.tambahMenuButton) }
     }
 
     /**
      * Initialize empty state layout.
      */
     private fun attachInputListeners() {
+        dataBinding.tambahMenuEmptyButton.setOnClickListener {
+            Intent(activity?.baseContext, UpdateMenuActivity::class.java).apply {
+                putExtra(UpdateMenuActivity.EXTRA_TYPE, UpdateMenuActivity.TYPE_ADD)
+                activity?.startActivity(this)
+            }
+        }
+
         dataBinding.tambahMenuButton.setOnClickListener {
-            Log.d("Dynamic Fragment", "Add button clicked!")
             Intent(activity?.baseContext, UpdateMenuActivity::class.java).apply {
                 putExtra(UpdateMenuActivity.EXTRA_TYPE, UpdateMenuActivity.TYPE_ADD)
                 activity?.startActivity(this)
