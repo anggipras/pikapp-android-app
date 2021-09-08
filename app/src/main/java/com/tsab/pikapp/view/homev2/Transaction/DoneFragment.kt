@@ -11,7 +11,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 
-class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class DoneFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
@@ -33,11 +33,6 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
 
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Done", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyState) }
     }
-
-    override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
-    }
-
 }

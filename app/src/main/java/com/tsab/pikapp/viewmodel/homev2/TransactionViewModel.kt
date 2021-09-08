@@ -59,7 +59,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
-    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, listener: TransactionListAdapter.OnItemClickListener, status: String, support: FragmentManager, empty: ConstraintLayout) {
+    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout) {
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
@@ -104,7 +104,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = prosesList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
+                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -114,7 +114,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = batalList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
+                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -124,7 +124,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = doneList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>,listener, sessionManager, support)
+                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()

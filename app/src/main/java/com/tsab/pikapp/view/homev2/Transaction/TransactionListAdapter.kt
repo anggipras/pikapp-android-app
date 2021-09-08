@@ -36,7 +36,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val listener: OnItemClickListener, private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
     lateinit var viewModel: TransactionViewModel
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -61,6 +61,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
 
         setMenu(holder.rView, transactionList1[position] as MutableList<OrderDetailDetail>)
         val context: Context = holder.price.context
+        sessionManager.setHomeNav(0)
 
         //on_procces
         if (transactionList[position].status == "OPEN" || transactionList[position].status == "PAID" || transactionList[position].status == "ON_PROCESS"){
@@ -81,7 +82,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "ON_PROCESS")
-                    sessionManager.transactionUpdate()
                     context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
@@ -108,7 +108,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "PAID")
-                    sessionManager.transactionUpdate()
                     context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
@@ -138,7 +137,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "DELIVER")
-                    sessionManager.transactionUpdate()
                     context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
@@ -182,7 +180,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "CLOSE")
-                    sessionManager.transactionUpdate()
                     context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
@@ -214,7 +211,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
         return transactionList.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tableNumer: TextView = itemView.tableNumber
         var tableStatus: TextView = itemView.tableStatus
         var orderDate: TextView = itemView.orderDate
@@ -229,17 +226,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
         var lastOrder: TextView = itemView.lastOrder
         var divider: View = itemView.divider
 
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            val position: Int = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                //diganti list nya sesuai api
-                listener.onItemClick(position)
-            }
-        }
     }
 
     private fun setMenu(recyclerView: RecyclerView, transactionList1: MutableList<OrderDetailDetail>){
@@ -248,10 +234,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
         recyclerView.setHasFixedSize(false)
         var menuList1 = TransactionMenuAdapter(context, transactionList1)
         recyclerView.adapter = menuList1
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
     }
 
     private fun setDate(position: Int){

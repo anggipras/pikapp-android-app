@@ -11,7 +11,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 
-class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class ProcessFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
@@ -33,7 +33,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -43,11 +43,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, this, "Proses", requireActivity().supportFragmentManager, emptyState) }
+            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
-    }
-
-    override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
     }
 }
