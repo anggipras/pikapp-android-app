@@ -13,12 +13,13 @@
         android:fontFamily="@font/proximanova_regular"
         android:text="BANK CIMB NIAGA"
         android:textAlignment="textStart"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textSize="20dp" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/line" />
 
 </LinearLayout>

@@ -48,9 +48,8 @@ class AddMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_add_menu,
-            container, false
+        dataBinding = FragmentAddMenuBinding.inflate(
+            inflater, container, false
         )
         return dataBinding.root
     }
@@ -85,12 +84,6 @@ class AddMenuFragment : Fragment() {
         dataBinding.kategori.setOnClickListener {
             navController.navigate(R.id.action_update_menu_add_to_category_name)
         }
-
-        /*dataBinding.pilihanMenuButton.setOnClickListener {
-            Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
-                startActivity(this)
-            }
-        }*/
 
         dataBinding.btnNext.setOnClickListener {
             viewModel.validateMenu(viewModel.img.value)

@@ -3,6 +3,7 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -26,7 +27,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
     lateinit var dynamicAdapter: DynamicListAdapter
 
     fun getSearchList(baseContext: Context,
-                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String){
+                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button){
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -57,10 +58,14 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
                         if(jumlah == 0){
                             noFound.isVisible = true
                             noFoundText.isVisible = true
+                            noFoundButton.isVisible = true
+                            foundButton.isVisible = false
                             recyclerview_category.isVisible = false
                         }else{
                             noFound.isVisible = false
                             noFoundText.isVisible = false
+                            noFoundButton.isVisible = false
+                            foundButton.isVisible = true
                             recyclerview_category.isVisible = true
                         }
                     }

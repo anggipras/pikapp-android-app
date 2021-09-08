@@ -71,14 +71,12 @@ class AddCategoryPage : Fragment() {
         dataBinding.saveBtn.setOnClickListener {
             viewModel.validateNama(categoryName.text.toString())
             if (viewModel.validateNama(categoryName.text.toString())) {
-
                 activity?.let {
                     viewModel.postCategory(
                         categoryName.text.toString(),
                         it.baseContext
                     )
                 }
-
             }
         }
 
