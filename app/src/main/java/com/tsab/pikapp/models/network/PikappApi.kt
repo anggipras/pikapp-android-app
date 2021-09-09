@@ -516,4 +516,29 @@ interface PikappApi {
         @Header("mid") mid: String,
         @Body search: SearchRequest
     ): Call<SearchResponse>
+
+    // Omnichannel integration
+    @GET("channel/v1/channel-integration/list/")
+    fun listIntegration(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("mid") merchantId: String
+    ): Single<IntegrationArrayResponse>
+
+    @POST("channel/v1/channel-integration/add/")
+    fun connectIntegration(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Body connectIntegrationRequest: ConnectIntegrationRequest
+    ): Single<IntegrationObjectResponse>
+
+    @DELETE("channel/v1/channel-integration/{id}/disconnect/")
+    fun disconnectIntegration(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Path("id") channelId: String
+    ): Single<IntegrationObjectResponse>
 }

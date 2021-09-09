@@ -11,7 +11,9 @@
             android:id="@+id/headerImage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/header_small"
+            android:src="@drawable/header_small"
+            android:baseline="0dp"
+            android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 

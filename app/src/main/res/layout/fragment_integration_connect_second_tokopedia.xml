@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.omni.integration.connect.TokopediaIntegrationConnectSecondFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <!-- Header layout -->
+                <include
+                    android:id="@+id/headerLayout"
+                    layout="@layout/layout_header_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/headerHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/oi_connect_second_tokopedia_header"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/headerLayout"
+                    app:layout_constraintStart_toStartOf="@id/headerLayout" />
+
+                <!-- Akun Email input group -->
+                <TextView
+                    android:id="@+id/akunEmailHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/oi_connect_tokopedia_akun_email_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+                <TextView
+                    android:id="@+id/akunEmailRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/akunEmailHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/akunEmailHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/akunEmailHeaderText" />
+
+                <EditText
+                    android:id="@+id/akunEmailInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="@color/borderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/oi_connect_tokopedia_akun_email_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/borderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/akunEmailHeaderText" />
+
+                <TextView
+                    android:id="@+id/akunEmailErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/akunEmailInputText"
+                    app:layout_constraintTop_toBottomOf="@id/akunEmailInputText"
+                    tools:text="Nama akun tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/akunEmailInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="akunEmailInputText,akunEmailErrorText" />
+
+                <!-- Nomor telepon input group -->
+                <TextView
+                    android:id="@+id/nomorTeleponHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/oi_connect_tokopedia_nomor_telepon_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/akunEmailInputBarrier" />
+
+                <TextView
+                    android:id="@+id/nomorTeleponRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/nomorTeleponHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/nomorTeleponHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/nomorTeleponHeaderText" />
+
+                <EditText
+                    android:id="@+id/nomorTeleponInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="@color/borderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/oi_connect_tokopedia_nomor_telepon_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="phone"
+                    android:textColorHint="@color/borderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/nomorTeleponHeaderText" />
+
+                <TextView
+                    android:id="@+id/nomorTeleponErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/nomorTeleponInputText"
+                    app:layout_constraintTop_toBottomOf="@id/nomorTeleponInputText"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/nomorTeleponInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="nomorTeleponInputText,nomorTeleponErrorText" />
+
+                <!-- Nama toko input group -->
+                <TextView
+                    android:id="@+id/namaTokoHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/oi_connect_tokopedia_nama_toko_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/nomorTeleponInputBarrier" />
+
+                <TextView
+                    android:id="@+id/namaTokoRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/namaTokoHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/namaTokoHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/namaTokoHeaderText" />
+
+                <EditText
+                    android:id="@+id/namaTokoInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="@color/borderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/oi_connect_tokopedia_nama_toko_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColorHint="@color/borderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaTokoHeaderText" />
+
+                <TextView
+                    android:id="@+id/namaTokoErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/namaTokoInputText"
+                    app:layout_constraintTop_toBottomOf="@id/namaTokoInputText"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/namaTokoInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="namaTokoInputText,namaTokoErrorText" />
+
+                <!-- Domain toko input group -->
+                <TextView
+                    android:id="@+id/domainTokoHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/oi_connect_tokopedia_domain_toko_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaTokoInputBarrier" />
+
+                <TextView
+                    android:id="@+id/domainTokoRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/domainTokoHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/domainTokoHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/domainTokoHeaderText" />
+
+                <EditText
+                    android:id="@+id/domainTokoInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="@color/borderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/oi_connect_tokopedia_domain_toko_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColorHint="@color/borderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/domainTokoHeaderText" />
+
+                <TextView
+                    android:id="@+id/domainTokoErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/domainTokoInputText"
+                    app:layout_constraintTop_toBottomOf="@id/domainTokoInputText"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/domainTokoInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="domainTokoInputText,domainTokoErrorText" />
+
+                <!-- Kategori akun input group -->
+                <TextView
+                    android:id="@+id/kategoriAkunHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/oi_connect_tokopedia_kategori_akun_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/domainTokoInputBarrier" />
+
+                <TextView
+                    android:id="@+id/kategoriAkunRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/kategoriAkunHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/kategoriAkunHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/kategoriAkunHeaderText" />
+
+                <RadioGroup
+                    android:id="@+id/kategoriAkunRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintBottom_toTopOf="@+id/kirimButton"
+                    app:layout_constraintStart_toStartOf="@id/kategoriAkunHeaderText"
+                    app:layout_constraintTop_toBottomOf="@+id/kategoriAkunHeaderText"
+                    app:layout_constraintVertical_chainStyle="spread_inside">
+
+                    <RadioButton
+                        android:id="@+id/officialStoreRadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:text="@string/oi_connect_tokopedia_kategori_akun_official_store_option"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/powerMerchantRadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:fontFamily="@font/proximanova_regular"
+                        android:text="@string/oi_connect_tokopedia_kategori_akun_power_merchant_option"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/kategoriAkunErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/kategoriAkunRadioGroup"
+                    app:layout_constraintTop_toBottomOf="@id/kategoriAkunRadioGroup"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/kategoriAkunInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="kategoriAkunRadioGroup,kategoriAkunErrorText" />
+
+                <!-- Kirim button -->
+                <Button
+                    android:id="@+id/kirimButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/button_green_small"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/kirim"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="6:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/kategoriAkunRadioGroup" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>
