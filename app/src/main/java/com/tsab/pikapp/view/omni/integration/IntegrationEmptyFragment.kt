@@ -46,7 +46,7 @@ class IntegrationEmptyFragment : Fragment() {
 
         viewModel.integrationList.observe(viewLifecycleOwner, Observer { integrationList ->
             if (integrationList.isNotEmpty()) {
-                navController.navigate(R.id.action_integrationEmptyFragment_to_integrationHomeFragment)
+                navController.navigate(R.id.action_integrationEmptyFragment_to_integrationListFragment)
             }
         })
     }
@@ -57,7 +57,7 @@ class IntegrationEmptyFragment : Fragment() {
         }, view)
 
         dataBinding.tambahTokoButton.setOnClickListener {
-            //TODO: Navigate to the add connection fragment.
+            navController.navigate(R.id.action_integrationEmptyFragment_to_integrationConnectFirstFragment)
         }
     }
 }

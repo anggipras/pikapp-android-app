@@ -49,6 +49,12 @@
                 app:layout_constraintTop_toBottomOf="@id/headerLayout"
                 tools:ignore="ContentDescription" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/tokopediaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tokopediaImage" />
+
             <!-- GrabFood button -->
             <ImageView
                 android:id="@+id/grabFoodImage"
@@ -77,6 +83,12 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/grabFoodImage"
                 app:layout_constraintEnd_toEndOf="@id/grabFoodImage" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/grabFoodButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:constraint_referenced_ids="grabFoodImage,grabFoodComingSoonText" />
 
             <!-- GoFood button -->
             <ImageView
@@ -107,6 +119,12 @@
                 app:layout_constraintBottom_toBottomOf="@id/goFoodImage"
                 app:layout_constraintEnd_toEndOf="@id/goFoodImage" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/goFoodButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="goFoodImage,goFoodComingSoonText" />
+
             <!-- Shopee button -->
             <ImageView
                 android:id="@+id/shopeeImage"
@@ -135,6 +153,12 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/shopeeImage"
                 app:layout_constraintEnd_toEndOf="@id/shopeeImage" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/shopeeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="shopeeImage,shopeeComingSoonText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

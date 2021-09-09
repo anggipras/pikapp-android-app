@@ -8,11 +8,12 @@
     <fragment
         android:id="@+id/integrationEmptyFragment"
         android:name="com.tsab.pikapp.view.omni.integration.IntegrationEmptyFragment"
-        android:label="IntegrationEmptyFragment">
+        android:label="IntegrationEmptyFragment"
+        tools:layout="@layout/fragment_integration_empty">
 
         <action
-            android:id="@+id/action_integrationEmptyFragment_to_integrationHomeFragment"
-            app:destination="@id/integrationHomeFragment"
+            android:id="@+id/action_integrationEmptyFragment_to_integrationListFragment"
+            app:destination="@id/integrationListFragment"
             app:popUpTo="@id/integrationEmptyFragment"
             app:popUpToInclusive="true" />
 
@@ -22,13 +23,13 @@
     </fragment>
 
     <fragment
-        android:id="@+id/integrationHomeFragment"
+        android:id="@+id/integrationListFragment"
         android:name="com.tsab.pikapp.view.omni.integration.IntegrationListFragment"
-        android:label="fragment_integration_home"
+        android:label="fragment_integration_list"
         tools:layout="@layout/fragment_integration_list">
 
         <action
-            android:id="@+id/action_integrationHomeFragment_to_integrationConnectFirstFragment"
+            android:id="@+id/action_integrationListFragment_to_integrationConnectFirstFragment"
             app:destination="@id/integrationConnectFirstFragment" />
     </fragment>
 
@@ -39,21 +40,31 @@
         tools:layout="@layout/fragment_integration_connect_first">
 
         <action
-            android:id="@+id/action_integrationConnectFirstFragment_to_integrationConnectSecondFragment"
-            app:destination="@id/integrationConnectSecondFragment" />
+            android:id="@+id/action_integrationConnectFirstFragment_to_integrationTokopediaConnectSecondFragment"
+            app:destination="@id/integrationTokopediaConnectSecondFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/integrationConnectSecondFragment"
+        android:id="@+id/integrationTokopediaConnectSecondFragment"
         android:name="com.tsab.pikapp.view.omni.integration.connect.TokopediaIntegrationConnectSecondFragment"
         android:label="fragment_integration_connect_second"
         tools:layout="@layout/fragment_integration_connect_second_tokopedia">
 
         <action
-            android:id="@+id/action_integrationConnectSecondFragment_to_integrationHomeFragment3"
-            app:destination="@id/integrationHomeFragment"
+            android:id="@+id/action_integrationTokopediaConnectSecondFragment_to_tokopediaIntegrationDialog"
+            app:destination="@id/tokopediaIntegrationDialog" />
+
+        <action
+            android:id="@+id/action_integrationTokopediaConnectSecondFragment_to_integrationListFragment"
+            app:destination="@id/integrationListFragment"
             app:popUpTo="@id/integrationEmptyFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <dialog
+        android:id="@+id/tokopediaIntegrationDialog"
+        android:name="com.tsab.pikapp.view.omni.integration.connect.TokopediaIntegrationDialog"
+        android:label="TokopediaIntegrationDialog"
+        tools:layout="@layout/dialog_integration_confirm_connection" />
 
 </navigation>

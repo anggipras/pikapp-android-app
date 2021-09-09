@@ -17,6 +17,7 @@
     <string name="simpan">Simpan</string>
     <string name="ya">Ya</string>
     <string name="kirim">Kirim</string>
+    <string name="cek_lagi">Cek Lagi</string>
     <string name="star">*</string>
 
     <string name="akan_datang">Akan Datang</string>
@@ -193,6 +194,12 @@
 
     <!-- Omnichannel integration (oi) screens -->
     <string name="oi_tambah_toko">Tambah Toko</string>
+    <string-array name="oi_status_array">
+        <item>Semua</item>
+        <item>Diproses</item>
+        <item>Terhubung</item>
+        <item>Kadaluwarsa</item>
+    </string-array>
 
     <string name="oi_main_header">Integrasi</string>
     <string name="oi_empty_description">Anda belum memiliki toko yang terhubung</string>
@@ -211,5 +218,6 @@
     <string name="oi_connect_tokopedia_kategori_akun_header">Kategori Akun Tokopedia</string>
     <string name="oi_connect_tokopedia_kategori_akun_official_store_option">Official Store</string>
     <string name="oi_connect_tokopedia_kategori_akun_power_merchant_option">Power Merchant</string>
+    <string name="oi_connect_tokopedia_dialog_confirmation">Pastikan data yang kamu kirim sudah terdaftar sebagai Tokopedia Merchant</string>
 
 </resources>

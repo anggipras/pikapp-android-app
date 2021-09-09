@@ -37,6 +37,54 @@
                     app:layout_constraintBottom_toBottomOf="@id/headerLayout"
                     app:layout_constraintStart_toStartOf="@id/headerLayout" />
 
+                <!-- Status selection spinner -->
+                <Spinner
+                    android:id="@+id/statusSelectSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tambahTokoButton"
+                    app:layout_constraintEnd_toStartOf="@+id/tambahTokoButton"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tambahTokoButton" />
+
+                <!-- Tambah toko button -->
+                <Button
+                    android:id="@+id/tambahTokoButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/button_green_small"
+                    android:drawableStart="@drawable/ic_add_white_small"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:padding="8dp"
+                    android:text="@string/oi_tambah_toko"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintDimensionRatio="5:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/statusSelectSpinner"
+                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+                <!-- -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/integrationRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/statusSelectSpinner" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

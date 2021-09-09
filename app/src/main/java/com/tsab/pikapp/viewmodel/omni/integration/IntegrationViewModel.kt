@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tsab.pikapp.models.model.IntegrationArrayResponse
 import com.tsab.pikapp.models.model.Omnichannel
+import com.tsab.pikapp.models.model.OmnichannelStatus
+import com.tsab.pikapp.models.model.OmnichannelType
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.BaseViewModel
@@ -22,9 +24,8 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
 
-    /**
-     * General screen flow.
-     */
+    // General screen flow.
+
     private val mutableIsLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> = mutableIsLoading
     fun setLoading(isLoading: Boolean) {
@@ -46,6 +47,7 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<IntegrationArrayResponse>() {
                     override fun onSuccess(response: IntegrationArrayResponse) {
+                        Log.d(tag, response.toString())
                         if (!response.results.isNullOrEmpty()) {
                             setIntegrationList(response.results ?: listOf())
                         }
@@ -58,5 +60,38 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
                     }
                 })
         )
+    }
+
+    /**
+     * Method to insert a newly connected omnichannel to the list.
+     */
+    fun addIntegration(omnichannel: Omnichannel) {
+        if (!integrationList.value!!.none { it.id == omnichannel.id }) {
+            setIntegrationList(integrationList.value?.filter { it.id != omnichannel.id }
+                ?: listOf())
+        }
+
+        setIntegrationList(integrationList.value?.toMutableList()?.apply {
+            add(omnichannel)
+        } ?: listOf())
+    }
+
+    // List integration flow.
+
+    /**
+     * Group integration list according to their status.
+     */
+    private val mutableSelectedStatus = MutableLiveData<OmnichannelStatus?>(null)
+    val selectedStatus: LiveData<OmnichannelStatus?> = mutableSelectedStatus
+    fun setSelectedStatus(selectedStatus: OmnichannelStatus?) {
+        mutableSelectedStatus.value = selectedStatus
+    }
+
+    // Connect integration flow.
+
+    private val mutableConnectOmnichannelType = MutableLiveData<OmnichannelType?>(null)
+    val currentConnectOmnichannelType: LiveData<OmnichannelType?> = mutableConnectOmnichannelType
+    fun setCurrentConnectOmnichannelType(omnichannelType: OmnichannelType) {
+        mutableConnectOmnichannelType.value = omnichannelType
     }
 }

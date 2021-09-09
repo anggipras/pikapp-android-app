@@ -16,7 +16,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/lightGrey">
+                android:background="@color/white">
 
                 <!-- Header layout -->
                 <include
@@ -138,7 +138,7 @@
                     android:fontFamily="@font/proximanova_regular"
                     android:hint="@string/oi_connect_tokopedia_nomor_telepon_hint"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="phone"
                     android:textColorHint="@color/borderSubtle"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -321,11 +321,11 @@
                     android:id="@+id/kategoriAkunRadioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     app:layout_constraintBottom_toTopOf="@+id/kirimButton"
                     app:layout_constraintStart_toStartOf="@id/kategoriAkunHeaderText"
                     app:layout_constraintTop_toBottomOf="@+id/kategoriAkunHeaderText"
-                    app:layout_constraintVertical_chainStyle="spread">
+                    app:layout_constraintVertical_chainStyle="spread_inside">
 
                     <RadioButton
                         android:id="@+id/officialStoreRadioButton"
@@ -350,13 +350,32 @@
                         android:textSize="16sp" />
                 </RadioGroup>
 
+                <TextView
+                    android:id="@+id/kategoriAkunErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/kategoriAkunRadioGroup"
+                    app:layout_constraintTop_toBottomOf="@id/kategoriAkunRadioGroup"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/kategoriAkunInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="kategoriAkunRadioGroup,kategoriAkunErrorText" />
+
                 <!-- Kirim button -->
                 <Button
                     android:id="@+id/kirimButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/button_green_small"
