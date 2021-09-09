@@ -2,6 +2,7 @@ package com.tsab.pikapp.viewmodel.categoryMenu
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -31,19 +32,25 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
 
-    /**
-     * General screen flow.
-     */
     private val mutableIsLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> = mutableIsLoading
     fun setLoading(isLoading: Boolean) {
         mutableIsLoading.value = isLoading
     }
 
+    private val _isLoadingIcon = MutableLiveData<Boolean>()
+    val isLoadingIcon: LiveData<Boolean> = _isLoadingIcon
+
     private val mutableCategoryList = MutableLiveData<List<MenuCategory>>(listOf())
     val categoryList: LiveData<List<MenuCategory>> = mutableCategoryList
     fun setCategoryList(categoryList: List<MenuCategory>) {
         mutableCategoryList.value = categoryList
+    }
+
+    private val _isLoadingFinish = MutableLiveData<Boolean>()
+    val isLoadingFinish: LiveData<Boolean> = _isLoadingFinish
+    fun setLoadingFinish(isLoading: Boolean) {
+        _isLoadingFinish.value = isLoading
     }
 
     fun fetchCategoryList() {
@@ -133,6 +140,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun postCategory(categoryName: String, baseContext: Context) {
+        _isLoadingIcon.value = true
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -153,7 +161,9 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Toast.makeText(baseContext, "added", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Kategori berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                    _isLoadingIcon.value = false
+                    setLoading(false)
                 } else {
                     var errorResponse: BaseResponse? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -165,6 +175,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                         ).toString(),
                         Toast.LENGTH_LONG
                     ).show()
+                    _isLoadingIcon.value = false
                 }
             }
         })
@@ -220,12 +231,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         val mid = sessionManager.getUserData()!!.mid!!
         val id = categoryId.value.toString()
 
-        Log.e("timestamp", timestamp)
-        Log.e("signature", signature)
-        Log.e("token", token)
-        Log.e("mid", mid)
-        Log.e("id", id)
-
         PikappApiService().api.deleteMenuCategory(
             getUUID(), timestamp, getClientID(), signature, token, mid, id
         ).enqueue(object : retrofit2.Callback<BaseResponse> {
@@ -235,7 +240,8 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Toast.makeText(baseContext, "deleted", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Berhasil dihapus", Toast.LENGTH_SHORT).show()
+                    setLoadingFinish(false)
                 } else {
                     var errorResponse: BaseResponse? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -247,6 +253,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                         ).toString(),
                         Toast.LENGTH_LONG
                     ).show()
+                    setLoadingFinish(false)
                 }
             }
         })

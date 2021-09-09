@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <receiver android:name=".receiver.AlarmReceiver" android:enabled="true"/>
 
         <activity android:name=".view.omni.integration.IntegrationActivity" />
 
@@ -95,7 +96,7 @@
 
         <activity
             android:name=".view.SplashActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

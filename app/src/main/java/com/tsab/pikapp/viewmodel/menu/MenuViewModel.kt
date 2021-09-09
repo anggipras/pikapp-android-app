@@ -242,6 +242,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 Log.e("client id", getClientID())
                 Log.e("signature", signature)
                 Log.e("token", token)
+                Log.e("mid", mid)
 
                 Log.i("MyTag", "onCreate")
                 Log.e("size", categoryResponse?.results?.size.toString())

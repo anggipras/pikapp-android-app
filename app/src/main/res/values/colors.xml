@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#4056C6</color>
     <color name="colorSecondary">#FEB614</color>
     <color name="colorAccent">#4056C6</color>
+    <color name="orange">#F4B55B</color>
 
     <color name="tooltipText">#767676</color>
     <color name="tooltipBackground">#F8FAFC</color>

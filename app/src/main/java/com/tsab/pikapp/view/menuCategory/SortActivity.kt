@@ -69,12 +69,12 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     target.adapterPosition
                 )
 
-                categoryListName = sortCategoryAdapter.menuCategoryList.map {
+                categoryListName = sortCategoryAdapter.menuCategoryList.mapIndexed { index, value ->
                     categories_name(
-                        category_name = it.category_name,
-                        category_order = it.category_order,
-                        activation = it.is_active,
-                        id = it.id
+                            category_name = value.category_name,
+                            category_order = index,
+                            activation = value.is_active,
+                            id = value.id
                     )
                 }.toMutableList()
 
@@ -167,9 +167,11 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     call: Call<BaseResponse>,
                     response: Response<BaseResponse>
                 ) {
+                    Log.d("SORTRESPONSE", response.toString())
                     if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                         Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
+                        startActivity(intent)
                     } else {
                         var errorResponse: BaseResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)

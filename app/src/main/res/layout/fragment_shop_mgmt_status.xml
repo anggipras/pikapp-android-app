@@ -190,7 +190,7 @@
         android:layout_width="280dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="250dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/button_green_small"
         android:backgroundTint="@color/green"
         android:fontFamily="@font/montserrat"
@@ -201,6 +201,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shopStatus_selection" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

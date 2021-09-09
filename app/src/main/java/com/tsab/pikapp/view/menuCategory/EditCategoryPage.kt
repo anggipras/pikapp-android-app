@@ -1,14 +1,18 @@
 package com.tsab.pikapp.view.menuCategory
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,11 +21,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
+import kotlinx.android.synthetic.main.delete_category_popup.view.*
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
+import kotlinx.android.synthetic.main.profile_birthday_dialog.view.*
 
 class EditCategoryPage : Fragment() {
-
 
     private var navController: NavController? = null
     private lateinit var dataBinding: FragmentEditCategoryPageBinding
@@ -53,14 +59,15 @@ class EditCategoryPage : Fragment() {
         dataBinding.saveBtn.setOnClickListener {
             viewModel.validateNama(categoryName.text.toString())
             if (viewModel.validateNama(categoryName.text.toString())) {
-                Log.e("yes", "bisaaa")
                 activity?.let {
                     viewModel.updateCategory(
                         categoryName.text.toString(),
                         it.baseContext
                     )
                 }
-                requireActivity().onBackPressed()
+                Handler().postDelayed({
+                    navController?.navigate(R.id.action_editCategoryPage_to_categoryPage)
+                }, 500)
             }
         }
 
@@ -114,28 +121,23 @@ class EditCategoryPage : Fragment() {
         }
 
         dataBinding.deleteCategory.setOnClickListener {
-            val inflater: LayoutInflater =
-                activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.delete_category_popup, null)
-            val popupWindow = PopupWindow(
-                view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.delete_category_popup, null)
+            val mBuilder = AlertDialog.Builder(requireActivity())
+                    .setView(mDialogView)
+            val mAlertDialog = mBuilder.show()
+            mAlertDialog.getWindow()?.setBackgroundDrawable(
+                    AppCompatResources.getDrawable(
+                            requireActivity(),
+                            R.drawable.dialog_background
+                    )
             )
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popupWindow.elevation = 20.0F
+            mDialogView.buttonBack.setOnClickListener {
+                mAlertDialog.dismiss()
             }
-
-            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
-
-            val closeBtn = view.findViewById<ImageView>(R.id.closeBtn)
-            val buttonContinue = view.findViewById<TextView>(R.id.buttonContinue)
-            val buttonBack = view.findViewById<ImageView>(R.id.buttonBack)
-
-            closeBtn.setOnClickListener {
-                popupWindow.dismiss()
+            mDialogView.closeBtn.setOnClickListener {
+                mAlertDialog.dismiss()
             }
-
-            buttonContinue.setOnClickListener {
+            mDialogView.buttonContinue.setOnClickListener {
                 Log.e("activation", viewModel.activation.toString())
                 activity?.let {
                     viewModel.deleteCategoryPopup(
@@ -143,12 +145,9 @@ class EditCategoryPage : Fragment() {
                         it.baseContext
                     )
                 }
-                navController?.navigate(R.id.action_editCategoryPage_to_categoryPage)
-                popupWindow.dismiss()
-            }
 
-            buttonBack.setOnClickListener {
-                popupWindow.dismiss()
+                mAlertDialog.dismiss()
+
             }
         }
     }
@@ -156,6 +155,13 @@ class EditCategoryPage : Fragment() {
     private fun observeViewModel() {
         viewModel.namaCategoryError.observe(viewLifecycleOwner, Observer { namaCategoryError ->
             dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
+        })
+
+        viewModel.isLoadingFinish.observe(viewLifecycleOwner, Observer { loadMove ->
+            if (!loadMove) {
+                navController?.navigate(R.id.action_editCategoryPage_to_categoryPage)
+                viewModel.setLoadingFinish(true)
+            }
         })
     }
 }

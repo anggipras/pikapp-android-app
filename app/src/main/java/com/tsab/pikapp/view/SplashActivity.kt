@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.SplashViewModel
 
@@ -15,6 +17,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        Firebase.messaging.isAutoInitEnabled = true
 
         supportActionBar?.hide()
         intent.extras

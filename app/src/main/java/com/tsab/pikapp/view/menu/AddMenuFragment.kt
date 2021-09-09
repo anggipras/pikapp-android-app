@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,9 +48,8 @@ class AddMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_add_menu,
-            container, false
+        dataBinding = FragmentAddMenuBinding.inflate(
+            inflater, container, false
         )
         return dataBinding.root
     }
@@ -85,12 +85,6 @@ class AddMenuFragment : Fragment() {
             navController.navigate(R.id.action_update_menu_add_to_category_name)
         }
 
-        /*dataBinding.pilihanMenuButton.setOnClickListener {
-            Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
-                startActivity(this)
-            }
-        }*/
-
         dataBinding.btnNext.setOnClickListener {
             viewModel.validateMenu(viewModel.img.value)
             viewModel.validateNama(dataBinding.namaMenu.text.toString())
@@ -98,8 +92,10 @@ class AddMenuFragment : Fragment() {
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
-                val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
-                activity?.startActivity(intent)
+                Handler().postDelayed({
+                    val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
+                    activity?.startActivity(intent)
+                }, 500)
             }
         }
     }
