@@ -1,6 +1,10 @@
 package com.tsab.pikapp.view.omni.integration.connect
 
-import android.app.Activity
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -8,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,15 +22,19 @@ import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentIntegrationConnectSecondTokopediaBinding
 import com.tsab.pikapp.models.model.ShopCategory
+import com.tsab.pikapp.receiver.AlarmReceiver
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
 import com.tsab.pikapp.viewmodel.omni.integration.TokopediaIntegrationViewModel
+import java.util.*
 
 class TokopediaIntegrationConnectSecondFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var dataBinding: FragmentIntegrationConnectSecondTokopediaBinding
     private val integrationViewModel: IntegrationViewModel by activityViewModels()
     private val screenViewModel: TokopediaIntegrationViewModel by activityViewModels()
+    private var alarmMgr : AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +60,14 @@ class TokopediaIntegrationConnectSecondFragment : Fragment() {
         screenViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             dataBinding.loadingOverlay.loadingView.visibility =
                 if (isLoading) View.VISIBLE else View.GONE
+        })
+
+        screenViewModel.isSetForAlarm.observe(viewLifecycleOwner, Observer { isAlarm ->
+            if (isAlarm) {
+                createNotificationChannel()
+                setAlarm()
+                screenViewModel.setForAlarm(false)
+            }
         })
 
         // Integration success state and data.
@@ -193,6 +210,43 @@ class TokopediaIntegrationConnectSecondFragment : Fragment() {
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        }
+    }
+
+    private fun setAlarm() {
+        alarmMgr = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(requireActivity(), AlarmReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(requireActivity(), 0, intent, 0)
+        }
+
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 10)
+            set(Calendar.AM_PM, Calendar.AM)
+        }
+
+        alarmMgr!!.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                alarmIntent
+        )
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = getString(R.string.general_notif_id)
+            val channelName : CharSequence = getString(R.string.notification_channel_name)
+            val description = getString(R.string.notification_channel_description)
+            val notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.YELLOW
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = description
+
+            val notificationManager = requireActivity().getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 }

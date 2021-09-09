@@ -19,6 +19,7 @@ import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryAdapter
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
+import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
 import kotlin.math.log
@@ -119,7 +120,9 @@ class MenuFragment : Fragment() {
                                 activity?.startActivity(intent)
                             }
                             dataBinding.buttonSort.setOnClickListener {
-                                Toast.makeText(activity, "clicked", Toast.LENGTH_SHORT).show()
+                                val intent =
+                                        Intent(activity?.baseContext, SortActivity::class.java)
+                                activity?.startActivity(intent)
                             }
                         }
                     })

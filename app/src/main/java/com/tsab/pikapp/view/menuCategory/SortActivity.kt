@@ -189,8 +189,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         }
 
         backBtn.setOnClickListener {
-            val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
-            startActivity(intent)
+            onBackPressed()
         }
 
     }
