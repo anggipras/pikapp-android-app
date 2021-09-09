@@ -10,18 +10,25 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentIntegrationListBinding
+import com.tsab.pikapp.models.model.Omnichannel
 import com.tsab.pikapp.models.model.OmnichannelStatus
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.omni.integration.lists.IntegrationListAdapter
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
 
 class IntegrationListFragment : Fragment() {
+    private val viewModel: IntegrationViewModel by activityViewModels()
+
     private lateinit var navController: NavController
     private lateinit var dataBinding: FragmentIntegrationListBinding
-    private val viewModel: IntegrationViewModel by activityViewModels()
+
+    private lateinit var integrationListAdapter: IntegrationListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +48,13 @@ class IntegrationListFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.selectedList.observe(viewLifecycleOwner, Observer { selectedList ->
+            integrationListAdapter.setIntegrationList(selectedList.toMutableList())
+        })
 
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.integrationSwipeContainer.isRefreshing = isLoading
+        })
     }
 
     private fun attachInputListeners() {
@@ -50,9 +63,14 @@ class IntegrationListFragment : Fragment() {
         }, view)
 
         setupStatusSelectionSpinner()
+        setupRecyclerView()
 
         dataBinding.tambahTokoButton.setOnClickListener {
             navController.navigate(R.id.action_integrationListFragment_to_integrationConnectFirstFragment)
+        }
+
+        dataBinding.integrationSwipeContainer.setOnRefreshListener {
+            viewModel.fetchIntegrationList()
         }
     }
 
@@ -83,6 +101,20 @@ class IntegrationListFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 viewModel.setSelectedStatus(null)
             }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        integrationListAdapter = IntegrationListAdapter(
+            viewModel.selectedList.value!!.toMutableList(),
+            object : IntegrationListAdapter.OnItemClickListener {
+                override fun onItemClick(omnichannel: Omnichannel) {}
+            }
+        )
+
+        dataBinding.integrationRecyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = integrationListAdapter
         }
     }
 }

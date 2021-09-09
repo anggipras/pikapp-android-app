@@ -73,9 +73,9 @@
                     app:layout_constraintStart_toEndOf="@+id/statusSelectSpinner"
                     app:layout_constraintTop_toBottomOf="@id/headerLayout" />
 
-                <!-- -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/integrationRecyclerView"
+                <!-- Integration recycler view -->
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/integrationSwipeContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -83,7 +83,15 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/statusSelectSpinner" />
+                    app:layout_constraintTop_toBottomOf="@id/statusSelectSpinner">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/integrationRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_omnichannel_integration_status" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

@@ -85,6 +85,16 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
     val selectedStatus: LiveData<OmnichannelStatus?> = mutableSelectedStatus
     fun setSelectedStatus(selectedStatus: OmnichannelStatus?) {
         mutableSelectedStatus.value = selectedStatus
+        updateSelectedList()
+    }
+
+    private val mutableSelectedList = MutableLiveData<List<Omnichannel>>(listOf())
+    val selectedList: LiveData<List<Omnichannel>> = mutableSelectedList
+    private fun updateSelectedList() {
+        mutableSelectedList.value = integrationList.value?.filter { item ->
+            if (selectedStatus.value == null) true
+            else item.status == selectedStatus.value
+        }
     }
 
     // Connect integration flow.
