@@ -60,6 +60,7 @@ class TransactionFragment : Fragment() {
         }, 2000)
         swipeRefreshLayout = swipeTransactionMenu
         swipeRefreshLayout.setOnRefreshListener {
+            val position = dataBinding.tabs.selectedTabPosition
             refreshPage()
             Handler().postDelayed({
                 dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
@@ -70,6 +71,7 @@ class TransactionFragment : Fragment() {
             Handler().postDelayed({
                 dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
             }, 2000)
+            dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
             swipeRefreshLayout.isRefreshing = false
         }
     }

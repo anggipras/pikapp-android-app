@@ -16,7 +16,7 @@
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="122dp"
-                android:background="@drawable/transactionheader"
+                android:background="@drawable/notifheader"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginTop="0dp"
@@ -42,7 +42,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="48dp"
+                    android:layout_marginRight="32dp"
                     android:layout_marginBottom="28dp"
                     android:src="@drawable/iconorder"
                     app:layout_constraintBottom_toBottomOf="parent"
