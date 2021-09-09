@@ -69,12 +69,12 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     target.adapterPosition
                 )
 
-                categoryListName = sortCategoryAdapter.menuCategoryList.map {
+                categoryListName = sortCategoryAdapter.menuCategoryList.mapIndexed { index, value ->
                     categories_name(
-                        category_name = it.category_name,
-                        category_order = it.category_order,
-                        activation = it.is_active,
-                        id = it.id
+                            category_name = value.category_name,
+                            category_order = index,
+                            activation = value.is_active,
+                            id = value.id
                     )
                 }.toMutableList()
 
