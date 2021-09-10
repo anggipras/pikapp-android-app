@@ -53,13 +53,19 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableCategoryList = MutableLiveData<List<CategoryListResult>>(listOf())
 
-    private val mutableisLoading = MutableLiveData(true)
-    val isLoading: LiveData<Boolean> get() = mutableisLoading
+    private val mutableIsLoading = MutableLiveData<Boolean>(true)
+    val isLoading: LiveData<Boolean> = mutableIsLoading
+    fun setLoading(isLoading: Boolean) {
+        mutableIsLoading.value = isLoading
+    }
 
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
+
+
     fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout) {
+        setLoading(true)
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
@@ -104,37 +110,41 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = prosesList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support)
+                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
-                                    mutableisLoading.value = false
+                                    //setLoading(false)
                                 }
                                 if(status == "Batal"){
                                     empty.isVisible = batalList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support)
+                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
-                                    mutableisLoading.value = false
+                                    //setLoading(false)
                                 }
                                 if(status == "Done"){
                                     empty.isVisible = doneList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support)
+                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
-                                    mutableisLoading.value = false
+                                    //setLoading(false)
                                 }
+
+                                setLoading(false)
+
                             }
 
                             override fun onError(e: Throwable) {
                                 var errorResponse: ErrorResponse
                                 Log.e("failed", e.message.toString())
+                                setLoading(false)
                             }
                         })
         )

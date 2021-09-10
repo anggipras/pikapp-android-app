@@ -9,8 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -36,18 +40,34 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager, private val prefHelper: SharedPreferencesUtil) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
     lateinit var viewModel: TransactionViewModel
     lateinit var linearLayoutManager: LinearLayoutManager
     private val disposable = CompositeDisposable()
     private val pikappService = PikappApiService()
+    lateinit var categoryAdapter: TransactionListAdapter
     var menuResult = ArrayList<OrderDetailDetail>()
     var jumlah = 0
     val reasonsheet = CancelReasonFragment()
     var bulan: String = " Jun "
     var bulanTemp: String = ""
     var biz: String = ""
+
+    private val mutableProses = MutableLiveData(0)
+    val proses: LiveData<Int> get() = mutableProses
+
+    private val mutableBatal = MutableLiveData(0)
+    val batal: LiveData<Int> get() = mutableBatal
+
+    private val mutableDone = MutableLiveData(0)
+    val done: LiveData<Int> get() = mutableDone
+
+    private val mutableIsLoading = MutableLiveData<Boolean>(true)
+    val isLoading: LiveData<Boolean> = mutableIsLoading
+    fun setLoading(isLoading: Boolean) {
+        mutableIsLoading.value = isLoading
+    }
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -91,7 +111,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
                     reasonsheet.arguments = bundle
                     reasonsheet.show(supportFragmentManager, "show")
                     Log.e("paid", "bisa bos")
-
                 }
             } else if (transactionList[position].status == "OPEN"){
                 setDate(position)
@@ -108,6 +127,7 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     postUpdate(txnId, "PAID")
+                    //notifyItemChanged(position)
                     context.startActivity(Intent(context, HomeNavigation::class.java))
                     Log.e("paid", "bisa bos")
                 }
@@ -310,6 +330,34 @@ class TransactionListAdapter(private val context: Context, private val transacti
 
                             override fun onError(e: Throwable) {
                                 Log.e("Gagal", "Fail")
+                            }
+                        })
+        )
+    }
+
+    fun getStoreOrderList() {
+        prefHelper.clearStoreOrderList()
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        //loading.value = true
+
+        disposable.add(
+                pikappService.getTransactionListMerchant(email, token, mid)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
+                            override fun onSuccess(t: GetStoreOrderListResponse) {
+                                Log.e("adapter", "bisa")
+                                Log.e("error code", t.errCode)
+                                Log.e("error msg", t.errMessage)
+                                Log.e("results", t.results.toString())
+
+                            }
+
+                            override fun onError(e: Throwable) {
+                                var errorResponse: ErrorResponse
+                                Log.e("adapter", "failed")
                             }
                         })
         )
