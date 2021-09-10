@@ -32,8 +32,8 @@
 
     <!-- Local Notification -->
     <string name="general_notif_id">pikappnotif</string>
-    <string name="general_notif_title">Halo, $s</string>
-    <string name="general_notif_message">Mohon cek kembali email anda terkait integrasi dengan Tokopedia</string>
+    <string name="general_notif_title">Satu langkah lagi untuk kemudahan bisnis Anda!</string>
+    <string name="general_notif_message">Silakan cek email Anda dan lakukan konfirmasi integrasi</string>
     <string name="notification_channel_name">PikApp</string>
     <string name="notification_channel_description">Email reminder</string>
 

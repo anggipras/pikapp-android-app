@@ -32,6 +32,12 @@ class TokopediaIntegrationViewModel(application: Application) : BaseViewModel(ap
         mutableIsLoading.value = isLoading
     }
 
+    private val _isSetForAlarm = MutableLiveData<Boolean>()
+    val isSetForAlarm: LiveData<Boolean> = _isSetForAlarm
+    fun setForAlarm(isLoading: Boolean) {
+        _isSetForAlarm.value = isLoading
+    }
+
     private val mutableIsSuccess = MutableLiveData(false)
     val isSuccess: LiveData<Boolean> = mutableIsSuccess
     fun setSuccess(isSuccess: Boolean) {
@@ -151,6 +157,7 @@ class TokopediaIntegrationViewModel(application: Application) : BaseViewModel(ap
                     override fun onSuccess(response: IntegrationObjectResponse) {
                         Log.d(tag, response.toString())
                         setLoading(false)
+                        setForAlarm(true)
 
                         setSuccessResult(
                             Omnichannel(
