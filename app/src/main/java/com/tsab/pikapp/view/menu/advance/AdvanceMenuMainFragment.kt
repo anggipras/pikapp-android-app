@@ -141,11 +141,11 @@ class AdvanceMenuMainFragment : Fragment() {
                         R.id.action_advanceMenuMainFragment_to_advanceMenuDetailsFragment,
                         bundleOf(
                             AdvanceMenuDetailsFragment.ARGUMENT_IS_EDIT to true,
-                            AdvanceMenuDetailsFragment.ARGUMENT_NAMA_PILIHAN to advanceMenu.templateName,
-                            AdvanceMenuDetailsFragment.ARGUMENT_AKTIF to advanceMenu.isActive,
-                            AdvanceMenuDetailsFragment.ARGUMENT_WAJIB to advanceMenu.isMandatory,
-                            AdvanceMenuDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to advanceMenu.maxChoice,
-                            AdvanceMenuDetailsFragment.ARGUMENT_ADDITIONAL_MENU to advanceMenu.advanceAdditionalMenus
+                            AdvanceMenuDetailsFragment.ARGUMENT_NAMA_PILIHAN to advanceMenu.template_name,
+                            AdvanceMenuDetailsFragment.ARGUMENT_AKTIF to advanceMenu.active,
+                            AdvanceMenuDetailsFragment.ARGUMENT_WAJIB to advanceMenu.mandatory,
+                            AdvanceMenuDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to advanceMenu.max_choose,
+                            AdvanceMenuDetailsFragment.ARGUMENT_ADDITIONAL_MENU to advanceMenu.ext_menus
                         )
                     )
                 }

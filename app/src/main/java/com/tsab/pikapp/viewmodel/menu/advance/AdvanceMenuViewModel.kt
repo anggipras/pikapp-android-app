@@ -53,9 +53,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     private fun addAdvanceMenu(advanceMenu: AdvanceMenu) {
-        if (!mutableAdvanceMenuList.value!!.none { it.templateName == advanceMenu.templateName }) {
+        if (!mutableAdvanceMenuList.value!!.none { it.template_name == advanceMenu.template_name }) {
             mutableAdvanceMenuList.value =
-                advanceMenuList.value?.filter { it.templateName != advanceMenu.templateName }
+                advanceMenuList.value?.filter { it.template_name != advanceMenu.template_name }
         }
 
         mutableAdvanceMenuList.value = advanceMenuList.value?.toMutableList()?.apply {
@@ -175,9 +175,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     private fun addAdditionalMenu(additionalMenu: AdvanceAdditionalMenu) {
-        if (!mutableDetailsAdditionalMenuList.value!!.none { it.advanceAdditionalMenuName == additionalMenu.advanceAdditionalMenuName }) {
+        if (!mutableDetailsAdditionalMenuList.value!!.none { it.ext_menu_name == additionalMenu.ext_menu_name }) {
             mutableDetailsAdditionalMenuList.value =
-                detailsAdditionalMenuList.value?.filter { it.advanceAdditionalMenuName != additionalMenu.advanceAdditionalMenuName }
+                detailsAdditionalMenuList.value?.filter { it.ext_menu_name != additionalMenu.ext_menu_name }
         }
 
         mutableDetailsAdditionalMenuList.value =
@@ -218,12 +218,12 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
         addAdvanceMenu(
             AdvanceMenu(
-                templateName = detailsNamaPilihan.value!!,
-                templateType = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
-                isActive = isDetailsAktif.value!!,
-                isMandatory = isDetailsWajib.value!!,
-                maxChoice = detailsPilihanMaksimal.value!!,
-                advanceAdditionalMenus = detailsAdditionalMenuList.value ?: listOf()
+                    template_name = detailsNamaPilihan.value!!,
+                    template_type = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
+                    active = isDetailsAktif.value!!,
+                    mandatory = isDetailsWajib.value!!,
+                    max_choose = detailsPilihanMaksimal.value!!,
+                    ext_menus = detailsAdditionalMenuList.value ?: listOf()
             )
         )
         return true
@@ -298,8 +298,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
         addAdditionalMenu(
             AdvanceAdditionalMenu(
-                advanceAdditionalMenuName = additionalNamaDaftarPilihan.value!!,
-                advanceAdditionalMenuPrice = additionalHarga.value!!
+                    ext_menu_name = additionalNamaDaftarPilihan.value!!,
+                    ext_menu_price = additionalHarga.value!!,
+                    active = true
             )
         )
         return true

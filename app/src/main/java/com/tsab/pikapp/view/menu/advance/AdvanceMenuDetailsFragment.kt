@@ -232,8 +232,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
                         R.id.action_advanceMenuDetailsFragment_to_advanceMenuAdditionalFragment,
                         bundleOf(
                             AdvanceMenuAdditionalFragment.ARGUMENT_IS_EDIT to true,
-                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_NAME to advanceAdditionalMenu.advanceAdditionalMenuName,
-                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.advanceAdditionalMenuPrice
+                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_NAME to advanceAdditionalMenu.ext_menu_name,
+                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.ext_menu_price
                         )
                     )
                 }
