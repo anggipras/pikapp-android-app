@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDynamicBinding
+import com.tsab.pikapp.view.AdvanceMenuActivity
 import com.tsab.pikapp.view.menu.UpdateMenuActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.SearchViewModel
@@ -52,16 +53,16 @@ class DynamicFragment : Fragment() {
      */
     private fun attachInputListeners() {
         dataBinding.tambahMenuEmptyButton.setOnClickListener {
-            Intent(activity?.baseContext, UpdateMenuActivity::class.java).apply {
-                putExtra(UpdateMenuActivity.EXTRA_TYPE, UpdateMenuActivity.TYPE_ADD)
-                activity?.startActivity(this)
+            Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
+                putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
+                startActivity(this)
             }
         }
 
         dataBinding.tambahMenuButton.setOnClickListener {
-            Intent(activity?.baseContext, UpdateMenuActivity::class.java).apply {
-                putExtra(UpdateMenuActivity.EXTRA_TYPE, UpdateMenuActivity.TYPE_ADD)
-                activity?.startActivity(this)
+            Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
+                putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
+                startActivity(this)
             }
         }
     }
