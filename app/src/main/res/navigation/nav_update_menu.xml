@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/updateMenuAddFragment"
         android:name="com.tsab.pikapp.view.menu.AddMenuFragment"
-        android:label="AddMenuFragment">
+        android:label="AddMenuFragment"
+        tools:layout="@layout/fragment_add_menu">
         <action
             android:id="@+id/action_update_menu_add_to_category_name"
             app:destination="@id/updateMenuCategoryNameFragment" />
@@ -17,7 +18,8 @@
     <fragment
         android:id="@+id/updateMenuEditFragment"
         android:name="com.tsab.pikapp.view.menu.EditMenuFragment"
-        android:label="EditMenuFragment">
+        android:label="EditMenuFragment"
+        tools:layout="@layout/fragment_edit_menu">
         <action
             android:id="@+id/action_update_menu_edit_to_category_name"
             app:destination="@id/updateMenuCategoryNameFragment" />

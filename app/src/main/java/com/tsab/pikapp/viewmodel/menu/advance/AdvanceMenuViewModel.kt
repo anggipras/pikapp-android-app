@@ -112,7 +112,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
                 .subscribeWith(object : DisposableSingleObserver<AddAdvanceMenuResponse>() {
                     override fun onSuccess(response: AddAdvanceMenuResponse) {
                         mutableIsPushSuccess.value = true
-                        Log.e("data", mutableAdvanceMenuList.value.toString())
+                        Log.d("data", response.toString())
                         setLoading(false)
                     }
 
