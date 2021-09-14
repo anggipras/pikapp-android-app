@@ -1,10 +1,13 @@
 package com.tsab.pikapp.view.menu
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -13,8 +16,9 @@ import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
-import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 
 class AddMenuFragment : Fragment() {
@@ -28,12 +32,12 @@ class AddMenuFragment : Fragment() {
             viewModel.validateImg(uri)
         }
 
-    private val getAdvanceMenu =
-        registerForActivityResult(ResultCallback()) {
-            it?.let { returnedData: String ->
-                viewModel.validateAdvance(returnedData)
-            }
-        }
+//    private val getAdvanceMenu =
+//        registerForActivityResult(ResultCallback()) {
+//            it?.let { returnedData: String ->
+//                viewModel.validateAdvance(returnedData)
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +77,12 @@ class AddMenuFragment : Fragment() {
         }
 
         dataBinding.pilihanMenuButton.setOnClickListener {
-            getAdvanceMenu.launch("next")
+//            getAdvanceMenu.launch("next")
+            navController.navigate(R.id.action_updateMenuAddFragment_to_advanceMenuMainFragment,
+                    bundleOf(
+                            AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to false,
+                            AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to "none"
+                    ))
         }
 
         dataBinding.kategori.isFocusable = false
@@ -89,10 +98,10 @@ class AddMenuFragment : Fragment() {
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
-//                Handler().postDelayed({
-//                    val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
-//                    activity?.startActivity(intent)
-//                }, 500)
+                Handler().postDelayed({
+                    val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
+                    activity?.startActivity(intent)
+                }, 500)
             }
         }
     }

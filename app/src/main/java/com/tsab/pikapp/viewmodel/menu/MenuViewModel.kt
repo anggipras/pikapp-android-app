@@ -15,9 +15,7 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.BaseResponse
-import com.tsab.pikapp.models.model.CategoryListResult
-import com.tsab.pikapp.models.model.MerchantListCategoryResponse
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.CategoryAdapter
@@ -74,11 +72,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     val nama: LiveData<String> get() = mutableNama
     val namaError: LiveData<String> get() = mutableNamaError
 
-    private val mutableAdvance = MutableLiveData("None")
-    private val mutableAdvanceError = MutableLiveData("")
-    private val isAdvanceValid = MutableLiveData(false)
-    val advance: LiveData<String> get() = mutableAdvance
-    val advanceError: LiveData<String> get() = mutableAdvanceError
+    private val mutableAdvanceMenuList = MutableLiveData<AddAdvanceMenuRequest>()
+    val advanceMenuList: LiveData<AddAdvanceMenuRequest> = mutableAdvanceMenuList
+    fun setAdvanceMenuList(advanceMenuList: List<AdvanceMenu>) {
+        mutableAdvanceMenuList.value = AddAdvanceMenuRequest(advanceMenuList)
+    }
+
+//    private val mutableAdvance = MutableLiveData("None")
+//    private val mutableAdvanceError = MutableLiveData("")
+//    private val isAdvanceValid = MutableLiveData(false)
+//    val advance: LiveData<String> get() = mutableAdvance
+//    val advanceError: LiveData<String> get() = mutableAdvanceError
 
     private val mutableHarga = MutableLiveData("")
     private val mutableHargaError = MutableLiveData("")
@@ -194,17 +198,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isHargaValid.value!!
     }
 
-    fun validateAdvance(advance: String): Boolean {
-        if (advance.isEmpty() || advance.isBlank()) {
-            mutableAdvanceError.value = "Harga tidak boleh kosong"
-        } else {
-            mutableAdvanceError.value = ""
-        }
-
-        mutableAdvance.value = advance
-        isAdvanceValid.value = mutableAdvanceError.value!!.isEmpty()
-        return isAdvanceValid.value!!
-    }
+//    fun validateAdvance(advance: String): Boolean {
+//        if (advance.isEmpty() || advance.isBlank()) {
+//            mutableAdvanceError.value = "Harga tidak boleh kosong"
+//        } else {
+//            mutableAdvanceError.value = ""
+//        }
+//
+//        mutableAdvance.value = advance
+//        isAdvanceValid.value = mutableAdvanceError.value!!.isEmpty()
+//        return isAdvanceValid.value!!
+//    }
 
     fun getCategory(
         baseContext: Context,
@@ -271,6 +275,13 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val mid = sessionManager.getUserData()!!.mid!!
         val application = getApplication<Application>()
 
+        Log.e("UUID", getUUID())
+        Log.e("TIMESTAMP", timestamp)
+        Log.e("CLIENTID", getClientID())
+        Log.e("SIGNATURE", signature)
+        Log.e("TOKEN", token)
+        Log.e("MID", mid)
+
         val gson = Gson()
         val type = object : TypeToken<BaseResponse>() {}.type
 
@@ -286,6 +297,9 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         )
         val menuOutputStream = FileOutputStream(menuFile)
         menuInputStream.copyTo(menuOutputStream)
+
+        Log.d("ADVANCEMENU", advanceMenuList.value.toString())
+        Log.d("CATEGID", categoryId.value)
 
         apiService.api.uploadMenu(
             getUUID(), timestamp, getClientID(), signature, token, mid,
@@ -309,12 +323,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), advance.value)
+            RequestBody.create(MediaType.parse("multipart/form-data"), advanceMenuList.value.toString())
         ).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Log.e("SUCCEED", categoryId.value)
-                    Log.e("Advance", advance.value)
+                    Log.e("RESPONSEEE", response.toString())
                     Toast.makeText(getApplication(), "Menu Berhasil Ditambahkan", Toast.LENGTH_LONG).show()
                 } else {
                     var errorResponse: BaseResponse? =

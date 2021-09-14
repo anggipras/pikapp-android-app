@@ -1,11 +1,15 @@
 package com.tsab.pikapp.view.menu
 
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.AdvanceMenu
+import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.activity_update_menu.*
 
 class UpdateMenuActivity : AppCompatActivity() {
