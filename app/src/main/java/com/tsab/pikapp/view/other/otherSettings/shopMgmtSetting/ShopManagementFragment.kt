@@ -24,6 +24,8 @@ import com.tsab.pikapp.util.getHour
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.fragment_shop_management.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickListener {
 
@@ -78,7 +80,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
 
         hour = getHour()
 
-        day = getDay().toUpperCase()
+        day = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date()).toUpperCase()
 
         observeViewModel()
     }

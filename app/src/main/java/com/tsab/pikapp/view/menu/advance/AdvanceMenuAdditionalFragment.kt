@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -114,7 +115,7 @@ class AdvanceMenuAdditionalFragment : Fragment() {
             viewModel.validateAdditionalHarga(dataBinding.hargaInputText.text.toString())
 
             if (!viewModel.validateAdditionalScreen()) return@setOnClickListener
-            navController.navigateUp()
+            navController.navigate(R.id.action_advanceMenuAdditionalFragment_to_advanceMenuDetailsFragment, bundleOf(AdvanceMenuDetailsFragment.ARGUMENT_IS_EDIT to false))
         }
     }
 

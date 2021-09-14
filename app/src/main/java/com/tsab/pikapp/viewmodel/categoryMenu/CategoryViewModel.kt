@@ -205,7 +205,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Toast.makeText(baseContext, "changed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Perubahan berhasil tersimpan", Toast.LENGTH_SHORT).show()
                 } else {
                     var errorResponse: BaseResponse? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)

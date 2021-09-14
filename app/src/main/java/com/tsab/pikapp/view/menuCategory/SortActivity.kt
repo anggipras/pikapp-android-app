@@ -110,14 +110,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
-
-                Log.e("size", categoryResponse?.results?.size.toString())
                 size = categoryResponse?.results?.size.toString()
-                Log.e("size on response", size)
 
                 sortCategoryAdapter = SortCategoryAdapter(
                     baseContext,
@@ -135,11 +128,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                         id = it.id
                     )
                 }.toMutableList()
-                Log.e("get", categoryListName.toString())
-                val sort = sortCategoryAdapter.menuCategoryList.map {
-                    sort_name(category_name = it.category_name)
-                }
-                Log.e("sort_name", sort.toString())
             }
 
         })
@@ -154,7 +142,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
             var sortReq = SortCategoryRequest()
             sortReq.categories_menu = categoryListName
-            Log.e("sort", sortReq.categories_menu.toString())
 
             PikappApiService().api.sortMenuCategory(
                 getUUID(), timestamp, getClientID(), signature, token, mid, sortReq
@@ -167,9 +154,8 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     call: Call<BaseResponse>,
                     response: Response<BaseResponse>
                 ) {
-                    Log.d("SORTRESPONSE", response.toString())
                     if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                        Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(baseContext, "Urutan kategori berhasil diubah", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
                         startActivity(intent)
                     } else {
@@ -191,24 +177,12 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         backBtn.setOnClickListener {
             onBackPressed()
         }
-
     }
 
-    data class sort_name(val category_name: String?)
-
     override fun onItemClick(position: Int) {
-        Toast.makeText(this, "item $position clicked", Toast.LENGTH_SHORT).show()
-
         categoryName = sortCategoryAdapter.menuCategoryList[position].category_name.toString()
-        Log.e("category name", categoryName)
-
         categoryOrder = sortCategoryAdapter.menuCategoryList[position].category_order.toString()
-        Log.e("category order", categoryOrder)
-
         activationToggle = sortCategoryAdapter.menuCategoryList[position].is_active.toString()
-        Log.e("activation", activationToggle)
-
         categoryId = sortCategoryAdapter.menuCategoryList[position].id.toString()
-        Log.e("category id", categoryId)
     }
 }

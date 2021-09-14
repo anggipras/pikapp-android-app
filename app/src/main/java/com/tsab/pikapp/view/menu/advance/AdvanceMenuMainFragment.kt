@@ -17,6 +17,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAdvanceMenuMainBinding
 import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.menu.AddMenuFragment
 import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuAdapter
 import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
 
@@ -95,7 +96,8 @@ class AdvanceMenuMainFragment : Fragment() {
         }, view)
 
         dataBinding.saveButton.setOnClickListener {
-            viewModel.pushAdvanceMenuData()
+            activity?.finish()
+//            viewModel.pushAdvanceMenuData()
         }
     }
 
