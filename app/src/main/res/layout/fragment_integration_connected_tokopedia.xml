@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.omni.integration.status.TokopediaIntegrationConnectedFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Header layout -->
+            <include
+                android:id="@+id/headerLayout"
+                layout="@layout/layout_header_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/headerHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/oi_status_tokopedia_header"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/headerLayout"
+                app:layout_constraintStart_toStartOf="@id/headerLayout" />
+
+            <!-- Tokopedia logo -->
+            <ImageView
+                android:id="@+id/tokopediaImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/logo_tokopedia"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout"
+                app:layout_constraintWidth_percent="0.5"
+                tools:ignore="ContentDescription" />
+
+            <!-- Nama toko input -->
+            <TextView
+                android:id="@+id/namaTokoHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/oi_status_tokopedia_nama_toko_header"
+                android:textColor="@color/textSubtle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tokopediaImage" />
+
+            <TextView
+                android:id="@+id/namaTokoRequiredText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/star"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/namaTokoHeaderText"
+                app:layout_constraintStart_toEndOf="@id/namaTokoHeaderText"
+                app:layout_constraintTop_toTopOf="@id/namaTokoHeaderText" />
+
+            <EditText
+                android:id="@+id/namaTokoInputText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/borderSubtle"
+                android:fontFamily="@font/proximanova_regular"
+                android:hint="@string/oi_status_tokopedia_nama_toko_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:textColorHint="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaTokoHeaderText" />
+
+            <!-- Waktu integrasi details -->
+            <TextView
+                android:id="@+id/waktuIntegrasiHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/oi_status_tokopedia_waktu_integrasi_header"
+                android:textColor="@color/textSubtle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaTokoInputText" />
+
+            <TextView
+                android:id="@+id/waktuIntegrasiDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/waktuIntegrasiHeaderText"
+                tools:text="10 Jun 2021 10:09" />
+
+            <!-- Status toko details -->
+            <TextView
+                android:id="@+id/statusTokoHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/oi_status_tokopedia_status_toko_header"
+                android:textColor="@color/textSubtle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/waktuIntegrasiDetailsText" />
+
+            <View
+                android:id="@+id/statusTokoIndicator"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/rounded_10"
+                android:backgroundTint="@color/green"
+                app:layout_constraintBottom_toBottomOf="@id/statusTokoDetailsText"
+                app:layout_constraintStart_toStartOf="@id/statusTokoHeaderText"
+                app:layout_constraintTop_toTopOf="@id/statusTokoDetailsText" />
+
+            <TextView
+                android:id="@+id/statusTokoDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="@string/oi_status_terhubung"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/statusTokoIndicator"
+                app:layout_constraintTop_toBottomOf="@id/statusTokoHeaderText" />
+
+            <!-- Hapus toko button -->
+            <Button
+                android:id="@+id/hapusTokoButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/button_green_small"
+                android:backgroundTint="@color/lightGrey"
+                android:elevation="2dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/oi_hapus_toko"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toStartOf="@id/simpanButton"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Simpan button -->
+            <Button
+                android:id="@+id/simpanButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/button_green_small"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/simpan"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/hapusTokoButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>

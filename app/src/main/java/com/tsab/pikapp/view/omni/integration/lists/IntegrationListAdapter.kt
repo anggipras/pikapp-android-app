@@ -19,7 +19,7 @@ class IntegrationListAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val logoImage: ImageView = view.findViewById(R.id.itemLogoImage)
         val nameText: TextView = view.findViewById(R.id.itemNameText)
-        val statusImage: View = view.findViewById(R.id.itemStatusImage)
+        val statusImage: View = view.findViewById(R.id.statusTokoIndicator)
         val statusText: TextView = view.findViewById(R.id.itemStatusText)
         val omnichannelTypeImage: ImageView = view.findViewById(R.id.itemOmnichannelTypeImage)
     }

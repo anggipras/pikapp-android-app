@@ -7,6 +7,10 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
 
 class IntegrationActivity : AppCompatActivity() {
+    companion object {
+        const val ARGUMENT_OMNICHANNEL = "omnichannel"
+    }
+
     private val viewModel: IntegrationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
