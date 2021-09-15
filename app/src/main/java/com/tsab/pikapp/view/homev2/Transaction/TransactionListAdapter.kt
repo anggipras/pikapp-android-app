@@ -9,8 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -36,18 +42,32 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class TransactionListAdapter(private val context: Context, private val transactionList: MutableList<StoreOrderList>, private val transactionList1: MutableList<List<OrderDetailDetail>>, private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
+class TransactionListAdapter(
+        private val context: Context,
+        private var transactionList: MutableList<StoreOrderList>,
+        private val transactionList1: MutableList<List<OrderDetailDetail>>,
+        private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager,
+        private val prefHelper: SharedPreferencesUtil,
+        private val recyclerView: RecyclerView
+) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
-    lateinit var viewModel: TransactionViewModel
     lateinit var linearLayoutManager: LinearLayoutManager
     private val disposable = CompositeDisposable()
     private val pikappService = PikappApiService()
-    var menuResult = ArrayList<OrderDetailDetail>()
+    lateinit var categoryAdapter: TransactionListAdapter
+    var orderResult = ArrayList<StoreOrderList>()
     var jumlah = 0
     val reasonsheet = CancelReasonFragment()
     var bulan: String = " Jun "
     var bulanTemp: String = ""
     var biz: String = ""
+    var isLoading: Boolean = false
+    var prosesList = ArrayList<StoreOrderList>()
+    var batalList = ArrayList<StoreOrderList>()
+    var doneList = ArrayList<StoreOrderList>()
+    var menuList = ArrayList<ArrayList<OrderDetailDetail>>()
+    var menuList1 = ArrayList<ArrayList<OrderDetailDetail>>()
+    var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -58,7 +78,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         setMenu(holder.rView, transactionList1[position] as MutableList<OrderDetailDetail>)
         val context: Context = holder.price.context
         sessionManager.setHomeNav(0)
@@ -67,7 +86,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
         if (transactionList[position].status == "OPEN" || transactionList[position].status == "PAID" || transactionList[position].status == "ON_PROCESS"){
             if (transactionList[position].status == "PAID"){
                 setDate(position)
-                holder.orderTime.visibility = View.GONE
                 holder.orderStatus.visibility = View.GONE
                 holder.paymentStatus.text = "NEW"
                 timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
@@ -77,12 +95,10 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.divider.visibility = View.GONE
                 holder.acceptBtn.text = "Terima"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    postUpdate(txnId, "ON_PROCESS")
-                    context.startActivity(Intent(context, HomeNavigation::class.java))
+                    updateTransaction(txnId, "ON_PROCESS", "Proses", position, holder, prosesList)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
@@ -91,11 +107,9 @@ class TransactionListAdapter(private val context: Context, private val transacti
                     reasonsheet.arguments = bundle
                     reasonsheet.show(supportFragmentManager, "show")
                     Log.e("paid", "bisa bos")
-
                 }
             } else if (transactionList[position].status == "OPEN"){
                 setDate(position)
-                holder.orderTime.visibility = View.GONE
                 holder.orderStatus.text = "NEW"
                 timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
@@ -104,11 +118,9 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.divider.visibility = View.GONE
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    postUpdate(txnId, "PAID")
-                    context.startActivity(Intent(context, HomeNavigation::class.java))
+                    updateTransaction(txnId, "ON_PROCESS", "Proses", position, holder, prosesList)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
@@ -121,30 +133,26 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 }
             } else if (transactionList[position].status == "ON_PROCESS"){
                 setDate(position)
-                holder.orderTime.visibility = View.GONE
                 holder.orderStatus.visibility = View.GONE
                 timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.paymentStatus.text = "Diproses"
-                holder.paymentStatus.backgroundTintList = context.resources.getColorStateList(R.color.orange)
+                holder.paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.divider.visibility = View.GONE
                 holder.acceptBtn.text = "Pesanan Siap"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    postUpdate(txnId, "DELIVER")
-                    context.startActivity(Intent(context, HomeNavigation::class.java))
+                    updateTransaction(txnId, "DELIVER", "Proses", position, holder, prosesList)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.visibility = View.GONE
             }
         } else if (transactionList[position].status == "FAILED" || transactionList[position].status == "ERROR"){
             setDate(position)
-            holder.orderTime.visibility = View.GONE
             holder.orderStatus.visibility = View.GONE
             holder.rView.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
@@ -162,13 +170,12 @@ class TransactionListAdapter(private val context: Context, private val transacti
         } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
             if (transactionList[position].status == "DELIVER"){
                 setDate(position)
-                holder.orderTime.visibility = View.GONE
                 holder.orderStatus.visibility = View.GONE
                 holder.rView.visibility = View.GONE
                 holder.rejectBtn.visibility = View.GONE
                 holder.acceptBtn.text = "Selesai"
                 holder.paymentStatus.text = "Dikirim"
-                holder.paymentStatus.backgroundTintList = context.resources.getColorStateList(R.color.green)
+                holder.paymentStatus.setBackgroundResource(R.drawable.button_green_square)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.textSize = 10F
@@ -179,20 +186,19 @@ class TransactionListAdapter(private val context: Context, private val transacti
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    postUpdate(txnId, "CLOSE")
-                    context.startActivity(Intent(context, HomeNavigation::class.java))
+                    updateTransaction(txnId, "CLOSE", "Done", position, holder, doneList)
+                    sessionManager.setLoading(false)
                     Log.e("paid", "bisa bos")
                 }
                 jumlah = 0
             } else if (transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
                 setDate(position)
-                holder.orderTime.visibility = View.GONE
                 holder.orderStatus.visibility = View.GONE
                 holder.rView.visibility = View.GONE
                 holder.acceptBtn.visibility = View.GONE
                 holder.rejectBtn.visibility = View.GONE
                 holder.paymentStatus.text = "Selesai"
-                holder.paymentStatus.backgroundTintList = context.resources.getColorStateList(R.color.green)
+                holder.paymentStatus.setBackgroundResource(R.drawable.button_green_square)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.textSize = 10F
@@ -207,7 +213,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
     }
 
     override fun getItemCount(): Int {
-        //ganti yang ini sama di parameter
         return transactionList.size
     }
 
@@ -215,7 +220,6 @@ class TransactionListAdapter(private val context: Context, private val transacti
         var tableNumer: TextView = itemView.tableNumber
         var tableStatus: TextView = itemView.tableStatus
         var orderDate: TextView = itemView.orderDate
-        var orderTime: TextView = itemView.orderTime
         var orderStatus: TextView = itemView.orderStatus
         var paymentStatus: TextView = itemView.paymentStatus
         var menuCount: TextView = itemView.menuCount
@@ -224,8 +228,20 @@ class TransactionListAdapter(private val context: Context, private val transacti
         var rejectBtn: Button = itemView.rejectButton
         var rView: RecyclerView = itemView.recyclerview_menu
         var lastOrder: TextView = itemView.lastOrder
-        var divider: View = itemView.divider
+    }
 
+    private fun updateTransaction(txnId: String, status: String, orderStatus: String, position: Int, holder: ViewHolder, setList: ArrayList<StoreOrderList>){
+        sessionManager.setLoading(true)
+        setIsLoading(true)
+        postUpdate(txnId, status)
+        //transactionList.clear()
+        getStoreOrderList(this, setList, orderStatus)
+        //setMenu(holder.rView, transactionList1[position] as MutableList<OrderDetailDetail>)
+        Toast.makeText( context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
+        //transactionList.addAll(orderResult)
+        Log.e("transaction log", transactionList.toString())
+        //this.notifyDataSetChanged()
+        //context.startActivity(Intent(context, HomeNavigation::class.java))
     }
 
     private fun setMenu(recyclerView: RecyclerView, transactionList1: MutableList<OrderDetailDetail>){
@@ -234,6 +250,14 @@ class TransactionListAdapter(private val context: Context, private val transacti
         recyclerView.setHasFixedSize(false)
         var menuList1 = TransactionMenuAdapter(context, transactionList1)
         recyclerView.adapter = menuList1
+    }
+
+    fun setData(newTransactionList: MutableList<StoreOrderList>){
+        val diffUtil = MyDiffUtil(transactionList, newTransactionList)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        transactionList = newTransactionList
+        diffResults.dispatchUpdatesTo(this)
+        Log.e("set data", transactionList.toString())
     }
 
     private fun setDate(position: Int){
@@ -315,4 +339,94 @@ class TransactionListAdapter(private val context: Context, private val transacti
         )
     }
 
+    fun getStoreOrderList(adapter: TransactionListAdapter, setList: ArrayList<StoreOrderList>, status: String) {
+        prefHelper.clearStoreOrderList()
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        //loading.value = true
+
+        disposable.add(
+                pikappService.getTransactionListMerchant(email, token, mid)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
+                            override fun onSuccess(t: GetStoreOrderListResponse) {
+                                Log.e("adapter", "bisa")
+                                Log.e("error code", t.errCode)
+                                Log.e("error msg", t.errMessage)
+                                Log.e("results", t.results.toString())
+                                val result = t.results
+                                orderResult.addAll(result as MutableList<StoreOrderList>)
+                                Log.e("api result", result.toString())
+                                Log.e("order result", orderResult.toString())
+                                transactionList.addAll(orderResult)
+                                /*recyclerView.adapter = adapter
+                                adapter.notifyDataSetChanged()*/
+                                Log.e("hit api transaction", transactionList.toString())
+                                sortOrderList(result)
+                                Log.e("prosess", prosesList.toString())
+                                Log.e("batal", batalList.toString())
+                                Log.e("done", doneList.toString())
+                                setData(setList)
+                                setProcessOrder(context, recyclerView, status, supportFragmentManager)
+
+                            }
+
+                            override fun onError(e: Throwable) {
+                                var errorResponse: ErrorResponse
+                                Log.e("adapter", "failed")
+                            }
+                        })
+        )
+    }
+
+    fun sortOrderList(transactionList: List<StoreOrderList>?){
+        if (transactionList != null) {
+            for (transaction in transactionList) {
+                if (transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS") {
+                    prosesList.add(transaction)
+                    transaction.detailProduct?.let { menuList.add(it as ArrayList<OrderDetailDetail>) }
+                } else if (transaction.status == "FAILED" || transaction.status == "ERROR") {
+                    batalList.add(transaction)
+                    transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
+                } else {
+                    doneList.add(transaction)
+                    transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
+                }
+            }
+        }
+    }
+
+    fun setProcessOrder(baseContext: Context, recyclerView: RecyclerView, status: String, support: FragmentManager){
+        if(status == "Proses"){
+            Log.e("set process", "process")
+            categoryAdapter = TransactionListAdapter(
+                    baseContext,
+                    prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
+            categoryAdapter.notifyDataSetChanged()
+            recyclerView.adapter = categoryAdapter
+            categoryAdapter.notifyDataSetChanged()
+        }
+        if(status == "Batal"){
+            categoryAdapter = TransactionListAdapter(
+                    baseContext,
+                    batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
+            categoryAdapter.notifyDataSetChanged()
+            recyclerView.adapter = categoryAdapter
+            categoryAdapter.notifyDataSetChanged()
+        }
+        if(status == "Done"){
+            categoryAdapter = TransactionListAdapter(
+                    baseContext,
+                    doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
+            categoryAdapter.notifyDataSetChanged()
+            recyclerView.adapter = categoryAdapter
+            categoryAdapter.notifyDataSetChanged()
+        }
+    }
+
+    fun setIsLoading(value:Boolean) {
+        isLoading = value
+    }
 }

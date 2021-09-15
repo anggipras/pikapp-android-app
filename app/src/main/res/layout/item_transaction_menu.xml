@@ -55,7 +55,7 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="320dp"
+        android:layout_width="315dp"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@color/lightGrey"

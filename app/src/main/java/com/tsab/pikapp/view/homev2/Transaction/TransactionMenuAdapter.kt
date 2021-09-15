@@ -33,39 +33,19 @@ class TransactionMenuAdapter(private val context: Context, private val transacti
         } else {
             holder.orderNote.text = transactionList1[position].productNote
         }
+        if (position == transactionList1.size - 1){
+            holder.divider.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {
-        //ganti yang ini sama di parameter
         return transactionList1.size
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        var divider: View = itemView.divider
         var itemNumber: TextView = itemView.itemCount
         var menuName: TextView = itemView.menuName
         var orderNote: TextView = itemView.orderNote
     }
-
-/*    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        var itemNumber: TextView = itemView.itemCount
-        var menuName: TextView = itemView.menuName
-        var orderNote: TextView = itemView.orderNote
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            val position: Int = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                //diganti list nya sesuai api
-                listener.onItemClick(position)
-            }
-        }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
-    }*/
-
 }
