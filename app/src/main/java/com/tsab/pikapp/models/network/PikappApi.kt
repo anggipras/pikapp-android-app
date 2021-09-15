@@ -433,7 +433,7 @@ interface PikappApi {
         @Body addAdvancedMenuRequest: AddAdvanceMenuRequest
     ): Single<AddAdvanceMenuResponse>
 
-    @POST("merchant/v1/menu/advance/{pid}/list/")
+    @GET("merchant/v1/menu/advance/{pid}/list/")
     fun listAdvanceMenu(
         @Header("x-request-id") requestId: String,
         @Header("x-request-timestamp") requestTimestamp: String,

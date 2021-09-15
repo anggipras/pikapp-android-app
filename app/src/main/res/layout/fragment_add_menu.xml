@@ -10,61 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Header layout -->
+        <include
             android:id="@+id/header"
-            android:layout_width="0dp"
-            android:layout_height="122dp"
-            android:background="@drawable/menuheader"
-            app:layout_constraintBottom_toTopOf="@id/menuText"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.55">
+            layout="@layout/layout_header_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.09"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.19">
-
-                <ImageView
-                    android:id="@+id/backImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/backText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/kembali"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="Tambah Menu"
-                android:textColor="#ffffff"
-                android:textSize="25dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.142"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.717" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/headerHeaderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Tambah Menu"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/header"
+            app:layout_constraintStart_toStartOf="@id/header" />
 
         <LinearLayout
             android:id="@+id/menuText"
@@ -82,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/montserrat"
                 android:text="Gambar Menu"
                 android:textColor="#000000"
                 android:textSize="15dp" />
@@ -91,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/montserrat"
                 android:text="*"
                 android:textColor="#DC6A84"
                 android:textSize="15dp" />
@@ -102,7 +66,7 @@
             android:id="@+id/imgReq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:fontFamily="@font/proximanova_regular"
             android:text="(Format .png, .jpg, max. 2MB)"
             android:textColor="#767676"
@@ -147,12 +111,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="Nama Kategori"
+            android:layout_marginStart="25dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Kategori"
             android:textColor="#000000"
             android:textSize="15dp"
             app:layout_constraintBottom_toTopOf="@id/kategori"
-            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/menuErrorText" />
@@ -161,12 +126,12 @@
             android:id="@+id/kategori"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginEnd="23dp"
             android:backgroundTint="#aaaaaa"
             android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
             android:fontFamily="@font/proximanova_regular"
-            android:hint="Kategori"
+            android:hint="Pilih Kategori"
             android:textColorHint="#aaaaaa"
             android:textSize="13dp"
             app:layout_constraintBottom_toTopOf="@id/namaMenuTxt"
@@ -179,10 +144,11 @@
             android:id="@+id/namaMenuTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/namaMenu"
-            app:layout_constraintHorizontal_bias="0.07"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/kategori">
@@ -190,7 +156,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/montserrat"
                 android:text="Nama Menu"
                 android:textColor="#000000"
                 android:textSize="15dp" />
@@ -209,8 +175,8 @@
             android:id="@+id/namaMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginEnd="23dp"
             android:backgroundTint="#aaaaaa"
             android:fontFamily="@font/proximanova_regular"
             android:hint="Masukkan Nama Menu"
@@ -240,18 +206,19 @@
             android:id="@+id/hargaTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/hargaField"
-            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/namaErrorText">
+            app:layout_constraintTop_toBottomOf="@id/hargaField">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/montserrat"
                 android:text="Harga"
                 android:textColor="#000000"
                 android:textSize="15dp" />
@@ -278,8 +245,8 @@
                 android:id="@+id/harga"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginEnd="23dp"
                 android:backgroundTint="#aaaaaa"
                 android:fontFamily="@font/proximanova_regular"
                 android:hint="Contoh: Rp10.000"
@@ -297,7 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="376dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="30dp"
                 android:layout_marginBottom="16dp"
                 android:src="@drawable/infobtn"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -306,17 +273,6 @@
                 app:layout_constraintVertical_bias="0.13999999" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!-- <ImageView
-             android:id="@+id/infoBtn"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center"
-             app:layout_constraintLeft_toLeftOf="parent"
-             app:layout_constraintTop_toTopOf=""
-             android:layout_marginLeft="-40dp"
-             android:src="@drawable/infobtn" />-->
 
         <TextView
             android:id="@+id/hargaErrorText"
@@ -339,15 +295,15 @@
             android:layout_marginTop="15dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hargaErrorText">
+            app:layout_constraintTop_toBottomOf="@id/hargaField">
 
             <TextView
                 android:id="@+id/pilihanMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="19dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/montserrat"
                 android:text="Pilihan Menu"
                 android:textColor="#000000"
                 android:textSize="15dp"

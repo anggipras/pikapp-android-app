@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -30,6 +31,7 @@ class AdvanceMenuMainFragment : Fragment() {
     companion object {
         const val ARGUMENT_MENU_EDIT = "isEditing"
         const val ARGUMENT_PRODUCT_ID = "productID"
+        const val ARGUMENT_ADVANCE_EDIT = "isEditAdvMenu"
     }
 
     private val viewModel: AdvanceMenuViewModel by activityViewModels()
@@ -59,15 +61,31 @@ class AdvanceMenuMainFragment : Fragment() {
         observeViewModel()
         attachInputListeners()
         setupRecyclerView()
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewModel.addOrEdit.value == true) {
+                    navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
+                } else {
+                    navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+                }
+            }
+        })
     }
 
     private fun fetchArguments() {
         if (arguments?.getBoolean(ARGUMENT_MENU_EDIT) == true) {
+            viewModel.setAddOrEdit(true)
             viewModel.setProductId(arguments?.getString(ARGUMENT_PRODUCT_ID))
         } else {
+            if (viewModel.addOrEdit.value == true) viewModel.setAddOrEdit(true) else viewModel.setAddOrEdit(false)
             viewModel.setProductId(null)
+            viewModel.setLoading(false)
         }
-        viewModel.fetchAdvanceMenuData()
+        if (arguments?.getBoolean(ARGUMENT_MENU_EDIT) == true) viewModel.fetchAdvanceMenuData()
     }
 
     private fun observeViewModel() {
@@ -113,7 +131,11 @@ class AdvanceMenuMainFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+            if (viewModel.addOrEdit.value == true) {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
+            } else {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+            }
         }, view)
 
         dataBinding.aktifkanSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -127,7 +149,12 @@ class AdvanceMenuMainFragment : Fragment() {
 
         dataBinding.saveButton.setOnClickListener {
             viewModelMenu.setAdvanceMenuList(viewModel.advanceMenuList.value!!)
-            navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+            Log.d("APAINI", viewModel.addOrEdit.value.toString())
+            if (viewModel.addOrEdit.value == true) {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
+            } else {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+            }
 //            viewModel.pushAdvanceMenuData(true)
         }
     }

@@ -15,8 +15,10 @@ import com.tsab.pikapp.models.model.SearchRequest
 import com.tsab.pikapp.models.model.SearchResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.menu.DynamicFragment
 import com.tsab.pikapp.view.homev2.menu.DynamicListAdapter
 import com.tsab.pikapp.view.homev2.menu.SearchAdapter
+import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +29,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
     lateinit var dynamicAdapter: DynamicListAdapter
 
     fun getSearchList(baseContext: Context,
-                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button){
+                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button, listener: DynamicListAdapter.OnItemClickListener){
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -69,7 +71,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
                             recyclerview_category.isVisible = true
                         }
                     }
-                    dynamicAdapter = DynamicListAdapter(baseContext, categoryList as MutableList<SearchList>)
+                    dynamicAdapter = DynamicListAdapter(baseContext, categoryList as MutableList<SearchList>, listener)
                     dynamicAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = dynamicAdapter
 

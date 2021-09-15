@@ -13,11 +13,22 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.SearchList
 
-class DynamicListAdapter (val context: Context, val menuList: MutableList<SearchList>): RecyclerView.Adapter<DynamicListAdapter.ViewHolder>() {
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+class DynamicListAdapter (val context: Context, val menuList: MutableList<SearchList>, val listener: OnItemClickListener): RecyclerView.Adapter<DynamicListAdapter.ViewHolder>() {
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var itemText: TextView = itemView.findViewById(R.id.namaMenu)
         var img: ImageView = itemView.findViewById(R.id.foodimg)
         var itemTextHarga: TextView = itemView.findViewById(R.id.harga)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position: Int = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position, menuList[position])
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DynamicListAdapter.ViewHolder {
@@ -33,6 +44,10 @@ class DynamicListAdapter (val context: Context, val menuList: MutableList<Search
 
     override fun getItemCount(): Int {
         return menuList.size
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, menuList: SearchList)
     }
 
 }

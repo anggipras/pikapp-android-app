@@ -17,6 +17,7 @@ import com.skydoves.balloon.showAlignTop
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
@@ -65,8 +66,9 @@ class AddMenuFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.backImage.setOnClickListener { activity?.finish() }
-        dataBinding.backText.setOnClickListener { activity?.finish() }
+        dataBinding.header.backButton.setAllOnClickListener(View.OnClickListener {
+            activity?.finish()
+        }, view)
 
         dataBinding.infoBtn.setOnClickListener {
             dataBinding.infoBtn.showAlignTop(viewModel.showTooltip(requireView().context))
@@ -88,7 +90,7 @@ class AddMenuFragment : Fragment() {
         dataBinding.kategori.isFocusable = false
         dataBinding.kategori.isFocusableInTouchMode = false
         dataBinding.kategori.setOnClickListener {
-            navController.navigate(R.id.action_update_menu_add_to_category_name)
+            navController.navigate(R.id.action_update_menu_add_adv_to_category_name)
         }
 
         dataBinding.btnNext.setOnClickListener {

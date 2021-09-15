@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -298,8 +299,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val menuOutputStream = FileOutputStream(menuFile)
         menuInputStream.copyTo(menuOutputStream)
 
-        Log.d("ADVANCEMENU", advanceMenuList.value.toString())
-        Log.d("CATEGID", categoryId.value)
+        val jsonString = GsonBuilder().create().toJson(advanceMenuList.value)
 
         apiService.api.uploadMenu(
             getUUID(), timestamp, getClientID(), signature, token, mid,
@@ -323,11 +323,10 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), advanceMenuList.value.toString())
+            RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
         ).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Log.e("SUCCEED", categoryId.value)
                     Log.e("RESPONSEEE", response.toString())
                     Toast.makeText(getApplication(), "Menu Berhasil Ditambahkan", Toast.LENGTH_LONG).show()
                 } else {

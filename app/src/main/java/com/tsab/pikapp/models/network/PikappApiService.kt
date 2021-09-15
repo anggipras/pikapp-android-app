@@ -453,12 +453,13 @@ class PikappApiService {
     fun listAdvanceMenu(
         email: String,
         token: String,
-        pid: String
+        pid: String,
+        timeStamp: String
     ): Single<ListAdvanceMenuResponse> = api.listAdvanceMenu(
         requestId = getUUID(),
-        requestTimestamp = getTimestamp(),
+        requestTimestamp = timeStamp,
         clientId = getClientID(),
-        signature = getSignature(email, token),
+        signature = getSignature(email, timeStamp),
         token = token,
         productId = pid
     )

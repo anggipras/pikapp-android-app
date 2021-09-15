@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.view.CategoryAdapter
+import com.tsab.pikapp.viewmodel.menu.EditMenuViewModel
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.fragment_category_name.*
 
 class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItemClickListener {
     private val viewModel: MenuViewModel by activityViewModels()
+    private val viewModelEdit: EditMenuViewModel by activityViewModels()
     private var navController: NavController? = null
 
     lateinit var linearLayoutManager: LinearLayoutManager
