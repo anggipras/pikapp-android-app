@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.Transaction
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCategoryListBinding
 import com.tsab.pikapp.databinding.FragmentProccessBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
@@ -19,9 +21,9 @@ import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
 class ProcessFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels()
-    lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: FragmentProccessBinding
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +38,18 @@ class ProcessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+ /*       if (sessionManager.getLoading() == true){
+            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
+        } else {
+            dataBinding.loadingOverlay.loadingView.visibility = View.GONE
+        }*/
+
+/*        if (categoryAdapter.isLoading){
+            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
+        } else {
+            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
+        }*/
 
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
@@ -57,6 +71,7 @@ class ProcessFragment : Fragment() {
             dataBinding.loadingOverlay.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
         })
+
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

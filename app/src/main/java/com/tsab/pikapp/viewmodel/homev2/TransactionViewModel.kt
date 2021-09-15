@@ -110,7 +110,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = prosesList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper)
+                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -120,7 +120,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = batalList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper)
+                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()
@@ -130,7 +130,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                     empty.isVisible = doneList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
                                             baseContext,
-                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper)
+                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
                                     categoryAdapter.notifyDataSetChanged()
                                     recyclerview_transaction.adapter = categoryAdapter
                                     categoryAdapter.notifyDataSetChanged()

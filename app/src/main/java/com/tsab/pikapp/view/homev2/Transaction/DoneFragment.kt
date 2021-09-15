@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDoneBinding
 import com.tsab.pikapp.databinding.FragmentProccessBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 
@@ -21,6 +22,7 @@ class DoneFragment : Fragment() {
     lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: FragmentDoneBinding
+    private val sessionManager = SessionManager()
 
 
     override fun onCreateView(
@@ -36,6 +38,12 @@ class DoneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (sessionManager.getLoading() == true){
+            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
+        } else {
+            dataBinding.loadingOverlay.loadingView.visibility = View.GONE
+        }
 
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =

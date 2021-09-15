@@ -24,6 +24,7 @@ class SessionManager {
         private var PREF_HOME_NAV = "home nav"
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
+        private const val PREF_LOADING = "loading status"
 
 
         private var prefs: SharedPreferences? = null
@@ -161,6 +162,14 @@ class SessionManager {
     }
 
     fun getHomeNav() = prefs?.getInt(PREF_HOME_NAV, 0)
+
+    fun setLoading(status: Boolean){
+        prefs?.edit(commit = true) {
+            putBoolean(PREF_LOADING, status)
+        }
+    }
+
+    fun getLoading() = prefs?.getBoolean(PREF_LOADING, false)
 
     //SET AND GET CONTENT URI
     fun setBannerUri(banner: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_BANNER, banner) }
