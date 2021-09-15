@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,6 +20,7 @@ import com.tsab.pikapp.databinding.FragmentIntegrationListBinding
 import com.tsab.pikapp.models.model.Omnichannel
 import com.tsab.pikapp.models.model.OmnichannelStatus
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.omni.integration.IntegrationActivity.Companion.ARGUMENT_OMNICHANNEL
 import com.tsab.pikapp.view.omni.integration.lists.IntegrationListAdapter
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
 
@@ -108,7 +110,20 @@ class IntegrationListFragment : Fragment() {
         integrationListAdapter = IntegrationListAdapter(
             viewModel.selectedList.value!!.toMutableList(),
             object : IntegrationListAdapter.OnItemClickListener {
-                override fun onItemClick(omnichannel: Omnichannel) {}
+                override fun onItemClick(omnichannel: Omnichannel) {
+                    val bundle = bundleOf(ARGUMENT_OMNICHANNEL to omnichannel)
+                    if (omnichannel.status == OmnichannelStatus.CONNECTED) {
+                        navController.navigate(
+                            R.id.action_integrationListFragment_to_tokopediaIntegrationConnectedFragment,
+                            bundle
+                        )
+                    } else {
+                        navController.navigate(
+                            R.id.action_integrationListFragment_to_tokopediaIntegrationPendingFragment,
+                            bundle
+                        )
+                    }
+                }
             }
         )
 

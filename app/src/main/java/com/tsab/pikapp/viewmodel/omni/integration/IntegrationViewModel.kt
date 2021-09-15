@@ -4,10 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.tsab.pikapp.models.model.IntegrationArrayResponse
-import com.tsab.pikapp.models.model.Omnichannel
-import com.tsab.pikapp.models.model.OmnichannelStatus
-import com.tsab.pikapp.models.model.OmnichannelType
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.BaseViewModel
@@ -62,6 +59,28 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
         )
     }
 
+    fun disconnectIntegration(omnichannel: Omnichannel) {
+        setLoading(true)
+        disposable.add(
+            apiService.disconnectIntegration(
+                channelId = omnichannel.channelId
+            ).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<IntegrationObjectResponse>() {
+                    override fun onSuccess(response: IntegrationObjectResponse) {
+                        Log.d(tag, response.toString())
+
+                        removeIntegration(omnichannel)
+                        setLoading(false)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.d(tag, e.message.toString())
+                    }
+                })
+        )
+    }
+
     /**
      * Method to insert a newly connected omnichannel to the list.
      */
@@ -74,6 +93,10 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
         setIntegrationList(integrationList.value?.toMutableList()?.apply {
             add(omnichannel)
         } ?: listOf())
+    }
+
+    fun removeIntegration(omnichannel: Omnichannel) {
+        setIntegrationList(integrationList.value?.filter { it.id != omnichannel.id } ?: listOf())
     }
 
     // List integration flow.

@@ -21,6 +21,7 @@
     <string name="star">*</string>
 
     <string name="akan_datang">Akan Datang</string>
+    <string name="pelajari_lebih_lanjut">Pelajari lebih lanjut</string>
 
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
@@ -209,14 +210,16 @@
     <string name="pesanan_masuk">Pesanan Masuk</string>
 
     <!-- Omnichannel integration (oi) screens -->
-    <string name="oi_tambah_toko">Tambah Toko</string>
     <string-array name="oi_status_array">
         <item>Semua</item>
         <item>Diproses</item>
         <item>Terhubung</item>
         <item>Kadaluwarsa</item>
     </string-array>
+    <string name="oi_status_terhubung">Terhubung</string>
+    <string name="oi_status_menunggu">Menunggu</string>
 
+    <string name="oi_tambah_toko">Tambah Toko</string>
     <string name="oi_main_header">Integrasi</string>
     <string name="oi_empty_description">Anda belum memiliki toko yang terhubung</string>
 
@@ -235,5 +238,13 @@
     <string name="oi_connect_tokopedia_kategori_akun_official_store_option">Official Store</string>
     <string name="oi_connect_tokopedia_kategori_akun_power_merchant_option">Power Merchant</string>
     <string name="oi_connect_tokopedia_dialog_confirmation">Pastikan data yang kamu kirim sudah terdaftar sebagai Tokopedia Merchant</string>
+
+    <string name="oi_status_tokopedia_header">Ubah Informasi Toko</string>
+    <string name="oi_status_tokopedia_nama_toko_header">Nama Toko</string>
+    <string name="oi_status_tokopedia_nama_toko_hint">Nama Toko</string>
+    <string name="oi_status_tokopedia_waktu_integrasi_header">Waktu Integrasi</string>
+    <string name="oi_status_tokopedia_status_toko_header">Status Toko</string>
+
+    <string name="oi_hapus_toko">Hapus Toko</string>
 
 </resources>
