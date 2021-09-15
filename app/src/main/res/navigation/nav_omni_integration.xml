@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_omni_integration"
+    app:startDestination="@id/integrationEmptyFragment">
+
+    <fragment
+        android:id="@+id/integrationEmptyFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.IntegrationEmptyFragment"
+        android:label="IntegrationEmptyFragment"
+        tools:layout="@layout/fragment_integration_empty">
+
+        <action
+            android:id="@+id/action_integrationEmptyFragment_to_integrationListFragment"
+            app:destination="@id/integrationListFragment"
+            app:popUpTo="@id/integrationEmptyFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_integrationEmptyFragment_to_integrationConnectFirstFragment"
+            app:destination="@id/integrationConnectFirstFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/integrationListFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.IntegrationListFragment"
+        android:label="fragment_integration_list"
+        tools:layout="@layout/fragment_integration_list">
+
+        <action
+            android:id="@+id/action_integrationListFragment_to_integrationConnectFirstFragment"
+            app:destination="@id/integrationConnectFirstFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/integrationConnectFirstFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.connect.IntegrationConnectFirstFragment"
+        android:label="fragment_integration_connect_first"
+        tools:layout="@layout/fragment_integration_connect_first">
+
+        <action
+            android:id="@+id/action_integrationConnectFirstFragment_to_integrationTokopediaConnectSecondFragment"
+            app:destination="@id/integrationTokopediaConnectSecondFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/integrationTokopediaConnectSecondFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.connect.TokopediaIntegrationConnectSecondFragment"
+        android:label="fragment_integration_connect_second"
+        tools:layout="@layout/fragment_integration_connect_second_tokopedia">
+
+        <action
+            android:id="@+id/action_integrationTokopediaConnectSecondFragment_to_tokopediaIntegrationDialog"
+            app:destination="@id/tokopediaIntegrationDialog" />
+
+        <action
+            android:id="@+id/action_integrationTokopediaConnectSecondFragment_to_integrationListFragment"
+            app:destination="@id/integrationListFragment"
+            app:popUpTo="@id/integrationEmptyFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/tokopediaIntegrationDialog"
+        android:name="com.tsab.pikapp.view.omni.integration.connect.TokopediaIntegrationDialog"
+        android:label="TokopediaIntegrationDialog"
+        tools:layout="@layout/dialog_integration_confirm_connection" />
+
+</navigation>

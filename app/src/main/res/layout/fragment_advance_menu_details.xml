@@ -189,22 +189,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />
 
-                <EditText
-                    android:id="@+id/jumlahPilihanMaksimalInputText"
-                    android:layout_width="0dp"
+                <Spinner
+                    android:id="@+id/spinner_menuChoice"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:backgroundTint="@color/borderSubtle"
-                    android:fontFamily="@font/proximanova_regular"
-                    android:hint="@string/am_details_pilihan_maksimal_hint"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:textColorHint="@color/borderSubtle"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/spinner_advanced_menu"
+                    app:layout_constraintStart_toStartOf="@+id/jumlahPilihanMaksimalHeaderText"
                     app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />
+
+<!--                <EditText-->
+<!--                    android:id="@+id/jumlahPilihanMaksimalInputText"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="24dp"-->
+<!--                    android:layout_marginEnd="24dp"-->
+<!--                    android:backgroundTint="@color/borderSubtle"-->
+<!--                    android:fontFamily="@font/proximanova_regular"-->
+<!--                    android:hint="@string/am_details_pilihan_maksimal_hint"-->
+<!--                    android:importantForAutofill="no"-->
+<!--                    android:inputType="number"-->
+<!--                    android:textColorHint="@color/borderSubtle"-->
+<!--                    android:textSize="12sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />-->
 
                 <TextView
                     android:id="@+id/jumlahPilihanMaksimalErrorText"
@@ -214,7 +223,7 @@
                     android:textColor="@color/red"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="@id/jumlahPilihanMaksimalHeaderText"
-                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalInputText"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_menuChoice"
                     tools:text="Nama pilihan tidak boleh kosong!" />
 
                 <androidx.constraintlayout.widget.Group
@@ -222,7 +231,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="jumlahPilihanMaksimalInputText,jumlahPilihanMaksimalErrorText" />
+                    app:constraint_referenced_ids="spinner_menuChoice,jumlahPilihanMaksimalErrorText" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/jumlahPilihanMaksimalBarrier"

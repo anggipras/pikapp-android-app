@@ -11,7 +11,7 @@ enum class AdvanceMenuTemplateType {
 
 data class AddAdvanceMenuRequest(
     @SerializedName("advance_menus")
-    var advanceMenus: List<AdvanceMenu>
+    var advance_menus: List<AdvanceMenu>
 )
 
 data class AddAdvanceMenuResponse(
@@ -34,26 +34,54 @@ data class ListAdvanceMenuResponse(
     var results: List<AdvanceMenu>
 )
 
+//data class AdvanceMenu(
+//    @SerializedName("template_name")
+//    var templateName: String,
+//    @SerializedName("template_type")
+//    var templateType: String,
+//
+//    @SerializedName("active")
+//    var isActive: Boolean,
+//    @SerializedName("mandatory")
+//    var isMandatory: Boolean,
+//
+//    @SerializedName("max_choose")
+//    var maxChoice: Int,
+//    @SerializedName("ext_menus")
+//    var advanceAdditionalMenus: List<AdvanceAdditionalMenu>
+//)
+//
+//data class AdvanceAdditionalMenu(
+//    @SerializedName("ext_menu_name")
+//    var advanceAdditionalMenuName: String,
+//    @SerializedName("ext_menu_price")
+//    var advanceAdditionalMenuPrice: String,
+//    @SerializedName("active")
+//    var active: Boolean
+//)
+
 data class AdvanceMenu(
-    @SerializedName("template_name")
-    var templateName: String,
-    @SerializedName("template_type")
-    var templateType: String,
+        @SerializedName("template_name")
+        var template_name: String,
+        @SerializedName("template_type")
+        var template_type: String,
 
-    @SerializedName("active")
-    var isActive: Boolean,
-    @SerializedName("mandatory")
-    var isMandatory: Boolean,
+        @SerializedName("active")
+        var active: Boolean,
+        @SerializedName("mandatory")
+        var mandatory: Boolean,
 
-    @SerializedName("max_choose")
-    var maxChoice: Int,
-    @SerializedName("ext_menus")
-    var advanceAdditionalMenus: List<AdvanceAdditionalMenu>
+        @SerializedName("max_choose")
+        var max_choose: Int,
+        @SerializedName("ext_menus")
+        var ext_menus: List<AdvanceAdditionalMenu>
 )
 
 data class AdvanceAdditionalMenu(
-    @SerializedName("ext_menu_name")
-    var advanceAdditionalMenuName: String,
-    @SerializedName("ext_menu_price")
-    var advanceAdditionalMenuPrice: String
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean
 )
