@@ -2,10 +2,10 @@ package com.tsab.pikapp.view.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -22,6 +22,7 @@ import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
+
 
 class AddMenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -41,17 +42,19 @@ class AddMenuFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         dataBinding = FragmentAddMenuBinding.inflate(
-            inflater, container, false
+                inflater, container, false
         )
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.menuImg.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
 
         navController = Navigation.findNavController(view)
 
@@ -114,6 +117,7 @@ class AddMenuFragment : Fragment() {
         })
 
         viewModel.img.observe(viewLifecycleOwner, Observer { menuUri ->
+            dataBinding.menuImg.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
             dataBinding.menuImg.setImageURI(menuUri)
         })
 

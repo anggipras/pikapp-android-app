@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +43,7 @@ class DynamicFragment : Fragment(), DynamicListAdapter.OnItemClickListener {
         linearLayoutManager = LinearLayoutManager(requireView().context)
         dataBinding.listMenuDetail.layoutManager = linearLayoutManager
         val nama: String = arguments?.getString("position").toString()
-        activity?.let { viewModel.getSearchList(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
+        activity?.let { viewModel.getAmountOfMenu(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
                 dataBinding.textview, nama, dataBinding.tambahMenuEmptyButton, dataBinding.tambahMenuButton, this) }
     }
 
