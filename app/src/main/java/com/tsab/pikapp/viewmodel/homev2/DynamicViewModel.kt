@@ -42,7 +42,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
         val type = object : TypeToken<SearchResponse>() {}.type
 
         PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 30)
+                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 10)
         ).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {

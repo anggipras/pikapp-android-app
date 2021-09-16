@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -32,13 +33,6 @@ class AddMenuFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             viewModel.validateImg(uri)
         }
-
-//    private val getAdvanceMenu =
-//        registerForActivityResult(ResultCallback()) {
-//            it?.let { returnedData: String ->
-//                viewModel.validateAdvance(returnedData)
-//            }
-//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,18 +91,28 @@ class AddMenuFragment : Fragment() {
             viewModel.validateMenu(viewModel.img.value)
             viewModel.validateNama(dataBinding.namaMenu.text.toString())
             viewModel.validateHarga(dataBinding.harga.text.toString())
+            viewModel.validateDesc(dataBinding.descMenu.text.toString())
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
-                Handler().postDelayed({
-                    val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
-                    activity?.startActivity(intent)
-                }, 500)
             }
         }
     }
 
     private fun observeViewModel() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { bool ->
+            dataBinding.loadingOverlay.loadingView.isVisible = bool
+        })
+
+        viewModel.isLoadingFinish.observe(viewLifecycleOwner, Observer { bool ->
+            if (!bool) {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                    startActivity(this)
+                    activity?.finish()
+                }
+            }
+        })
+
         viewModel.img.observe(viewLifecycleOwner, Observer { menuUri ->
             dataBinding.menuImg.setImageURI(menuUri)
         })
@@ -127,6 +131,10 @@ class AddMenuFragment : Fragment() {
 
         viewModel.hargaError.observe(viewLifecycleOwner, Observer { hargaError ->
             dataBinding.hargaErrorText.text = if (hargaError.isEmpty()) "" else hargaError
+        })
+
+        viewModel.descError.observe(viewLifecycleOwner, Observer { descError ->
+            dataBinding.descErrorText.text = if (descError.isEmpty()) "" else descError
         })
     }
 }

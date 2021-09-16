@@ -21,7 +21,10 @@ import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.CategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,6 +46,19 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     var size: String = "0"
 
     var name1: String = "Test"
+
+    private val mutableMenuList = MutableLiveData<SearchList>()
+    val menuList : LiveData<SearchList> get() = mutableMenuList
+    fun setMenu(menu: SearchList) {
+        mutableMenuList.value = menu
+        menu.product_id?.let { fetchAdvanceMenuData(it) }
+    }
+
+    private val mutableAddOrEdit = MutableLiveData<Boolean>()
+    val addOrEdit : LiveData<Boolean> get() = mutableAddOrEdit
+    fun setAddOrEdit(bool: Boolean) {
+        mutableAddOrEdit.value = bool
+    }
 
     private val mutableMenu = MutableLiveData(Uri.EMPTY)
     private val mutableMenuError = MutableLiveData("")
@@ -79,17 +95,29 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         mutableAdvanceMenuList.value = AddAdvanceMenuRequest(advanceMenuList)
     }
 
-//    private val mutableAdvance = MutableLiveData("None")
-//    private val mutableAdvanceError = MutableLiveData("")
-//    private val isAdvanceValid = MutableLiveData(false)
-//    val advance: LiveData<String> get() = mutableAdvance
-//    val advanceError: LiveData<String> get() = mutableAdvanceError
+    private val mutableDesc = MutableLiveData("")
+    private val mutableDescError = MutableLiveData("")
+    private val isDescValid = MutableLiveData(false)
+    val desc: LiveData<String> get() = mutableDesc
+    val descError: LiveData<String> get() = mutableDescError
 
     private val mutableHarga = MutableLiveData("")
     private val mutableHargaError = MutableLiveData("")
     private val isHargaValid = MutableLiveData(false)
     val harga: LiveData<String> get() = mutableHarga
     val hargaError: LiveData<String> get() = mutableHargaError
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    fun setLoading(bool: Boolean) {
+        _isLoading.value = bool
+    }
+
+    private val _isLoadingFinish = MutableLiveData<Boolean>(true)
+    val isLoadingFinish: LiveData<Boolean> get() = _isLoadingFinish
+    fun setLoadingFinish(bool: Boolean) {
+        _isLoadingFinish.value = bool
+    }
 
     fun showTooltip(context: Context): Balloon {
         var balloon = createBalloon(context) {
@@ -130,6 +158,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         mutableMenuError.value = ""
         mutableHargaError.value = ""
         mutableNamaError.value = ""
+        mutableDescError.value = ""
     }
 
     fun validateMenu(menu: Uri?): Boolean {
@@ -167,7 +196,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun validateCategory(Category: String): Boolean {
         if (Category.isEmpty() || Category.isBlank()) {
-            mutableCategoryError.value = "Nama menu tidak boleh kosong"
+            mutableCategoryError.value = "Nama kategori tidak boleh kosong"
         } else {
             mutableCategoryError.value = ""
         }
@@ -178,7 +207,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun validateCategoryId(CategoryId: String): Boolean {
         if (CategoryId.isEmpty() || CategoryId.isBlank()) {
-            mutableCategoryIdError.value = "Nama menu tidak boleh kosong"
+            mutableCategoryIdError.value = "Nama kategori tidak boleh kosong"
         } else {
             mutableCategoryIdError.value = ""
         }
@@ -199,17 +228,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isHargaValid.value!!
     }
 
-//    fun validateAdvance(advance: String): Boolean {
-//        if (advance.isEmpty() || advance.isBlank()) {
-//            mutableAdvanceError.value = "Harga tidak boleh kosong"
-//        } else {
-//            mutableAdvanceError.value = ""
-//        }
-//
-//        mutableAdvance.value = advance
-//        isAdvanceValid.value = mutableAdvanceError.value!!.isEmpty()
-//        return isAdvanceValid.value!!
-//    }
+    fun validateDesc(desc: String): Boolean {
+        if (desc.isEmpty() || desc.isBlank()) {
+            mutableDescError.value = "Deskripsi tidak boleh kosong"
+        } else {
+            mutableDescError.value = ""
+        }
+
+        mutableDesc.value = desc
+        isDescValid.value = mutableDescError.value!!.isEmpty()
+        return isDescValid.value!!
+    }
 
     fun getCategory(
         baseContext: Context,
@@ -266,9 +295,10 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         })
     }
 
-    fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!!
+    fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!!
 
     fun postMenu() {
+        setLoading(true)
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -299,6 +329,8 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val menuOutputStream = FileOutputStream(menuFile)
         menuInputStream.copyTo(menuOutputStream)
 
+        val actionMenu = if (addOrEdit.value == true) "MODIFY" else "ADD"
+
         val jsonString = GsonBuilder().create().toJson(advanceMenuList.value)
 
         apiService.api.uploadMenu(
@@ -316,11 +348,11 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
             ),
             RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "Desc Makanan"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), desc.value),
             RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
             RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
             RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
             RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
             RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
             RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
@@ -328,8 +360,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Log.e("RESPONSEEE", response.toString())
-                    Toast.makeText(getApplication(), "Menu Berhasil Ditambahkan", Toast.LENGTH_LONG).show()
+                    setLoading(false)
+                    setLoadingFinish(false)
+                    val toastAddEdit = if (actionMenu == "ADD") "Ditambahkan" else "Diubah"
+                    Toast.makeText(getApplication(), "Menu Berhasil ${toastAddEdit}", Toast.LENGTH_LONG).show()
                 } else {
+                    setLoading(false)
                     var errorResponse: BaseResponse? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)
                     Log.e(
@@ -343,5 +379,63 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 Log.e("UploadRegisterError", t.message.toString())
             }
         })
+    }
+
+    fun deleteMenu() {
+        setLoading(true)
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
+
+        apiService.api.deleteMenu(
+                getUUID(), timestamp, getClientID(), signature, token, mid, menuList.value?.product_id.toString(),
+                RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
+                RequestBody.create(MediaType.parse("multipart/form-data"), "DELETE"),
+                RequestBody.create(MediaType.parse("multipart/form-data"), "1")
+        ).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    Log.e("RESPONSEEE", response.toString())
+                    setLoading(false)
+                    setLoadingFinish(false)
+                    Toast.makeText(getApplication(), "Menu Berhasil Dihapus", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                setLoading(false)
+                Log.e("MenuDeleteFailed", t.message.toString())
+            }
+        })
+    }
+
+    fun fetchAdvanceMenuData(productId: String) {
+        setLoading(true)
+        val timeStamp = getTimestamp()
+        disposable.add(
+                apiService.listAdvanceMenu(
+                        email = sessionManager.getUserData()?.email ?: "",
+                        token = sessionManager.getUserToken() ?: "",
+                        pid = productId,
+                        timeStamp = timeStamp
+                ).subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {
+                            override fun onSuccess(response: ListAdvanceMenuResponse) {
+                                // TODO: Add is advance menu active.
+                                if (response.results.isNotEmpty()) {
+                                    setAdvanceMenuList(response.results)
+                                }
+                                setLoading(false)
+                            }
+
+                            override fun onError(e: Throwable) {
+                                Log.d("ERRORFETCH", e.message.toString())
+                                setLoading(false)
+                            }
+                        })
+        )
     }
 }
