@@ -1,6 +1,7 @@
 package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 enum class OmnichannelType {
     @SerializedName("TOKOPEDIA")
@@ -92,4 +93,4 @@ data class Omnichannel(
     var createdAt: String,
     @SerializedName("updated_at")
     var updatedAt: String
-)
+) : Serializable

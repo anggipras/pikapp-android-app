@@ -41,7 +41,7 @@
 
         <!-- Integration indicator -->
         <View
-            android:id="@+id/itemStatusImage"
+            android:id="@+id/statusTokoIndicator"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginTop="12dp"
@@ -59,9 +59,9 @@
             android:fontFamily="@font/proximanova_regular"
             android:textColor="@color/textSubtle"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/itemStatusImage"
-            app:layout_constraintStart_toEndOf="@id/itemStatusImage"
-            app:layout_constraintTop_toTopOf="@id/itemStatusImage"
+            app:layout_constraintBottom_toBottomOf="@id/statusTokoIndicator"
+            app:layout_constraintStart_toEndOf="@id/statusTokoIndicator"
+            app:layout_constraintTop_toTopOf="@id/statusTokoIndicator"
             tools:text="Menunggu" />
 
         <ImageView
