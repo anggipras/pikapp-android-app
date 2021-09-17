@@ -3,6 +3,7 @@ package com.tsab.pikapp.view.homev2.Transaction
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentProccessBinding
+import com.tsab.pikapp.databinding.TransactionListItemsBinding
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
@@ -33,6 +36,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_proccess.*
+import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
 import kotlinx.android.synthetic.main.transaction_list_items.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -46,7 +50,8 @@ class TransactionListAdapter(
         private val context: Context,
         private var transactionList: MutableList<StoreOrderList>,
         private val transactionList1: MutableList<List<OrderDetailDetail>>,
-        private val sessionManager: SessionManager, private val supportFragmentManager: FragmentManager,
+        private val sessionManager: SessionManager,
+        private val supportFragmentManager: FragmentManager,
         private val prefHelper: SharedPreferencesUtil,
         private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
@@ -98,7 +103,7 @@ class TransactionListAdapter(
                 holder.acceptBtn.text = "Terima"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    updateTransaction(txnId, "ON_PROCESS", "Proses", position, holder, prosesList)
+                    updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
@@ -120,7 +125,7 @@ class TransactionListAdapter(
                 jumlah = 0
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    updateTransaction(txnId, "ON_PROCESS", "Proses", position, holder, prosesList)
+                    updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
@@ -146,7 +151,7 @@ class TransactionListAdapter(
                 holder.acceptBtn.text = "Pesanan Siap"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    updateTransaction(txnId, "DELIVER", "Proses", position, holder, prosesList)
+                    updateTransaction(txnId, "DELIVER", "Proses", holder)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.visibility = View.GONE
@@ -186,8 +191,7 @@ class TransactionListAdapter(
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
-                    updateTransaction(txnId, "CLOSE", "Done", position, holder, doneList)
-                    sessionManager.setLoading(false)
+                    updateTransaction(txnId, "CLOSE", "Done", holder)
                     Log.e("paid", "bisa bos")
                 }
                 jumlah = 0
@@ -228,20 +232,14 @@ class TransactionListAdapter(
         var rejectBtn: Button = itemView.rejectButton
         var rView: RecyclerView = itemView.recyclerview_menu
         var lastOrder: TextView = itemView.lastOrder
+        var loadingOverlay: View = itemView.loadingOverlay
     }
 
-    private fun updateTransaction(txnId: String, status: String, orderStatus: String, position: Int, holder: ViewHolder, setList: ArrayList<StoreOrderList>){
-        sessionManager.setLoading(true)
+    private fun updateTransaction(txnId: String, status: String, orderStatus: String, holder: ViewHolder){
+        holder.loadingOverlay.visibility = View.VISIBLE
         setIsLoading(true)
         postUpdate(txnId, status)
-        //transactionList.clear()
-        getStoreOrderList(this, setList, orderStatus)
-        //setMenu(holder.rView, transactionList1[position] as MutableList<OrderDetailDetail>)
-        Toast.makeText( context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-        //transactionList.addAll(orderResult)
-        Log.e("transaction log", transactionList.toString())
-        //this.notifyDataSetChanged()
-        //context.startActivity(Intent(context, HomeNavigation::class.java))
+        getStoreOrderList(orderStatus, holder)
     }
 
     private fun setMenu(recyclerView: RecyclerView, transactionList1: MutableList<OrderDetailDetail>){
@@ -250,14 +248,6 @@ class TransactionListAdapter(
         recyclerView.setHasFixedSize(false)
         var menuList1 = TransactionMenuAdapter(context, transactionList1)
         recyclerView.adapter = menuList1
-    }
-
-    fun setData(newTransactionList: MutableList<StoreOrderList>){
-        val diffUtil = MyDiffUtil(transactionList, newTransactionList)
-        val diffResults = DiffUtil.calculateDiff(diffUtil)
-        transactionList = newTransactionList
-        diffResults.dispatchUpdatesTo(this)
-        Log.e("set data", transactionList.toString())
     }
 
     private fun setDate(position: Int){
@@ -299,7 +289,7 @@ class TransactionListAdapter(
         }
     }
 
-    fun timeAgo(time: String, holder:TextView){
+    private fun timeAgo(time: String, holder:TextView){
         var format: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
         var txnTime : Date = format.parse(time)
         var timeNow : Date = Date()
@@ -318,6 +308,7 @@ class TransactionListAdapter(
     }
 
     fun postUpdate(id: String, status: String){
+        setIsLoading(true)
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
 
@@ -339,12 +330,12 @@ class TransactionListAdapter(
         )
     }
 
-    fun getStoreOrderList(adapter: TransactionListAdapter, setList: ArrayList<StoreOrderList>, status: String) {
+    fun getStoreOrderList(status: String, holder: ViewHolder) {
+        setIsLoading(true)
         prefHelper.clearStoreOrderList()
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
-        //loading.value = true
 
         disposable.add(
                 pikappService.getTransactionListMerchant(email, token, mid)
@@ -352,30 +343,18 @@ class TransactionListAdapter(
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
                             override fun onSuccess(t: GetStoreOrderListResponse) {
-                                Log.e("adapter", "bisa")
-                                Log.e("error code", t.errCode)
-                                Log.e("error msg", t.errMessage)
-                                Log.e("results", t.results.toString())
                                 val result = t.results
                                 orderResult.addAll(result as MutableList<StoreOrderList>)
-                                Log.e("api result", result.toString())
-                                Log.e("order result", orderResult.toString())
                                 transactionList.addAll(orderResult)
-                                /*recyclerView.adapter = adapter
-                                adapter.notifyDataSetChanged()*/
-                                Log.e("hit api transaction", transactionList.toString())
                                 sortOrderList(result)
-                                Log.e("prosess", prosesList.toString())
-                                Log.e("batal", batalList.toString())
-                                Log.e("done", doneList.toString())
-                                setData(setList)
                                 setProcessOrder(context, recyclerView, status, supportFragmentManager)
-
+                                setIsLoading(false)
+                                holder.loadingOverlay.visibility = View.GONE
                             }
 
                             override fun onError(e: Throwable) {
                                 var errorResponse: ErrorResponse
-                                Log.e("adapter", "failed")
+                                Toast.makeText(context, "failed: " + e.message, Toast.LENGTH_SHORT).show()
                             }
                         })
         )
@@ -400,7 +379,6 @@ class TransactionListAdapter(
 
     fun setProcessOrder(baseContext: Context, recyclerView: RecyclerView, status: String, support: FragmentManager){
         if(status == "Proses"){
-            Log.e("set process", "process")
             categoryAdapter = TransactionListAdapter(
                     baseContext,
                     prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)

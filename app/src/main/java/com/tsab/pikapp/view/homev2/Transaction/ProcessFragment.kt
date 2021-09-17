@@ -39,18 +39,6 @@ class ProcessFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
- /*       if (sessionManager.getLoading() == true){
-            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
-        } else {
-            dataBinding.loadingOverlay.loadingView.visibility = View.GONE
-        }*/
-
-/*        if (categoryAdapter.isLoading){
-            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
-        } else {
-            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
-        }*/
-
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)

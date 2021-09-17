@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentCancelBinding
+import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 
@@ -16,13 +20,18 @@ class CancelFragment : Fragment() {
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var dataBinding: FragmentCancelBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cancel, container, false)
+        dataBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_cancel,
+                container, false
+        )
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,5 +43,13 @@ class CancelFragment : Fragment() {
         recyclerview_transaction.layoutManager = linearLayoutManager
 
         activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal",  requireActivity().supportFragmentManager, emptyState) }
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
+        })
     }
 }
