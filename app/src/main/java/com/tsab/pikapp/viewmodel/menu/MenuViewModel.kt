@@ -52,6 +52,8 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     fun setMenu(menu: SearchList) {
         mutableMenuList.value = menu
         menu.product_id?.let { fetchAdvanceMenuData(it) }
+        menu.on_off?.let { setMenuActive(it.toBoolean()) }
+        mutableCategoryError.value = "Pilih kembali kategori"
     }
 
     private val mutableAddOrEdit = MutableLiveData<Boolean>()
@@ -106,6 +108,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     private val isHargaValid = MutableLiveData(false)
     val harga: LiveData<String> get() = mutableHarga
     val hargaError: LiveData<String> get() = mutableHargaError
+
+    private val mutableIsMenuActive = MutableLiveData<Boolean>(false)
+    val isMenuActive: LiveData<Boolean> = mutableIsMenuActive
+    fun setMenuActive(isActive: Boolean) {
+        mutableIsMenuActive.value = isActive
+    }
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -163,7 +171,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun validateMenu(menu: Uri?): Boolean {
         if (menu == null || menu == Uri.EMPTY) {
-            mutableMenuError.value = "Gambar menu tidak boleh kosong"
+            mutableMenuError.value = if (addOrEdit.value == true) "Pilih kembali gambar" else "Gambar menu tidak boleh kosong"
             isMenuValid.value = false
         } else {
             mutableMenuError.value = ""
@@ -295,7 +303,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         })
     }
 
-    fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!!
+    fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!! && isCategoryValid.value!!
 
     fun postMenu() {
         setLoading(true)
@@ -330,8 +338,15 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         menuInputStream.copyTo(menuOutputStream)
 
         val actionMenu = if (addOrEdit.value == true) "MODIFY" else "ADD"
-
+        val statusMenu = if (addOrEdit.value == true) isMenuActive.value.toString() else "true"
         val jsonString = GsonBuilder().create().toJson(advanceMenuList.value)
+        Log.d("actionMenu", actionMenu)
+        Log.d("statusMenu", statusMenu)
+        Log.d("jsonString", jsonString)
+        Log.d("nama", nama.value)
+        Log.d("desc", desc.value)
+        Log.d("categoryId", categoryId.value)
+        Log.d("harga", harga.value)
 
         apiService.api.uploadMenu(
             getUUID(), timestamp, getClientID(), signature, token, mid,
@@ -353,7 +368,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
             RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
             RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
+            RequestBody.create(MediaType.parse("multipart/form-data"), statusMenu),
             RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
             RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
         ).enqueue(object : Callback<BaseResponse> {
@@ -362,8 +377,8 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                     Log.e("RESPONSEEE", response.toString())
                     setLoading(false)
                     setLoadingFinish(false)
-                    val toastAddEdit = if (actionMenu == "ADD") "Ditambahkan" else "Diubah"
-                    Toast.makeText(getApplication(), "Menu Berhasil ${toastAddEdit}", Toast.LENGTH_LONG).show()
+                    val toastAddEdit = if (actionMenu == "ADD") "Menu berhasil ditambahkan" else "Perubahan berhasil tersimpan"
+                    Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
                 } else {
                     setLoading(false)
                     var errorResponse: BaseResponse? =
@@ -400,7 +415,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                     Log.e("RESPONSEEE", response.toString())
                     setLoading(false)
                     setLoadingFinish(false)
-                    Toast.makeText(getApplication(), "Menu Berhasil Dihapus", Toast.LENGTH_LONG).show()
+                    Toast.makeText(getApplication(), "Menu berhasil dihapus", Toast.LENGTH_LONG).show()
                 }
             }
 

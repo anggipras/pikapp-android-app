@@ -1,11 +1,14 @@
 package com.tsab.pikapp.view.menu
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,13 +19,16 @@ import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.AlertDialogBinding
 import com.tsab.pikapp.databinding.FragmentEditMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
+import kotlinx.android.synthetic.main.alert_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_edit_menu.*
+
 
 class EditMenuFragment : Fragment() {
     private val viewModelMenu: MenuViewModel by activityViewModels()
@@ -89,8 +95,12 @@ class EditMenuFragment : Fragment() {
             navController.navigate(R.id.action_update_menu_edit_adv_to_category_name)
         }
 
+        dataBinding.aktifkanSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModelMenu.setMenuActive(isChecked)
+        }
+
         dataBinding.deleteMenuText.setOnClickListener {
-            viewModelMenu.deleteMenu()
+            openDialog()
         }
 
         dataBinding.btnNext.setOnClickListener {
@@ -143,6 +153,14 @@ class EditMenuFragment : Fragment() {
             dataBinding.descErrorText.text = if (descError.isEmpty()) "" else descError
         })
 
+        viewModelMenu.categoryError.observe(viewLifecycleOwner, Observer { categError ->
+            dataBinding.kategoriErrorText.text = if (categError.isEmpty()) "" else categError
+        })
+
+        viewModelMenu.isMenuActive.observe(viewLifecycleOwner, Observer { menuActive ->
+            dataBinding.aktifkanSwitch.isChecked = menuActive
+        })
+
         viewModelMenu.menuList.observe(viewLifecycleOwner, Observer { menu ->
             Picasso.get().load(menu.pict_01).into(menuImg)
             dataBinding.namaMenu.setText(menu.product_name)
@@ -150,5 +168,28 @@ class EditMenuFragment : Fragment() {
             dataBinding.kategori.setText(menu.merchant_category_name)
             dataBinding.descMenu.setText(menu.product_desc)
         })
+    }
+
+    private fun openDialog() {
+        val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_dialog, null)
+        val mBuilder = AlertDialog.Builder(requireActivity())
+                .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.getWindow()?.setBackgroundDrawable(
+                AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.dialog_background
+                )
+        )
+        mDialogView.dialog_back.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mDialogView.dialog_close.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mDialogView.dialog_ok.setOnClickListener {
+            mAlertDialog.dismiss()
+            viewModelMenu.deleteMenu()
+        }
     }
 }
