@@ -62,6 +62,7 @@ class TransactionListAdapter(
     lateinit var categoryAdapter: TransactionListAdapter
     var orderResult = ArrayList<StoreOrderList>()
     var jumlah = 0
+    var price = 0
     val reasonsheet = CancelReasonFragment()
     var bulan: String = " Jun "
     var bulanTemp: String = ""
@@ -100,6 +101,9 @@ class TransactionListAdapter(
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
+                holder.price.text = "Rp " + price.toString()
+                price = 0
+                holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Terima"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
@@ -123,6 +127,9 @@ class TransactionListAdapter(
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
+                holder.price.text = "Rp " + price.toString()
+                price = 0
+                holder.price2.visibility = View.GONE
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
@@ -148,6 +155,9 @@ class TransactionListAdapter(
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
+                holder.price.text = "Rp " + price.toString()
+                price = 0
+                holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Pesanan Siap"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
@@ -169,9 +179,11 @@ class TransactionListAdapter(
             holder.orderDate.text = "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
             holder.lastOrder.textSize = 11F
             holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
-            holder.price.text = ""
             holder.menuCount.text = "Total " + jumlah + " Items"
             jumlah = 0
+            holder.price2.text = "Rp " + price.toString()
+            price = 0
+            holder.price.visibility = View.GONE
         } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
             if (transactionList[position].status == "DELIVER"){
                 setDate(position)
@@ -187,8 +199,9 @@ class TransactionListAdapter(
                 holder.orderDate.text = "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
                 holder.lastOrder.textSize = 11F
                 holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
-                holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
+                holder.price.text = "Rp " + price.toString()
+                price = 0
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "CLOSE", "Done", holder)
@@ -209,9 +222,11 @@ class TransactionListAdapter(
                 holder.orderDate.text = "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
                 holder.lastOrder.textSize = 11F
                 holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
-                holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
+                holder.price2.text = "Rp " + price.toString()
+                price = 0
+                holder.price.visibility = View.GONE
             }
         }
     }
@@ -228,6 +243,7 @@ class TransactionListAdapter(
         var paymentStatus: TextView = itemView.paymentStatus
         var menuCount: TextView = itemView.menuCount
         var price: TextView = itemView.totalPrice
+        var price2: TextView = itemView.totalPrice2
         var acceptBtn: Button = itemView.acceptButton
         var rejectBtn: Button = itemView.rejectButton
         var rView: RecyclerView = itemView.recyclerview_menu
@@ -286,6 +302,11 @@ class TransactionListAdapter(
 
         for(count in transactionList1[position]){
             jumlah = jumlah + count.productQty!!.toInt()
+            if (count.productQty > 1){
+                price += count.productQty * count.productPrice!!.toInt()
+            } else {
+                price += count.productPrice!!.toInt()
+            }
         }
     }
 
