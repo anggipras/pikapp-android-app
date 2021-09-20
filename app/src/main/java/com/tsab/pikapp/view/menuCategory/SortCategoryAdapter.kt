@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CategoryListResult
 import kotlinx.android.synthetic.main.category_items.view.*
+import kotlinx.android.synthetic.main.category_items.view.resultText
+import kotlinx.android.synthetic.main.category_menu_items_sort.view.*
 
 class SortCategoryAdapter(
     private val context: Context,
@@ -27,12 +29,13 @@ class SortCategoryAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.resultText.text = menuCategoryList[position].category_name
-        val sortName = menuCategoryList[position].category_name
+        holder.menuText.text = if (menuCategoryList[position].product_size == 0) "Belum ada menu" else "${menuCategoryList[position].product_size} Menu"
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
         var resultText: TextView = itemView.resultText
+        var menuText: TextView = itemView.menuText
 
         init {
             itemView.setOnClickListener(this)

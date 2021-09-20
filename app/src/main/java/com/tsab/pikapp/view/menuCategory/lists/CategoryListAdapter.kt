@@ -29,7 +29,7 @@ class CategoryListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.titleText.text = categoryList[position].categoryName
-        holder.menuCountText.text = "Belum ada menu" // TODO: Add menu count functionality.
+        holder.menuCountText.text = if (categoryList[position].productSize == 0) "Belum ada menu" else "${categoryList[position].productSize} Menu"
 
         holder.itemView.setOnClickListener {
             onItemClickListener.onItemClick(categoryList[position])
