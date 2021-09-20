@@ -39,12 +39,6 @@ class DoneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (sessionManager.getLoading() == true){
-            dataBinding.loadingOverlay.loadingView.visibility = View.VISIBLE
-        } else {
-            dataBinding.loadingOverlay.loadingView.visibility = View.GONE
-        }
-
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
