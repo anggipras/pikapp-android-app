@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,14 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CategoryListResult
 import kotlinx.android.synthetic.main.category_list.view.*
 
-
 class CategoryAdapter(
         private val context: Context,
         val categoryList: MutableList<CategoryListResult>,
         private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
     var name: String = ""
-    private var lastChecked: RadioButton? = null
-    private var lastCheckedPos = 0
+//    private var lastChecked: RadioButton? = null
+//    private var lastCheckedPos = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =

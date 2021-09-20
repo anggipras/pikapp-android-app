@@ -1,13 +1,11 @@
 package com.tsab.pikapp.view.menu.advance
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,11 +16,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAdvanceMenuMainBinding
-import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
 import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.menu.AddMenuFragment
-import com.tsab.pikapp.view.menu.UpdateMenuActivity
 import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuAdapter
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel

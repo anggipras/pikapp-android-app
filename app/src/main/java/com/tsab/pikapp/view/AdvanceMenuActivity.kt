@@ -20,7 +20,6 @@ class AdvanceMenuActivity : AppCompatActivity() {
         const val MENU_LIST = "menu_data"
     }
 
-//    private val viewModel: AdvanceMenuViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
     private val viewModel: MenuViewModel by viewModels()
