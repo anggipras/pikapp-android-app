@@ -72,5 +72,4 @@ data class OrderDetailDetail(
     val productQty: Int?,
     @SerializedName("price")
     val productPrice: Int?
-
 )
