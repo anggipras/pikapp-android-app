@@ -203,6 +203,12 @@
     <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
     <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>
     <string name="pesanan_masuk">Pesanan Masuk</string>
+    <string name="laporan_hari_ini">Laporan Hari Ini</string>
+    <string name="logo_txn">logo_txn</string>
+    <string name="keuntungan">Keuntungan</string>
+    <string name="komisi">Komisi</string>
+    <string name="pajak">Pajak</string>
+    <string name="total">Total</string>
 
 
 </resources>

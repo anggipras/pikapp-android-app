@@ -69,5 +69,7 @@ data class OrderDetailDetail(
     @SerializedName("notes")
     val productNote: String?,
     @SerializedName("qty")
-    val productQty: Int?
+    val productQty: Int?,
+    @SerializedName("price")
+    val productPrice: Int?
 )

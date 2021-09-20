@@ -63,6 +63,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
 
+                Log.e("result", categoryResponse?.results.toString())
+                Log.e("Response raw", response.raw().toString())
+                Log.e("response body", response.body().toString())
+                Log.d("SUCCEED", "succeed")
+                Log.e("uuid", getUUID())
+                Log.e("timestamp", timestamp)
+                Log.e("client id", getClientID())
+                Log.e("signature", signature)
+                Log.e("token", token)
+                Log.e("mid", mid)
+
                 mutableSize.value = categoryResponse?.results?.size
                 mutableisLoading.value = false
 

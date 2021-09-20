@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -17,7 +18,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
+import com.tsab.pikapp.view.TransactionDetailActivity
 import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.homev2.Transaction.CancelFragment
 import com.tsab.pikapp.view.homev2.Transaction.DoneFragment
 import com.tsab.pikapp.view.homev2.Transaction.ProcessFragment
@@ -49,6 +52,10 @@ class TransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpTabs()
+        dataBinding.report.setOnClickListener {
+            val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
+            activity?.startActivity(intent)
+        }
         Handler().postDelayed({
             dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
         }, 2000)
