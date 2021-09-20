@@ -114,6 +114,8 @@
     <string name="category_header">Kategori</string>
     <string name="category_daftar_kategori_header">Daftar Kategori</string>
     <string name="category_tambah_kategori_header">Tambah Kategori</string>
+    <string name="category_ubah_kategori_header">Ubah Kategori</string>
+    <string name="category_urutkan_kategori_header">Urutkan Kategori</string>
 
     <!-- Advanced menu (am) screens -->
     <string name="am_main_header">Pilihan Menu</string>
