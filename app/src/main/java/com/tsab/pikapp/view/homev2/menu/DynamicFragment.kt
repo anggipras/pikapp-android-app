@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDynamicBinding
-import com.tsab.pikapp.view.menu.UpdateMenuActivity
+import com.tsab.pikapp.models.model.SearchList
+import com.tsab.pikapp.view.AdvanceMenuActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
-import com.tsab.pikapp.viewmodel.homev2.SearchViewModel
+import java.io.Serializable
 
-class DynamicFragment : Fragment() {
+class DynamicFragment : Fragment(), DynamicListAdapter.OnItemClickListener {
     companion object {
         fun newInstance(): DynamicFragment {
             return DynamicFragment()
@@ -43,8 +43,8 @@ class DynamicFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(requireView().context)
         dataBinding.listMenuDetail.layoutManager = linearLayoutManager
         val nama: String = arguments?.getString("position").toString()
-        activity?.let { viewModel.getSearchList(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
-                dataBinding.textview, nama, dataBinding.tambahMenuEmptyButton, dataBinding.tambahMenuButton) }
+        activity?.let { viewModel.getAmountOfMenu(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
+                dataBinding.textview, nama, dataBinding.tambahMenuEmptyButton, dataBinding.tambahMenuButton, this) }
     }
 
     /**
@@ -52,17 +52,26 @@ class DynamicFragment : Fragment() {
      */
     private fun attachInputListeners() {
         dataBinding.tambahMenuEmptyButton.setOnClickListener {
-            Intent(activity?.baseContext, UpdateMenuActivity::class.java).apply {
-                putExtra(UpdateMenuActivity.EXTRA_TYPE, UpdateMenuActivity.TYPE_ADD)
-                activity?.startActivity(this)
+            Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
+                putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
+                startActivity(this)
             }
         }
 
         dataBinding.tambahMenuButton.setOnClickListener {
-            Intent(activity?.baseContext, UpdateMenuActivity::class.java).apply {
-                putExtra(UpdateMenuActivity.EXTRA_TYPE, UpdateMenuActivity.TYPE_ADD)
-                activity?.startActivity(this)
+            Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
+                putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
+                startActivity(this)
             }
+        }
+    }
+
+    override fun onItemClick(position: Int, menuList: SearchList) {
+        viewModel.dynamicAdapter.notifyItemChanged(position)
+        Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
+            putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_EDIT)
+            putExtra(AdvanceMenuActivity.MENU_LIST, menuList as Serializable)
+            startActivity(this)
         }
     }
 }

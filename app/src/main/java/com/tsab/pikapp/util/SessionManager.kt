@@ -25,7 +25,6 @@ class SessionManager {
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
 
-
         private var prefs: SharedPreferences? = null
 
         @Volatile

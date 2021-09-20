@@ -18,13 +18,14 @@
             android:id="@+id/tableStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/proximanova_regular"
             android:text="Makan di Tempat"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.054"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,13 +33,14 @@
             android:id="@+id/tableNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/proximanova_semibold"
             android:text="Meja 1"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_goneMarginTop="5dp" />
@@ -47,42 +49,28 @@
             android:id="@+id/orderDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="58dp"
             android:fontFamily="@font/proximanova_regular"
             android:text="10 juni"
-            android:textSize="12sp"
             android:textColor="@color/borderSubtle"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.002"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/orderTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/proximanova_regular"
-            android:text="10:09"
-            android:textSize="12sp"
-            android:textColor="@color/borderSubtle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/paymentStatus"
-            android:layout_width="70dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_width="81dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="14dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/button_red_square"
             android:fontFamily="@font/proximanova_semibold"
-            android:text="unpaid"
+            android:gravity="center"
+            android:text="UNPAID"
             android:textAlignment="center"
-            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,15 +78,15 @@
 
         <TextView
             android:id="@+id/orderStatus"
-            android:layout_width="70dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="92dp"
+            android:layout_width="81dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="105dp"
             android:background="@drawable/button_red_square"
             android:fontFamily="@font/proximanova_semibold"
-            android:text="new"
+            android:gravity="center"
+            android:text="NEW"
             android:textAlignment="center"
-            android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="58dp"
+            android:layout_marginTop="57dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/proximanova_semibold"
             android:text="4 menit yang lalu"
@@ -175,7 +163,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/proximanova_semibold"
             android:text="Rp. 70.000"
             android:textColor="@color/black"
@@ -183,21 +170,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/menuCount" />
 
+        <TextView
+            android:id="@+id/totalPrice2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Rp. 70.000"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalPrice"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="337dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:layout_editor_absoluteY="337dp" />
 
         <View
             android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/lightGrey"
+            android:layout_width="330dp"
+            android:layout_height="1dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu"
-            tools:layout_editor_absoluteX="1dp" />
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu" />
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

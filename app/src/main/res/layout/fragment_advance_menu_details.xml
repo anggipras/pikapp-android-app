@@ -10,6 +10,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"
             android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -189,22 +190,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />
 
-                <EditText
-                    android:id="@+id/jumlahPilihanMaksimalInputText"
-                    android:layout_width="0dp"
+                <Spinner
+                    android:id="@+id/spinner_menuChoice"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="76dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:backgroundTint="@color/borderSubtle"
-                    android:fontFamily="@font/proximanova_regular"
-                    android:hint="@string/am_details_pilihan_maksimal_hint"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:textColorHint="@color/borderSubtle"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/spinner_advanced_menu"
+                    app:layout_constraintStart_toStartOf="@+id/jumlahPilihanMaksimalHeaderText"
                     app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />
+
+<!--                <EditText-->
+<!--                    android:id="@+id/jumlahPilihanMaksimalInputText"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="24dp"-->
+<!--                    android:layout_marginEnd="24dp"-->
+<!--                    android:backgroundTint="@color/borderSubtle"-->
+<!--                    android:fontFamily="@font/proximanova_regular"-->
+<!--                    android:hint="@string/am_details_pilihan_maksimal_hint"-->
+<!--                    android:importantForAutofill="no"-->
+<!--                    android:inputType="number"-->
+<!--                    android:textColorHint="@color/borderSubtle"-->
+<!--                    android:textSize="12sp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />-->
 
                 <TextView
                     android:id="@+id/jumlahPilihanMaksimalErrorText"
@@ -214,7 +224,7 @@
                     android:textColor="@color/red"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="@id/jumlahPilihanMaksimalHeaderText"
-                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalInputText"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_menuChoice"
                     tools:text="Nama pilihan tidak boleh kosong!" />
 
                 <androidx.constraintlayout.widget.Group
@@ -222,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="jumlahPilihanMaksimalInputText,jumlahPilihanMaksimalErrorText" />
+                    app:constraint_referenced_ids="spinner_menuChoice,jumlahPilihanMaksimalErrorText" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/jumlahPilihanMaksimalBarrier"
@@ -318,29 +328,26 @@
                     android:visibility="visible"
                     app:constraint_referenced_ids="tambahPilihanImage,tambahPilihanHeaderText" />
 
-                <!-- Next button -->
-                <Button
-                    android:id="@+id/nextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@drawable/button_green_small"
-                    android:fontFamily="@font/montserrat"
-                    android:text="@string/simpan"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="6:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <!-- Next button -->
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_green_small"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/simpan"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true" />
 
         <include
             android:id="@+id/loadingOverlay"

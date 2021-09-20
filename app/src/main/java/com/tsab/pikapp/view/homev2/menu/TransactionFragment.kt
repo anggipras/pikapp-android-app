@@ -51,6 +51,7 @@ class TransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.overridePendingTransition(0, 0)
         setUpTabs()
         dataBinding.report.setOnClickListener {
             val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)

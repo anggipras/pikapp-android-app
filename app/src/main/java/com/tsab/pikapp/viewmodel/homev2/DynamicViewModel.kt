@@ -8,15 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.SearchList
 import com.tsab.pikapp.models.model.SearchRequest
 import com.tsab.pikapp.models.model.SearchResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.menu.DynamicListAdapter
-import com.tsab.pikapp.view.homev2.menu.SearchAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,8 +23,34 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
 
     lateinit var dynamicAdapter: DynamicListAdapter
 
+    fun getAmountOfMenu(baseContext: Context,
+                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button, listener: DynamicListAdapter.OnItemClickListener){
+        var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
+
+        PikappApiService().api.searchMenu(
+                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
+        ).enqueue(object : Callback<SearchResponse> {
+            override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    val amountOfMenus = response.body()!!.total_items
+                    getSearchList(baseContext, recyclerview_category, noFound, noFoundText, categoryName, noFoundButton, foundButton, amountOfMenus, listener)
+                } else {
+                    Log.e("FAIL", "Failed get amount of menus")
+                }
+            }
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                Log.e("FAILED", t.message.toString())
+            }
+        })
+    }
+
     fun getSearchList(baseContext: Context,
-                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button){
+                      recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button, amountOfMenus: Int, listener: DynamicListAdapter.OnItemClickListener){
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -36,18 +59,13 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
         val mid = sessionManager.getUserData()!!.mid!!
         var jumlah: Int
 
-        val gson = Gson()
-        val type = object : TypeToken<SearchResponse>() {}.type
-
         PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 30)
+                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, amountOfMenus)
         ).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Log.e("SUCCEED", response.body().toString())
                     val searchResult = response.body()?.results
                     val categoryList = ArrayList<SearchList>()
-                    Log.e("Total", response.body()!!.total_items.toString())
                     if (searchResult != null) {
                         for(category in searchResult){
                             if(category.merchant_category_name == categoryName){
@@ -69,7 +87,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
                             recyclerview_category.isVisible = true
                         }
                     }
-                    dynamicAdapter = DynamicListAdapter(baseContext, categoryList as MutableList<SearchList>)
+                    dynamicAdapter = DynamicListAdapter(baseContext, categoryList as MutableList<SearchList>, listener)
                     dynamicAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = dynamicAdapter
 

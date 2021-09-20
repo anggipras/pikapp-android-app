@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,10 +19,18 @@ import com.tsab.pikapp.databinding.FragmentAdvanceMenuMainBinding
 import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuAdapter
+import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
 
 class AdvanceMenuMainFragment : Fragment() {
+    companion object {
+        const val ARGUMENT_MENU_EDIT = "isEditing"
+        const val ARGUMENT_PRODUCT_ID = "productID"
+        const val ARGUMENT_ADVANCE_EDIT = "isEditAdvMenu"
+    }
+
     private val viewModel: AdvanceMenuViewModel by activityViewModels()
+    private val viewModelMenu: MenuViewModel by activityViewModels()
     private lateinit var navController: NavController
     private lateinit var dataBinding: FragmentAdvanceMenuMainBinding
 
@@ -43,9 +52,35 @@ class AdvanceMenuMainFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+        fetchArguments()
         observeViewModel()
         attachInputListeners()
         setupRecyclerView()
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewModel.addOrEdit.value == true) {
+                    navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
+                } else {
+                    navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+                }
+            }
+        })
+    }
+
+    private fun fetchArguments() {
+        if (arguments?.getBoolean(ARGUMENT_MENU_EDIT) == true) {
+            viewModel.setAddOrEdit(true)
+            viewModel.setProductId(arguments?.getString(ARGUMENT_PRODUCT_ID))
+        } else {
+            if (viewModel.addOrEdit.value == true) viewModel.setAddOrEdit(true) else viewModel.setAddOrEdit(false)
+            viewModel.setProductId(null)
+            viewModel.setLoading(false)
+        }
+        if (arguments?.getBoolean(ARGUMENT_MENU_EDIT) == true) viewModel.fetchAdvanceMenuData()
     }
 
     private fun observeViewModel() {
@@ -78,11 +113,24 @@ class AdvanceMenuMainFragment : Fragment() {
             Log.d("AdvanceMenuMain", advanceMenuList.toString())
             advanceMenuAdapter.setAdvanceMenuList(advanceMenuList)
         })
+
+//        // Send result when push success.
+//        viewModel.isPushSuccess.observe(viewLifecycleOwner, Observer { isPushSuccess ->
+//            if (isPushSuccess) {
+//                viewModelMenu.setAdvanceMenuList(viewModel.advanceMenuList.value!!)
+//                navController.navigateUp()
+//                viewModel.pushAdvanceMenuData(false)
+//            }
+//        })
     }
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            activity?.finish()
+            if (viewModel.addOrEdit.value == true) {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
+            } else {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+            }
         }, view)
 
         dataBinding.aktifkanSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -95,7 +143,14 @@ class AdvanceMenuMainFragment : Fragment() {
         }, view)
 
         dataBinding.saveButton.setOnClickListener {
-            viewModel.pushAdvanceMenuData()
+            viewModelMenu.setAdvanceMenuList(viewModel.advanceMenuList.value!!)
+            Log.d("APAINI", viewModel.addOrEdit.value.toString())
+            if (viewModel.addOrEdit.value == true) {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
+            } else {
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
+            }
+//            viewModel.pushAdvanceMenuData(true)
         }
     }
 
@@ -108,11 +163,11 @@ class AdvanceMenuMainFragment : Fragment() {
                         R.id.action_advanceMenuMainFragment_to_advanceMenuDetailsFragment,
                         bundleOf(
                             AdvanceMenuDetailsFragment.ARGUMENT_IS_EDIT to true,
-                            AdvanceMenuDetailsFragment.ARGUMENT_NAMA_PILIHAN to advanceMenu.templateName,
-                            AdvanceMenuDetailsFragment.ARGUMENT_AKTIF to advanceMenu.isActive,
-                            AdvanceMenuDetailsFragment.ARGUMENT_WAJIB to advanceMenu.isMandatory,
-                            AdvanceMenuDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to advanceMenu.maxChoice,
-                            AdvanceMenuDetailsFragment.ARGUMENT_ADDITIONAL_MENU to advanceMenu.advanceAdditionalMenus
+                            AdvanceMenuDetailsFragment.ARGUMENT_NAMA_PILIHAN to advanceMenu.template_name,
+                            AdvanceMenuDetailsFragment.ARGUMENT_AKTIF to advanceMenu.active,
+                            AdvanceMenuDetailsFragment.ARGUMENT_WAJIB to advanceMenu.mandatory,
+                            AdvanceMenuDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to advanceMenu.max_choose,
+                            AdvanceMenuDetailsFragment.ARGUMENT_ADDITIONAL_MENU to advanceMenu.ext_menus
                         )
                     )
                 }

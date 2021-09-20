@@ -59,7 +59,7 @@ class OtherViewModel : ViewModel() {
     }
 
     fun getMerchantShopStatus(context: Context) {
-        val sdf = SimpleDateFormat("EEEE")
+        val sdf = SimpleDateFormat("EEEE", Locale.ENGLISH)
         val d = Date()
         val dayOfTheWeek: String = sdf.format(d)
 

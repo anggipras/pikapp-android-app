@@ -16,7 +16,13 @@
     <string name="kembali">Kembali</string>
     <string name="simpan">Simpan</string>
     <string name="ya">Ya</string>
+    <string name="kirim">Kirim</string>
+    <string name="cek_lagi">Cek Lagi</string>
     <string name="star">*</string>
+
+    <string name="akan_datang">Akan Datang</string>
+    <string name="pelajari_lebih_lanjut">Pelajari lebih lanjut</string>
+    <string name="alert_dialog">Apakah anda yakin ingin menghapus menu ini?</string>
 
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
@@ -28,8 +34,8 @@
 
     <!-- Local Notification -->
     <string name="general_notif_id">pikappnotif</string>
-    <string name="general_notif_title">Halo, $s</string>
-    <string name="general_notif_message">Mohon cek kembali email anda terkait integrasi dengan Tokopedia</string>
+    <string name="general_notif_title">Satu langkah lagi untuk kemudahan bisnis Anda!</string>
+    <string name="general_notif_message">Silakan cek email Anda dan lakukan konfirmasi integrasi</string>
     <string name="notification_channel_name">PikApp</string>
     <string name="notification_channel_description">Email reminder</string>
 
@@ -158,7 +164,7 @@
     <string name="radio_button_3">Atur Jam</string>
     <string name="open_status_title">Buka</string>
 
-    <!-- Other Fragment Screen-->
+    <!-- Other Fragment Screen -->
     <string name="shop_daily_status">%s, %s</string>
     <string name="menu_yang_anda_cari_tidak_ditemukan">Menu Yang Anda Cari Tidak Ditemukan</string>
     <string name="no_found">no found</string>
@@ -177,12 +183,12 @@
     <string name="must">*</string>
     <string name="masukkan_nama_pemilik_rekening">Masukkan Nama Pemilik Rekening</string>
 
-    <!--    Setting Fragment Screen-->
+    <!-- Setting Fragment Screen -->
     <string name="profile_setting">Profile</string>
     <string name="information_setting">Informasi Restoran</string>
     <string name="pin_setting">Ubah PIN</string>
 
-    <!--    Setting Profile Fragment Screen-->
+    <!-- Setting Profile Fragment Screen -->
     <string name="nama_lengkap_profile">Nama Lengkap</string>
     <string name="tanggal_lahir">Tanggal Lahir</string>
     <string name="tambahkan_tanggal_lahir">Tambahkan tanggal lahir</string>
@@ -194,11 +200,11 @@
     <string name="perempuan">Perempuan</string>
     <string name="laki_laki">Laki-Laki</string>
 
-    <!--    Setting Information Fragment Screen-->
+    <!-- Setting Information Fragment Screen -->
     <string name="nama_restoran">Nama Restoran</string>
     <string name="alamat_restoran">Alamat Restoran</string>
 
-    <!--    Setting Pin Fragment Screen-->
+    <!-- Setting Pin Fragment Screen -->
     <string name="buat_pin_baru">Buat PIN baru</string>
     <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
     <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>
@@ -210,5 +216,42 @@
     <string name="pajak">Pajak</string>
     <string name="total">Total</string>
 
+    <!-- Omnichannel integration (oi) screens -->
+    <string-array name="oi_status_array">
+        <item>Semua</item>
+        <item>Diproses</item>
+        <item>Terhubung</item>
+        <item>Kadaluwarsa</item>
+    </string-array>
+    <string name="oi_status_terhubung">Terhubung</string>
+    <string name="oi_status_menunggu">Menunggu</string>
+
+    <string name="oi_tambah_toko">Tambah Toko</string>
+    <string name="oi_main_header">Integrasi</string>
+    <string name="oi_empty_description">Anda belum memiliki toko yang terhubung</string>
+
+    <string name="oi_connect_first_header">Tambah Toko</string>
+
+    <string name="oi_connect_second_tokopedia_header">Integrasi Tokopedia</string>
+    <string name="oi_connect_tokopedia_akun_email_header">Akun Email</string>
+    <string name="oi_connect_tokopedia_akun_email_hint">Masukkan email yang terdaftar di Tokopedia</string>
+    <string name="oi_connect_tokopedia_nomor_telepon_header">Nomor Telepon</string>
+    <string name="oi_connect_tokopedia_nomor_telepon_hint">Masukkan nomor telepon yang terdaftar di Tokopedia</string>
+    <string name="oi_connect_tokopedia_nama_toko_header">Nama Toko</string>
+    <string name="oi_connect_tokopedia_nama_toko_hint">Masukkan nama toko</string>
+    <string name="oi_connect_tokopedia_domain_toko_header">Domain Toko</string>
+    <string name="oi_connect_tokopedia_domain_toko_hint">Contoh: www.tokopedia.com/domain</string>
+    <string name="oi_connect_tokopedia_kategori_akun_header">Kategori Akun Tokopedia</string>
+    <string name="oi_connect_tokopedia_kategori_akun_official_store_option">Official Store</string>
+    <string name="oi_connect_tokopedia_kategori_akun_power_merchant_option">Power Merchant</string>
+    <string name="oi_connect_tokopedia_dialog_confirmation">Pastikan data yang kamu kirim sudah terdaftar sebagai Tokopedia Merchant</string>
+
+    <string name="oi_status_tokopedia_header">Ubah Informasi Toko</string>
+    <string name="oi_status_tokopedia_nama_toko_header">Nama Toko</string>
+    <string name="oi_status_tokopedia_nama_toko_hint">Nama Toko</string>
+    <string name="oi_status_tokopedia_waktu_integrasi_header">Waktu Integrasi</string>
+    <string name="oi_status_tokopedia_status_toko_header">Status Toko</string>
+
+    <string name="oi_hapus_toko">Hapus Toko</string>
 
 </resources>

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.getTimestamp
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,6 +22,15 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
+
+    /**
+     * Set the add or edit navigation
+     */
+    private val mutableAddOrEdit = MutableLiveData<Boolean>()
+    val addOrEdit: LiveData<Boolean> = mutableAddOrEdit
+    fun setAddOrEdit(boolean: Boolean) {
+        mutableAddOrEdit.value = boolean
+    }
 
     /**
      * Set the parent productId. Must be called whenever the activity is first created.
@@ -53,9 +63,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     private fun addAdvanceMenu(advanceMenu: AdvanceMenu) {
-        if (!mutableAdvanceMenuList.value!!.none { it.templateName == advanceMenu.templateName }) {
+        if (!mutableAdvanceMenuList.value!!.none { it.template_name == advanceMenu.template_name }) {
             mutableAdvanceMenuList.value =
-                advanceMenuList.value?.filter { it.templateName != advanceMenu.templateName }
+                advanceMenuList.value?.filter { it.template_name != advanceMenu.template_name }
         }
 
         mutableAdvanceMenuList.value = advanceMenuList.value?.toMutableList()?.apply {
@@ -68,13 +78,15 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
             setLoading(false)
             return
         }
+        val timeStamp = getTimestamp()
 
         setLoading(true)
         disposable.add(
             apiService.listAdvanceMenu(
                 email = sessionManager.getUserData()?.email ?: "",
                 token = sessionManager.getUserToken() ?: "",
-                pid = mutableProductId.value ?: ""
+                pid = mutableProductId.value ?: "",
+                    timeStamp = timeStamp
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {
@@ -97,35 +109,38 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         )
     }
 
-    private val mutableIsPushSuccess = MutableLiveData<Boolean>(false)
+    private val mutableIsPushSuccess = MutableLiveData<Boolean>()
     val isPushSuccess: LiveData<Boolean> = mutableIsPushSuccess
-    fun pushAdvanceMenuData() {
-        setLoading(true)
-        disposable.add(
-            apiService.addAdvanceMenu(
-                email = sessionManager.getUserData()?.email ?: "",
-                token = sessionManager.getUserToken() ?: "",
-                merchantId = sessionManager.getUserData()?.mid ?: "",
-                advanceMenuList = mutableAdvanceMenuList.value ?: listOf()
-            ).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<AddAdvanceMenuResponse>() {
-                    override fun onSuccess(response: AddAdvanceMenuResponse) {
-                        mutableIsPushSuccess.value = true
-                        Log.e("data", mutableAdvanceMenuList.value.toString())
-                        setLoading(false)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d(TAG, e.toString())
-                        e.printStackTrace()
-
-                        mutableIsPushSuccess.value = false
-                        setLoading(false)
-                    }
-                })
-        )
+    fun pushAdvanceMenuData(boolean: Boolean) {
+        mutableIsPushSuccess.value = boolean
     }
+//    fun pushAdvanceMenuData() {
+//        setLoading(true)
+//        disposable.add(
+//            apiService.addAdvanceMenu(
+//                email = sessionManager.getUserData()?.email ?: "",
+//                token = sessionManager.getUserToken() ?: "",
+//                merchantId = sessionManager.getUserData()?.mid ?: "",
+//                advanceMenuList = mutableAdvanceMenuList.value ?: listOf()
+//            ).subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(object : DisposableSingleObserver<AddAdvanceMenuResponse>() {
+//                    override fun onSuccess(response: AddAdvanceMenuResponse) {
+//                        mutableIsPushSuccess.value = true
+//                        Log.d("data", response.toString())
+//                        setLoading(false)
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Log.d(TAG, e.toString())
+//                        e.printStackTrace()
+//
+//                        mutableIsPushSuccess.value = false
+//                        setLoading(false)
+//                    }
+//                })
+//        )
+//    }
 
     /**
      * Details screen specific flow
@@ -172,9 +187,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     private fun addAdditionalMenu(additionalMenu: AdvanceAdditionalMenu) {
-        if (!mutableDetailsAdditionalMenuList.value!!.none { it.advanceAdditionalMenuName == additionalMenu.advanceAdditionalMenuName }) {
+        if (!mutableDetailsAdditionalMenuList.value!!.none { it.ext_menu_name == additionalMenu.ext_menu_name }) {
             mutableDetailsAdditionalMenuList.value =
-                detailsAdditionalMenuList.value?.filter { it.advanceAdditionalMenuName != additionalMenu.advanceAdditionalMenuName }
+                detailsAdditionalMenuList.value?.filter { it.ext_menu_name != additionalMenu.ext_menu_name }
         }
 
         mutableDetailsAdditionalMenuList.value =
@@ -215,12 +230,12 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
         addAdvanceMenu(
             AdvanceMenu(
-                templateName = detailsNamaPilihan.value!!,
-                templateType = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
-                isActive = isDetailsAktif.value!!,
-                isMandatory = isDetailsWajib.value!!,
-                maxChoice = detailsPilihanMaksimal.value!!,
-                advanceAdditionalMenus = detailsAdditionalMenuList.value ?: listOf()
+                    template_name = detailsNamaPilihan.value!!,
+                    template_type = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
+                    active = isDetailsAktif.value!!,
+                    mandatory = isDetailsWajib.value!!,
+                    max_choose = detailsPilihanMaksimal.value!!,
+                    ext_menus = detailsAdditionalMenuList.value ?: listOf()
             )
         )
         return true
@@ -295,8 +310,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
         addAdditionalMenu(
             AdvanceAdditionalMenu(
-                advanceAdditionalMenuName = additionalNamaDaftarPilihan.value!!,
-                advanceAdditionalMenuPrice = additionalHarga.value!!
+                    ext_menu_name = additionalNamaDaftarPilihan.value!!,
+                    ext_menu_price = additionalHarga.value!!,
+                    active = true
             )
         )
         return true
