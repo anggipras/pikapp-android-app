@@ -121,6 +121,7 @@
     <string name="am_main_header">Pilihan Menu</string>
     <string name="am_details_tambah_header">Tambah Pilihan</string>
     <string name="am_details_ubah_header">Ubah Pilihan</string>
+    <string name="am_details_urutkan_header">Urutkan Pilihan</string>
 
     <string name="am_main_aktifkan_header">Aktifkan pilihan menu</string>
     <string name="am_main_aktifkan_help">Apa itu pilihan menu?</string>

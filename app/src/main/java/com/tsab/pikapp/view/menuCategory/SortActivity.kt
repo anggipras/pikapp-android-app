@@ -24,7 +24,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
 
-    val dataList: MutableList<CategoryListResult> = mutableListOf()
     var categoryListName: MutableList<categories_name> = mutableListOf()
     lateinit var sortCategoryAdapter: SortCategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
