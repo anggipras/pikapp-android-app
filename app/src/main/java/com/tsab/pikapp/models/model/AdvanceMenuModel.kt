@@ -34,32 +34,6 @@ data class ListAdvanceMenuResponse(
     var results: List<AdvanceMenu>
 )
 
-//data class AdvanceMenu(
-//    @SerializedName("template_name")
-//    var templateName: String,
-//    @SerializedName("template_type")
-//    var templateType: String,
-//
-//    @SerializedName("active")
-//    var isActive: Boolean,
-//    @SerializedName("mandatory")
-//    var isMandatory: Boolean,
-//
-//    @SerializedName("max_choose")
-//    var maxChoice: Int,
-//    @SerializedName("ext_menus")
-//    var advanceAdditionalMenus: List<AdvanceAdditionalMenu>
-//)
-//
-//data class AdvanceAdditionalMenu(
-//    @SerializedName("ext_menu_name")
-//    var advanceAdditionalMenuName: String,
-//    @SerializedName("ext_menu_price")
-//    var advanceAdditionalMenuPrice: String,
-//    @SerializedName("active")
-//    var active: Boolean
-//)
-
 data class AdvanceMenu(
         @SerializedName("template_name")
         var template_name: String,

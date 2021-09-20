@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.getTimestamp
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,6 +22,15 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
+
+    /**
+     * Set the add or edit navigation
+     */
+    private val mutableAddOrEdit = MutableLiveData<Boolean>()
+    val addOrEdit: LiveData<Boolean> = mutableAddOrEdit
+    fun setAddOrEdit(boolean: Boolean) {
+        mutableAddOrEdit.value = boolean
+    }
 
     /**
      * Set the parent productId. Must be called whenever the activity is first created.
@@ -68,13 +78,15 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
             setLoading(false)
             return
         }
+        val timeStamp = getTimestamp()
 
         setLoading(true)
         disposable.add(
             apiService.listAdvanceMenu(
                 email = sessionManager.getUserData()?.email ?: "",
                 token = sessionManager.getUserToken() ?: "",
-                pid = mutableProductId.value ?: ""
+                pid = mutableProductId.value ?: "",
+                    timeStamp = timeStamp
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {

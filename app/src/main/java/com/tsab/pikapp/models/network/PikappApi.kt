@@ -410,6 +410,21 @@ interface PikappApi {
         @Part("extra_menu") extra: RequestBody
     ): Call<BaseResponse>
 
+    @Multipart
+    @POST("merchant/v2/product-action/")
+    fun deleteMenu(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String,
+            @Part("condition") condition: RequestBody,
+            @Part("action") action: RequestBody,
+            @Part("product_qty") qty: RequestBody
+    ): Call<BaseResponse>
+
     @GET("/merchant/v1/merchant/{mid}/profile/")
     fun getMerchantProfile(
             @Header("x-request-id") uuid: String,
@@ -433,7 +448,7 @@ interface PikappApi {
         @Body addAdvancedMenuRequest: AddAdvanceMenuRequest
     ): Single<AddAdvanceMenuResponse>
 
-    @POST("merchant/v1/menu/advance/{pid}/list/")
+    @GET("merchant/v1/menu/advance/{pid}/list/")
     fun listAdvanceMenu(
         @Header("x-request-id") requestId: String,
         @Header("x-request-timestamp") requestTimestamp: String,

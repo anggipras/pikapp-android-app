@@ -1,6 +1,7 @@
 package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class SearchRequest(
     @SerializedName("menu_name")
@@ -56,4 +57,4 @@ data class SearchList(
     var merchant_category_name: String?,
     @SerializedName("merchant_category_order")
     var merchant_category_order: Int
-)
+) : Serializable

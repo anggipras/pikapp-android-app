@@ -74,7 +74,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
     private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment)
+                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                        bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
             }
         })
     }
@@ -170,7 +171,7 @@ class AdvanceMenuDetailsFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment)
+            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment, bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
         }, view)
 
         dataBinding.namaPilihanInputText.setOnEditorActionListener { _, actionId, event ->
@@ -219,7 +220,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
             selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
             if (!viewModel.validateDetailsScreen()) return@setOnClickListener
-            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment)
+            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                    bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
         }
     }
 

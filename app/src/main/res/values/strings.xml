@@ -22,6 +22,7 @@
 
     <string name="akan_datang">Akan Datang</string>
     <string name="pelajari_lebih_lanjut">Pelajari lebih lanjut</string>
+    <string name="alert_dialog">Apakah anda yakin ingin menghapus menu ini?</string>
 
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
