@@ -136,7 +136,6 @@ class AdvanceMenuDetailsFragment : Fragment() {
         })
 
         viewModel.detailsPilihanMaksimal.observe(viewLifecycleOwner, Observer { pilihanMaksimal ->
-//            dataBinding.jumlahPilihanMaksimalInputText.setText(pilihanMaksimal.toString())
             dataBinding.spinnerMenuChoice.setSelection(pilihanMaksimal - 1)
         })
         viewModel.detailsPilihanMaksimalError.observe(
@@ -152,13 +151,11 @@ class AdvanceMenuDetailsFragment : Fragment() {
             Observer { additionalMenuList ->
                 if (additionalMenuList.isNotEmpty()) {
                     dataBinding.jumlahPilihanMaksimalKosongText.visibility = View.GONE
-//                    dataBinding.jumlahPilihanMaksimalInputText.visibility = View.VISIBLE
                     dataBinding.spinnerMenuChoice.visibility = View.VISIBLE
 
                     dataBinding.daftarPilihanGroup.visibility = View.VISIBLE
                 } else {
                     dataBinding.jumlahPilihanMaksimalKosongText.visibility = View.VISIBLE
-//                    dataBinding.jumlahPilihanMaksimalInputText.visibility = View.GONE
                     dataBinding.spinnerMenuChoice.visibility = View.GONE
 
                     dataBinding.daftarPilihanGroup.visibility = View.GONE
@@ -190,20 +187,14 @@ class AdvanceMenuDetailsFragment : Fragment() {
             viewModel.setDetailsWajib(isChecked)
         }
 
-//        dataBinding.jumlahPilihanMaksimalInputText.setOnEditorActionListener { _, actionId, event ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
-//                return@setOnEditorActionListener !viewModel.validateDetailsPilihanMaksimal(
-//                    dataBinding.jumlahPilihanMaksimalInputText.text.toString()
-//                )
-//            }
-//            false
-//        }
+        dataBinding.daftarPilihanChangeOrderButton.setOnClickListener {
+            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuDetailsSortFragment)
+        }
 
         dataBinding.tambahPilihanGroup.setAllOnClickListener(View.OnClickListener {
             hideKeyboard()
 
             viewModel.validateDetailsNamaPilihan(dataBinding.namaPilihanInputText.text.toString())
-//            viewModel.validateDetailsPilihanMaksimal(dataBinding.jumlahPilihanMaksimalInputText.text.toString())
             selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
             if (!viewModel.validateDetailsScreen()) return@OnClickListener
@@ -216,7 +207,6 @@ class AdvanceMenuDetailsFragment : Fragment() {
             hideKeyboard()
 
             viewModel.validateDetailsNamaPilihan(dataBinding.namaPilihanInputText.text.toString())
-//            viewModel.validateDetailsPilihanMaksimal(dataBinding.jumlahPilihanMaksimalInputText.text.toString())
             selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
             if (!viewModel.validateDetailsScreen()) return@setOnClickListener

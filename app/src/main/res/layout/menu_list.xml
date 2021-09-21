@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/proximanova_regular"
                 android:text="@string/test"
-                android:textColor="@color/black"
+                android:textColor="@color/darkGreen"
                 android:textSize="13sp" />
 
         </LinearLayout>

@@ -14,7 +14,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import kotlinx.android.synthetic.main.activity_test.*
+import kotlinx.android.synthetic.main.activity_sort.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +24,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
 
-    val dataList: MutableList<CategoryListResult> = mutableListOf()
     var categoryListName: MutableList<categories_name> = mutableListOf()
     lateinit var sortCategoryAdapter: SortCategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -37,7 +36,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.activity_sort)
 
         recyclerview_category.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(this)
@@ -74,7 +73,8 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                             category_name = value.category_name,
                             category_order = index,
                             activation = value.is_active,
-                            id = value.id
+                            id = value.id,
+                            product_size = value.product_size
                     )
                 }.toMutableList()
 
@@ -125,7 +125,8 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                         category_name = it.category_name,
                         category_order = it.category_order,
                         activation = it.is_active,
-                        id = it.id
+                        id = it.id,
+                            product_size = it.product_size
                     )
                 }.toMutableList()
             }
@@ -174,7 +175,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
             })
         }
 
-        backBtn.setOnClickListener {
+        headerLayout.setOnClickListener {
             onBackPressed()
         }
     }
