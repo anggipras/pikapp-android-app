@@ -22,6 +22,8 @@
 
         <activity android:name=".view.omni.integration.IntegrationActivity" />
 
+        <activity android:name=".view.TransactionDetailActivity" />
+
         <activity android:name=".view.homev2.SearchActivity"></activity>
 
         <activity android:name=".view.homev2.menu.MenuNavigation" />
