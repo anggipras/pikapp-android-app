@@ -254,4 +254,16 @@
 
     <string name="oi_hapus_toko">Hapus Toko</string>
 
+    <!-- Etalase screens -->
+    <string name="etalase_header">Etalase</string>
+    <string name="etalase_daftar_etalase_header">Daftar Etalase</string>
+    <string name="etalase_tambah_etalase_header">Tambah Etalase</string>
+    <string name="etalase_nama_etalase_header">Nama Etalase</string>
+    <string name="etalase_nama_etalase_hint">Contoh: Makanan</string>
+    <string name="etalase_aktifkan_etalase_hedaer">Aktifkan Etalase</string>
+    <string name="etalase_deskripsi_toggle">Etalase akan ditampilkan pada menu restoran anda</string>
+    <string name="etalase_ubah_etalase_header">Ubah Etalase</string>
+    <string name="etalase_hapus_etalase">Hapus Etalase</string>
+
+
 </resources>

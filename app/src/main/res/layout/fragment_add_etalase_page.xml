@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
+tools:context=".view.homev2.menu.tokopedia.AddEtalasePage">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -42,7 +42,7 @@ tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@string/etalase_ubah_etalase_header"
+            android:text="@string/etalase_tambah_etalase_header"
             android:textColor="#FFFFFF"
             android:textSize="25sp"
             android:layout_marginStart="29dp"
@@ -100,8 +100,10 @@ tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
             android:layout_marginEnd="27dp"
             android:backgroundTint="@color/borderSubtle"
             android:fontFamily="@font/proximanova_regular"
+            android:hint="@string/etalase_nama_etalase_hint"
+            android:inputType="text"
             android:textColorHint="@color/textSubtle"
-            android:textSize="13sp" />
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/namaerror"
@@ -151,11 +153,12 @@ tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
 
             </LinearLayout>
 
-            <ImageView
+            <ToggleButton
                 android:id="@+id/toggleButton"
                 android:layout_width="53dp"
                 android:layout_height="30dp"
                 android:background="@drawable/switch_on"
+                android:checked="true"
                 android:textOff=""
                 android:textOn=""
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -163,17 +166,6 @@ tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/deleteEtalase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="49dp"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/etalase_hapus_etalase"
-            android:textColor="@color/red"
-            android:textSize="15sp"
-            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 
@@ -196,6 +188,20 @@ tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/loadingView_addEtalase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99FFFFFF"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@android:style/Widget.Material.ProgressBar.Small"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
