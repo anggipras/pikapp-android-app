@@ -30,7 +30,7 @@
         <activity android:name=".view.loginv2.LoginRegisterActivity" />
 
         <activity
-            android:name=".view.homev2.HomeNavigation"
+            android:name=".view.homev2.HomeActivity"
             android:label="@string/title_activity_bottom_navigation" />
         <activity android:name=".view.other.OtherSettingsActivity" />
 

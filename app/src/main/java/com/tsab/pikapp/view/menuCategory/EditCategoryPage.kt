@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -21,11 +20,9 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.delete_category_popup.view.*
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
-import kotlinx.android.synthetic.main.profile_birthday_dialog.view.*
 
 class EditCategoryPage : Fragment() {
 
@@ -125,11 +122,11 @@ class EditCategoryPage : Fragment() {
             val mBuilder = AlertDialog.Builder(requireActivity())
                     .setView(mDialogView)
             val mAlertDialog = mBuilder.show()
-            mAlertDialog.getWindow()?.setBackgroundDrawable(
-                    AppCompatResources.getDrawable(
-                            requireActivity(),
-                            R.drawable.dialog_background
-                    )
+            mAlertDialog.window?.setBackgroundDrawable(
+                AppCompatResources.getDrawable(
+                    requireActivity(),
+                    R.drawable.dialog_background
+                )
             )
             mDialogView.buttonBack.setOnClickListener {
                 mAlertDialog.dismiss()

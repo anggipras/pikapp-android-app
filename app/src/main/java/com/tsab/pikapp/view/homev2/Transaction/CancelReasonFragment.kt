@@ -12,7 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.cancel_dialog.view.*
 import kotlinx.android.synthetic.main.cancel_reason_fragment.*
@@ -43,11 +43,11 @@ class CancelReasonFragment: RoundedBottomSheetDialogFragment() {
         val mBuilder = AlertDialog.Builder(requireActivity())
                 .setView(mDialogView)
         val mAlertDialog = mBuilder.show()
-        mAlertDialog.getWindow()?.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                        requireActivity(),
-                        R.drawable.dialog_background
-                )
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                requireActivity(),
+                R.drawable.dialog_background
+            )
         )
         mDialogView.dialog_back.setOnClickListener {
             mAlertDialog.dismiss()
@@ -59,7 +59,7 @@ class CancelReasonFragment: RoundedBottomSheetDialogFragment() {
             Log.e("ID", arguments?.getString("TransactionID").toString())
             viewModel.postUpdate(arguments?.getString("TransactionID").toString(), "FAILED")
             sessionManager.transactionUpdate()
-            val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
+            val intent = Intent(activity?.baseContext, HomeActivity::class.java)
             activity?.startActivity(intent)
         }
     }

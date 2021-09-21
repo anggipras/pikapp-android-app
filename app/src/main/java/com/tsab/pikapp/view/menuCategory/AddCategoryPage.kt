@@ -2,12 +2,9 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,10 +14,9 @@ import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddCategoryPageBinding
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
-import java.util.*
 
 class AddCategoryPage : Fragment() {
 
@@ -59,7 +55,7 @@ class AddCategoryPage : Fragment() {
             if (load) {
                 dataBinding.loadingViewAddCategory.visibility = View.VISIBLE
             } else {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                 }
                 dataBinding.loadingViewAddCategory.visibility = View.GONE

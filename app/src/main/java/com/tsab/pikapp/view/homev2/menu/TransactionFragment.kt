@@ -3,21 +3,17 @@ package com.tsab.pikapp.view.homev2.menu
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.homev2.Transaction.CancelFragment
 import com.tsab.pikapp.view.homev2.Transaction.DoneFragment
 import com.tsab.pikapp.view.homev2.Transaction.ProcessFragment
@@ -76,7 +72,7 @@ class TransactionFragment : Fragment() {
     }
 
     fun closeKeyboard() {
-        val activity = activity as HomeNavigation
+        val activity = activity as HomeActivity
 
         val view = activity.currentFocus
         if (view != null) {

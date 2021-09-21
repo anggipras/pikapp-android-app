@@ -3,27 +3,18 @@ package com.tsab.pikapp.view.homev2.menu
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.SearchView
-import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.databinding.FragmentSearchBinding
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.SearchViewModel
-import com.tsab.pikapp.viewmodel.menu.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_category_name.*
-import kotlinx.android.synthetic.main.fragment_search.*
-import java.util.*
 
 class SearchFragment : Fragment() {
 
@@ -82,7 +73,7 @@ class SearchFragment : Fragment() {
     private fun attachInputListeners(){
         dataBinding.back.setOnClickListener {
             val intent =
-                Intent(activity?.baseContext, HomeNavigation::class.java)
+                Intent(activity?.baseContext, HomeActivity::class.java)
             activity?.startActivity(intent)
         }
 

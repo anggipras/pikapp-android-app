@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -19,9 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentShopManagementBinding
-import com.tsab.pikapp.util.getDay
 import com.tsab.pikapp.util.getHour
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.fragment_shop_management.*
 import java.text.SimpleDateFormat
