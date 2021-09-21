@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.models.model.SearchList
 import com.tsab.pikapp.models.model.SearchRequest
@@ -22,6 +24,11 @@ import retrofit2.Response
 class DynamicViewModel (application: Application) : BaseViewModel(application) {
 
     lateinit var dynamicAdapter: DynamicListAdapter
+    private var mutableLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> get() = mutableLoading
+    fun setLoading(boolean: Boolean) {
+        mutableLoading.value = boolean
+    }
 
     fun getAmountOfMenu(baseContext: Context,
                       recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView, categoryName:String, noFoundButton: Button, foundButton: Button, listener: DynamicListAdapter.OnItemClickListener){
@@ -31,7 +38,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
-
+        setLoading(true)
         PikappApiService().api.searchMenu(
                 getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
         ).enqueue(object : Callback<SearchResponse> {
@@ -87,16 +94,17 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
                             recyclerview_category.isVisible = true
                         }
                     }
+                    setLoading(false)
                     dynamicAdapter = DynamicListAdapter(baseContext, categoryList as MutableList<SearchList>, listener)
                     dynamicAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = dynamicAdapter
-
                 } else {
                     Log.e("FAIL", "Fail")
                 }
             }
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                 Log.e("failed", t.message.toString())
+                setLoading(false)
             }
         })
     }
