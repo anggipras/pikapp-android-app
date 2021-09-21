@@ -52,6 +52,7 @@ class SearchFragment : Fragment() {
 
         dataBinding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
+                observeViewModel()
                 activity?.let { viewModel.getSearchList(query.toString(), it.baseContext, dataBinding.listMenu, dataBinding.noFound,
                     dataBinding.noFoundText) }
                 view.hideKeyboard()
@@ -69,6 +70,13 @@ class SearchFragment : Fragment() {
     fun View.hideKeyboard() {
         val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    private fun observeViewModel(){
+        viewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
+        })
     }
 
     private fun attachInputListeners(){

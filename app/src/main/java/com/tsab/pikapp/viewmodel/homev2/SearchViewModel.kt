@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -26,8 +28,15 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
 
     lateinit var searchAdapter: SearchAdapter
 
+    private val mutableIsLoading = MutableLiveData<Boolean>(true)
+    val isLoading: LiveData<Boolean> = mutableIsLoading
+    fun setLoading(isLoading: Boolean) {
+        mutableIsLoading.value = isLoading
+    }
+
     fun getSearchList(menu: String, baseContext: Context,
                       recyclerview_category: RecyclerView, noFound: ImageView, noFoundText: TextView ){
+        setLoading(true)
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -68,13 +77,16 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
                     searchAdapter = SearchAdapter(baseContext, searchResult as MutableList<SearchList>, categoryList)
                     searchAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = searchAdapter
+                    setLoading(false)
 
                 } else {
                     Log.e("FAIL", "Fail")
+                    setLoading(false)
                 }
             }
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                 Log.e("failed", t.message.toString())
+                setLoading(false)
             }
         })
     }
