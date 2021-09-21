@@ -17,11 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+
         <receiver android:name=".receiver.AlarmReceiver" android:enabled="true"/>
 
         <activity android:name=".view.omni.integration.IntegrationActivity" />
 
+        <activity android:name=".view.TransactionDetailActivity" />
+
         <activity android:name=".view.homev2.SearchActivity"></activity>
+
         <activity android:name=".view.homev2.menu.MenuNavigation" />
 
         <activity android:name=".view.menuCategory.SortActivity" />
