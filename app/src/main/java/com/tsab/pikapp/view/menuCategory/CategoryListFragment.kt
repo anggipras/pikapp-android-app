@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.tsab.pikapp.databinding.FragmentCategoryListBinding
 import com.tsab.pikapp.models.model.MenuCategory
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 
@@ -46,13 +45,15 @@ class CategoryListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
-                    startActivity(this)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                        startActivity(this)
+                    }
                 }
-            }
-        })
+            })
 
         navController = Navigation.findNavController(view)
         sessionManager.setHomeNav(1)
@@ -80,7 +81,7 @@ class CategoryListFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+            Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
             }
         }, view)

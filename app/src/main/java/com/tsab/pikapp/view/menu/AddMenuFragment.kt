@@ -17,7 +17,7 @@ import com.skydoves.balloon.showAlignTop
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 
@@ -99,7 +99,7 @@ class AddMenuFragment : Fragment() {
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
                 Handler().postDelayed({
-                    val intent = Intent(activity?.baseContext, HomeNavigation::class.java)
+                    val intent = Intent(activity?.baseContext, HomeActivity::class.java)
                     activity?.startActivity(intent)
                 }, 500)
             }

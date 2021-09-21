@@ -11,7 +11,6 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -20,7 +19,7 @@ import com.tsab.pikapp.models.model.NotificationModel
 import com.tsab.pikapp.util.NOTIFICATION_CHANNEL_ID
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import java.util.*
 
 class PikappMessagingService : FirebaseMessagingService() {
@@ -141,7 +140,7 @@ class PikappMessagingService : FirebaseMessagingService() {
         val body = data["body"].toString()
         val omnichannel = data["omnichannel"].toString()
         val status = data["status"].toString()
-        var clickAction = Intent(applicationContext, HomeNavigation::class.java)
+        var clickAction = Intent(applicationContext, HomeActivity::class.java)
         if (omnichannel == "true") {
             SessionManager().setHomeNav(3)
         } else {

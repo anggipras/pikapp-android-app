@@ -14,7 +14,7 @@ import com.tsab.pikapp.util.decodeJWT
 import com.tsab.pikapp.view.CarouselActivity
 import com.tsab.pikapp.view.OnboardingActivity
 import com.tsab.pikapp.view.UserExclusiveActivity
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
 
 class SplashViewModel(application: Application) : BaseViewModel(application) {
@@ -70,7 +70,7 @@ class SplashViewModel(application: Application) : BaseViewModel(application) {
                         )
                         context.startActivity(userExclusiveActivity)
                     } else {
-                        val storeActivity = Intent(context, HomeNavigation::class.java)
+                        val storeActivity = Intent(context, HomeActivity::class.java)
                         context.startActivity(storeActivity)
                     }
                 } else {

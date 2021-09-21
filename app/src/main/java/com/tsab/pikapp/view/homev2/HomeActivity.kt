@@ -7,21 +7,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Point
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
 import com.tsab.pikapp.receiver.AlarmReceiver
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.homev2.Transaction.TransactionAdapter
 import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.menu.OtherFragment
 import com.tsab.pikapp.view.homev2.menu.PromoFragment
@@ -30,17 +25,17 @@ import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 import java.util.*
 
-class HomeNavigation : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
+    val model: CategoryViewModel by viewModels()
 
     private val transactionFragment = TransactionFragment()
     private val menuFragment = MenuFragment()
     private val promoFragment = PromoFragment()
     private val otherFragment = OtherFragment()
     private val sessionManager = SessionManager()
-    val model: CategoryViewModel by viewModels()
-
     private lateinit var dataBinding: ActivityHomeNavigationBinding
-    private var alarmMgr : AlarmManager? = null
+
+    private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,25 +45,24 @@ class HomeNavigation : AppCompatActivity() {
         when {
             sessionManager.getHomeNav() == 0 -> {
                 replaceFragment(transactionFragment)
-                bottom_navigation.setSelectedItemId(R.id.nav_transaction)
+                bottom_navigation.selectedItemId = R.id.nav_transaction
             }
             sessionManager.getHomeNav() == 1 -> {
                 replaceFragment(menuFragment)
-                bottom_navigation.setSelectedItemId(R.id.nav_menu)
+                bottom_navigation.selectedItemId = R.id.nav_menu
             }
             sessionManager.getHomeNav() == 2 -> {
                 replaceFragment(promoFragment)
-                bottom_navigation.setSelectedItemId(R.id.nav_promo)
+                bottom_navigation.selectedItemId = R.id.nav_promo
             }
             sessionManager.getHomeNav() == 3 -> {
                 replaceFragment(otherFragment)
-                bottom_navigation.setSelectedItemId(R.id.nav_other)
+                bottom_navigation.selectedItemId = R.id.nav_other
             }
         }
 
-
         bottom_navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.nav_transaction -> replaceFragment(transactionFragment)
                 R.id.nav_menu -> replaceFragment(menuFragment)
                 R.id.nav_promo -> replaceFragment(promoFragment)
@@ -76,10 +70,6 @@ class HomeNavigation : AppCompatActivity() {
             }
             true
         }
-
-//        createNotificationChannel()
-//
-//        setAlarm()
     }
 
     private fun setAlarm() {
@@ -105,9 +95,10 @@ class HomeNavigation : AppCompatActivity() {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = getString(R.string.general_notif_id)
-            val channelName : CharSequence = getString(R.string.notification_channel_name)
+            val channelName: CharSequence = getString(R.string.notification_channel_name)
             val description = getString(R.string.notification_channel_description)
-            val notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            val notificationChannel =
+                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
 
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.YELLOW
@@ -120,14 +111,12 @@ class HomeNavigation : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        if (fragment != null) {
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.commit()
-        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
     }
 
-    fun hideKeyboard() {
+    private fun hideKeyboard() {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
@@ -136,11 +125,11 @@ class HomeNavigation : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (bottom_navigation.getSelectedItemId()==R.id.nav_transaction) {
+        if (bottom_navigation.selectedItemId == R.id.nav_transaction) {
             sessionManager.setHomeNav(0)
             finishAffinity()
         } else {
-            bottom_navigation.setSelectedItemId(R.id.nav_transaction)
+            bottom_navigation.selectedItemId = R.id.nav_transaction
             sessionManager.setHomeNav(0)
         }
     }
