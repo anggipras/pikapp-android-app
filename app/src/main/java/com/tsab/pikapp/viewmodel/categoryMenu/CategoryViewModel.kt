@@ -104,6 +104,9 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     private val mutableCategoryId = MutableLiveData("")
     val categoryId: LiveData<String> get() = mutableCategoryId
 
+    private val mutableCategoryMenuSize = MutableLiveData("")
+    val categoryMenuSize: LiveData<String> get() = mutableCategoryMenuSize
+
     fun getMenuCategoryListSort(
         baseContext: Context,
         recyclerview_category: RecyclerView,
@@ -288,5 +291,10 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     fun getCategoryId(id: String): String {
         mutableCategoryId.value = id
         return mutableCategoryId.value.toString()
+    }
+
+    fun getCategoryMenuSize(size: String): String {
+        mutableCategoryMenuSize.value = size
+        return mutableCategoryMenuSize.value.toString()
     }
 }

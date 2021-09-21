@@ -37,7 +37,7 @@ class DynamicListAdapter (val context: Context, val menuList: MutableList<Search
     }
     override fun onBindViewHolder(holder: DynamicListAdapter.ViewHolder, position: Int) {
         val img = menuList[position].pict_02
-        holder.itemTextHarga.text = "Rp." + menuList[position].price
+        holder.itemTextHarga.text = "Rp. " + menuList[position].price
         Glide.with(context).load(img).transform(RoundedCorners(25), CenterCrop()).into(holder.img)
         holder.itemText.text = menuList[position].product_name
     }

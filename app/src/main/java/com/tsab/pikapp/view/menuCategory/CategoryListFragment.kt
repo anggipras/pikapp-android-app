@@ -106,6 +106,7 @@ class CategoryListFragment : Fragment() {
                     viewModel.getCategoryOrder(category.categoryOrder.toString())
                     viewModel.getCategoryActivation(category.isActive.toString())
                     viewModel.getCategoryId(category.id.toString())
+                    viewModel.getCategoryMenuSize(category.productSize.toString())
 
                     navController.navigate(R.id.action_categoryListPage_to_editCategoryPage)
                 }

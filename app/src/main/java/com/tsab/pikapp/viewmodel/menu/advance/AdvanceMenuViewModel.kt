@@ -109,39 +109,6 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         )
     }
 
-    private val mutableIsPushSuccess = MutableLiveData<Boolean>()
-    val isPushSuccess: LiveData<Boolean> = mutableIsPushSuccess
-    fun pushAdvanceMenuData(boolean: Boolean) {
-        mutableIsPushSuccess.value = boolean
-    }
-//    fun pushAdvanceMenuData() {
-//        setLoading(true)
-//        disposable.add(
-//            apiService.addAdvanceMenu(
-//                email = sessionManager.getUserData()?.email ?: "",
-//                token = sessionManager.getUserToken() ?: "",
-//                merchantId = sessionManager.getUserData()?.mid ?: "",
-//                advanceMenuList = mutableAdvanceMenuList.value ?: listOf()
-//            ).subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(object : DisposableSingleObserver<AddAdvanceMenuResponse>() {
-//                    override fun onSuccess(response: AddAdvanceMenuResponse) {
-//                        mutableIsPushSuccess.value = true
-//                        Log.d("data", response.toString())
-//                        setLoading(false)
-//                    }
-//
-//                    override fun onError(e: Throwable) {
-//                        Log.d(TAG, e.toString())
-//                        e.printStackTrace()
-//
-//                        mutableIsPushSuccess.value = false
-//                        setLoading(false)
-//                    }
-//                })
-//        )
-//    }
-
     /**
      * Details screen specific flow
      */
@@ -326,5 +293,9 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         mutableAdditionalHarga.value = ""
         mutableAdditionalHargaError.value = ""
         isAdditionalHargaValid.value = false
+    }
+
+    fun sortAdditionalMenu(additionalMenu: List<AdvanceAdditionalMenu>) {
+        mutableDetailsAdditionalMenuList.value = additionalMenu
     }
 }

@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuMainFragment"
             app:destination="@id/advanceMenuMainFragment" />
+        <action
+            android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuDetailsSortFragment"
+            app:destination="@id/advanceMenuDetailsSortFragment" />
     </fragment>
 
     <fragment
@@ -81,6 +84,15 @@
             app:argType="string" />
         <action
             android:id="@+id/action_advanceMenuAdditionalFragment_to_advanceMenuDetailsFragment"
+            app:destination="@id/advanceMenuDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/advanceMenuDetailsSortFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.AdvanceMenuDetailsSortFragment"
+        android:label="fragment_advance_menu_details_sort"
+        tools:layout="@layout/fragment_advance_menu_details_sort" >
+        <action
+            android:id="@+id/action_advanceMenuDetailsSortFragment_to_advanceMenuDetailsFragment"
             app:destination="@id/advanceMenuDetailsFragment" />
     </fragment>
 

@@ -31,7 +31,7 @@ class CategoryAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.resultText.text = categoryList[position].category_name
-        holder.resultText.tag = position
+//        holder.resultText.tag = position
 
 //        //for default check in first item
 //        if(position == 0 && holder.resultText.isChecked) {
@@ -56,6 +56,7 @@ class CategoryAdapter(
 
         init {
             itemView.setOnClickListener(this)
+            resultText.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {

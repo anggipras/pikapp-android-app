@@ -18,11 +18,11 @@ import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
+import kotlinx.android.synthetic.main.menu_fragment.*
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
     private lateinit var dataBinding: MenuFragmentBinding
-
     lateinit var linearLayoutManager: LinearLayoutManager
 
     var categoryName: String = ""
@@ -69,6 +69,8 @@ class MenuFragment : Fragment() {
                 if (isLoading) View.VISIBLE else View.GONE
 
             if (!isLoading) {
+                shimmerFrameLayout.stopShimmer()
+                dataBinding.shimmerFrameLayout.visibility = View.GONE
                 if (viewModel.size.value == 0) {
                     invisibleMenu()
                     dataBinding.textview2.visibility = View.VISIBLE
@@ -148,6 +150,7 @@ class MenuFragment : Fragment() {
         dataBinding.addCategory.visibility = View.GONE
         dataBinding.plusBtn.visibility = View.GONE
         dataBinding.textview3.visibility = View.GONE
+        dataBinding.shimmerFrameLayout.visibility = View.VISIBLE
     }
 
     private fun initViews() {
