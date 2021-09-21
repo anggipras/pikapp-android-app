@@ -151,11 +151,12 @@ tools:context=".view.homev2.menu.tokopedia.EditEtalasePage">
 
             </LinearLayout>
 
-            <ImageView
+            <ToggleButton
                 android:id="@+id/toggleButton"
                 android:layout_width="53dp"
                 android:layout_height="30dp"
-                android:background="@drawable/switch_on"
+                android:background="@drawable/toggle_selector"
+                android:checked="true"
                 android:textOff=""
                 android:textOn=""
                 app:layout_constraintBottom_toBottomOf="parent"
