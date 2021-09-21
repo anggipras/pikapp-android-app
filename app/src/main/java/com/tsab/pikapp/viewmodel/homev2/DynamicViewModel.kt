@@ -24,7 +24,7 @@ import retrofit2.Response
 class DynamicViewModel (application: Application) : BaseViewModel(application) {
 
     lateinit var dynamicAdapter: DynamicListAdapter
-    private var mutableLoading = MutableLiveData(true)
+    private var mutableLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = mutableLoading
     fun setLoading(boolean: Boolean) {
         mutableLoading.value = boolean
@@ -38,7 +38,6 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
-        setLoading(true)
         PikappApiService().api.searchMenu(
                 getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
         ).enqueue(object : Callback<SearchResponse> {
@@ -71,6 +70,7 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
         ).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    setLoading(false)
                     val searchResult = response.body()?.results
                     val categoryList = ArrayList<SearchList>()
                     if (searchResult != null) {
@@ -94,7 +94,6 @@ class DynamicViewModel (application: Application) : BaseViewModel(application) {
                             recyclerview_category.isVisible = true
                         }
                     }
-                    setLoading(false)
                     dynamicAdapter = DynamicListAdapter(baseContext, categoryList as MutableList<SearchList>, listener)
                     dynamicAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = dynamicAdapter
