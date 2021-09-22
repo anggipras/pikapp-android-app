@@ -89,7 +89,7 @@ class AdvanceMenuDetailsFragment : Fragment() {
         dataBinding.spinnerMenuChoice.adapter = arrayChoiceAdapter
         dataBinding.spinnerMenuChoice.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedChoice = numberOfChoice.get(position)
+                selectedChoice = numberOfChoice[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -99,8 +99,6 @@ class AdvanceMenuDetailsFragment : Fragment() {
     }
 
     private fun fetchArguments() {
-        Log.d("ADVANCEMENU", viewModel.detailsAdditionalMenuList.value.toString())
-        Log.d("BOOL", arguments?.getBoolean(ARGUMENT_IS_EDIT).toString())
         if (arguments?.getBoolean(ARGUMENT_IS_EDIT) == true) {
             viewModel.setDetailsNamaPilihan(arguments?.getString(ARGUMENT_NAMA_PILIHAN) ?: "")
             viewModel.setDetailsAktif(arguments?.getBoolean(ARGUMENT_AKTIF) ?: true)
@@ -111,6 +109,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
             viewModel.setDetailsAdditionalMenuList(
                     arguments?.get(ARGUMENT_ADDITIONAL_MENU) as List<AdvanceAdditionalMenu>? ?: listOf()
             )
+        } else {
+            viewModel.detailsAdditionalMenuList.value?.size?.minus(1)?.let { viewModel.setDetailsPilihanMaksimal(it) }
         }
     }
 
@@ -227,7 +227,7 @@ class AdvanceMenuDetailsFragment : Fragment() {
                         bundleOf(
                             AdvanceMenuAdditionalFragment.ARGUMENT_IS_EDIT to true,
                             AdvanceMenuAdditionalFragment.ARGUMENT_MENU_NAME to advanceAdditionalMenu.ext_menu_name,
-                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.ext_menu_price
+                                AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.ext_menu_price
                         )
                     )
                 }

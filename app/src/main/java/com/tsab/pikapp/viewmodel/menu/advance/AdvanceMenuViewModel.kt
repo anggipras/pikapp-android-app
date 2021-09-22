@@ -9,6 +9,7 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.getTimestamp
+import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuAdditionalAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -306,10 +307,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     fun deleteAdditionalMenu(choiceName: String?) {
-        if (!mutableDetailsAdditionalMenuList.value!!.none { it.ext_menu_name == choiceName }) {
-            mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != choiceName }
-        }
-        mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.toMutableList()
+        mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != choiceName }
         setLocalLoading(false)
     }
 }
