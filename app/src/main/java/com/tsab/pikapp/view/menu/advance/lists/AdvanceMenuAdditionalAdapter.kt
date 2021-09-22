@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.menu.advance.lists
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,5 +45,11 @@ class AdvanceMenuAdditionalAdapter(
         this.additionalMenuList.clear()
         this.additionalMenuList.addAll(additionalMenuList)
         notifyDataSetChanged()
+    }
+
+    fun removeMenuChoice(model: AdvanceAdditionalMenu) {
+        val position = additionalMenuList.indexOf(model)
+        additionalMenuList.remove(model)
+        notifyItemRemoved(position)
     }
 }
