@@ -49,9 +49,9 @@ class DynamicFragment : Fragment(), DynamicListAdapter.OnItemClickListener {
         activity?.let { viewModel.getAmountOfMenu(it.baseContext, dataBinding.listMenuDetail, dataBinding.imageView17,
                 dataBinding.textview, nama, dataBinding.tambahMenuEmptyButton, dataBinding.tambahMenuButton, this) }
 
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            dataBinding.shimmerFrameLayoutMenu.visibility = if (it) View.VISIBLE else View.GONE
-        })
+//        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+//            dataBinding.shimmerFrameLayoutMenu.visibility = if (it) View.VISIBLE else View.GONE
+//        })
     }
 
     /**
