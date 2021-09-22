@@ -99,6 +99,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
     }
 
     private fun fetchArguments() {
+        Log.d("ADVANCEMENU", viewModel.detailsAdditionalMenuList.value.toString())
+        Log.d("BOOL", arguments?.getBoolean(ARGUMENT_IS_EDIT).toString())
         if (arguments?.getBoolean(ARGUMENT_IS_EDIT) == true) {
             viewModel.setDetailsNamaPilihan(arguments?.getString(ARGUMENT_NAMA_PILIHAN) ?: "")
             viewModel.setDetailsAktif(arguments?.getBoolean(ARGUMENT_AKTIF) ?: true)

@@ -113,15 +113,6 @@ class AdvanceMenuMainFragment : Fragment() {
             Log.d("AdvanceMenuMain", advanceMenuList.toString())
             advanceMenuAdapter.setAdvanceMenuList(advanceMenuList)
         })
-
-//        // Send result when push success.
-//        viewModel.isPushSuccess.observe(viewLifecycleOwner, Observer { isPushSuccess ->
-//            if (isPushSuccess) {
-//                viewModelMenu.setAdvanceMenuList(viewModel.advanceMenuList.value!!)
-//                navController.navigateUp()
-//                viewModel.pushAdvanceMenuData(false)
-//            }
-//        })
     }
 
     private fun attachInputListeners() {
@@ -150,7 +141,6 @@ class AdvanceMenuMainFragment : Fragment() {
             } else {
                 navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
             }
-//            viewModel.pushAdvanceMenuData(true)
         }
     }
 

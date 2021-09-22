@@ -50,6 +50,12 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         mutableIsLoading.value = isLoading
     }
 
+    private val mutableIsLocalLoading = MutableLiveData<Boolean>()
+    val isLocalLoading: LiveData<Boolean> = mutableIsLocalLoading
+    fun setLocalLoading(isLoading: Boolean) {
+        mutableIsLocalLoading.value = isLoading
+    }
+
     private val mutableIsAdvanceMenuActive = MutableLiveData<Boolean>(false)
     val isAdvanceMenuActive: LiveData<Boolean> = mutableIsAdvanceMenuActive
     fun setAdvanceMenuActive(isActive: Boolean) {
@@ -297,5 +303,13 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
     fun sortAdditionalMenu(additionalMenu: List<AdvanceAdditionalMenu>) {
         mutableDetailsAdditionalMenuList.value = additionalMenu
+    }
+
+    fun deleteAdditionalMenu(choiceName: String?) {
+        if (!mutableDetailsAdditionalMenuList.value!!.none { it.ext_menu_name == choiceName }) {
+            mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != choiceName }
+        }
+        mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.toMutableList()
+        setLocalLoading(false)
     }
 }
