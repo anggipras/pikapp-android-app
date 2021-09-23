@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,28 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
-import com.tsab.pikapp.view.AddTokpedMenuActivity
 import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.menu_fragment.*
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
     private val viewModelDynamic: DynamicViewModel by activityViewModels()
-    lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: MenuFragmentBinding
 
-    var categoryName: String = ""
-    private var viewPager: ViewPager? = null
-    private var tabLayout: TabLayout? = null
-    private var tabCount: Int = 0
+    private var categoryList: List<String> = listOf()
+    lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,38 +57,40 @@ class MenuFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModelDynamic.isLoading.observe(viewLifecycleOwner, Observer {
-            if (!it) dataBinding.shimmerFrameLayoutMenu.visibility = View.INVISIBLE
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (!isLoading) {
+                initViews()
+                dataBinding.shimmerFrameLayoutCategory.visibility = View.GONE
+                dataBinding.shimmerFrameLayoutMenu.visibility = View.GONE
+            }
         })
 
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            viewModel.size.observe(viewLifecycleOwner, Observer {
-                initViews()
-            })
+        viewModel.categoryListResult.observe(viewLifecycleOwner, Observer { categoryList ->
+            this.categoryList = categoryList.map { it.category_name ?: "" }
 
-            if (!isLoading) {
-                dataBinding.shimmerFrameLayoutCategory.visibility = View.INVISIBLE
-                if (viewModel.size.value == 0) {
-                    invisibleMenu()
-                    dataBinding.textview2.visibility = View.VISIBLE
-                    dataBinding.imageView18.visibility = View.VISIBLE
-                    dataBinding.addCategory.visibility = View.VISIBLE
-                } else if (viewModel.size.value != null) {
-                    viewModel.categoryListResult.observe(viewLifecycleOwner, Observer { ioo ->
-                        ioo?.let {
-                            invisibleMenuNull()
-                            dataBinding.viewpager.visibility = View.VISIBLE
-                            dataBinding.tabs.visibility = View.VISIBLE
-                            dataBinding.appbar.visibility = View.VISIBLE
-                            dataBinding.plusBtn.visibility = View.VISIBLE
-                            dataBinding.plusBtn.setOnClickListener {
-                                val intent =
-                                    Intent(activity?.baseContext, CategoryNavigation::class.java)
-                                activity?.startActivity(intent)
-                            }
-                        }
-                    })
+            dataBinding.tabs.removeAllTabs()
+            this.categoryList.forEach { categoryName ->
+                dataBinding.tabs.newTab().apply {
+                    text = categoryName
+                    dataBinding.tabs.addTab(this)
                 }
+            }
+//            Log.d("MenuFragment", "Raw: $categoryList")
+//            Log.d("MenuFragment", "Mod: ${this.categoryList}")
+        })
+
+        viewModel.size.observe(viewLifecycleOwner, Observer { size ->
+            if (size == 0 && viewModel.isLoading.value == false) {
+                invisibleMenu()
+                dataBinding.textview2.visibility = View.VISIBLE
+                dataBinding.imageView18.visibility = View.VISIBLE
+                dataBinding.addCategory.visibility = View.VISIBLE
+            } else {
+                invisibleMenuNull()
+                dataBinding.viewpager.visibility = View.VISIBLE
+                dataBinding.tabs.visibility = View.VISIBLE
+                dataBinding.appbar.visibility = View.VISIBLE
+                dataBinding.plusBtn.visibility = View.VISIBLE
             }
         })
     }
@@ -162,9 +157,6 @@ class MenuFragment : Fragment() {
     }
 
     private fun initViews() {
-        viewPager = view?.findViewById(R.id.viewpager)
-        tabLayout = view?.findViewById(R.id.tabs)
-
         dataBinding.viewpager.offscreenPageLimit = 5
         dataBinding.viewpager.addOnPageChangeListener(
             TabLayout.TabLayoutOnPageChangeListener(
@@ -175,7 +167,6 @@ class MenuFragment : Fragment() {
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 dataBinding.viewpager.currentItem = tab.position
-                categoryName = tab.text.toString()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -186,18 +177,16 @@ class MenuFragment : Fragment() {
     }
 
     private fun setDynamicFragmentToTabLayout() {
-        if (tabCount != viewModel.size.value?.toInt()) {
-            viewModel.categoryListResult.value?.forEach { resCategory ->
-                dataBinding.tabs.addTab(
-                    dataBinding.tabs.newTab().setText(resCategory.category_name)
-                )
-                tabCount = dataBinding.tabs.tabCount
+        dataBinding.tabs.removeAllTabs()
+        categoryList.forEach { categoryName ->
+            dataBinding.tabs.newTab().apply {
+                text = categoryName
+                dataBinding.tabs.addTab(this)
             }
         }
 
         val mDynamicFragmentAdapter =
-            DynamicFragmentAdapter(fragmentManager, dataBinding.tabs.tabCount, dataBinding.tabs)
-
+            DynamicFragmentAdapter(fragmentManager, categoryList.size, categoryList)
         dataBinding.viewpager.adapter = mDynamicFragmentAdapter
         dataBinding.viewpager.currentItem = 0
     }

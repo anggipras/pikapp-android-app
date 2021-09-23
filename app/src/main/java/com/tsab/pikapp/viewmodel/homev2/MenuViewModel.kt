@@ -1,7 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tsab.pikapp.models.model.CategoryListResult
@@ -14,9 +13,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MenuViewModel(application: Application) : BaseViewModel(application) {
+    private val tag = javaClass.simpleName
     val sessionManager = SessionManager(getApplication())
 
-    var activation: Boolean = true
+    private val mutableIsLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> get() = mutableIsLoading
 
     private val mutableSize = MutableLiveData(0)
     val size: LiveData<Int> get() = mutableSize
@@ -25,10 +26,8 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     val categoryListResult: LiveData<List<CategoryListResult>> = mutableCategoryList
     fun setCategoryList(categoryListResult: List<CategoryListResult>) {
         mutableCategoryList.value = categoryListResult
+        mutableSize.value = categoryListResult.size
     }
-
-    private val mutableIsLoading = MutableLiveData(true)
-    val isLoading: LiveData<Boolean> get() = mutableIsLoading
 
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
@@ -43,20 +42,13 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         PikappApiService().api.getMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {
-            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
-                Log.d("failed", t.message.toString())
-            }
+            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {}
 
             override fun onResponse(
                 call: Call<MerchantListCategoryResponse>,
                 response: Response<MerchantListCategoryResponse>
             ) {
-                val categoryResponse = response.body()
-                val categoryResult = response.body()?.results
-                mutableSize.value = categoryResponse?.results?.size
-                mutableIsLoading.value = false
-
-                setCategoryList(categoryResult ?: listOf())
+                setCategoryList(response.body()?.results ?: listOf())
                 mutableIsLoading.value = false
             }
         })

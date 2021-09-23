@@ -89,8 +89,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/categoryPanel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header">
@@ -162,6 +163,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="100dp"
                         android:src="@drawable/icon_empty_category"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -174,6 +176,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
                         android:text="@string/tambah_kategori_untuk_menambahkan_menu"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/imageView18" />
@@ -190,6 +193,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="12sp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/imageView18" />
@@ -197,9 +201,7 @@
                     <ScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fillViewport="true"
-                        tools:layout_editor_absoluteX="-12dp"
-                        tools:layout_editor_absoluteY="-120dp">
+                        android:fillViewport="true">
 
                         <androidx.viewpager.widget.ViewPager
                             android:id="@+id/viewpager"

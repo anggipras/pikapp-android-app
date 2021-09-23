@@ -46,9 +46,9 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     var name1: String = "Test"
 
-    private val mutableMenuList = MutableLiveData<SearchList>()
-    val menuList : LiveData<SearchList> get() = mutableMenuList
-    fun setMenu(menu: SearchList) {
+    private val mutableMenuList = MutableLiveData<SearchItem>()
+    val menuList: LiveData<SearchItem> get() = mutableMenuList
+    fun setMenu(menu: SearchItem) {
         mutableMenuList.value = menu
         menu.product_id?.let { fetchAdvanceMenuData(it) }
         menu.on_off?.let { setMenuActive(it.toBoolean()) }
@@ -56,7 +56,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private val mutableAddOrEdit = MutableLiveData<Boolean>()
-    val addOrEdit : LiveData<Boolean> get() = mutableAddOrEdit
+    val addOrEdit: LiveData<Boolean> get() = mutableAddOrEdit
     fun setAddOrEdit(bool: Boolean) {
         mutableAddOrEdit.value = bool
     }

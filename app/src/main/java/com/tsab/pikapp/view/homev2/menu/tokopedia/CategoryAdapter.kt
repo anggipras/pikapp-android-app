@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.homev2.menu.tokopedia
 
 import android.content.Context
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.SearchList
-import com.tsab.pikapp.view.homev2.menu.MenuListAdapter
 
 class CategoryAdapter(val context: Context, val list: List<DummyData>, val button: Button, val isChoose:TextView): RecyclerView.Adapter<CategoryAdapter.CategoryVH>() {
 
@@ -64,9 +61,6 @@ class CategoryAdapter(val context: Context, val list: List<DummyData>, val butto
         linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(false)
-        var menuList1 = DetailAdapter(context, detailList, button, isChoose)
-        recyclerView.adapter = menuList1
+        recyclerView.adapter = DetailAdapter(context, detailList, button, isChoose)
     }
-
-
 }

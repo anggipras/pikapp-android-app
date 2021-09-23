@@ -118,6 +118,9 @@
     <string name="category_ubah_kategori_header">Ubah Kategori</string>
     <string name="category_urutkan_kategori_header">Urutkan Kategori</string>
 
+    <!-- Menu screens -->
+    <string name="menu_empty_header">Anda belum memiliki menu untuk kategori ini</string>
+
     <!-- Advanced menu (am) screens -->
     <string name="am_main_header">Pilihan Menu</string>
     <string name="am_details_tambah_header">Tambah Pilihan</string>
@@ -259,6 +262,9 @@
     <string name="oi_status_tokopedia_status_toko_header">Status Toko</string>
 
     <string name="oi_hapus_toko">Hapus Toko</string>
+
+    <!-- Omnichannel menu (om) screens -->
+    <string name="om_tambah_menu">Tambah Menu</string>
 
     <!-- Etalase screens -->
     <string name="etalase_header">Etalase</string>

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
@@ -19,7 +18,6 @@ import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.AlertDialogBinding
 import com.tsab.pikapp.databinding.FragmentEditMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
@@ -29,7 +27,6 @@ import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.alert_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_edit_menu.*
 
-
 class EditMenuFragment : Fragment() {
     private val viewModelMenu: MenuViewModel by activityViewModels()
     private lateinit var navController: NavController
@@ -37,9 +34,9 @@ class EditMenuFragment : Fragment() {
     private var sessionManager = SessionManager()
 
     private val pickerContent =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-                viewModelMenu.validateImg(uri)
-            }
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            viewModelMenu.validateImg(uri)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +45,11 @@ class EditMenuFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         dataBinding = FragmentEditMenuBinding.inflate(
-                inflater, container, false
+            inflater, container, false
         )
         return dataBinding.root
     }
@@ -80,13 +77,15 @@ class EditMenuFragment : Fragment() {
         }
 
         dataBinding.pilihanMenuButton.setOnClickListener {
-            navController.navigate(R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
-                    bundleOf(
-                            AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to true,
-                            AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id
-                                    ?: ""),
-                            AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to true
-                    ))
+            navController.navigate(
+                R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
+                bundleOf(
+                    AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to true,
+                    AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id
+                        ?: ""),
+                    AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to true
+                )
+            )
         }
 
         dataBinding.kategori.isFocusable = false
@@ -171,15 +170,16 @@ class EditMenuFragment : Fragment() {
     }
 
     private fun openDialog() {
-        val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.alert_dialog, null)
+        val mDialogView =
+            LayoutInflater.from(requireActivity()).inflate(R.layout.alert_dialog, null)
         val mBuilder = AlertDialog.Builder(requireActivity())
-                .setView(mDialogView)
+            .setView(mDialogView)
         val mAlertDialog = mBuilder.show()
-        mAlertDialog.getWindow()?.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                        requireActivity(),
-                        R.drawable.dialog_background
-                )
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                requireActivity(),
+                R.drawable.dialog_background
+            )
         )
         mDialogView.dialog_back.setOnClickListener {
             mAlertDialog.dismiss()

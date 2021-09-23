@@ -11,16 +11,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.SearchList
+import com.tsab.pikapp.models.model.SearchItem
 
-class MenuListAdapter(val context: Context, val menuList: MutableList<SearchList>, category: String): RecyclerView.Adapter<MenuListAdapter.ViewHolder>() {
+class MenuListAdapter(
+    val context: Context,
+    menuList: MutableList<SearchItem>,
+    private var category: String
+) :
+    RecyclerView.Adapter<MenuListAdapter.ViewHolder>() {
+    var listTetap: ArrayList<SearchItem> = menuList as ArrayList<SearchItem>
 
-    var category: String = category
-    var listTetap: ArrayList<SearchList> = menuList as ArrayList<SearchList>
-    var jumlah: ArrayList<SearchList> = ArrayList()
-    var jumlah1: ArrayList<SearchList> = ArrayList()
+    var jumlah: ArrayList<SearchItem> = ArrayList()
+    var jumlah1: ArrayList<SearchItem> = ArrayList()
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var itemText: TextView = itemView.findViewById(R.id.namaMenu)
         var img: ImageView = itemView.findViewById(R.id.foodimg)
         var itemTextHarga: TextView = itemView.findViewById(R.id.harga)
@@ -28,8 +32,8 @@ class MenuListAdapter(val context: Context, val menuList: MutableList<SearchList
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        for(menu in listTetap){
-            if(menu.merchant_category_name == category){
+        for (menu in listTetap) {
+            if (menu.merchant_category_name == category) {
                 jumlah.add(menu)
             }
         }
