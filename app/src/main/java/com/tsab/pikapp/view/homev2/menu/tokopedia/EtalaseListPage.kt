@@ -1,60 +1,83 @@
 package com.tsab.pikapp.view.homev2.menu.tokopedia
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentEtalaseListPageBinding
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.homev2.HomeActivity
+import com.tsab.pikapp.viewmodel.homev2.EtalaseViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EtalaseListPage.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EtalaseListPage : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var navController: NavController? = null
+    private lateinit var dataBinding: FragmentEtalaseListPageBinding
+    private val sessionManager = SessionManager()
+    private val viewModel: EtalaseViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_etalase_list_page, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_etalase_list_page,
+            container, false
+        )
+        return dataBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EtalaseListPage.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EtalaseListPage().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                        startActivity(this)
+                    }
                 }
+            })
+
+        navController = Navigation.findNavController(view)
+        sessionManager.setHomeNav(1)
+
+        observeViewModel()
+        attachInputListeners()
+    }
+
+    private fun observeViewModel(){
+        /*viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
+        })*/
+
+    }
+
+    private fun attachInputListeners(){
+        dataBinding.headerLayout.backButton.setOnClickListener {
+            Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                startActivity(this)
             }
+        }
+        dataBinding.tambahEtalaseGroup.setAllOnClickListener(View.OnClickListener {
+            navController?.navigate(R.id.action_etalaseListPage_to_addEtalasePage)
+        }, view)
+
+        dataBinding.daftarEtalaseChangeOrderButton.setOnClickListener {
+            navController?.navigate(R.id.action_etalaseListPage_to_editEtalasePage)
+        }
+
     }
 }

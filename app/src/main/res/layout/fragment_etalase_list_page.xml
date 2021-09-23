@@ -89,7 +89,7 @@ tools:context=".view.homev2.menu.tokopedia.EtalaseListPage">
 
             <!-- Tambah kategori button -->
             <ImageView
-                android:id="@+id/tambahKategoriImage"
+                android:id="@+id/tambahEtalaseImage"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginStart="24dp"
@@ -100,7 +100,7 @@ tools:context=".view.homev2.menu.tokopedia.EtalaseListPage">
                 tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/tambahKategoriHeaderText"
+                android:id="@+id/tambahEtalaseHeaderText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -108,15 +108,15 @@ tools:context=".view.homev2.menu.tokopedia.EtalaseListPage">
                 android:text="@string/etalase_tambah_etalase_header"
                 android:textColor="@color/yellow"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/tambahKategoriImage"
-                app:layout_constraintStart_toEndOf="@id/tambahKategoriImage"
-                app:layout_constraintTop_toTopOf="@id/tambahKategoriImage" />
+                app:layout_constraintBottom_toBottomOf="@id/tambahEtalaseImage"
+                app:layout_constraintStart_toEndOf="@id/tambahEtalaseImage"
+                app:layout_constraintTop_toTopOf="@id/tambahEtalaseImage" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/tambahKategoriGroup"
+                android:id="@+id/tambahEtalaseGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="tambahKategoriImage,tambahKategoriHeaderText" />
+                app:constraint_referenced_ids="tambahEtalaseImage,tambahEtalaseHeaderText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

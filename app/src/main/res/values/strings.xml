@@ -267,8 +267,8 @@
     <string name="etalase_deskripsi_toggle">Etalase akan ditampilkan pada menu restoran anda</string>
     <string name="etalase_ubah_etalase_header">Ubah Etalase</string>
     <string name="etalase_hapus_etalase">Hapus Etalase</string>
-    <string name="etalase_delete_nomenu">Anda Yakin ingin mengahpus etalase ini <br/>dari menu restoran Anda?</string>
-    <string name="etalase_delete_menu">Kosongkan menu pada etalase ini<br/>terlebih dahulu</string>
+    <string name="etalase_delete_nomenu">Anda Yakin ingin mengahpus etalase ini <br />dari menu restoran Anda?</string>
+    <string name="etalase_delete_menu">Kosongkan menu pada etalase ini<br />terlebih dahulu</string>
 
 
 </resources>

@@ -10,11 +10,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
 import com.tsab.pikapp.databinding.FragmentEditEtalasePageBinding
+import com.tsab.pikapp.viewmodel.homev2.EtalaseViewModel
 import kotlinx.android.synthetic.main.delete_category_popup.view.*
 import kotlinx.android.synthetic.main.delete_etalase_popup.view.*
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
@@ -24,7 +27,8 @@ class EditEtalasePage : Fragment() {
 
     private var navController: NavController? = null
     private lateinit var dataBinding: FragmentEditEtalasePageBinding
-    var size = 0
+    private val viewModel: EtalaseViewModel by activityViewModels()
+    var size = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,17 +45,21 @@ class EditEtalasePage : Fragment() {
         //navController = Navigation.findNavController(view)
         //dataBinding.categoryName.append(viewModel.namaCatagory.value.toString())
 
+        navController = Navigation.findNavController(view)
+
         observeViewModel()
         attachInputListeners()
     }
 
     private fun observeViewModel() {
-        TODO("Not yet implemented")
+        viewModel.namaCategoryError.observe(viewLifecycleOwner, Observer { namaCategoryError ->
+            dataBinding.namaerror.text = if (namaCategoryError.isEmpty()) "" else namaCategoryError
+        })
     }
 
     private fun attachInputListeners(){
         dataBinding.backBtn.setOnClickListener {
-            requireActivity().onBackPressed()
+            navController?.navigate(R.id.action_editEtalasePage_to_etalaseListPage)
         }
 
         dataBinding.deleteEtalase.setOnClickListener {
@@ -71,7 +79,10 @@ class EditEtalasePage : Fragment() {
         }
 
         dataBinding.saveBtn.setOnClickListener {
-            Toast.makeText(context, "Nama Makanan :$etalaseName", Toast.LENGTH_SHORT).show()
+            viewModel.validateNama(etalaseName.text.toString())
+            if (viewModel.validateNama(etalaseName.text.toString())){
+                Toast.makeText(context, "etalase name: ${etalaseName.text}", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
