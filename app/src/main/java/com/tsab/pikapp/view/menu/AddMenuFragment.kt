@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 
@@ -97,6 +98,10 @@ class AddMenuFragment : Fragment() {
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
+                Handler().postDelayed({
+                    val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+                    activity?.startActivity(intent)
+                }, 500)
             }
         }
     }
@@ -108,7 +113,7 @@ class AddMenuFragment : Fragment() {
 
         viewModel.isLoadingFinish.observe(viewLifecycleOwner, Observer { bool ->
             if (!bool) {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                     activity?.finish()
                 }

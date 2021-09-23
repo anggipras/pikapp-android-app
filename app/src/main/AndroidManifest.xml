@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
+        <activity android:name=".view.homev2.menu.tokopedia.EtalaseNavigation"></activity>
         <activity android:name=".view.AddTokpedMenuActivity"></activity>
 
         <receiver
@@ -31,7 +32,7 @@
         <activity android:name=".view.menuCategory.CategoryNavigation" />
         <activity android:name=".view.loginv2.LoginRegisterActivity" />
         <activity
-            android:name=".view.homev2.HomeNavigation"
+            android:name=".view.homev2.HomeActivity"
             android:label="@string/title_activity_bottom_navigation" />
         <activity android:name=".view.other.OtherSettingsActivity" />
         <activity android:name=".view.RegisterV2Activity" />

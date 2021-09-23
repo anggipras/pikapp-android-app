@@ -1,9 +1,7 @@
 package com.tsab.pikapp.view.homev2.Transaction
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,36 +9,22 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentProccessBinding
-import com.tsab.pikapp.databinding.TransactionListItemsBinding
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
-import com.tsab.pikapp.view.homev2.HomeNavigation
-import com.tsab.pikapp.view.homev2.menu.MenuListAdapter
-import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_proccess.*
-import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
 import kotlinx.android.synthetic.main.transaction_list_items.view.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.HttpException
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -63,6 +47,7 @@ class TransactionListAdapter(
     var orderResult = ArrayList<StoreOrderList>()
     var jumlah = 0
     var price = 0
+    var str : String = ""
     val reasonsheet = CancelReasonFragment()
     var bulan: String = " Jun "
     var bulanTemp: String = ""
@@ -101,7 +86,8 @@ class TransactionListAdapter(
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.price.text = "Rp " + price.toString()
+                formatNumber()
+                holder.price.text = "Rp " + str
                 price = 0
                 holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Terima"
@@ -127,7 +113,8 @@ class TransactionListAdapter(
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.price.text = "Rp " + price.toString()
+                formatNumber()
+                holder.price.text = "Rp " + str
                 price = 0
                 holder.price2.visibility = View.GONE
                 holder.acceptBtn.setOnClickListener {
@@ -155,7 +142,8 @@ class TransactionListAdapter(
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.price.text = "Rp " + price.toString()
+                formatNumber()
+                holder.price.text = "Rp " + str
                 price = 0
                 holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Pesanan Siap"
@@ -181,7 +169,8 @@ class TransactionListAdapter(
             holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
             holder.menuCount.text = "Total " + jumlah + " Items"
             jumlah = 0
-            holder.price2.text = "Rp " + price.toString()
+            formatNumber()
+            holder.price2.text = "Rp " + str
             price = 0
             holder.price.visibility = View.GONE
         } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
@@ -200,7 +189,8 @@ class TransactionListAdapter(
                 holder.lastOrder.textSize = 11F
                 holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
                 holder.menuCount.text = "Total " + jumlah + " Items"
-                holder.price.text = "Rp " + price.toString()
+                formatNumber()
+                holder.price.text = "Rp " + str
                 price = 0
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
@@ -224,7 +214,8 @@ class TransactionListAdapter(
                 holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
-                holder.price2.text = "Rp " + price.toString()
+                formatNumber()
+                holder.price2.text = "Rp " + str
                 price = 0
                 holder.price.visibility = View.GONE
             }
@@ -308,6 +299,10 @@ class TransactionListAdapter(
                 price += count.productPrice!!.toInt()
             }
         }
+    }
+
+    private fun formatNumber(){
+        str = NumberFormat.getNumberInstance(Locale.US).format(price)
     }
 
     private fun timeAgo(time: String, holder:TextView){

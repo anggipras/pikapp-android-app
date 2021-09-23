@@ -17,7 +17,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.util.SwipeUpUtil
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import id.rizmaulana.floatingslideupsheet.view.FloatingSlideUpBuilder
 import kotlinx.android.synthetic.main.expanded_txn_fragment.*
 import kotlinx.android.synthetic.main.expanded_txn_fragment.tabs

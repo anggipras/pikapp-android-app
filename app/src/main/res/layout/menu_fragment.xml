@@ -12,7 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="192sp"
+            android:layout_height="192dp"
             android:background="@drawable/headermenu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -24,12 +24,12 @@
                 android:id="@+id/judul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="29dp"
+                android:layout_marginTop="74dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="@string/menu"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
-                android:layout_marginTop="74sp"
-                android:layout_marginLeft="29sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -40,46 +40,50 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:layout_marginStart="29dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="29dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/judul">
 
-                <EditText
-                    android:id="@+id/editText"
+                <Spinner
+                    android:id="@+id/menuSpinner"
                     android:layout_width="0dp"
-                    android:layout_height="35sp"
-                    android:layout_marginRight="14dp"
-                    android:background="@drawable/form"
-                    android:cursorVisible="false"
-                    android:drawableStart="@drawable/ic_baseline_search_24"
-                    android:drawablePadding="10dp"
-                    android:focusable="false"
-                    android:fontFamily="@font/montserrat"
-                    android:hint="@string/cari_menu_yang_anda_jual"
-                    android:inputType="none"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="@drawable/spinner"
                     android:paddingStart="10dp"
-                    android:textSize="15sp"
+                    android:paddingEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/buttonSort"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintEnd_toStartOf="@+id/searchButton"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/buttonSort"
+                    android:id="@+id/searchButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/ic_baseline_search_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/sortButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white"
+                    tools:ignore="ContentDescription" />
+
+                <ImageView
+                    android:id="@+id/sortButton"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:src="@drawable/icon_sort"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,14 +100,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
                 android:layout_marginStart="20dp"
-                android:drawableStart="@drawable/icon_plus"
                 android:drawablePadding="5dp"
-                android:drawableTint="@color/colorPrimary"
                 android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
                 android:text="@string/tambah_kategori_menu"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
-                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/icon_plus"
+                app:drawableTint="@color/colorPrimary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,31 +119,30 @@
                     android:id="@+id/appbar"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
-                    android:paddingLeft="29dp"
-                    android:paddingRight="80dp"
+                    android:background="@color/white"
                     android:elevation="10dp"
-                    android:background="@color/white">
+                    android:paddingStart="29dp"
+                    android:paddingEnd="80dp">
 
-                        <LinearLayout
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabs"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                            app:tabGravity="fill"
+                            app:tabIndicatorAnimationDuration="3"
+                            app:tabIndicatorColor="@color/colorPrimary"
+                            app:tabIndicatorHeight="7dp"
+                            app:tabMode="scrollable"
+                            app:tabSelectedTextColor="@color/black"
+                            app:tabTextAppearance="@style/MenuTabLayout"
+                            app:tabTextColor="@color/borderSubtle" />
 
-                            <com.google.android.material.tabs.TabLayout
-                                android:id="@+id/tabs"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:tabGravity="fill"
-                                app:tabIndicatorColor="@color/colorPrimary"
-                                app:tabIndicatorHeight="7dp"
-                                app:tabMode="scrollable"
-                                app:tabIndicatorAnimationDuration="3"
-                                app:tabTextAppearance="@style/MenuTabLayout"
-                                app:tabSelectedTextColor="@color/black"
-                                app:tabTextColor="@color/borderSubtle" />
-
-                        </LinearLayout>
-
+                    </LinearLayout>
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -161,7 +164,8 @@
                         android:src="@drawable/icon_empty_category"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/textview2"
@@ -190,63 +194,35 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/imageView18" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
                     <ScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fillViewport="true">
+                        android:fillViewport="true"
+                        tools:layout_editor_absoluteX="-12dp"
+                        tools:layout_editor_absoluteY="-120dp">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/viewpager"
-                        android:layout_width="match_parent"
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/viewpager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-                        android:layout_height="wrap_content">
-                    </androidx.viewpager.widget.ViewPager>\
                     </ScrollView>
-
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageButton
                     android:id="@+id/plusBtn"
-                    android:layout_width="20sp"
-                    android:layout_height="20sp"
-                    android:layout_marginRight="40sp"
-                    android:layout_marginTop="8sp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="40dp"
                     android:background="@drawable/plusbutton"
-                    android:elevation="20sp"
+                    android:elevation="20dp"
                     app:layout_anchor="@+id/appbar"
-                    app:layout_anchorGravity="end|top" />
+                    app:layout_anchorGravity="end|top"
+                    tools:ignore="ContentDescription" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-            <LinearLayout
-                android:id="@+id/placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.100000024">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="18dp"
-                    android:orientation="vertical" />
-            </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout
@@ -307,5 +283,4 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

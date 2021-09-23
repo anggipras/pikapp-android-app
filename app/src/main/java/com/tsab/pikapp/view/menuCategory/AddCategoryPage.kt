@@ -14,8 +14,8 @@ import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddCategoryPageBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
 
@@ -56,7 +56,7 @@ class AddCategoryPage : Fragment() {
             if (load) {
                 dataBinding.loadingViewAddCategory.visibility = View.VISIBLE
             } else {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                 }
                 dataBinding.loadingViewAddCategory.visibility = View.GONE
