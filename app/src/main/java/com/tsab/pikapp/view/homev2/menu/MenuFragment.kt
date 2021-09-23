@@ -71,7 +71,7 @@ class MenuFragment : Fragment() {
             viewModel.size.observe(viewLifecycleOwner, Observer {
                 initViews()
             })
-            
+
             if (!isLoading) {
                 dataBinding.shimmerFrameLayoutCategory.visibility = View.INVISIBLE
                 if (viewModel.size.value == 0) {
