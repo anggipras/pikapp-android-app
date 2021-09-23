@@ -6,13 +6,9 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.model.SearchList
 import com.tsab.pikapp.models.model.SearchRequest
 import com.tsab.pikapp.models.model.SearchResponse
@@ -44,18 +40,13 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
-        val gson = Gson()
-        val type = object : TypeToken<SearchResponse>() {}.type
-
         PikappApiService().api.searchMenu(
             getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(menu, 0, 30)
         ).enqueue(object : Callback<SearchResponse>{
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Log.e("SUCCEED", response.body().toString())
                     val searchResult = response.body()?.results
                     val categoryList = ArrayList<String>()
-                    Log.e("Total", response.body()!!.total_items.toString())
                     if(response.body()?.total_items == 0){
                         noFound.isVisible = true
                         noFoundText.isVisible = true

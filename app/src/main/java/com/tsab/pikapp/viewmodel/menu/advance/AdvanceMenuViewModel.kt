@@ -9,7 +9,6 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.getTimestamp
-import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuAdditionalAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -98,8 +97,6 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {
                     override fun onSuccess(response: ListAdvanceMenuResponse) {
-                        Log.d(TAG, response.results.toString())
-
                         // TODO: Add is advance menu active.
                         if (response.results.isNotEmpty()) {
                             setAdvanceMenuActive(true)
@@ -216,7 +213,6 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     fun resetDetailsScreen() {
-        Log.d(TAG, "Reset details")
         mutableDetailsNamaPilihan.value = ""
         mutableDetailsNamaPilihanError.value = ""
         isDetailsNamaPilihanValid.value = false

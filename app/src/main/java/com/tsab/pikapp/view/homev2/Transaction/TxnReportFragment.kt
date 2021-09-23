@@ -49,6 +49,10 @@ class TxnReportFragment : Fragment() {
 
         setUpTabs()
 
+        backbtn.setOnClickListener {
+            activity?.finish()
+        }
+
         val floatingSlideUpBuilder = SwipeUpUtil(requireView().context, floating)
                 .setFloatingMenuRadiusInDp(32)
                 .setFloatingMenu(container)

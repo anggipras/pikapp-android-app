@@ -47,7 +47,6 @@ class SettingFragment : Fragment() {
                         startActivity(this)
                     }
                 }
-
             })
 
         dataBinding.informationSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_informationFragment) }

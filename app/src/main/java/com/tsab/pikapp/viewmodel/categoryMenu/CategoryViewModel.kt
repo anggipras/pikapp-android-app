@@ -2,7 +2,6 @@ package com.tsab.pikapp.viewmodel.categoryMenu
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -64,8 +63,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ListMenuCategoryResponse>() {
                     override fun onSuccess(response: ListMenuCategoryResponse) {
-                        Log.d(TAG, response.results.toString())
-
                         setCategoryList(response.results)
                         setLoading(false)
                     }
@@ -128,8 +125,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ListMenuCategoryResponse>() {
                     override fun onSuccess(response: ListMenuCategoryResponse) {
-                        Log.d(TAG, response.results.toString())
-
                         // TODO: Update sort functionality.
                         setLoading(false)
                     }
@@ -196,8 +191,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         categoryReq.category_order = categoryOrder.value?.toInt()
         categoryReq.activation = activation
         categoryReq.id = categoryId.value?.toLong()
-
-        Log.e("id", categoryId.value.toString())
 
         PikappApiService().api.updateMenuCategory(
             getUUID(), timestamp, getClientID(), signature, token, mid, categoryReq

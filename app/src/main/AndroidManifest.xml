@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity android:name=".view.homev2.menu.tokopedia.EtalaseNavigation"></activity>
+        <activity android:name=".view.AddTokpedMenuActivity"></activity>
 
         <receiver
             android:name=".receiver.AlarmReceiver"

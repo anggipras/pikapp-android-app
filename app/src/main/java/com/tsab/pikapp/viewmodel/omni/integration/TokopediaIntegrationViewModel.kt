@@ -155,7 +155,6 @@ class TokopediaIntegrationViewModel(application: Application) : BaseViewModel(ap
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<IntegrationObjectResponse>() {
                     override fun onSuccess(response: IntegrationObjectResponse) {
-                        Log.d(tag, response.toString())
                         setLoading(false)
                         setForAlarm(true)
 

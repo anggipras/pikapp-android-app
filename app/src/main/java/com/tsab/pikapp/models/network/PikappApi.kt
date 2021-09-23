@@ -396,6 +396,7 @@ interface PikappApi {
         @Header("x-signature") signature: String,
         @Header("token") token: String,
         @Header("mid") mid: String,
+        @Header("pid") pid: String? = null,
         @Part file_01: MultipartBody.Part,
         @Part file_02: MultipartBody.Part,
         @Part file_03: MultipartBody.Part,

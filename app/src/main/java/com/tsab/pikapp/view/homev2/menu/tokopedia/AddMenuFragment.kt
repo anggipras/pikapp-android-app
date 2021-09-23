@@ -1,35 +1,37 @@
-package com.tsab.pikapp.view.menu
+package com.tsab.pikapp.view.homev2.menu.tokopedia
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentAddMenu2Binding
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeActivity
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
-
+import kotlinx.android.synthetic.main.fragment_add_menu2.*
 
 class AddMenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
     private lateinit var navController: NavController
-    private lateinit var dataBinding: FragmentAddMenuBinding
+    private lateinit var dataBinding: FragmentAddMenu2Binding
     private var sessionManager = SessionManager()
+
 
     private val pickerContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -43,11 +45,11 @@ class AddMenuFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        dataBinding = FragmentAddMenuBinding.inflate(
-                inflater, container, false
+        dataBinding = FragmentAddMenu2Binding.inflate(
+            inflater, container, false
         )
         return dataBinding.root
     }
@@ -59,8 +61,10 @@ class AddMenuFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
 
+
         attachInputListeners()
         observeViewModel()
+
     }
 
     private fun attachInputListeners() {
@@ -76,18 +80,22 @@ class AddMenuFragment : Fragment() {
             pickerContent.launch("image/*")
         }
 
-        dataBinding.pilihanMenuButton.setOnClickListener {
-            navController.navigate(R.id.action_updateMenuAddFragment_to_advanceMenuMainFragment,
-                    bundleOf(
-                            AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to false,
-                            AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to "none"
-                    ))
+        dataBinding.kategori.isFocusable = false
+        dataBinding.kategori.isFocusableInTouchMode = false
+       /* dataBinding.kategori.setOnClickListener {
+            navController.navigate(R.id.action_update_menu_add_adv_to_category_name)
+        }*/
+
+        dataBinding.etalase.isFocusable = false
+        dataBinding.etalase.isFocusableInTouchMode = false
+        dataBinding.etalase.setOnClickListener {
+            navController.navigate(R.id.action_addMenuFragment_to_chooseEtalaseFragment)
         }
 
         dataBinding.kategori.isFocusable = false
         dataBinding.kategori.isFocusableInTouchMode = false
         dataBinding.kategori.setOnClickListener {
-            navController.navigate(R.id.action_update_menu_add_adv_to_category_name)
+            navController.navigate(R.id.action_addMenuFragment_to_chooseCategoryFragment2)
         }
 
         dataBinding.btnNext.setOnClickListener {
@@ -96,12 +104,9 @@ class AddMenuFragment : Fragment() {
             viewModel.validateHarga(dataBinding.harga.text.toString())
             viewModel.validateDesc(dataBinding.descMenu.text.toString())
 
-            if (viewModel.validatePage()) {
-                viewModel.postMenu()
-                Handler().postDelayed({
-                    val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                    activity?.startActivity(intent)
-                }, 500)
+            if (viewModel.validatePageTokped()) {
+                Toast.makeText(activity, "Menu Added", Toast.LENGTH_SHORT).show()
+                activity?.finish()
             }
         }
     }
@@ -113,7 +118,7 @@ class AddMenuFragment : Fragment() {
 
         viewModel.isLoadingFinish.observe(viewLifecycleOwner, Observer { bool ->
             if (!bool) {
-                Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
                     startActivity(this)
                     activity?.finish()
                 }
@@ -135,6 +140,10 @@ class AddMenuFragment : Fragment() {
 
         viewModel.namaError.observe(viewLifecycleOwner, Observer { namaError ->
             dataBinding.namaErrorText.text = if (namaError.isEmpty()) "" else namaError
+        })
+
+        viewModel.etalase.observe(viewLifecycleOwner, Observer { etalase ->
+            dataBinding.etalase.setText(if (etalase.isEmpty()) "" else etalase)
         })
 
         viewModel.hargaError.observe(viewLifecycleOwner, Observer { hargaError ->
