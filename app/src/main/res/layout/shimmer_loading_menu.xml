@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shimmer_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="35dp"
+        android:paddingTop="21dp"
+        android:paddingEnd="35dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/shimmer_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@color/borderSubtle"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            app:layout_constraintStart_toEndOf="@+id/shimmer_image"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="10dp"
+                android:background="@color/borderSubtle"/>
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/borderSubtle" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:background="@color/lightGrey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

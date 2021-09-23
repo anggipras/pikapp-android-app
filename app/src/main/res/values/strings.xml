@@ -23,6 +23,7 @@
     <string name="akan_datang">Akan Datang</string>
     <string name="pelajari_lebih_lanjut">Pelajari lebih lanjut</string>
     <string name="alert_dialog">Apakah anda yakin ingin menghapus menu ini?</string>
+    <string name="alert_dialog_menuChoice">Anda yakin ingin menghapus pilihan ini dari menu restoran Anda?</string>
 
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
@@ -114,11 +115,14 @@
     <string name="category_header">Kategori</string>
     <string name="category_daftar_kategori_header">Daftar Kategori</string>
     <string name="category_tambah_kategori_header">Tambah Kategori</string>
+    <string name="category_ubah_kategori_header">Ubah Kategori</string>
+    <string name="category_urutkan_kategori_header">Urutkan Kategori</string>
 
     <!-- Advanced menu (am) screens -->
     <string name="am_main_header">Pilihan Menu</string>
     <string name="am_details_tambah_header">Tambah Pilihan</string>
     <string name="am_details_ubah_header">Ubah Pilihan</string>
+    <string name="am_details_urutkan_header">Urutkan Pilihan</string>
 
     <string name="am_main_aktifkan_header">Aktifkan pilihan menu</string>
     <string name="am_main_aktifkan_help">Apa itu pilihan menu?</string>
@@ -146,6 +150,8 @@
 
     <string name="am_additional_harga_header">Harga</string>
     <string name="am_additional_harga_hint">contoh: 6000</string>
+
+    <string name="am_additional_hapus_pilihan">Hapus Pilihan</string>
 
     <!-- Shop Management (SM) screens -->
     <string name="sm_header">Jam Buka Restoran</string>

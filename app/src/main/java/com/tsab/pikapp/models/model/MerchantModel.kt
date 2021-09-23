@@ -84,7 +84,9 @@ data class CategoryListResult(
     @SerializedName("is_active")
     val is_active: Boolean?,
     @SerializedName("id")
-    val id: Long
+    val id: Long,
+    @SerializedName("product_size")
+    val product_size: Int
 )
 
 data class UpdateMenuCategoryRequest(
@@ -111,7 +113,9 @@ data class categories_name(
     @SerializedName("activation")
     var activation: Boolean? = null,
     @SerializedName("id")
-    var id: Long? = null
+    var id: Long? = null,
+    @SerializedName("product_size")
+    var product_size: Int? = null
 )
 
 // Merchant Detail API Specs

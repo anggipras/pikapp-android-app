@@ -38,7 +38,6 @@ import java.io.FileOutputStream
 class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     private var sessionManager = SessionManager(getApplication())
-    private var prefHelper = SharedPreferencesUtil(getApplication())
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
@@ -292,21 +291,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
                 val categoryResponse = response.body()
                 var categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
-                Log.e("uuid", getUUID())
-                Log.e("timestamp", timestamp)
-                Log.e("client id", getClientID())
-                Log.e("signature", signature)
-                Log.e("token", token)
-                Log.e("mid", mid)
-
-                Log.i("MyTag", "onCreate")
-                Log.e("size", categoryResponse?.results?.size.toString())
                 size = categoryResponse?.results?.size.toString()
-                Log.e("size on response", size)
 
                 categoryAdapter = CategoryAdapter(
                     baseContext,
@@ -332,13 +317,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
         val application = getApplication<Application>()
-
-        Log.e("UUID", getUUID())
-        Log.e("TIMESTAMP", timestamp)
-        Log.e("CLIENTID", getClientID())
-        Log.e("SIGNATURE", signature)
-        Log.e("TOKEN", token)
-        Log.e("MID", mid)
 
         val gson = Gson()
         val type = object : TypeToken<BaseResponse>() {}.type
@@ -458,7 +436,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {
                             override fun onSuccess(response: ListAdvanceMenuResponse) {
-                                // TODO: Add is advance menu active.
                                 if (response.results.isNotEmpty()) {
                                     setAdvanceMenuList(response.results)
                                 }

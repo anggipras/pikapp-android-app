@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,16 +17,15 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.view.AddTokpedMenuActivity
 import com.tsab.pikapp.view.homev2.SearchActivity
-import com.tsab.pikapp.view.menuCategory.CategoryAdapter
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
+import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
-import kotlin.math.log
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
-
+    private val viewModelDynamic: DynamicViewModel by activityViewModels()
     lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var dataBinding: MenuFragmentBinding
 
@@ -91,8 +89,13 @@ class MenuFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModelDynamic.isLoading.observe(viewLifecycleOwner, Observer {
+            if (!it) dataBinding.shimmerFrameLayoutMenu.visibility = View.INVISIBLE
+        })
+
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             if (!isLoading) {
+                dataBinding.shimmerFrameLayoutCategory.visibility = View.INVISIBLE
                 if (viewModel.size.value == 0) {
                     invisibleMenu()
                     dataBinding.textview2.visibility = View.VISIBLE
@@ -110,7 +113,6 @@ class MenuFragment : Fragment() {
                     viewModel.categoryListResult.observe(viewLifecycleOwner, Observer { ioo ->
                         ioo?.let {
                             invisibleMenuNull()
-                            //initViews()
                             dataBinding.viewpager.visibility = View.VISIBLE
                             dataBinding.tabs.visibility = View.VISIBLE
                             dataBinding.appbar.visibility = View.VISIBLE
@@ -156,6 +158,8 @@ class MenuFragment : Fragment() {
         dataBinding.addCategory.visibility = View.GONE
         dataBinding.plusBtn.visibility = View.GONE
         dataBinding.textview3.visibility = View.GONE
+        dataBinding.shimmerFrameLayoutCategory.visibility = View.VISIBLE
+        dataBinding.shimmerFrameLayoutMenu.visibility = View.VISIBLE
     }
 
     private fun initViews() {
