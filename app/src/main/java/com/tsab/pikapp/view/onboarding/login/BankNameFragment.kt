@@ -27,9 +27,9 @@ class BankNameFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         dataBinding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_bank_name, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_bank_name, container, false)
         return dataBinding.root
     }
 
@@ -38,11 +38,11 @@ class BankNameFragment : BottomSheetDialogFragment() {
 
         navController = parentFragment?.view?.let { Navigation.findNavController(it) }
         namaBankMap = mapOf(
-                R.id.bcaRadioButton to resources.getString(R.string.bank_bca),
-                R.id.bniRadioButton to resources.getString(R.string.bank_bni),
-                R.id.briRadioButton to resources.getString(R.string.bank_bri),
-                R.id.mandiriRadioButton to resources.getString(R.string.bank_mandiri),
-                R.id.cimbRadioButton to resources.getString(R.string.bank_cimb)
+            R.id.bcaRadioButton to resources.getString(R.string.bank_bca),
+            R.id.bniRadioButton to resources.getString(R.string.bank_bni),
+            R.id.briRadioButton to resources.getString(R.string.bank_bri),
+            R.id.mandiriRadioButton to resources.getString(R.string.bank_mandiri),
+            R.id.cimbRadioButton to resources.getString(R.string.bank_cimb)
         )
 
         observeViewModel()
