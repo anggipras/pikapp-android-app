@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_tokped_add.xml"
+    app:startDestination="@id/addMenuFragment">
+
+    <fragment
+        android:id="@+id/addMenuFragment"
+        android:name="com.tsab.pikapp.view.homev2.menu.tokopedia.AddMenuFragment"
+        android:label="fragment_add_menu2"
+        tools:layout="@layout/fragment_add_menu2" >
+        <action
+            android:id="@+id/action_addMenuFragment_to_chooseEtalaseFragment"
+            app:destination="@id/chooseEtalaseFragment" />
+        <action
+            android:id="@+id/action_addMenuFragment_to_chooseCategoryFragment2"
+            app:destination="@id/chooseCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseEtalaseFragment"
+        android:name="com.tsab.pikapp.view.homev2.menu.tokopedia.ChooseEtalaseFragment"
+        android:label="fragment_choose_etalase"
+        tools:layout="@layout/fragment_choose_etalase" >
+        <action
+            android:id="@+id/action_chooseEtalaseFragment_to_addMenuFragment"
+            app:destination="@id/addMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseCategoryFragment"
+        android:name="com.tsab.pikapp.view.homev2.menu.tokopedia.ChooseCategoryFragment"
+        android:label="fragment_choose_category"
+        tools:layout="@layout/fragment_choose_category" />
+</navigation>

@@ -55,7 +55,8 @@ class TransactionFragment : Fragment() {
         setUpTabs()
         dataBinding.report.setOnClickListener {
             val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
-            activity?.startActivity(intent)
+            activity?.startActivityForResult(intent, 1)
+            activity?.overridePendingTransition(0, 0)
         }
         Handler().postDelayed({
             dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
