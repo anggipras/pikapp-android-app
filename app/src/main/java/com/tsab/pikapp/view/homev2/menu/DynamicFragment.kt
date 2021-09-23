@@ -71,12 +71,9 @@ class DynamicFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        linearLayoutManager = LinearLayoutManager(requireView().context)
-        dataBinding.listMenuDetail.layoutManager = linearLayoutManager
-
         dynamicAdapter = DynamicListAdapter(
             activity?.baseContext!!,
-            menuList,
+            menuList.toMutableList(),
             object : DynamicListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, menuList: SearchItem) {
                     Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
@@ -88,6 +85,9 @@ class DynamicFragment : Fragment() {
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter
+
+        linearLayoutManager = LinearLayoutManager(requireView().context)
+        dataBinding.listMenuDetail.layoutManager = linearLayoutManager
     }
 
     private fun attachInputListeners() {

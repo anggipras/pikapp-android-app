@@ -12,7 +12,6 @@ import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import io.reactivex.disposables.CompositeDisposable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,11 +23,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(application) {
-    private var sessionManager = SessionManager(getApplication())
-    private var prefHelper = SharedPreferencesUtil(getApplication())
-
     private val apiService = PikappApiService()
-    private val disposable = CompositeDisposable()
 
     /* Variables for the first sign up screen */
     private val mutableEmail = MutableLiveData("")
@@ -226,14 +221,14 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
             mutableNamaBankError.value = ""
         }
 
+        Log.d("Hai", namaBank)
+
         mutableNamaBank.value = namaBank
         isNamaBankValid.value = mutableNamaBankError.value!!.isEmpty()
         return isNamaBankValid.value!!
     }
 
-    fun validateNamaBank(): Boolean {
-        return isNamaBankValid.value!!
-    }
+    fun validateNamaBank(): Boolean = isNamaBankValid.value!!
 
     fun validateNomorRekening(nomorRekening: String): Boolean {
         if (nomorRekening.isEmpty() || nomorRekening.isBlank()) {
