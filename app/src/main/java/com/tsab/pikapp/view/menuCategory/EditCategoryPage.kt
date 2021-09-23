@@ -2,11 +2,9 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,11 +20,9 @@ import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.delete_category_popup.view.*
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
-import kotlinx.android.synthetic.main.profile_birthday_dialog.view.*
 
 class EditCategoryPage : Fragment() {
 

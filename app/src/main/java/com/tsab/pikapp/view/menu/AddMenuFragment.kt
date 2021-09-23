@@ -76,7 +76,6 @@ class AddMenuFragment : Fragment() {
         }
 
         dataBinding.pilihanMenuButton.setOnClickListener {
-//            getAdvanceMenu.launch("next")
             navController.navigate(R.id.action_updateMenuAddFragment_to_advanceMenuMainFragment,
                     bundleOf(
                             AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to false,

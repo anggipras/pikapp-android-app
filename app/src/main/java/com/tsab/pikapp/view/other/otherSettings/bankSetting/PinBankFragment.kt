@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentDataBankBinding
 import com.tsab.pikapp.databinding.FragmentPinBankBinding
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 

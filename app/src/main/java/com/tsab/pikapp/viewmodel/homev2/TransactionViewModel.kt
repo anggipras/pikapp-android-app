@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -22,10 +21,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.HttpException
-import retrofit2.Response
 
 class TransactionViewModel(application: Application) : BaseViewModel(application) {
 
@@ -102,10 +97,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 mutableProses.value = prosesList.size
                                 mutableBatal.value = batalList.size
                                 mutableDone.value = doneList.size
-                                Log.e("list transaction", t.results.toString())
-                                Log.e("error msg", t.errCode.toString())
-                                Log.e("Proses", prosesList.toString())
-                                Log.e("error code", t.errMessage.toString())
                                 if(status == "Proses"){
                                     empty.isVisible = prosesList.isEmpty()
                                     categoryAdapter = TransactionListAdapter(
