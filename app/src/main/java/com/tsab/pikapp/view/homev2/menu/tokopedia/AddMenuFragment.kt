@@ -21,7 +21,7 @@ import com.tsab.pikapp.databinding.FragmentAddMenu2Binding
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.fragment_add_menu2.*
@@ -118,7 +118,7 @@ class AddMenuFragment : Fragment() {
 
         viewModel.isLoadingFinish.observe(viewLifecycleOwner, Observer { bool ->
             if (!bool) {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                     activity?.finish()
                 }
