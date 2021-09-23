@@ -23,10 +23,10 @@ data class SearchResponse(
     var current_page: Int,
     @SerializedName("total_items")
     var total_items: Int,
-    var results: List<SearchList>
+    var results: List<SearchItem>
 )
 
-data class SearchList(
+data class SearchItem(
     @SerializedName("product_id")
     var product_id: String?,
     @SerializedName("pict_01")

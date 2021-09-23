@@ -7,7 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.SearchList
+import com.tsab.pikapp.models.model.SearchItem
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.activity_advance_menu.*
 
@@ -38,7 +38,7 @@ class AdvanceMenuActivity : AppCompatActivity() {
             viewModel.setAddOrEdit(false)
             navGraph.startDestination = R.id.updateMenuAddAdvFragment
         } else if (type == TYPE_EDIT) {
-            val menuListData = intent.getSerializableExtra(MENU_LIST) as? SearchList
+            val menuListData = intent.getSerializableExtra(MENU_LIST) as? SearchItem
             if (menuListData != null) {
                 viewModel.setMenu(menuListData)
             }
@@ -46,22 +46,5 @@ class AdvanceMenuActivity : AppCompatActivity() {
             navGraph.startDestination = R.id.updateMenuEditAdvFragment
         }
         navController.graph = navGraph
-
-//        // Set product ID in view model.
-//        val productId = intent.getStringExtra(PRODUCT_ID)
-//        viewModel.setProductId(productId)
-//        viewModel.fetchAdvanceMenuData()
-//
-//        // Send result when push success.
-//        viewModel.isPushSuccess.observe(this, Observer { isPushSuccess ->
-//            if (isPushSuccess) {
-//                Intent(this, UpdateMenuActivity::class.java).apply {
-//                    putExtra(RESULT_DATA, viewModel.advanceMenuList.value.toString())
-//                    setResult(RESULT_OK, this)
-//                    startActivity(this)
-//                    finish()
-//                }
-//            }
-//        })
     }
 }
