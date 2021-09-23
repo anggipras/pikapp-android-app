@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,9 +59,9 @@ class MenuFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.shimmerFrameLayoutCategory.visibility = if (isLoading) View.VISIBLE else View.GONE
             if (!isLoading) {
                 initViews()
-                dataBinding.shimmerFrameLayoutCategory.visibility = View.GONE
                 dataBinding.shimmerFrameLayoutMenu.visibility = View.GONE
             }
         })
@@ -75,8 +76,6 @@ class MenuFragment : Fragment() {
                     dataBinding.tabs.addTab(this)
                 }
             }
-//            Log.d("MenuFragment", "Raw: $categoryList")
-//            Log.d("MenuFragment", "Mod: ${this.categoryList}")
         })
 
         viewModel.size.observe(viewLifecycleOwner, Observer { size ->
@@ -88,6 +87,9 @@ class MenuFragment : Fragment() {
             } else {
                 invisibleMenuNull()
                 dataBinding.viewpager.visibility = View.VISIBLE
+            }
+
+            if (size != 0) {
                 dataBinding.tabs.visibility = View.VISIBLE
                 dataBinding.appbar.visibility = View.VISIBLE
                 dataBinding.plusBtn.visibility = View.VISIBLE
@@ -152,7 +154,6 @@ class MenuFragment : Fragment() {
         dataBinding.addCategory.visibility = View.GONE
         dataBinding.plusBtn.visibility = View.GONE
         dataBinding.textview3.visibility = View.GONE
-        dataBinding.shimmerFrameLayoutCategory.visibility = View.VISIBLE
         dataBinding.shimmerFrameLayoutMenu.visibility = View.VISIBLE
     }
 
