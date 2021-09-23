@@ -7,13 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.util.getTimestamp
+import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.CategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AdvanceMenuViewModel(application: Application) : BaseViewModel(application) {
     private val TAG = javaClass.simpleName
@@ -60,6 +63,19 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     val isAdvanceMenuActive: LiveData<Boolean> = mutableIsAdvanceMenuActive
     fun setAdvanceMenuActive(isActive: Boolean) {
         mutableIsAdvanceMenuActive.value = isActive
+    }
+
+    private val mutableAdvanceId = MutableLiveData<Long>()
+    val advanceId: LiveData<Long> = mutableAdvanceId
+    fun setAdvanceId(id: Long) {
+        Log.d("THEID", id.toString())
+        mutableAdvanceId.value = id
+    }
+
+    private val mutableMenuExtId = MutableLiveData<Long>()
+    val menuExtId: LiveData<Long> = mutableMenuExtId
+    fun setMenuExtId(id: Long) {
+        mutableMenuExtId.value = id
     }
 
     private val mutableAdvanceMenuList = MutableLiveData<List<AdvanceMenu>>(listOf())
@@ -206,9 +222,47 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
                     active = isDetailsAktif.value!!,
                     mandatory = isDetailsWajib.value!!,
                     max_choose = detailsPilihanMaksimal.value!!,
+                    id = advanceId.value!!,
                     ext_menus = detailsAdditionalMenuList.value ?: listOf()
             )
         )
+        return true
+    }
+
+    fun validateDetailsScreenForUpdate(): Boolean {
+        if (!isDetailsNamaPilihanValid.value!! || !isDetailsPilihanMaksimalValid.value!!) return false
+
+        val updateMenuChoice = AdvanceMenuEdit(
+                product_id = productId.value,
+                template_name = detailsNamaPilihan.value!!,
+                template_type = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
+                active = isDetailsAktif.value!!,
+                mandatory = isDetailsWajib.value!!,
+                max_choose = detailsPilihanMaksimal.value!!,
+                id = advanceId.value!!,
+                ext_menus = detailsAdditionalMenuList.value ?: listOf()
+        )
+
+        var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+
+        // TODO: Update API call.
+        PikappApiService().api.uptadeAdvanceMenu(
+                getUUID(), timestamp, getClientID(), signature, token, updateMenuChoice
+        ).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                setLocalLoading(false)
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                Log.e("failed", t.message.toString())
+            }
+
+        })
+
         return true
     }
 
@@ -282,7 +336,8 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
             AdvanceAdditionalMenu(
                     ext_menu_name = additionalNamaDaftarPilihan.value!!,
                     ext_menu_price = additionalHarga.value!!,
-                    active = true
+                    active = true,
+                    ext_id = menuExtId.value!!
             )
         )
         return true

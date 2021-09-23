@@ -85,7 +85,8 @@ class AdvanceMenuDetailsSortFragment : Fragment() {
                     AdvanceAdditionalMenu(
                         ext_menu_name = advanceAdditionalMenu.ext_menu_name,
                         ext_menu_price = advanceAdditionalMenu.ext_menu_price,
-                        active = advanceAdditionalMenu.active
+                        active = advanceAdditionalMenu.active,
+                            ext_id = advanceAdditionalMenu.ext_id
                     )
                 }.toMutableList()
 

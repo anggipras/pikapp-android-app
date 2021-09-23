@@ -30,6 +30,7 @@ class AdvanceMenuAdditionalFragment : Fragment() {
         const val ARGUMENT_IS_EDIT = "isEditing"
         const val ARGUMENT_MENU_NAME = "additionalMenuName"
         const val ARGUMENT_MENU_PRICE = "additionalMenuPrice"
+        const val ARGUMENT_MENU_EXT_ID = "additionalMenuExtId"
     }
 
     private val viewModel: AdvanceMenuViewModel by activityViewModels()
@@ -60,6 +61,7 @@ class AdvanceMenuAdditionalFragment : Fragment() {
     private fun fetchArguments() {
         viewModel.setAdditionalNamaDaftarPilihan(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
         viewModel.setAdditionalHarga(arguments?.getString(ARGUMENT_MENU_PRICE) ?: "")
+        viewModel.setMenuExtId(arguments?.getLong(ARGUMENT_MENU_EXT_ID) ?: 1)
 
         if (arguments?.getBoolean(ARGUMENT_IS_EDIT) == true) {
             dataBinding.headerHeaderText.text = getString(R.string.am_ubah_daftar_pilihan_header)

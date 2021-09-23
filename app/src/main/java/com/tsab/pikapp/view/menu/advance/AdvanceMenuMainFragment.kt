@@ -85,7 +85,6 @@ class AdvanceMenuMainFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            Log.d("AdvanceMenuMainFragment", "isLoading: $isLoading")
             dataBinding.loadingOverlay.loadingView.visibility =
                 if (isLoading) View.VISIBLE else View.GONE
         })
@@ -135,7 +134,6 @@ class AdvanceMenuMainFragment : Fragment() {
 
         dataBinding.saveButton.setOnClickListener {
             viewModelMenu.setAdvanceMenuList(viewModel.advanceMenuList.value!!)
-            Log.d("APAINI", viewModel.addOrEdit.value.toString())
             if (viewModel.addOrEdit.value == true) {
                 navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
             } else {
@@ -157,6 +155,7 @@ class AdvanceMenuMainFragment : Fragment() {
                             AdvanceMenuDetailsFragment.ARGUMENT_AKTIF to advanceMenu.active,
                             AdvanceMenuDetailsFragment.ARGUMENT_WAJIB to advanceMenu.mandatory,
                             AdvanceMenuDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to advanceMenu.max_choose,
+                                AdvanceMenuDetailsFragment.ARGUMENT_ID_ADVANCE to advanceMenu.id,
                             AdvanceMenuDetailsFragment.ARGUMENT_ADDITIONAL_MENU to advanceMenu.ext_menus
                         )
                     )

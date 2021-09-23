@@ -36,6 +36,7 @@ class AdvanceMenuDetailsFragment : Fragment() {
         const val ARGUMENT_AKTIF = "detailsAktif"
         const val ARGUMENT_WAJIB = "detailsWajib"
         const val ARGUMENT_PILIHAN_MAKSIMAL = "detailsPilihanMaksimal"
+        const val ARGUMENT_ID_ADVANCE = "idAdvanceMenu"
         const val ARGUMENT_ADDITIONAL_MENU = "detailsAdditionalMenu"
     }
 
@@ -104,12 +105,14 @@ class AdvanceMenuDetailsFragment : Fragment() {
             viewModel.setDetailsAktif(arguments?.getBoolean(ARGUMENT_AKTIF) ?: true)
             viewModel.setDetailsWajib(arguments?.getBoolean(ARGUMENT_WAJIB) ?: true)
             viewModel.setDetailsPilihanMaksimal(arguments?.getInt(ARGUMENT_PILIHAN_MAKSIMAL) ?: 1)
+            viewModel.setAdvanceId(arguments?.getLong(ARGUMENT_ID_ADVANCE) ?: 1)
             selectedChoice = if (arguments?.getInt(ARGUMENT_PILIHAN_MAKSIMAL) != 1) arguments?.getInt(ARGUMENT_PILIHAN_MAKSIMAL).toString() else "1"
             dataBinding.spinnerMenuChoice.setSelection(selectedChoice.toInt() - 1)
             viewModel.setDetailsAdditionalMenuList(
                     arguments?.get(ARGUMENT_ADDITIONAL_MENU) as List<AdvanceAdditionalMenu>? ?: listOf()
             )
         } else {
+            viewModel.setAdvanceId(arguments?.getLong(ARGUMENT_ID_ADVANCE) ?: 1)
             viewModel.detailsAdditionalMenuList.value?.size?.minus(1)?.let { viewModel.setDetailsPilihanMaksimal(it) }
         }
     }
@@ -166,6 +169,17 @@ class AdvanceMenuDetailsFragment : Fragment() {
                 Log.d("AdvanceMenuDetails", additionalMenuList.toString())
                 additionalMenuAdapter.setAdditionalMenuList(additionalMenuList)
             })
+
+        viewModel.isLocalLoading.observe(viewLifecycleOwner, Observer { bool ->
+            if (!bool) {
+                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                        bundleOf(
+                                AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to true,
+                                AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to viewModel.productId.value
+                        ))
+                viewModel.setLocalLoading(true)
+            }
+        })
     }
 
     private fun attachInputListeners() {
@@ -211,9 +225,13 @@ class AdvanceMenuDetailsFragment : Fragment() {
             viewModel.validateDetailsNamaPilihan(dataBinding.namaPilihanInputText.text.toString())
             selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
-            if (!viewModel.validateDetailsScreen()) return@setOnClickListener
-            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
-                    bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+            if (viewModel.addOrEdit.value == true) {
+                if (!viewModel.validateDetailsScreenForUpdate()) return@setOnClickListener
+            } else {
+                if (!viewModel.validateDetailsScreen()) return@setOnClickListener
+                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                        bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+            }
         }
     }
 
@@ -227,7 +245,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
                         bundleOf(
                             AdvanceMenuAdditionalFragment.ARGUMENT_IS_EDIT to true,
                             AdvanceMenuAdditionalFragment.ARGUMENT_MENU_NAME to advanceAdditionalMenu.ext_menu_name,
-                                AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.ext_menu_price
+                                AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.ext_menu_price,
+                                AdvanceMenuAdditionalFragment.ARGUMENT_MENU_EXT_ID to advanceAdditionalMenu.ext_id
                         )
                     )
                 }
