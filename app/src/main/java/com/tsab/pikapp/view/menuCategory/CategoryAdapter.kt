@@ -30,10 +30,5 @@ class CategoryAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var resultText: TextView = itemView.resultText
-//        var resultText: TextView
-//
-//        init {
-//            resultText = itemView.resultText
-//        }
     }
 }

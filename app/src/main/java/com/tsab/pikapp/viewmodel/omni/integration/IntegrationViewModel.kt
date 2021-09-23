@@ -29,10 +29,14 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
         mutableIsLoading.value = isLoading
     }
 
+    private val mutableTokpedListSize = MutableLiveData(0)
+    val tokpedListSize: LiveData<Int> = mutableTokpedListSize
     private val mutableIntegrationList = MutableLiveData<List<Omnichannel>>(listOf())
     val integrationList: LiveData<List<Omnichannel>> = mutableIntegrationList
     fun setIntegrationList(integrationList: List<Omnichannel>) {
         mutableIntegrationList.value = integrationList
+        val tokopediaFilter = integrationList.filter { tokped -> tokped.name.toLowerCase() == "tokopedia" }
+        mutableTokpedListSize.value = tokopediaFilter.size
     }
 
     fun fetchIntegrationList() {
@@ -44,7 +48,6 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<IntegrationArrayResponse>() {
                     override fun onSuccess(response: IntegrationArrayResponse) {
-                        Log.d(tag, response.toString())
                         if (!response.results.isNullOrEmpty()) {
                             setIntegrationList(response.results ?: listOf())
                         }
@@ -68,8 +71,6 @@ class IntegrationViewModel(application: Application) : BaseViewModel(application
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<IntegrationObjectResponse>() {
                     override fun onSuccess(response: IntegrationObjectResponse) {
-                        Log.d(tag, response.toString())
-
                         removeIntegration(omnichannel)
                         setLoading(false)
                     }

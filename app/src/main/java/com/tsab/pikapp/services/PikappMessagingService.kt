@@ -21,6 +21,7 @@ import com.tsab.pikapp.util.NOTIFICATION_CHANNEL_ID
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import java.util.*
 
 class PikappMessagingService : FirebaseMessagingService() {
@@ -35,8 +36,7 @@ class PikappMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-//        Log.d("Debug", "fcm notification : ${remoteMessage.data}")
-        showNotifDev(remoteMessage.data)
+        showNotif(remoteMessage.data)
 //        showNotification(remoteMessage.data)
 //        if (remoteMessage.data.isEmpty())
 //            showNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!)
@@ -133,16 +133,16 @@ class PikappMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         prefHelper.setFcmToken(p0)
-//        Log.d("Debug", "fcm token : $p0")
     }
 
-    private fun showNotifDev(data: Map<String, String>) {
+    private fun showNotif(data: Map<String, String>) {
         val title = data["title"].toString()
         val body = data["body"].toString()
         val omnichannel = data["omnichannel"].toString()
         val status = data["status"].toString()
         var clickAction = Intent(applicationContext, HomeNavigation::class.java)
         if (omnichannel == "true") {
+            clickAction = Intent(applicationContext, IntegrationActivity::class.java)
             SessionManager().setHomeNav(3)
         } else {
             SessionManager().setHomeNav(0)
