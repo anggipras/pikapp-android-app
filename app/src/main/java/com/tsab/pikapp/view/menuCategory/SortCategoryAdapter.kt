@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CategoryListResult
-import kotlinx.android.synthetic.main.category_items.view.*
 import kotlinx.android.synthetic.main.category_items.view.resultText
 import kotlinx.android.synthetic.main.category_menu_items_sort.view.*
 

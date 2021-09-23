@@ -19,7 +19,6 @@ import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
-import kotlinx.android.synthetic.main.fragment_signup_v2_third.*
 import kotlinx.android.synthetic.main.information_fragment.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody

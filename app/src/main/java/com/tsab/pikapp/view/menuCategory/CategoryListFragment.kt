@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,6 @@ import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
-
 
 class CategoryListFragment : Fragment() {
     private val viewModel: CategoryViewModel by activityViewModels()

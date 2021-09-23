@@ -1,5 +1,9 @@
 package com.tsab.pikapp.view.omni.integration
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,18 +24,25 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentIntegrationListBinding
 import com.tsab.pikapp.models.model.Omnichannel
 import com.tsab.pikapp.models.model.OmnichannelStatus
+import com.tsab.pikapp.receiver.AlarmReceiver
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.homev2.HomeNavigation
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity.Companion.ARGUMENT_OMNICHANNEL
 import com.tsab.pikapp.view.omni.integration.lists.IntegrationListAdapter
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
+import java.util.*
 
 class IntegrationListFragment : Fragment() {
     private val viewModel: IntegrationViewModel by activityViewModels()
 
     private lateinit var navController: NavController
     private lateinit var dataBinding: FragmentIntegrationListBinding
+    private val sessionManager = SessionManager()
 
     private lateinit var integrationListAdapter: IntegrationListAdapter
+    private var alarmMgr : AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +57,21 @@ class IntegrationListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        sessionManager.setHomeNav(3)
+
         observeViewModel()
         attachInputListeners()
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        })
     }
 
     private fun observeViewModel() {
@@ -57,11 +82,17 @@ class IntegrationListFragment : Fragment() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             dataBinding.integrationSwipeContainer.isRefreshing = isLoading
         })
+
+        viewModel.tokpedListSize.observe(viewLifecycleOwner, Observer { size ->
+            if (size < 1) cancelAlarm()
+        })
     }
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            activity?.finish()
+            Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                startActivity(this)
+            }
         }, view)
 
         setupStatusSelectionSpinner()
@@ -131,5 +162,14 @@ class IntegrationListFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = integrationListAdapter
         }
+    }
+
+    private fun cancelAlarm() {
+        alarmMgr = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmIntent = Intent(requireActivity(), AlarmReceiver::class.java).let { intent ->
+            PendingIntent.getBroadcast(requireActivity(), 0, intent, 0)
+        }
+
+        alarmMgr!!.cancel(alarmIntent)
     }
 }
