@@ -9,6 +9,7 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.getTimestamp
+import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuAdditionalAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -48,6 +49,12 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     val isLoading: LiveData<Boolean> = mutableIsLoading
     fun setLoading(isLoading: Boolean) {
         mutableIsLoading.value = isLoading
+    }
+
+    private val mutableIsLocalLoading = MutableLiveData<Boolean>()
+    val isLocalLoading: LiveData<Boolean> = mutableIsLocalLoading
+    fun setLocalLoading(isLoading: Boolean) {
+        mutableIsLocalLoading.value = isLoading
     }
 
     private val mutableIsAdvanceMenuActive = MutableLiveData<Boolean>(false)
@@ -297,5 +304,10 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
     fun sortAdditionalMenu(additionalMenu: List<AdvanceAdditionalMenu>) {
         mutableDetailsAdditionalMenuList.value = additionalMenu
+    }
+
+    fun deleteAdditionalMenu(choiceName: String?) {
+        mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != choiceName }
+        setLocalLoading(false)
     }
 }

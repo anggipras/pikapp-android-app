@@ -157,6 +157,19 @@
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="hargaInputText,hargaErrorText" />
 
+            <TextView
+                android:id="@+id/deleteMenuChoiceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/am_additional_hapus_pilihan"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:layout_marginTop="29dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hargaInputBarrier" />
+
             <!-- Save button -->
             <Button
                 android:id="@+id/saveButton"

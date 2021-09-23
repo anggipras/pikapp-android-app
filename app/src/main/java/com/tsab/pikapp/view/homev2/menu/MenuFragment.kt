@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +18,15 @@ import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
+import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
-    private lateinit var dataBinding: MenuFragmentBinding
+    private val viewModelDynamic: DynamicViewModel by activityViewModels()
     lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var dataBinding: MenuFragmentBinding
 
     var categoryName: String = ""
     private var viewPager: ViewPager? = null
@@ -60,34 +63,37 @@ class MenuFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModelDynamic.isLoading.observe(viewLifecycleOwner, Observer {
+            if (!it) dataBinding.shimmerFrameLayoutMenu.visibility = View.INVISIBLE
+        })
+
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             viewModel.size.observe(viewLifecycleOwner, Observer {
                 initViews()
             })
-
-            dataBinding.loadingOverlay.loadingView.visibility =
-                if (isLoading) View.VISIBLE else View.GONE
-
+            
             if (!isLoading) {
-                shimmerFrameLayout.stopShimmer()
-                dataBinding.shimmerFrameLayout.visibility = View.GONE
+                dataBinding.shimmerFrameLayoutCategory.visibility = View.INVISIBLE
                 if (viewModel.size.value == 0) {
                     invisibleMenu()
                     dataBinding.textview2.visibility = View.VISIBLE
                     dataBinding.imageView18.visibility = View.VISIBLE
                     dataBinding.addCategory.visibility = View.VISIBLE
                 } else if (viewModel.size.value != null) {
-                    viewModel.categoryListResult.observe(
-                        viewLifecycleOwner,
-                        Observer { categoryList ->
-                            categoryList?.let {
-                                invisibleMenuNull()
-                                dataBinding.viewpager.visibility = View.VISIBLE
-                                dataBinding.tabs.visibility = View.VISIBLE
-                                dataBinding.appbar.visibility = View.VISIBLE
-                                dataBinding.plusBtn.visibility = View.VISIBLE
+                    viewModel.categoryListResult.observe(viewLifecycleOwner, Observer { ioo ->
+                        ioo?.let {
+                            invisibleMenuNull()
+                            dataBinding.viewpager.visibility = View.VISIBLE
+                            dataBinding.tabs.visibility = View.VISIBLE
+                            dataBinding.appbar.visibility = View.VISIBLE
+                            dataBinding.plusBtn.visibility = View.VISIBLE
+                            dataBinding.plusBtn.setOnClickListener {
+                                val intent =
+                                    Intent(activity?.baseContext, CategoryNavigation::class.java)
+                                activity?.startActivity(intent)
                             }
-                        })
+                        }
+                    })
                 }
             }
         })
@@ -150,7 +156,8 @@ class MenuFragment : Fragment() {
         dataBinding.addCategory.visibility = View.GONE
         dataBinding.plusBtn.visibility = View.GONE
         dataBinding.textview3.visibility = View.GONE
-        dataBinding.shimmerFrameLayout.visibility = View.VISIBLE
+        dataBinding.shimmerFrameLayoutCategory.visibility = View.VISIBLE
+        dataBinding.shimmerFrameLayoutMenu.visibility = View.VISIBLE
     }
 
     private fun initViews() {
