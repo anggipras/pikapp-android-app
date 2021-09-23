@@ -92,31 +92,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listMenuDetail" />
 
-<!--            <com.facebook.shimmer.ShimmerFrameLayout-->
-<!--                android:id="@+id/shimmerFrameLayoutMenu"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:visibility="gone">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:orientation="vertical">-->
-
-<!--                    <include layout="@layout/shimmer_loading_menu" />-->
-
-<!--                    <include layout="@layout/shimmer_loading_menu" />-->
-
-<!--                    <include layout="@layout/shimmer_loading_menu" />-->
-
-<!--                    <include layout="@layout/shimmer_loading_menu" />-->
-
-<!--                    <include layout="@layout/shimmer_loading_menu" />-->
-
-<!--                </LinearLayout>-->
-
-<!--            </com.facebook.shimmer.ShimmerFrameLayout>-->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

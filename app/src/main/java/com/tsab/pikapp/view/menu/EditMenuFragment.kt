@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
@@ -61,11 +62,22 @@ class EditMenuFragment : Fragment() {
 
         observeViewModel()
         attachInputListeners()
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+                activity?.startActivity(intent)
+            }
+        })
     }
 
     private fun attachInputListeners() {
         dataBinding.header.backButton.setAllOnClickListener(View.OnClickListener {
-            activity?.finish()
+            val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+            activity?.startActivity(intent)
         }, view)
 
         dataBinding.infoBtn.setOnClickListener {
