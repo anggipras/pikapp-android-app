@@ -161,12 +161,12 @@
                         android:layout_width="128dp"
                         android:layout_height="128dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="100dp"
                         android:src="@drawable/icon_empty_category"
-                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/textview2"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
                         tools:ignore="ContentDescription" />
 
                     <TextView
@@ -176,10 +176,11 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
                         android:text="@string/tambah_kategori_untuk_menambahkan_menu"
-                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/textview3"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imageView18" />
+                        app:layout_constraintTop_toBottomOf="@+id/imageView18" />
 
                     <TextView
                         android:id="@+id/textview3"
@@ -193,12 +194,14 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="12sp"
-                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imageView18" />
+                        app:layout_constraintTop_toBottomOf="@+id/textview2" />
 
                     <ScrollView
+                        android:id="@+id/scrollView2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fillViewport="true">
@@ -248,13 +251,9 @@
                     android:visibility="invisible">
 
                     <include layout="@layout/shimmer_loading_category" />
-
                     <include layout="@layout/shimmer_loading_category" />
-
                     <include layout="@layout/shimmer_loading_category" />
-
                     <include layout="@layout/shimmer_loading_category" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -265,24 +264,15 @@
                     android:visibility="invisible">
 
                     <include layout="@layout/shimmer_loading_menu" />
-
                     <include layout="@layout/shimmer_loading_menu" />
-
                     <include layout="@layout/shimmer_loading_menu" />
-
                     <include layout="@layout/shimmer_loading_menu" />
-
                     <include layout="@layout/shimmer_loading_menu" />
-
                     <include layout="@layout/shimmer_loading_menu" />
-
                     <include layout="@layout/shimmer_loading_menu" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
