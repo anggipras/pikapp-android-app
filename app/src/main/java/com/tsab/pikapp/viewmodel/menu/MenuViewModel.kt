@@ -73,6 +73,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     val category: LiveData<String> get() = mutableCategory
     val categoryError: LiveData<String> get() = mutableCategoryError
 
+    private val mutableEtalase = MutableLiveData("")
+    private val mutableEtalaseError = MutableLiveData("")
+    private val isEtalaseValid = MutableLiveData(false)
+    val etalase: LiveData<String> get() = mutableEtalase
+    val etalaseError: LiveData<String> get() = mutableEtalaseError
+
     private val mutableCategoryId = MutableLiveData("")
     private val mutableCategoryIdError = MutableLiveData("")
     private val isCategoryIdValid = MutableLiveData(false)
@@ -212,6 +218,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isCategoryValid.value!!
     }
 
+    fun validateEtalase(Etalase: String): Boolean {
+        if (Etalase.isEmpty() || Etalase.isBlank()) {
+            mutableEtalaseError.value = "Nama kategori tidak boleh kosong"
+        } else {
+            mutableEtalaseError.value = ""
+        }
+        mutableEtalase.value =Etalase
+        isEtalaseValid.value = mutableEtalaseError.value!!.isEmpty()
+        return isEtalaseValid.value!!
+    }
+
     fun validateCategoryId(CategoryId: String): Boolean {
         if (CategoryId.isEmpty() || CategoryId.isBlank()) {
             mutableCategoryIdError.value = "Nama kategori tidak boleh kosong"
@@ -289,6 +306,8 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!! && isCategoryValid.value!!
+
+    fun validatePageTokped(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!! && isCategoryValid.value!! && isEtalaseValid.value!!
 
     fun postMenu() {
         setLoading(true)
