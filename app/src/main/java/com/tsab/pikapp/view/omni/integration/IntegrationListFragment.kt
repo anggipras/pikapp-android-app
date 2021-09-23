@@ -27,7 +27,7 @@ import com.tsab.pikapp.models.model.OmnichannelStatus
 import com.tsab.pikapp.receiver.AlarmReceiver
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
-import com.tsab.pikapp.view.homev2.HomeNavigation
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity.Companion.ARGUMENT_OMNICHANNEL
 import com.tsab.pikapp.view.omni.integration.lists.IntegrationListAdapter
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
@@ -67,7 +67,7 @@ class IntegrationListFragment : Fragment() {
     private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+                Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                 }
             }
@@ -90,7 +90,7 @@ class IntegrationListFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            Intent(activity?.baseContext, HomeNavigation::class.java).apply {
+            Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
             }
         }, view)
