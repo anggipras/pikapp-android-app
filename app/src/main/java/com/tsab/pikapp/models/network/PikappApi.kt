@@ -449,6 +449,16 @@ interface PikappApi {
         @Body addAdvancedMenuRequest: AddAdvanceMenuRequest
     ): Single<AddAdvanceMenuResponse>
 
+    @POST("merchant/v1/menu/advance/update/")
+    fun uptadeAdvanceMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Body editAdvancedMenuRequest: AdvanceMenuEdit
+    ): Call<BaseResponse>
+
     @GET("merchant/v1/menu/advance/{pid}/list/")
     fun listAdvanceMenu(
         @Header("x-request-id") requestId: String,
@@ -458,6 +468,16 @@ interface PikappApi {
         @Header("token") token: String,
         @Path("pid") productId: String
     ): Single<ListAdvanceMenuResponse>
+
+    @GET("merchant/v1/menu/advance/{pid}/list/")
+    fun listAdvanceMenuEdit(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Path("pid") productId: String
+    ): Single<ListAdvanceMenuEditResponse>
 
     @GET("/merchant/v1/shop/management/list/")
     fun getMerchantShopManagement(

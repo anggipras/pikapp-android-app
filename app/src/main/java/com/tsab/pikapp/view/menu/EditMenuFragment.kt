@@ -23,7 +23,7 @@ import com.tsab.pikapp.databinding.FragmentEditMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
-import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
+import com.tsab.pikapp.view.menu.advance.EditMenuAdvanceMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.alert_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_edit_menu.*
@@ -92,10 +92,9 @@ class EditMenuFragment : Fragment() {
             navController.navigate(
                 R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
                 bundleOf(
-                    AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to true,
-                    AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id
-                        ?: ""),
-                    AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to true
+                    EditMenuAdvanceMainFragment.ARGUMENT_MENU_EDIT to true,
+                        EditMenuAdvanceMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id ?: ""),
+                        EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to true
                 )
             )
         }

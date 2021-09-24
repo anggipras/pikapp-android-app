@@ -21,14 +21,6 @@
     <string name="star">*</string>
     <string name="ok">OK</string>
 
-    <!-- Bank names -->
-    <string name="dialog_pilih_bank">Pilih Bank</string>
-    <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>
-    <string name="bank_bni">BANK NEGARA INDONESIA (BNI)</string>
-    <string name="bank_bri">BANK RAKYAT INDONESIA (BRI)</string>
-    <string name="bank_mandiri">BANK MANDIRI</string>
-    <string name="bank_cimb">BANK CIMB NIAGA</string>
-
     <string name="akan_datang">Akan Datang</string>
     <string name="pelajari_lebih_lanjut">Pelajari lebih lanjut</string>
     <string name="alert_dialog">Apakah anda yakin ingin menghapus menu ini?</string>

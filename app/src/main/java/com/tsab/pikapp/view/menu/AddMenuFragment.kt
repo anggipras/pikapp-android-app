@@ -24,7 +24,6 @@ import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 
-
 class AddMenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
     private lateinit var navController: NavController

@@ -464,6 +464,20 @@ class PikappApiService {
         productId = pid
     )
 
+    fun listAdvanceMenuEdit(
+            email: String,
+            token: String,
+            pid: String,
+            timeStamp: String
+    ): Single<ListAdvanceMenuEditResponse> = api.listAdvanceMenuEdit(
+            requestId = getUUID(),
+            requestTimestamp = timeStamp,
+            clientId = getClientID(),
+            signature = getSignature(email, timeStamp),
+            token = token,
+            productId = pid
+    )
+
     fun changePinOfMerchant(
         email: String,
         token: String,
