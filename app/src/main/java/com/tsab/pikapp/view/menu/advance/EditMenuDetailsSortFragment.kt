@@ -13,29 +13,28 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentAdvanceMenuDetailsSortBinding
+import com.tsab.pikapp.databinding.FragmentEditMenuDetailsSortBinding
 import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
 import com.tsab.pikapp.models.model.AdvanceAdditionalMenuEdit
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuDetailsSortAdapter
-import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuEditAdditionalAdapter
 import com.tsab.pikapp.view.menu.advance.lists.AdvanceMenuEditDetailsSortAdapter
 import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
 import kotlinx.android.synthetic.main.fragment_advance_menu_details_sort.*
 import java.util.*
 
-class AdvanceMenuDetailsSortFragment : Fragment() {
+class EditMenuDetailsSortFragment : Fragment() {
     private val viewModel: AdvanceMenuViewModel by activityViewModels()
     private lateinit var navController: NavController
-    private lateinit var dataBinding: FragmentAdvanceMenuDetailsSortBinding
-    private lateinit var additionalMenuAdapter: AdvanceMenuDetailsSortAdapter
+    private lateinit var dataBinding: FragmentEditMenuDetailsSortBinding
+    private lateinit var additionalMenuEditAdapter: AdvanceMenuEditDetailsSortAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
-    private var menuChoiceList: MutableList<AdvanceAdditionalMenu> = mutableListOf()
+    private var menuEditChoiceList: MutableList<AdvanceAdditionalMenuEdit> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_advance_menu_details_sort, container, false)
+            inflater, R.layout.fragment_edit_menu_details_sort, container, false)
         return dataBinding.root
     }
 
@@ -49,9 +48,9 @@ class AdvanceMenuDetailsSortFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        additionalMenuAdapter = AdvanceMenuDetailsSortAdapter(viewModel.detailsAdditionalMenuList.value!!.toMutableList())
-        additionalMenuAdapter.notifyDataSetChanged()
-        recyclerview_menuChoice.adapter = additionalMenuAdapter
+        additionalMenuEditAdapter = AdvanceMenuEditDetailsSortAdapter(viewModel.detailsAdditionalMenuListEdit.value!!.toMutableList())
+        additionalMenuEditAdapter.notifyDataSetChanged()
+        recyclerview_menuChoice.adapter = additionalMenuEditAdapter
     }
 
     private fun attachInputListeners() {
@@ -74,21 +73,22 @@ class AdvanceMenuDetailsSortFragment : Fragment() {
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 Collections.swap(
-                        additionalMenuAdapter.menuChoiceList,
-                        viewHolder.adapterPosition,
-                        target.adapterPosition
+                    additionalMenuEditAdapter.menuEditChoiceList,
+                    viewHolder.adapterPosition,
+                    target.adapterPosition
                 )
 
-                additionalMenuAdapter.notifyItemMoved(
-                        viewHolder.adapterPosition,
-                        target.adapterPosition
+                additionalMenuEditAdapter.notifyItemMoved(
+                    viewHolder.adapterPosition,
+                    target.adapterPosition
                 )
 
-                menuChoiceList = additionalMenuAdapter.menuChoiceList.mapIndexed { _, advanceAdditionalMenu ->
-                    AdvanceAdditionalMenu(
-                            ext_menu_name = advanceAdditionalMenu.ext_menu_name,
-                            ext_menu_price = advanceAdditionalMenu.ext_menu_price,
-                            active = advanceAdditionalMenu.active
+                menuEditChoiceList = additionalMenuEditAdapter.menuEditChoiceList.mapIndexed { _, advanceAdditionalMenu ->
+                    AdvanceAdditionalMenuEdit(
+                        ext_menu_name = advanceAdditionalMenu.ext_menu_name,
+                        ext_menu_price = advanceAdditionalMenu.ext_menu_price,
+                        active = advanceAdditionalMenu.active,
+                        ext_id = advanceAdditionalMenu.ext_id
                     )
                 }.toMutableList()
 
@@ -104,12 +104,12 @@ class AdvanceMenuDetailsSortFragment : Fragment() {
         itemTouchHelperCallback.attachToRecyclerView(recyclerview_menuChoice)
 
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            navController.navigate(R.id.action_advanceMenuDetailsSortFragment_to_advanceMenuDetailsFragment)
+            navController.navigate(R.id.action_editMenuDetailsSortFragment_to_editMenuAdvanceDetailsFragment)
         }, view)
 
         dataBinding.nextButton.setOnClickListener {
-            viewModel.sortAdditionalMenu(menuChoiceList)
-            navController.navigate(R.id.action_advanceMenuDetailsSortFragment_to_advanceMenuDetailsFragment)
+            viewModel.sortAdditionalMenuEdit(menuEditChoiceList)
+            navController.navigate(R.id.action_editMenuDetailsSortFragment_to_editMenuAdvanceDetailsFragment)
         }
     }
 }

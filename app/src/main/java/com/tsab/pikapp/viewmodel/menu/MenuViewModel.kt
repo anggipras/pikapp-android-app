@@ -102,6 +102,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         mutableAdvanceMenuList.value = AddAdvanceMenuRequest(advanceMenuList)
     }
 
+    private val mutableAdvanceMenuEditList = MutableLiveData<EditAdvanceMenuRequest>()
+    val advanceMenuEditList: LiveData<EditAdvanceMenuRequest> = mutableAdvanceMenuEditList
+    fun setAdvanceMenuEditList(advanceMenuList: List<AdvanceMenuEdit>) {
+        mutableAdvanceMenuEditList.value = EditAdvanceMenuRequest(advanceMenuList)
+    }
+
     private val mutableDesc = MutableLiveData("")
     private val mutableDescError = MutableLiveData("")
     private val isDescValid = MutableLiveData(false)
@@ -158,11 +164,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return mutableCategory.value
     }
 
-    fun getCategoryName1(): String? {
-        Log.e("nama", name1)
-        return name1
-    }
-
     fun backBtn() {
         mutableImg.value = null
     }
@@ -191,6 +192,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             Log.e("Kosong", "Kosongg")
         } else {
             mutableImg.value = img
+            mutableMenuError.value = ""
         }
         return img
     }
@@ -419,17 +421,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         setLoading(true)
         val timeStamp = getTimestamp()
         disposable.add(
-                apiService.listAdvanceMenu(
+                apiService.listAdvanceMenuEdit(
                         email = sessionManager.getUserData()?.email ?: "",
                         token = sessionManager.getUserToken() ?: "",
                         pid = productId,
                         timeStamp = timeStamp
                 ).subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {
-                            override fun onSuccess(response: ListAdvanceMenuResponse) {
+                        .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuEditResponse>() {
+                            override fun onSuccess(response: ListAdvanceMenuEditResponse) {
                                 if (response.results.isNotEmpty()) {
-                                    setAdvanceMenuList(response.results)
+                                    setAdvanceMenuEditList(response.results)
                                 }
                                 setLoading(false)
                             }

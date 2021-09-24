@@ -47,10 +47,32 @@ data class AdvanceMenu(
 
         @SerializedName("max_choose")
         var max_choose: Int,
-        @SerializedName("id")
-        var id: Long,
         @SerializedName("ext_menus")
         var ext_menus: List<AdvanceAdditionalMenu>
+)
+
+data class AdvanceAdditionalMenu(
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean
+)
+
+data class EditAdvanceMenuRequest(
+        @SerializedName("advance_menus")
+        var advance_menus: List<AdvanceMenuEdit>
+)
+
+data class ListAdvanceMenuEditResponse(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+
+        @SerializedName("results")
+        var results: List<AdvanceMenuEdit>
 )
 
 data class AdvanceMenuEdit(
@@ -71,10 +93,10 @@ data class AdvanceMenuEdit(
         @SerializedName("id")
         var id: Long,
         @SerializedName("ext_menus")
-        var ext_menus: List<AdvanceAdditionalMenu>
+        var ext_menus: List<AdvanceAdditionalMenuEdit>
 )
 
-data class AdvanceAdditionalMenu(
+data class AdvanceAdditionalMenuEdit(
         @SerializedName("ext_menu_name")
         var ext_menu_name: String,
         @SerializedName("ext_menu_price")
