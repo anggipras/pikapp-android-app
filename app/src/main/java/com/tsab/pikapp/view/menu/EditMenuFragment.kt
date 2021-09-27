@@ -23,6 +23,7 @@ import com.tsab.pikapp.databinding.FragmentEditMenuBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
+import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.view.menu.advance.EditMenuAdvanceMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.alert_dialog.view.*
@@ -36,7 +37,7 @@ class EditMenuFragment : Fragment() {
 
     private val pickerContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            viewModelMenu.validateImg(uri)
+            viewModelMenu.validateImgEdit(uri)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,14 +90,22 @@ class EditMenuFragment : Fragment() {
         }
 
         dataBinding.pilihanMenuButton.setOnClickListener {
-            navController.navigate(
-                R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
-                bundleOf(
-                    EditMenuAdvanceMainFragment.ARGUMENT_MENU_EDIT to true,
-                        EditMenuAdvanceMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id ?: ""),
-                        EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to true
+            if (viewModelMenu.isMenuChoiceEmpty.value == true) {
+                navController.navigate(R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment2,
+                        bundleOf(
+                                AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to false,
+                                AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to "none"
+                        ))
+            } else {
+                navController.navigate(
+                        R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
+                        bundleOf(
+                                EditMenuAdvanceMainFragment.ARGUMENT_MENU_EDIT to true,
+                                EditMenuAdvanceMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id ?: ""),
+                                EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to true
+                        )
                 )
-            )
+            }
         }
 
         dataBinding.kategori.isFocusable = false
@@ -114,7 +123,7 @@ class EditMenuFragment : Fragment() {
         }
 
         dataBinding.btnNext.setOnClickListener {
-            viewModelMenu.validateMenu(viewModelMenu.img.value)
+//            viewModelMenu.validateMenu(viewModelMenu.img.value)
             viewModelMenu.validateNama(dataBinding.namaMenu.text.toString())
             viewModelMenu.validateHarga(dataBinding.harga.text.toString())
             viewModelMenu.validateDesc(dataBinding.descMenu.text.toString())

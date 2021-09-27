@@ -30,7 +30,7 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
         mutableLoading.value = boolean
     }
 
-    fun getAmountOfMenu() {
+    fun getMenuList() {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -46,7 +46,7 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
             ) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val amountOfMenus = response.body()!!.total_items
-                    getSearchList()
+                    getSearchList(amountOfMenus)
                 } else {
                     Log.e("FAIL", "Failed get amount of menus")
                 }
@@ -58,7 +58,7 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
         })
     }
 
-    fun getSearchList() {
+    fun getSearchList(amountOfMenus: Int) {
         if (menuList.value!!.isNotEmpty()) return
 
         val email = sessionManager.getUserData()!!.email!!
@@ -69,7 +69,7 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
 
         PikappApiService().api.searchMenu(
             getUUID(), timestamp, getClientID(), signature, token,
-            mid, SearchRequest("", 0, 30)
+            mid, SearchRequest("", 0, amountOfMenus)
         ).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(
                 call: Call<SearchResponse>,

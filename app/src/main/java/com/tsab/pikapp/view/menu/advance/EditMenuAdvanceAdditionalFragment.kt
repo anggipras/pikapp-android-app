@@ -57,6 +57,7 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
 
     private fun fetchArguments() {
         viewModel.setAdditionalNamaDaftarPilihan(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
+        viewModel.setAdditionalPreviousName(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
         viewModel.setAdditionalHarga(arguments?.getString(ARGUMENT_MENU_PRICE) ?: "")
         viewModel.setMenuExtId(arguments?.getLong(ARGUMENT_MENU_EXT_ID) ?: 1)
 

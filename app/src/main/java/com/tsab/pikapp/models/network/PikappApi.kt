@@ -413,6 +413,27 @@ interface PikappApi {
 
     @Multipart
     @POST("merchant/v2/product-action/")
+    fun uploadEditMenu(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String? = null,
+            @Part("product_name") product_name: RequestBody,
+            @Part("product_desc") product_desc: RequestBody,
+            @Part("menu_category_id") id: RequestBody,
+            @Part("price") price: RequestBody,
+            @Part("condition") condition: RequestBody,
+            @Part("action") action: RequestBody,
+            @Part("status") status: RequestBody,
+            @Part("product_qty") qty: RequestBody,
+            @Part("extra_menu") extra: RequestBody
+    ): Call<BaseResponse>
+
+    @Multipart
+    @POST("merchant/v2/product-action/")
     fun deleteMenu(
             @Header("x-request-id") uuid: String,
             @Header("x-request-timestamp") time: String,
