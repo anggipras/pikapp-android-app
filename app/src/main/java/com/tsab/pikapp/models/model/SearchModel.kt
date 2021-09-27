@@ -56,5 +56,7 @@ data class SearchItem(
     @SerializedName("merchant_category_name")
     var merchant_category_name: String?,
     @SerializedName("merchant_category_order")
-    var merchant_category_order: Int
+    var merchant_category_order: Int,
+    @SerializedName("merchant_category_id")
+    var merchant_category_id: Long
 ) : Serializable

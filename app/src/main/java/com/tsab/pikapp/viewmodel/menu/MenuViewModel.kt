@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -52,7 +53,19 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         mutableMenuList.value = menu
         menu.product_id?.let { fetchAdvanceMenuData(it) }
         menu.on_off?.let { setMenuActive(it.toBoolean()) }
-        mutableCategoryError.value = "Pilih kembali kategori"
+        mutableImg.value = menu.pict_01?.toUri()
+        mutableCategoryId.value = menu.merchant_category_id.toString()
+        isCategoryValid.value = true
+        isMenuValid.value = true
+    }
+
+    /**
+     * Set empty or not the advance menu list
+     */
+    private val mutableIsMenuChoiceEmpty = MutableLiveData<Boolean>()
+    val isMenuChoiceEmpty: LiveData<Boolean> = mutableIsMenuChoiceEmpty
+    fun setMenuChoiceEmpty(boolean: Boolean) {
+        mutableIsMenuChoiceEmpty.value = boolean
     }
 
     private val mutableAddOrEdit = MutableLiveData<Boolean>()
@@ -177,7 +190,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun validateMenu(menu: Uri?): Boolean {
         if (menu == null || menu == Uri.EMPTY) {
-            mutableMenuError.value = if (addOrEdit.value == true) "Pilih kembali gambar" else "Gambar menu tidak boleh kosong"
+            mutableMenuError.value = "Gambar menu tidak boleh kosong"
             isMenuValid.value = false
         } else {
             mutableMenuError.value = ""
@@ -187,9 +200,15 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isMenuValid.value!!
     }
 
+    fun validateImgEdit(img: Uri?): Uri? {
+        mutableImg.value = img
+        mutableMenu.value = img
+        return img
+    }
+
     fun validateImg(img: Uri?): Uri? {
         if (menu == null || menu == Uri.EMPTY) {
-            Log.e("Kosong", "Kosongg")
+            Log.e("EMPTYURI", "It's empty")
         } else {
             mutableImg.value = img
             mutableMenuError.value = ""
@@ -323,69 +342,105 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val gson = Gson()
         val type = object : TypeToken<BaseResponse>() {}.type
 
-        val menuParcelFileDescriptor = application.contentResolver.openFileDescriptor(
-            menu.value!!,
-            "r", null
-        ) ?: return
-        val menuInputStream = FileInputStream(menuParcelFileDescriptor.fileDescriptor)
-        val menuFile = File(
-            application.cacheDir, application.contentResolver.getFileName(
-                menu.value!!
-            )
-        )
-        val menuOutputStream = FileOutputStream(menuFile)
-        menuInputStream.copyTo(menuOutputStream)
-
         val actionMenu = if (addOrEdit.value == true) "MODIFY" else "ADD"
         val statusMenu = if (addOrEdit.value == true) isMenuActive.value.toString() else "true"
         val jsonString = GsonBuilder().create().toJson(advanceMenuList.value)
         val productId = if (menuList.value?.product_id.isNullOrEmpty()) null else menuList.value?.product_id
 
-        apiService.api.uploadMenu(
-            getUUID(), timestamp, getClientID(), signature, token, mid, productId,
-            MultipartBody.Part.createFormData(
-                "file_01", menuFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
-            ),
-            MultipartBody.Part.createFormData(
-                "file_02", menuFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
-            ),
-            MultipartBody.Part.createFormData(
-                "file_03", menuFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
-            ),
-            RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), desc.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
-            RequestBody.create(MediaType.parse("multipart/form-data"), statusMenu),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
-        ).enqueue(object : Callback<BaseResponse> {
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    setLoading(false)
-                    setLoadingFinish(false)
-                    val toastAddEdit = if (actionMenu == "ADD") "Menu berhasil ditambahkan" else "Perubahan berhasil tersimpan"
-                    Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
-                } else {
-                    setLoading(false)
-                    var errorResponse: BaseResponse? =
-                        gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Log.e(
-                        "Result",
-                        generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
-                    )
+        if (menu.value == null || menu.value == Uri.EMPTY) {
+            apiService.api.uploadEditMenu(
+                    getUUID(), timestamp, getClientID(), signature, token, mid, productId,
+                    RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), desc.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), statusMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
+            ).enqueue(object : Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                        setLoading(false)
+                        setLoadingFinish(false)
+                        val toastAddEdit = "Perubahan berhasil tersimpan"
+                        Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
+                    } else {
+                        setLoading(false)
+                        var errorResponse: BaseResponse? =
+                                gson.fromJson(response.errorBody()!!.charStream(), type)
+                        Log.e(
+                                "Result",
+                                generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
+                        )
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                Log.e("UploadRegisterError", t.message.toString())
-            }
-        })
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e("UploadRegisterError", t.message.toString())
+                }
+            })
+        } else {
+            val menuParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+                    menu.value!!,
+                    "r", null
+            ) ?: return
+            val menuInputStream = FileInputStream(menuParcelFileDescriptor.fileDescriptor)
+            val menuFile = File(
+                    application.cacheDir, application.contentResolver.getFileName(
+                    menu.value!!
+            )
+            )
+            val menuOutputStream = FileOutputStream(menuFile)
+            menuInputStream.copyTo(menuOutputStream)
+
+            apiService.api.uploadMenu(
+                    getUUID(), timestamp, getClientID(), signature, token, mid, productId,
+                    MultipartBody.Part.createFormData(
+                            "file_01", menuFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_02", menuFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_03", menuFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+                    ),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), desc.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), statusMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
+            ).enqueue(object : Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                        setLoading(false)
+                        setLoadingFinish(false)
+                        val toastAddEdit = if (actionMenu == "ADD") "Menu berhasil ditambahkan" else "Perubahan berhasil tersimpan"
+                        Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
+                    } else {
+                        setLoading(false)
+                        var errorResponse: BaseResponse? =
+                                gson.fromJson(response.errorBody()!!.charStream(), type)
+                        Log.e(
+                                "Result",
+                                generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e("UploadRegisterError", t.message.toString())
+                }
+            })
+        }
     }
 
     fun deleteMenu() {
@@ -432,6 +487,9 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                             override fun onSuccess(response: ListAdvanceMenuEditResponse) {
                                 if (response.results.isNotEmpty()) {
                                     setAdvanceMenuEditList(response.results)
+                                    setMenuChoiceEmpty(false)
+                                } else {
+                                    setMenuChoiceEmpty(true)
                                 }
                                 setLoading(false)
                             }

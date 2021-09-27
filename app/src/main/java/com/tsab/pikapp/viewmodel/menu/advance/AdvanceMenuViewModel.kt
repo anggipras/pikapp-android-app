@@ -230,6 +230,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
         mutableDetailsAdditionalMenuList.value =
                 detailsAdditionalMenuList.value?.toMutableList()?.apply { add(additionalMenu) }
+        mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != mutableAdditionalPreviousName.value }
     }
 
     //EDIT MENU
@@ -249,6 +250,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
         mutableDetailsAdditionalMenuEdit.value =
                 detailsAdditionalMenuListEdit.value?.toMutableList()?.apply { add(additionalMenu) }
+        mutableDetailsAdditionalMenuEdit.value = detailsAdditionalMenuListEdit.value?.filter { it.ext_menu_name != mutableAdditionalPreviousName.value }
     }
 
     fun validateDetailsNamaPilihan(namaPilihan: String): Boolean {
@@ -363,6 +365,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         isDetailsPilihanMaksimalValid.value = false
 
         mutableDetailsAdditionalMenuList.value = listOf()
+        mutableDetailsAdditionalMenuEdit.value = listOf()
     }
 
     /**
@@ -385,6 +388,12 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     fun setAdditionalHarga(harga: String) {
         mutableAdditionalHarga.value = harga
     }
+
+    private val mutableAdditionalPreviousName = MutableLiveData<String>("")
+    fun setAdditionalPreviousName(namaDaftarPilihan: String) {
+        mutableAdditionalPreviousName.value = namaDaftarPilihan
+    }
+
 
     fun validateAdditionalNamaDaftarPilihan(namaDaftarPilihan: String): Boolean {
         if (namaDaftarPilihan.isEmpty() || namaDaftarPilihan.isBlank()) {
