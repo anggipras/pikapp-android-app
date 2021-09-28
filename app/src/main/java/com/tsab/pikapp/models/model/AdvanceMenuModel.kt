@@ -75,6 +75,16 @@ data class ListAdvanceMenuEditResponse(
         var results: List<AdvanceMenuEdit>
 )
 
+data class ListAdvanceMenuEditResp(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+
+        @SerializedName("results")
+        var results: AdvanceMenuEdit
+)
+
 data class AdvanceMenuEdit(
         @SerializedName("product_id")
         var product_id: String? = null,

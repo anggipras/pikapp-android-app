@@ -133,8 +133,12 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
             viewModel.validateAdditionalNamaDaftarPilihan(dataBinding.namaDaftarPilihanInputText.text.toString())
             viewModel.validateAdditionalHarga(dataBinding.hargaInputText.text.toString())
 
-            if (!viewModel.validateAdditionalScreen()) return@setOnClickListener
-            navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+            if (viewModel.isNewMenuChoice.value == true) {
+                viewModel.sendNewMenuChoiceOnEdit()
+            } else {
+                if (!viewModel.validateAdditionalScreenEdit()) return@setOnClickListener
+                navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+            }
         }
     }
 
