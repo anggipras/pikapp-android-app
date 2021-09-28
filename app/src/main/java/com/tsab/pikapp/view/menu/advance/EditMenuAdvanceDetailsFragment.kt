@@ -204,10 +204,11 @@ class EditMenuAdvanceDetailsFragment : Fragment() {
             viewModel.validateDetailsNamaPilihan(dataBinding.namaPilihanInputText.text.toString())
             selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
-            if (!viewModel.validateDetailsScreen()) return@OnClickListener
+            if (!viewModel.validateDetailsScreenEdit()) return@OnClickListener
 
             viewModel.resetAdditionalScreen()
             navController.navigate(R.id.action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceAdditionalFragment)
+            viewModel.setNewMenuChoice(true)
         }, view)
 
         dataBinding.nextButton.setOnClickListener {
@@ -225,6 +226,7 @@ class EditMenuAdvanceDetailsFragment : Fragment() {
                 viewModel.detailsAdditionalMenuListEdit.value!!.toMutableList(),
                 object : AdvanceMenuEditAdditionalAdapter.OnItemClickListener {
                     override fun onItemClick(advanceAdditionalMenu: AdvanceAdditionalMenuEdit) {
+                        viewModel.setNewMenuChoice(false)
                         navController.navigate(
                                 R.id.action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceAdditionalFragment,
                                 bundleOf(

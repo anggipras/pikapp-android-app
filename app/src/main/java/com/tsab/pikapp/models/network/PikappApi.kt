@@ -478,7 +478,7 @@ interface PikappApi {
             @Header("x-signature") signature: String,
             @Header("token") token: String,
             @Body editAdvancedMenuRequest: AdvanceMenuEdit
-    ): Call<BaseResponse>
+    ): Call<ListAdvanceMenuEditResp>
 
     @GET("merchant/v1/menu/advance/{pid}/list/")
     fun listAdvanceMenu(

@@ -116,7 +116,7 @@ class EditMenuAdvanceMainFragment : Fragment() {
 
         dataBinding.tambahPilihanGroup.setAllOnClickListener(View.OnClickListener {
             viewModel.resetDetailsScreen()
-            navController.navigate(R.id.action_editMenuAdvanceMainFragment_to_editMenuAdvanceDetailsFragment)
+            navController.navigate(R.id.action_editMenuAdvanceMainFragment_to_advanceMenuDetailsFragment)
         }, view)
 
         dataBinding.saveButton.setOnClickListener {
