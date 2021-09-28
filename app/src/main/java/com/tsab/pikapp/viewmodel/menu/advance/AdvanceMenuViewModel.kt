@@ -434,10 +434,10 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         mutableAdditionalPreviousName.value = namaDaftarPilihan
     }
 
-    private val mutableIsNewMenuChoice = MutableLiveData<Boolean>()
-    val isNewMenuChoice: LiveData<Boolean> = mutableIsNewMenuChoice
-    fun setNewMenuChoice(boolean: Boolean) {
-        mutableIsNewMenuChoice.value = boolean
+    private val mutableIsNewMenuChoice = MutableLiveData(0)
+    val isNewMenuChoice: LiveData<Int> = mutableIsNewMenuChoice
+    fun setNewMenuChoice(num: Int) {
+        mutableIsNewMenuChoice.value = num
     }
 
     fun validateAdditionalNamaDaftarPilihan(namaDaftarPilihan: String): Boolean {
@@ -486,11 +486,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     fun deleteAdditionalMenu(choiceName: String?) {
-        if (addOrEdit.value == true) {
-            mutableDetailsAdditionalMenuEdit.value = detailsAdditionalMenuListEdit.value?.filter { it.ext_menu_name != choiceName }
-        } else {
-            mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != choiceName }
-        }
+        mutableDetailsAdditionalMenuList.value = detailsAdditionalMenuList.value?.filter { it.ext_menu_name != choiceName }
         setLocalLoading(false)
     }
     /*ADD EACH EXTRA MENU END*/
@@ -513,10 +509,21 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     fun sortAdditionalMenuEdit(additionalMenu: List<AdvanceAdditionalMenuEdit>) {
         mutableDetailsAdditionalMenuEdit.value = additionalMenu
     }
+
+    fun deleteAdditionalMenuEdit() {
+//        mutableDetailsAdditionalMenuEdit.value = detailsAdditionalMenuListEdit.value?.filter { it.ext_menu_name != choiceName }
+
+        /*PREPARE FOR SEND DATA TO DELETE EXTRA MENUS API ON EXISTING ADVANCE MENU*/
+        /*AFTER HITTING EDIT API, HIT AGAIN GET ADVANCE MENU AND RESTORE IN LIVE DATA*/
+        setNewMenuChoice(2)
+        val deleteExtMenuId = menuExtId.value
+        Log.d("DELETE_EXT_MENUS", deleteExtMenuId.toString())
+        setLocalLoading(false)
+    }
     /*EDIT EACH EXTRA MENU END*/
 
-    fun sendNewMenuChoiceOnEdit() {
-        /*PREPARE FOR SEND DATA TO NEW EXTRA MENUS API ON EXISTING ADVANCE MENU*/
+    fun sendNewExtraMenu() : Boolean {
+        if (!isAdditionalNamaDaftarPilihanValid.value!! || !isAdditionalHargaValid.value!!) return false
 
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
@@ -524,7 +531,18 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
 
-        Log.d("EXTRA_MENUS", "Add extra menus on existing advance menu")
+        val newExtMenuChoice = AdvanceAdditionalMenu(
+                ext_menu_name = additionalNamaDaftarPilihan.value!!,
+                ext_menu_price = additionalHarga.value!!,
+                active = true
+        )
+
+        /*PREPARE FOR SEND DATA TO NEW EXTRA MENUS API ON EXISTING ADVANCE MENU*/
+        /*AFTER HITTING ADD API, HIT AGAIN GET ADVANCE MENU AND RESTORE IN LIVE DATA*/
+
+        Log.d("EXTRA_MENUS", newExtMenuChoice.toString())
+        setLocalLoading(false)
+        return true
     }
 
     fun resetAdditionalScreen() {
