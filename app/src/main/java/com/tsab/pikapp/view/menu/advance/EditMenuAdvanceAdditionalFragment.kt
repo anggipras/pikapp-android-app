@@ -3,6 +3,7 @@ package com.tsab.pikapp.view.menu.advance
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -94,7 +95,20 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
 
         viewModel.isLocalLoading.observe(viewLifecycleOwner, Observer { bool ->
             if (!bool) {
-                navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+                Log.d("ISMENUCHOICE", viewModel.isNewMenuChoice.value.toString())
+                if (viewModel.isNewMenuChoice.value == 1 || viewModel.isNewMenuChoice.value == 2) {
+                    navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment,
+                            bundleOf(
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to true,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_NAMA_PILIHAN to viewModel.detailsNamaPilihan.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_AKTIF to viewModel.isDetailsAktif.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_WAJIB to viewModel.isDetailsWajib.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to viewModel.detailsPilihanMaksimal.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_ID_ADVANCE to viewModel.advanceId.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_ADDITIONAL_MENU to viewModel.detailsAdditionalMenuListEdit.value))
+                } else {
+                    navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+                }
                 viewModel.setLocalLoading(true)
             }
         })
@@ -133,8 +147,8 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
             viewModel.validateAdditionalNamaDaftarPilihan(dataBinding.namaDaftarPilihanInputText.text.toString())
             viewModel.validateAdditionalHarga(dataBinding.hargaInputText.text.toString())
 
-            if (viewModel.isNewMenuChoice.value == true) {
-                viewModel.sendNewMenuChoiceOnEdit()
+            if (viewModel.isNewMenuChoice.value == 1) {
+                if (!viewModel.sendNewExtraMenu()) return@setOnClickListener
             } else {
                 if (!viewModel.validateAdditionalScreenEdit()) return@setOnClickListener
                 navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
@@ -160,7 +174,7 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
             mAlertDialog.dismiss()
         }
         mDialogView.dialog_ok_choice.setOnClickListener {
-            viewModel.deleteAdditionalMenu(arguments?.getString(ARGUMENT_MENU_NAME))
+            viewModel.deleteAdditionalMenuEdit()
             mAlertDialog.dismiss()
         }
     }

@@ -208,7 +208,7 @@ class EditMenuAdvanceDetailsFragment : Fragment() {
 
             viewModel.resetAdditionalScreen()
             navController.navigate(R.id.action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceAdditionalFragment)
-            viewModel.setNewMenuChoice(true)
+            viewModel.setNewMenuChoice(1)
         }, view)
 
         dataBinding.nextButton.setOnClickListener {
@@ -226,7 +226,7 @@ class EditMenuAdvanceDetailsFragment : Fragment() {
                 viewModel.detailsAdditionalMenuListEdit.value!!.toMutableList(),
                 object : AdvanceMenuEditAdditionalAdapter.OnItemClickListener {
                     override fun onItemClick(advanceAdditionalMenu: AdvanceAdditionalMenuEdit) {
-                        viewModel.setNewMenuChoice(false)
+                        viewModel.setNewMenuChoice(0)
                         navController.navigate(
                                 R.id.action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceAdditionalFragment,
                                 bundleOf(

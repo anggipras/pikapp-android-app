@@ -108,10 +108,6 @@ class AddMenuFragment : Fragment() {
 
             if (viewModel.validatePage()) {
                 viewModel.postMenu()
-                Handler().postDelayed({
-                    val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                    activity?.startActivity(intent)
-                }, 500)
             }
         }
     }
