@@ -13,7 +13,9 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCancelBinding
 import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
+import kotlinx.android.synthetic.main.fragment_cancel.*
 import kotlinx.android.synthetic.main.fragment_proccess.*
+import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 
 class CancelFragment : Fragment() {
 
@@ -42,7 +44,7 @@ class CancelFragment : Fragment() {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
 
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal",  requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal",  requireActivity().supportFragmentManager, emptyState1) }
         observeViewModel()
     }
 

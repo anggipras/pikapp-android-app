@@ -632,4 +632,30 @@ interface PikappApi {
         @Header("x-client-id") clientId: String,
         @Path("id") channelId: String
     ): Single<IntegrationObjectResponse>
+
+    @GET("channel/v1/order-omni-channel/list/")
+    fun getListOrderOmni(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("mid") merchantId: String,
+        @Header("page") page: String,
+        @Header("size") size: String
+    ): Call<ListOrderOmni>
+
+    @GET("channel/v1/order-omni-channel/detail/{orderId}/")
+    fun getListOrderDetailOmni(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Path("orderId") orderId: String
+    ): Call<ListOrderDetailOmni>
+
+    @POST("channel/v1/ack/order/")
+    fun acceptOrderTokopedia(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Body AcceptOrderTokopediaRequest: AcceptOrderTokopediaRequest
+    ): Call<AcceptOrderTokopediaResponse>
 }

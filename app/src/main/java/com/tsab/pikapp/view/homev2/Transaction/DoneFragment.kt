@@ -14,7 +14,9 @@ import com.tsab.pikapp.databinding.FragmentDoneBinding
 import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
+import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.fragment_proccess.*
+import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 
 class DoneFragment : Fragment() {
 
@@ -44,7 +46,7 @@ class DoneFragment : Fragment() {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
 
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone) }
 
         observeViewModel()
     }
@@ -52,7 +54,7 @@ class DoneFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone) }
     }
 
     private fun observeViewModel() {
