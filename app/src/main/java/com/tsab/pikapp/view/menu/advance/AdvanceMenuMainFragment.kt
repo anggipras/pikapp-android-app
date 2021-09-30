@@ -61,11 +61,7 @@ class AdvanceMenuMainFragment : Fragment() {
     private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (viewModelMenu.isMenuChoiceEmpty.value == true) {
-                    navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
-                } else {
-                    navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
-                }
+                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
             }
         })
     }
@@ -114,11 +110,7 @@ class AdvanceMenuMainFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            if (viewModelMenu.isMenuChoiceEmpty.value == true) {
-                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
-            } else {
-                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
-            }
+            navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
         }, view)
 
         dataBinding.aktifkanSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -132,11 +124,7 @@ class AdvanceMenuMainFragment : Fragment() {
 
         dataBinding.saveButton.setOnClickListener {
             viewModelMenu.setAdvanceMenuList(viewModel.advanceMenuList.value!!)
-            if (viewModelMenu.isMenuChoiceEmpty.value == true) {
-                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuEditAdvFragment)
-            } else {
-                navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
-            }
+            navController.navigate(R.id.action_advanceMenuMainFragment_to_updateMenuAddAdvFragment)
         }
     }
 

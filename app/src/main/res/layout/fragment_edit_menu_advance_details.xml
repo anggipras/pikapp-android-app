@@ -243,6 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="32dp"
                     android:src="@drawable/ic_change_order"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/daftarPilihanHeaderText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/daftarPilihanHeaderText"
@@ -277,7 +278,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:constraint_referenced_ids="daftarPilihanHeaderText,daftarPilihanChangeOrderButton,daftarPilihanDivider,daftarPilihanRecyclerView" />
+                    app:constraint_referenced_ids="daftarPilihanHeaderText,daftarPilihanDivider,daftarPilihanRecyclerView" />
 
                 <!-- Tambah pilihan button -->
                 <ImageView

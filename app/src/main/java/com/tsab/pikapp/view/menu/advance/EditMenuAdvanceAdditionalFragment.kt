@@ -3,7 +3,6 @@ package com.tsab.pikapp.view.menu.advance
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -71,6 +70,10 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
+        })
+
         viewModel.additionalNamaDaftarPilihan.observe(
                 viewLifecycleOwner,
                 Observer { namaDaftarPilihan ->
@@ -95,7 +98,6 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
 
         viewModel.isLocalLoading.observe(viewLifecycleOwner, Observer { bool ->
             if (!bool) {
-                Log.d("ISMENUCHOICE", viewModel.isNewMenuChoice.value.toString())
                 if (viewModel.isNewMenuChoice.value == 1 || viewModel.isNewMenuChoice.value == 2) {
                     navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment,
                             bundleOf(

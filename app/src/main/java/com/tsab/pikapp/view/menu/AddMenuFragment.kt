@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.menu
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -53,8 +54,6 @@ class AddMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        dataBinding.menuImg.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
 
         navController = Navigation.findNavController(view)
 
@@ -127,7 +126,7 @@ class AddMenuFragment : Fragment() {
         })
 
         viewModel.img.observe(viewLifecycleOwner, Observer { menuUri ->
-            dataBinding.menuImg.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            dataBinding.menuImg.layoutParams.width = if (menuUri == null || menuUri == Uri.EMPTY) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT
             dataBinding.menuImg.setImageURI(menuUri)
         })
 
