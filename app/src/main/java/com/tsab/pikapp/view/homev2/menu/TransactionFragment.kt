@@ -55,7 +55,7 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
         }
         Handler().postDelayed({
-            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
+            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
         }, 2000)
         Handler().postDelayed({
             dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
@@ -68,7 +68,7 @@ class TransactionFragment : Fragment() {
             val position = dataBinding.tabs.selectedTabPosition
             refreshPage()
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt()
+                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
             }, 2000)
             Handler().postDelayed({
                 dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()

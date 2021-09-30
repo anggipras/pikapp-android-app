@@ -280,5 +280,8 @@
     <string name="etalase_delete_nomenu">Anda Yakin ingin mengahpus etalase ini <br />dari menu restoran Anda?</string>
     <string name="etalase_delete_menu">Kosongkan menu pada etalase ini<br />terlebih dahulu</string>
 
+    <!-- Tokopedia Order -->
+    <string name="tokopedia_upload_resi_dialog">Mohon upload resi di aplikasi e-<br/>commerce sesuai pesanan untuk<br/>menyelesaikan order ini.</string>
+    <string name="tokopedia_tolak_dialog">Tolak melalui aplikasi tokopedia</string>
 
 </resources>

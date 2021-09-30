@@ -23,8 +23,10 @@ import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import id.rizmaulana.floatingslideupsheet.view.FloatingSlideUpBuilder
 import kotlinx.android.synthetic.main.expanded_txn_fragment.*
 import kotlinx.android.synthetic.main.expanded_txn_fragment.tabs
+import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_txn_cart.*
 import kotlinx.android.synthetic.main.fragment_txn_report.*
+import kotlinx.android.synthetic.main.fragment_txn_report.recyclerview_transaction
 import kotlinx.android.synthetic.main.list_report_items.*
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.util.*
@@ -99,8 +101,8 @@ class TxnReportFragment : Fragment() {
         recyclerview_transaction.layoutManager = LinearLayoutManager(requireView().context)
         recyclerview_transaction.adapter = TxnReportAdapter(filterTest)
 
-        viewModel.editList(recyclerview_transaction, filterTest, buttonFilterPikapp, buttonFilterTokped,
-        buttonFilterGrab, buttonFilterShopee)
+     /*   viewModel.editList(recyclerview_transaction, filterTest, buttonFilterPikapp, buttonFilterTokped,
+        buttonFilterGrab, buttonFilterShopee)*/
 
         buttonFilterCount.setOnClickListener {
             val bundle = Bundle()

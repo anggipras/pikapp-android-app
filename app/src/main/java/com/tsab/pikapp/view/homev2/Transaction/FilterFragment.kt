@@ -25,56 +25,37 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var listALL = requireArguments().getStringArrayList("allList")
-        var filterALL = arguments?.getStringArrayList("filterList")
-        var listFix : ArrayList<String> = ArrayList()
+        closeBtn.setOnClickListener {
+            dismiss()
+        }
+        var size: Int = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+
+        btnNext.setText("Tampilkan " + size + " Pesanan")
 
         if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked && !pikapp.isChecked){
-            if (listALL != null) {
-                btnNext.setText("Tampilkan " + listALL.size.toString() + " Pesanan")
-            }
+            btnNext.setText("Tampilkan " + size.toString() + " Pesanan")
         }
 
         pikapp.setOnCheckedChangeListener { buttonView, isChecked ->
             if(pikapp.isChecked){
                 if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "pikapp"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = viewModel.proses.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "pikapp"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = size + viewModel.proses.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }else if(!pikapp.isChecked){
                 if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for (list in listALL){
-                            listFix.add(list)
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "pikapp"){
-                                listFix.remove(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = size - viewModel.proses.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }
         }
@@ -82,43 +63,23 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
         tokopedia.setOnCheckedChangeListener { buttonView, isChecked ->
             if(tokopedia.isChecked){
                 if (!pikapp.isChecked && !grab.isChecked && !shopee.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "tokopedia"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "tokopedia"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = size + viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }else if(!tokopedia.isChecked){
                 if (!pikapp.isChecked && !grab.isChecked && !shopee.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for (list in listALL){
-                            listFix.add(list)
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "tokopedia"){
-                                listFix.remove(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = size - viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }
         }
@@ -126,93 +87,48 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
         grab.setOnCheckedChangeListener { buttonView, isChecked ->
             if(grab.isChecked){
                 if (!tokopedia.isChecked && !pikapp.isChecked && !shopee.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "grab"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = 0
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "grab"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size += 0
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }else if(!grab.isChecked){
                 if (!tokopedia.isChecked && !pikapp.isChecked && !shopee.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for (list in listALL){
-                            listFix.add(list)
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "grab"){
-                                listFix.remove(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
                 }
             }
         }
 
         shopee.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(shopee.isChecked){
+            if (shopee.isChecked) {
                 if (!tokopedia.isChecked && !grab.isChecked && !pikapp.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "shopee"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = 0
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "shopee"){
-                                listFix.add(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size += 0
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
-            }else if(!shopee.isChecked){
+            } else if (!shopee.isChecked) {
                 if (!tokopedia.isChecked && !grab.isChecked && !pikapp.isChecked) {
-                    listFix.clear()
-                    if (listALL != null) {
-                        for (list in listALL){
-                            listFix.add(list)
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
+                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
-                    if (listALL != null) {
-                        for(list in listALL){
-                            if(list == "shopee"){
-                                listFix.remove(list)
-                            }
-                        }
-                    }
-                    btnNext.setText("Tampilkan " + listFix.size.toString() + " Pesanan")
+
                 }
             }
         }
-
         btnNext.setOnClickListener {
-            viewModel.filterOn(listFix, pikapp.isChecked, tokopedia.isChecked, grab.isChecked, shopee.isChecked)
+            viewModel.filterOn(pikapp.isChecked, tokopedia.isChecked, grab.isChecked, shopee.isChecked, size)
             dismiss()
         }
     }

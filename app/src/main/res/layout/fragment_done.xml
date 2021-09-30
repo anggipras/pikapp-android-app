@@ -16,7 +16,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/emptyState"
+                android:id="@+id/emptyStateDone"
                 app:layout_constraintTop_toTopOf="parent"
                 android:visibility="invisible"
                 app:layout_constraintRight_toRightOf="parent"

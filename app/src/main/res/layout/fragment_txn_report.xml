@@ -111,7 +111,7 @@ tools:context=".view.homev2.Transaction.TxnReportFragment">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <HorizontalScrollView
+    <!--<HorizontalScrollView
         android:layout_width="wrap_content"
         android:id="@+id/scrollFilter"
         android:layout_marginTop="10dp"
@@ -182,7 +182,7 @@ tools:context=".view.homev2.Transaction.TxnReportFragment">
 
     </LinearLayout>
 
-    </HorizontalScrollView>
+    </HorizontalScrollView>-->
 
 
     <!--<Button
@@ -247,7 +247,7 @@ tools:context=".view.homev2.Transaction.TxnReportFragment">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scrollFilter"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintVertical_bias="0.0"/>
 
     <View

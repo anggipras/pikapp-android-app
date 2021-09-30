@@ -16,14 +16,19 @@ import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
+import kotlinx.android.synthetic.main.fragment_proccess.buttonFilterCount
+import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
+import kotlinx.android.synthetic.main.fragment_txn_report.*
 import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
 
 class ProcessFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var linearLayoutManager1: LinearLayoutManager
     private lateinit var dataBinding: FragmentProccessBinding
     private val sessionManager = SessionManager()
+    val filterSheet = FilterFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,16 +47,26 @@ class ProcessFragment : Fragment() {
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager1 =
+                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
+        recyclerview_tokopedia.layoutManager = linearLayoutManager1
         activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState) }
 
-        observeViewModel()
+        viewModel.editList(recyclerview_transaction, recyclerview_tokopedia, buttonFilterPikapp, buttonFilterTokped,
+                buttonFilterGrab, buttonFilterShopee, icon)
+
+        buttonFilterCount.setOnClickListener {
+            filterSheet.show(requireActivity().supportFragmentManager, "show")
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
     }
 
     private fun observeViewModel() {
@@ -69,7 +84,7 @@ class ProcessFragment : Fragment() {
             linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+            //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
     }
 }
