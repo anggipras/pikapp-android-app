@@ -413,6 +413,27 @@ interface PikappApi {
 
     @Multipart
     @POST("merchant/v2/product-action/")
+    fun uploadEditMenu(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String? = null,
+            @Part("product_name") product_name: RequestBody,
+            @Part("product_desc") product_desc: RequestBody,
+            @Part("menu_category_id") id: RequestBody,
+            @Part("price") price: RequestBody,
+            @Part("condition") condition: RequestBody,
+            @Part("action") action: RequestBody,
+            @Part("status") status: RequestBody,
+            @Part("product_qty") qty: RequestBody,
+            @Part("extra_menu") extra: RequestBody
+    ): Call<BaseResponse>
+
+    @Multipart
+    @POST("merchant/v2/product-action/")
     fun deleteMenu(
             @Header("x-request-id") uuid: String,
             @Header("x-request-timestamp") time: String,
@@ -457,7 +478,7 @@ interface PikappApi {
             @Header("x-signature") signature: String,
             @Header("token") token: String,
             @Body editAdvancedMenuRequest: AdvanceMenuEdit
-    ): Call<BaseResponse>
+    ): Call<ListAdvanceMenuEditResp>
 
     @GET("merchant/v1/menu/advance/{pid}/list/")
     fun listAdvanceMenu(
@@ -478,6 +499,40 @@ interface PikappApi {
             @Header("token") token: String,
             @Path("pid") productId: String
     ): Single<ListAdvanceMenuEditResponse>
+
+    @POST("merchant/v1/menu/advance/add/new/")
+    fun addNewAdvanceMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body addNewAdvancedMenuRequest: AddNewAdvanceMenu
+    ): Call<ListNewAdvanceMenuResponse>
+
+    @POST("merchant/v1/menu/extra/add/")
+    fun addNewExtraMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body addNewExtraMenuRequest: AddNewExtraMenu
+    ): Call<NewExtraMenuResponse>
+
+    @DELETE("merchant/v1/menu/extra/delete/{id}")
+    fun deleteExtraMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String,
+            @Path("id") extId: String
+    ): Call<BaseResponse>
 
     @GET("/merchant/v1/shop/management/list/")
     fun getMerchantShopManagement(

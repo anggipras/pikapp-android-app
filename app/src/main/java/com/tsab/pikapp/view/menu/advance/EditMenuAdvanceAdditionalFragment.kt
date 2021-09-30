@@ -57,6 +57,7 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
 
     private fun fetchArguments() {
         viewModel.setAdditionalNamaDaftarPilihan(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
+        viewModel.setAdditionalPreviousName(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
         viewModel.setAdditionalHarga(arguments?.getString(ARGUMENT_MENU_PRICE) ?: "")
         viewModel.setMenuExtId(arguments?.getLong(ARGUMENT_MENU_EXT_ID) ?: 1)
 
@@ -69,6 +70,10 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
+        })
+
         viewModel.additionalNamaDaftarPilihan.observe(
                 viewLifecycleOwner,
                 Observer { namaDaftarPilihan ->
@@ -93,7 +98,19 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
 
         viewModel.isLocalLoading.observe(viewLifecycleOwner, Observer { bool ->
             if (!bool) {
-                navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+                if (viewModel.isNewMenuChoice.value == 1 || viewModel.isNewMenuChoice.value == 2) {
+                    navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment,
+                            bundleOf(
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to true,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_NAMA_PILIHAN to viewModel.detailsNamaPilihan.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_AKTIF to viewModel.isDetailsAktif.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_WAJIB to viewModel.isDetailsWajib.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_PILIHAN_MAKSIMAL to viewModel.detailsPilihanMaksimal.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_ID_ADVANCE to viewModel.advanceId.value,
+                                    EditMenuAdvanceDetailsFragment.ARGUMENT_ADDITIONAL_MENU to viewModel.detailsAdditionalMenuListEdit.value))
+                } else {
+                    navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+                }
                 viewModel.setLocalLoading(true)
             }
         })
@@ -132,8 +149,12 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
             viewModel.validateAdditionalNamaDaftarPilihan(dataBinding.namaDaftarPilihanInputText.text.toString())
             viewModel.validateAdditionalHarga(dataBinding.hargaInputText.text.toString())
 
-            if (!viewModel.validateAdditionalScreen()) return@setOnClickListener
-            navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+            if (viewModel.isNewMenuChoice.value == 1) {
+                if (!viewModel.sendNewExtraMenu()) return@setOnClickListener
+            } else {
+                if (!viewModel.validateAdditionalScreenEdit()) return@setOnClickListener
+                navController.navigate(R.id.action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment, bundleOf(EditMenuAdvanceDetailsFragment.ARGUMENT_IS_EDIT to false))
+            }
         }
     }
 
@@ -155,7 +176,7 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
             mAlertDialog.dismiss()
         }
         mDialogView.dialog_ok_choice.setOnClickListener {
-            viewModel.deleteAdditionalMenu(arguments?.getString(ARGUMENT_MENU_NAME))
+            viewModel.deleteAdditionalMenuEdit()
             mAlertDialog.dismiss()
         }
     }

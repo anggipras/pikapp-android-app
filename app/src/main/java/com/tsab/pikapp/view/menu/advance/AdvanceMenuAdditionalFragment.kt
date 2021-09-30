@@ -60,6 +60,7 @@ class AdvanceMenuAdditionalFragment : Fragment() {
     private fun fetchArguments() {
         viewModel.setAdditionalNamaDaftarPilihan(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
         viewModel.setAdditionalHarga(arguments?.getString(ARGUMENT_MENU_PRICE) ?: "")
+        viewModel.setAdditionalPreviousName(arguments?.getString(ARGUMENT_MENU_NAME) ?: "")
 
         if (arguments?.getBoolean(ARGUMENT_IS_EDIT) == true) {
             dataBinding.headerHeaderText.text = getString(R.string.am_ubah_daftar_pilihan_header)

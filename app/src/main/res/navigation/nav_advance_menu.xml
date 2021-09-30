@@ -66,6 +66,9 @@
         <action
             android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuDetailsSortFragment"
             app:destination="@id/advanceMenuDetailsSortFragment" />
+        <action
+            android:id="@+id/action_advanceMenuDetailsFragment_to_editMenuAdvanceMainFragment"
+            app:destination="@id/editMenuAdvanceMainFragment" />
     </fragment>
 
     <fragment
@@ -103,6 +106,9 @@
         <action
             android:id="@+id/action_editMenuAdvanceMainFragment_to_editMenuAdvanceDetailsFragment"
             app:destination="@id/editMenuAdvanceDetailsFragment" />
+        <action
+            android:id="@+id/action_editMenuAdvanceMainFragment_to_advanceMenuDetailsFragment"
+            app:destination="@id/advanceMenuDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/editMenuAdvanceDetailsFragment"

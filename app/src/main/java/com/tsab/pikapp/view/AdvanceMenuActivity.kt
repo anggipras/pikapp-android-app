@@ -39,10 +39,10 @@ class AdvanceMenuActivity : AppCompatActivity() {
             navGraph.startDestination = R.id.updateMenuAddAdvFragment
         } else if (type == TYPE_EDIT) {
             val menuListData = intent.getSerializableExtra(MENU_LIST) as? SearchItem
+            viewModel.setAddOrEdit(true)
             if (menuListData != null) {
                 viewModel.setMenu(menuListData)
             }
-            viewModel.setAddOrEdit(true)
             navGraph.startDestination = R.id.updateMenuEditAdvFragment
         }
         navController.graph = navGraph

@@ -21,11 +21,9 @@ fun decodeJWT(jwt: String): UserAccess {
     } catch (ex: JwtException) {
         Log.d("debug", "gagal extract token ${ex}")
     }
-    Log.d("debug", "isi token : ${sub}")
+
     val convertedObject: UserAccess = Gson().fromJson(sub, UserAccess::class.java)
     convertedObject.expired = expired * 1000
-    Log.d("debug", "phone number : ${convertedObject.phoneNumber}")
-    Log.d("debug", "expired date : ${convertedObject.expired}")
 
     return convertedObject
 }
