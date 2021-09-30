@@ -500,6 +500,40 @@ interface PikappApi {
             @Path("pid") productId: String
     ): Single<ListAdvanceMenuEditResponse>
 
+    @POST("merchant/v1/menu/advance/add/new/")
+    fun addNewAdvanceMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body addNewAdvancedMenuRequest: AddNewAdvanceMenu
+    ): Call<ListNewAdvanceMenuResponse>
+
+    @POST("merchant/v1/menu/extra/add/")
+    fun addNewExtraMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body addNewExtraMenuRequest: AddNewExtraMenu
+    ): Call<NewExtraMenuResponse>
+
+    @DELETE("merchant/v1/menu/extra/delete/{id}")
+    fun deleteExtraMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String,
+            @Path("id") extId: String
+    ): Call<BaseResponse>
+
     @GET("/merchant/v1/shop/management/list/")
     fun getMerchantShopManagement(
             @Header("x-request-id") uuid: String,

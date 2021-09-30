@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/closeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
         android:layout_gravity="right"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
@@ -19,17 +19,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginStart="33dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="Pilih Kategori"
-        android:textColor="#000000"
-        android:textSize="16dp" />
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/line" />
 
@@ -52,12 +52,23 @@
 
     </RadioGroup>
 
-    <ImageButton
+    <Button
         android:id="@+id/okButton"
-        android:layout_width="307dp"
-        android:layout_height="77dp"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/okebtn" />
+        android:layout_marginTop="62dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_green_small"
+        android:backgroundTint="@color/green"
+        android:fontFamily="@font/montserrat"
+        android:text="Pilih"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        />
 
 </LinearLayout>

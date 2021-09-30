@@ -9,6 +9,47 @@ enum class AdvanceMenuTemplateType {
     fun isMandatory(): Boolean = this != CHECKBOX
 }
 
+/*ADD NEW ADVANCE MENU AND EXTRA MENU ON EDIT START*/
+data class AddNewAdvanceMenu(
+        @SerializedName("product_id")
+        var product_id: String,
+        @SerializedName("advance_menu")
+        var advance_menu: AdvanceMenu
+)
+
+data class ListNewAdvanceMenuResponse(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+        @SerializedName("results")
+        var results: AdvanceMenu
+)
+
+data class AddNewExtraMenu(
+        @SerializedName("advance_menu_id")
+        var advance_menu_id: Long,
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean,
+        @SerializedName("product_id")
+        var product_id: String
+)
+
+data class NewExtraMenuResponse(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+        @SerializedName("results")
+        var results: AddNewExtraMenu
+)
+/*ADD NEW ADVANCE MENU ON EDIT END*/
+
+/*ADD ADVANCE MENU START*/
 data class AddAdvanceMenuRequest(
     @SerializedName("advance_menus")
     var advance_menus: List<AdvanceMenu>
@@ -59,7 +100,9 @@ data class AdvanceAdditionalMenu(
         @SerializedName("active")
         var active: Boolean
 )
+/*ADD ADVANCE MENU END*/
 
+/*EDIT ADVANCE MENU START*/
 data class EditAdvanceMenuRequest(
         @SerializedName("advance_menus")
         var advance_menus: List<AdvanceMenuEdit>
@@ -116,3 +159,4 @@ data class AdvanceAdditionalMenuEdit(
         @SerializedName("ext_id")
         var ext_id: Long
 )
+/*EDIT ADVANCE MENU END*/

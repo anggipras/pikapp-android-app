@@ -29,9 +29,6 @@
         <action
             android:id="@+id/action_updateMenuEditAdvFragment_to_advanceMenuMainFragment"
             app:destination="@id/editMenuAdvanceMainFragment" />
-        <action
-            android:id="@+id/action_updateMenuEditAdvFragment_to_advanceMenuMainFragment2"
-            app:destination="@id/advanceMenuMainFragment" />
     </fragment>
 
     <dialog
@@ -52,9 +49,6 @@
         <action
             android:id="@+id/action_advanceMenuMainFragment_to_updateMenuAddAdvFragment"
             app:popUpTo="@id/updateMenuAddAdvFragment" />
-        <action
-            android:id="@+id/action_advanceMenuMainFragment_to_updateMenuEditAdvFragment"
-            app:destination="@id/updateMenuEditAdvFragment" />
     </fragment>
 
     <fragment

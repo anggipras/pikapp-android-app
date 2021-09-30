@@ -352,7 +352,6 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
                 getUUID(), timestamp, getClientID(), signature, token, updateMenuChoice
         ).enqueue(object : Callback<ListAdvanceMenuEditResp> {
             override fun onResponse(call: Call<ListAdvanceMenuEditResp>, response: Response<ListAdvanceMenuEditResp>) {
-                Log.d("UPDATERESULT", response.body().toString())
                 setLoading(false)
                 setLocalLoading(false)
             }
@@ -376,18 +375,34 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
 
-        val newAdvanceMenus = AdvanceMenu(
-                template_name = detailsNamaPilihan.value!!,
-                template_type = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
-                active = isDetailsAktif.value!!,
-                mandatory = isDetailsWajib.value!!,
-                max_choose = detailsPilihanMaksimal.value!!,
-                ext_menus = detailsAdditionalMenuList.value ?: listOf()
+        val newAdvanceMenus = AddNewAdvanceMenu(
+                product_id = productId.value!!,
+                advance_menu = AdvanceMenu(
+                        template_name = detailsNamaPilihan.value!!,
+                        template_type = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
+                        active = isDetailsAktif.value!!,
+                        mandatory = isDetailsWajib.value!!,
+                        max_choose = detailsPilihanMaksimal.value!!,
+                        ext_menus = detailsAdditionalMenuList.value ?: listOf()
+                )
         )
-        Log.d("NEW_ADVANCE_MENU_EDIT", newAdvanceMenus.toString())
-        setLocalLoading(false)
-        /*PREPARE FOR SEND DATA TO NEW ADVANCE MENUS API ON EDIT*/
+
+        apiService.api.addNewAdvanceMenu(
+                getUUID(), timestamp, getClientID(), signature, token, mid, newAdvanceMenus
+        ).enqueue(object : Callback<ListNewAdvanceMenuResponse> {
+            override fun onResponse(call: Call<ListNewAdvanceMenuResponse>, response: Response<ListNewAdvanceMenuResponse>) {
+                setLoading(false)
+                setLocalLoading(false)
+            }
+
+            override fun onFailure(call: Call<ListNewAdvanceMenuResponse>, t: Throwable) {
+                setLoading(false)
+                Log.e(TAG, t.message.toString())
+            }
+
+        })
 
         return true
     }
@@ -513,12 +528,66 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     fun deleteAdditionalMenuEdit() {
 //        mutableDetailsAdditionalMenuEdit.value = detailsAdditionalMenuListEdit.value?.filter { it.ext_menu_name != choiceName }
 
+        var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
+        val pid = productId.value.toString()
+
         /*PREPARE FOR SEND DATA TO DELETE EXTRA MENUS API ON EXISTING ADVANCE MENU*/
         /*AFTER HITTING EDIT API, HIT AGAIN GET ADVANCE MENU AND RESTORE IN LIVE DATA*/
         setNewMenuChoice(2)
-        val deleteExtMenuId = menuExtId.value
-        Log.d("DELETE_EXT_MENUS", deleteExtMenuId.toString())
-        setLocalLoading(false)
+        val extId = menuExtId.value.toString()
+
+        apiService.api.deleteExtraMenu(
+                getUUID(), timestamp, getClientID(), signature, token, mid, pid, extId
+        ).enqueue(object : Callback<BaseResponse> {
+            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                fetchEditDataAfterUpdate()
+            }
+
+            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                setLoading(false)
+                Log.e(TAG, t.message.toString())
+            }
+
+        })
+    }
+
+    fun fetchEditDataAfterUpdate() {
+        val timeStamp = getTimestamp()
+
+        setLoading(true)
+        disposable.add(
+                apiService.listAdvanceMenuEdit(
+                        email = sessionManager.getUserData()?.email ?: "",
+                        token = sessionManager.getUserToken() ?: "",
+                        pid = mutableProductId.value ?: "",
+                        timeStamp = timeStamp
+                ).subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuEditResponse>() {
+                            override fun onSuccess(response: ListAdvanceMenuEditResponse) {
+                                val selectedAdvanceMenu = response.results.filter { it.template_name == detailsNamaPilihan.value }
+                                val objectAdvanceMenuSelection = selectedAdvanceMenu[0]
+                                setDetailsAdditionalMenuEditList(objectAdvanceMenuSelection.ext_menus)
+                                if (detailsPilihanMaksimal.value!! > objectAdvanceMenuSelection.ext_menus.size) {
+                                    setDetailsPilihanMaksimal(detailsPilihanMaksimal.value!! - 1)
+                                    validateDetailsScreenForUpdate()
+                                } else {
+                                    setLoading(false)
+                                    setLocalLoading(false)
+                                }
+                            }
+
+                            override fun onError(e: Throwable) {
+                                Log.d(TAG, e.message.toString())
+                                setLoading(false)
+                            }
+                        })
+        )
     }
     /*EDIT EACH EXTRA MENU END*/
 
@@ -530,18 +599,30 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
 
-        val newExtMenuChoice = AdvanceAdditionalMenu(
+        val newExtMenuChoice = AddNewExtraMenu(
+                advance_menu_id = advanceId.value!!,
                 ext_menu_name = additionalNamaDaftarPilihan.value!!,
                 ext_menu_price = additionalHarga.value!!,
-                active = true
+                active = true,
+                product_id = productId.value!!
         )
 
-        /*PREPARE FOR SEND DATA TO NEW EXTRA MENUS API ON EXISTING ADVANCE MENU*/
-        /*AFTER HITTING ADD API, HIT AGAIN GET ADVANCE MENU AND RESTORE IN LIVE DATA*/
+        apiService.api.addNewExtraMenu(
+                getUUID(), timestamp, getClientID(), signature, token, mid, newExtMenuChoice
+        ).enqueue(object : Callback<NewExtraMenuResponse> {
+            override fun onResponse(call: Call<NewExtraMenuResponse>, response: Response<NewExtraMenuResponse>) {
+                fetchEditDataAfterUpdate()
+            }
 
-        Log.d("EXTRA_MENUS", newExtMenuChoice.toString())
-        setLocalLoading(false)
+            override fun onFailure(call: Call<NewExtraMenuResponse>, t: Throwable) {
+                setLoading(false)
+                Log.e(TAG, t.message.toString())
+            }
+
+        })
+
         return true
     }
 

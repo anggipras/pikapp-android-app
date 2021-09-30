@@ -26,6 +26,7 @@ import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.view.menu.advance.EditMenuAdvanceMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
+import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
 import kotlinx.android.synthetic.main.alert_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_edit_menu.*
 
@@ -90,22 +91,14 @@ class EditMenuFragment : Fragment() {
         }
 
         dataBinding.pilihanMenuButton.setOnClickListener {
-            if (viewModelMenu.isMenuChoiceEmpty.value == true) {
-                navController.navigate(R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment2,
-                        bundleOf(
-                                AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to false,
-                                AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to "none"
-                        ))
-            } else {
-                navController.navigate(
-                        R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
-                        bundleOf(
-                                EditMenuAdvanceMainFragment.ARGUMENT_MENU_EDIT to true,
-                                EditMenuAdvanceMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id ?: ""),
-                                EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to true
-                        )
-                )
-            }
+            navController.navigate(
+                    R.id.action_updateMenuEditAdvFragment_to_advanceMenuMainFragment,
+                    bundleOf(
+                            EditMenuAdvanceMainFragment.ARGUMENT_MENU_EDIT to true,
+                            EditMenuAdvanceMainFragment.ARGUMENT_PRODUCT_ID to (viewModelMenu.menuList.value?.product_id ?: ""),
+                            EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to true
+                    )
+            )
         }
 
         dataBinding.kategori.isFocusable = false

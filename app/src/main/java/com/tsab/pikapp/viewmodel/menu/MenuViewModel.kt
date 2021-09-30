@@ -59,15 +59,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         isMenuValid.value = true
     }
 
-    /**
-     * Set empty or not the advance menu list
-     */
-    private val mutableIsMenuChoiceEmpty = MutableLiveData<Boolean>()
-    val isMenuChoiceEmpty: LiveData<Boolean> = mutableIsMenuChoiceEmpty
-    fun setMenuChoiceEmpty(boolean: Boolean) {
-        mutableIsMenuChoiceEmpty.value = boolean
-    }
-
     private val mutableAddOrEdit = MutableLiveData<Boolean>()
     val addOrEdit: LiveData<Boolean> get() = mutableAddOrEdit
     fun setAddOrEdit(bool: Boolean) {
@@ -487,9 +478,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                             override fun onSuccess(response: ListAdvanceMenuEditResponse) {
                                 if (response.results.isNotEmpty()) {
                                     setAdvanceMenuEditList(response.results)
-                                    setMenuChoiceEmpty(false)
-                                } else {
-                                    setMenuChoiceEmpty(true)
                                 }
                                 setLoading(false)
                             }
