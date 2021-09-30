@@ -2,7 +2,9 @@ package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
+import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -10,15 +12,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.Transaction.TransactionListAdapter
+import com.tsab.pikapp.view.homev2.Transaction.TxnReportAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_txn_report.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -40,6 +45,24 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableProses = MutableLiveData(0)
     val proses: LiveData<Int> get() = mutableProses
 
+    private val mutableFilter = MutableLiveData<RecyclerView>()
+    val filter: LiveData<RecyclerView> get() = mutableFilter
+
+    private val mutableResult = MutableLiveData<ArrayList<String>>()
+    val result: LiveData<ArrayList<String>> get() = mutableResult
+
+    private val mutablePikapp = MutableLiveData<Button>()
+    val pikapp: LiveData<Button> get() = mutablePikapp
+
+    private val mutableTokped = MutableLiveData<Button>()
+    val tokopedia: LiveData<Button> get() = mutableTokped
+
+    private val mutableGrab= MutableLiveData<Button>()
+    val Grab: LiveData<Button> get() = mutableGrab
+
+    private val mutableShopee = MutableLiveData<Button>()
+    val shopee: LiveData<Button> get() = mutableShopee
+
     private val mutableBatal = MutableLiveData(0)
     val batal: LiveData<Int> get() = mutableBatal
 
@@ -57,7 +80,53 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
+    fun editList (list: RecyclerView, result: ArrayList<String>, pikapp: Button
+                  , tokped: Button, grab: Button, shopee: Button){
+        mutableFilter.value = list
+        mutablePikapp.value = pikapp
+        mutableGrab.value = grab
+        mutableTokped.value = tokped
+        mutableShopee.value = shopee
+        mutableResult.value = result
+    }
 
+    fun filterOn (filterList: ArrayList<String>, pikappStatus: Boolean
+                  , tokpedStatus: Boolean, grabStatus: Boolean, shopeeStatus: Boolean){
+        if(pikappStatus){
+            mutablePikapp.value?.setBackgroundResource(R.drawable.button_green_square)
+            mutablePikapp.value?.setTextColor(Color.parseColor("#ffffff"))
+        }else if(!pikappStatus){
+            mutablePikapp.value?.setBackgroundResource(R.drawable.gray_square_btn)
+            mutablePikapp.value?.setTextColor(Color.parseColor("#aaaaaa"))
+        }
+
+        if(tokpedStatus){
+            mutableTokped.value?.setBackgroundResource(R.drawable.button_green_square)
+            mutableTokped.value?.setTextColor(Color.parseColor("#ffffff"))
+        }else if(!pikappStatus){
+            mutableTokped.value?.setBackgroundResource(R.drawable.gray_square_btn)
+            mutableTokped.value?.setTextColor(Color.parseColor("#aaaaaa"))
+        }
+
+        if(grabStatus){
+            mutableGrab.value?.setBackgroundResource(R.drawable.button_green_square)
+            mutableGrab.value?.setTextColor(Color.parseColor("#ffffff"))
+        }else if(!pikappStatus){
+            mutableGrab.value?.setBackgroundResource(R.drawable.gray_square_btn)
+            mutableGrab.value?.setTextColor(Color.parseColor("#aaaaaa"))
+        }
+
+        if(shopeeStatus){
+            mutableShopee.value?.setBackgroundResource(R.drawable.button_green_square)
+            mutableShopee.value?.setTextColor(Color.parseColor("#ffffff"))
+        }else if(!pikappStatus){
+            mutableShopee.value?.setBackgroundResource(R.drawable.gray_square_btn)
+            mutableShopee.value?.setTextColor(Color.parseColor("#aaaaaa"))
+        }
+
+        mutableFilter.value!!.adapter = TxnReportAdapter(filterList)
+        mutableFilter.value?.adapter!!.notifyDataSetChanged()
+    }
 
     fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout) {
         setLoading(true)
