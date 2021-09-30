@@ -43,15 +43,16 @@ class ProcessFragment : Fragment() {
         linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_transaction, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState) }
 
-        observeViewModel()
+        //observeViewModel()
     }
 
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
     }
 
     private fun observeViewModel() {
@@ -69,7 +70,7 @@ class ProcessFragment : Fragment() {
             linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+            //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
     }
 }

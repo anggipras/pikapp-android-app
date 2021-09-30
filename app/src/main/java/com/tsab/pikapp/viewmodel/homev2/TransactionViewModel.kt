@@ -1,8 +1,11 @@
 package com.tsab.pikapp.viewmodel.homev2
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -13,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.Transaction.TransactionListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,12 +25,16 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TransactionViewModel(application: Application) : BaseViewModel(application) {
 
     var activation: Boolean = true
 
     lateinit var categoryAdapter: TransactionListAdapter
+    lateinit var omniAdapter: OmniTransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
 
     private var sessionManager = SessionManager(getApplication())
@@ -56,7 +64,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
-
+    var logisticList = ArrayList<LogisticsDetailOmni>()
 
 
     fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout) {
@@ -164,4 +172,106 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         )
     }
 
+    fun getListOmni(baseContext: Context, recyclerview_transaction: RecyclerView, support: FragmentManager, activity: Activity, status: String, empty: ConstraintLayout){
+        prefHelper.clearStoreOrderList()
+        var sessionManager = SessionManager(getApplication())
+        val mid = sessionManager.getUserData()!!.mid!!
+        val page = "0"
+        val size = "5"
+        Log.e("uid", getUUID())
+        Log.e("timestamp", getTimestamp())
+        Log.e("client id", getClientID())
+        Log.e("mid", mid)
+
+        PikappApiService().api.getListOrderOmni(
+                getUUID(), getTimestamp(), getClientID(), mid, page, size
+        ).enqueue(object : Callback<ListOrderOmni> {
+            override fun onFailure(call: Call<ListOrderOmni>, t: Throwable) {
+                Toast.makeText(baseContext, "error: $t", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
+                val response = response.body()
+                val resultList = response?.results
+                var prosesList = ArrayList<OrderDetailOmni>()
+                var batalList = ArrayList<OrderDetailOmni>()
+                var doneList = ArrayList<OrderDetailOmni>()
+                var productList = ArrayList<ArrayList<ProductDetailOmni>>()
+                var producList1 = ArrayList<ArrayList<ProductDetailOmni>>()
+                var productList2 = ArrayList<ArrayList<ProductDetailOmni>>()
+                Log.e("err code", response?.errCode.toString())
+                Log.e("err msg", response?.errMessage.toString())
+                Log.e("err result", response?.results.toString())
+                if (resultList != null){
+                    for (result in resultList){
+                        getOrderDetailOmni(result.orderId.toString())
+                        if(result.status == "PAYMENT_CONFIRMATION" || result.status == "PAYMENT_VERIFIED" || result.status == "SELLER_ACCEPT_ORDER" || result.status == "WAITING_FOR_PICKUP"){
+                            prosesList.add(result)
+                            result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
+                        }else if(result.status == "SELLER_CANCEL_ORDER" || result.status == "ORDER_REJECTED_BY_SELLER"){
+                            batalList.add(result)
+                            result.producDetails?.let { producList1.add(it as ArrayList<ProductDetailOmni>) }
+                        }else{
+                            doneList.add(result)
+                            result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
+                        }
+                    }
+                }
+                Handler().postDelayed({
+                    if(status == "Proses"){
+                        empty.isVisible = prosesList.isEmpty()
+                        omniAdapter = OmniTransactionListAdapter(
+                                baseContext,
+                                prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                        omniAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = omniAdapter
+                        omniAdapter.notifyDataSetChanged()
+                    }
+                    if(status == "Batal"){
+                        empty.isVisible = batalList.isEmpty()
+                        omniAdapter = OmniTransactionListAdapter(
+                                baseContext,
+                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                        omniAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = omniAdapter
+                        omniAdapter.notifyDataSetChanged()
+                    }
+                    if(status == "Done"){
+                        empty.isVisible = doneList.isEmpty()
+                        omniAdapter = OmniTransactionListAdapter(
+                                baseContext,
+                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                        omniAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = omniAdapter
+                        omniAdapter.notifyDataSetChanged()
+                    }
+                }, 1500)
+            }
+        })
+    }
+
+    fun getOrderDetailOmni(orderId: String){
+        var orderId = orderId
+        PikappApiService().api.getListOrderDetailOmni(
+                getUUID(), getTimestamp(), getClientID(), orderId
+        ).enqueue(object : Callback<ListOrderDetailOmni>{
+            override fun onFailure(call: Call<ListOrderDetailOmni>, t: Throwable) {
+                Log.e("msg", "error: $t")
+            }
+
+            override fun onResponse(call: Call<ListOrderDetailOmni>, response: Response<ListOrderDetailOmni>) {
+                val orderResponse = response.body()
+                val resultList = orderResponse?.results
+                val arrayResultLit = ArrayList<OrderDetailDetailOmni>()
+                if (resultList != null){
+                    arrayResultLit.add(resultList)
+                    for (result in arrayResultLit){
+                        if (result.logistics != null) {
+                            logisticList.add(result.logistics)
+                        }
+                    }
+                }
+            }
+        })
+    }
 }
