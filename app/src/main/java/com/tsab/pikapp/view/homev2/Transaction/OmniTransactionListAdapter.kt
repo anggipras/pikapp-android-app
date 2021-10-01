@@ -419,6 +419,7 @@ class OmniTransactionListAdapter (
                 Log.e("acceot order result", orderResponse?.results.toString())
                 Log.e("accept error response", errorResponse?.errCode)
                 Log.e("accept error response", errorResponse?.errMessage)
+                Toast.makeText(context, "error: " + errorResponse?.errMessage, Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -443,6 +444,8 @@ class OmniTransactionListAdapter (
             override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
                 val response = response.body()
                 val resultList = response?.results
+                orderResult.addAll(resultList as MutableList<OrderDetailOmni>)
+                omniList.addAll(orderResult)
                 var prosesList = ArrayList<OrderDetailOmni>()
                 var batalList = ArrayList<OrderDetailOmni>()
                 var doneList = ArrayList<OrderDetailOmni>()
