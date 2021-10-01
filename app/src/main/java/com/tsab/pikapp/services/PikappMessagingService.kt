@@ -162,7 +162,7 @@ class PikappMessagingService : FirebaseMessagingService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.logo_with_name)
+            .setSmallIcon(R.drawable.logo_pikapp)
             .setContentTitle(title)
             .setContentText(body)
             .setContentInfo("Info")

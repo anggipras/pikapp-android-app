@@ -108,6 +108,7 @@ class ProcessFragment : Fragment() {
             if (intent != null) {
                 if (context != null) {
                     viewModel.getStoreOrderList(context, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState)
+                    viewModel.getListOmni(context, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState)
                 }
             }
 
