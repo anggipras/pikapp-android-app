@@ -14,7 +14,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp">
 
                 <!-- Header layout -->
                 <include
@@ -52,8 +53,8 @@
 
                 <ImageView
                     android:id="@+id/daftarKategoriChangeOrderButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="27dp"
+                    android:layout_height="20dp"
                     android:layout_marginEnd="32dp"
                     android:contentDescription="@string/cd_change_order_button"
                     android:src="@drawable/ic_change_order"

@@ -30,8 +30,8 @@ class AdvanceMenuAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.titleText.text = advanceMenuList[position].templateName
-        holder.priceText.text = "${advanceMenuList[position].advanceAdditionalMenus.size} pilihan"
+        holder.titleText.text = advanceMenuList[position].template_name
+        holder.priceText.text = "${advanceMenuList[position].ext_menus.size} pilihan"
 
         holder.itemView.setOnClickListener {
             onItemClickListener.onItemClick(advanceMenuList[position])

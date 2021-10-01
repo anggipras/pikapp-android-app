@@ -59,6 +59,7 @@ data class MerchantTimeManagement(
         val errCode: String?,
         @SerializedName("err_message")
         val errMessage: String?,
+        @SerializedName("results")
         val results: TimeManagementResponse?
 )
 
@@ -85,4 +86,38 @@ data class ShopSchedule(
 
         @SerializedName("is_force_close")
         val isForceClose: Boolean?
+)
+
+data class ShopManagementUpdateRequest(
+        @SerializedName("auto_on_off")
+        var autoOnOff: Boolean? = true,
+
+        @SerializedName("days")
+        var days: String? = null,
+
+        @SerializedName("close_time")
+        var closeTime: String? = null,
+
+        @SerializedName("open_time")
+        var openTime: String? = null,
+
+        @SerializedName("is_force_close")
+        var isForceClose: Boolean? = true
+)
+data class pinMerchant(
+        @SerializedName("old_pin")
+        val oldPin: String?,
+
+        @SerializedName("mid")
+        val mid: String?,
+
+        @SerializedName("pin")
+        val pin: String?
+)
+
+data class OtherBaseResponse(
+        @SerializedName("err_code")
+        val errCode: String?,
+        @SerializedName("err_message")
+        val errMessage: String?
 )

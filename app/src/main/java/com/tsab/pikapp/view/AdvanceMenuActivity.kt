@@ -1,40 +1,50 @@
 package com.tsab.pikapp.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import androidx.navigation.fragment.NavHostFragment
 import com.tsab.pikapp.R
-import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
+import com.tsab.pikapp.models.model.SearchItem
+import com.tsab.pikapp.viewmodel.menu.MenuViewModel
+import kotlinx.android.synthetic.main.activity_advance_menu.*
 
 class AdvanceMenuActivity : AppCompatActivity() {
     companion object {
         // Intent extras identifier.
-        const val PRODUCT_ID = "PRODUCT_ID"
-        const val RESULT_DATA = "RESULT_DATA"
+        const val EXTRA_TYPE = "extra_type"
+        const val TYPE_ADD = 0
+        const val TYPE_EDIT = 1
+        const val MENU_LIST = "menu_data"
     }
 
-    private val viewModel: AdvanceMenuViewModel by viewModels()
+    private lateinit var navController: NavController
+    private lateinit var navGraph: NavGraph
+    private val viewModel: MenuViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_advance_menu)
 
-        // Set product ID in view model.
-        val productId = intent.getStringExtra(PRODUCT_ID)
-        viewModel.setProductId(productId)
-        viewModel.fetchAdvanceMenuData()
+        val navHostFragment = advancedMenuNavHost as NavHostFragment
+        val graphInflater = navHostFragment.navController.navInflater
+        navGraph = graphInflater.inflate(R.navigation.nav_advance_menu)
+        navController = navHostFragment.navController
 
-        // Send result when push success.
-        viewModel.isPushSuccess.observe(this, Observer { isPushSuccess ->
-            if (isPushSuccess) {
-                Intent().apply {
-                    putExtra(RESULT_DATA, viewModel.advanceMenuList.value.toString())
-                    setResult(RESULT_OK, this)
-                    finish()
-                }
+        val type = intent.getIntExtra(EXTRA_TYPE, 0)
+        if (type == TYPE_ADD) {
+            viewModel.setAddOrEdit(false)
+            navGraph.startDestination = R.id.updateMenuAddAdvFragment
+        } else if (type == TYPE_EDIT) {
+            val menuListData = intent.getSerializableExtra(MENU_LIST) as? SearchItem
+            viewModel.setAddOrEdit(true)
+            if (menuListData != null) {
+                viewModel.setMenu(menuListData)
             }
-        })
+            navGraph.startDestination = R.id.updateMenuEditAdvFragment
+        }
+        navController.graph = navGraph
     }
 }

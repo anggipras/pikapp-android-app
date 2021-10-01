@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.menu
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.CategoryListResult
 import com.tsab.pikapp.view.CategoryAdapter
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import kotlinx.android.synthetic.main.fragment_category_name.*
@@ -50,24 +50,18 @@ class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItem
 
     private fun attachInputListeners() {
         closeBtn.setOnClickListener {
-            Log.e("name", viewModel.getCategoryName().toString())
             navController?.navigateUp()
         }
 
         okButton.setOnClickListener {
-            Log.e("name", viewModel.getCategoryName().toString())
             navController?.navigateUp()
         }
     }
 
-    override fun onItemClick(position: Int) {
-        viewModel.categoryAdapter.notifyItemChanged(position)
-        val categoryName = viewModel.categoryAdapter.categoryList[position].category_name
-        val categoryId = viewModel.categoryAdapter.categoryList[position].id.toString()
-        Log.e("category name", categoryName)
-        Log.e("category name", categoryId)
+    override fun onItemClick(categList: CategoryListResult) {
+        val categoryName = categList.category_name
+        val categoryId = categList.id.toString()
         viewModel.validateCategory(categoryName.toString())
         viewModel.validateCategoryId(categoryId)
-        navController?.navigateUp()
     }
 }

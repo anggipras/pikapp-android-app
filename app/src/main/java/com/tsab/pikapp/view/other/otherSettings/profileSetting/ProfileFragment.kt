@@ -160,7 +160,7 @@ class ProfileFragment : Fragment() {
                 dataBinding.profileGender.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             } else {
                 dataBinding.profileGender.visibility = View.GONE
-                dataBinding.profileGenderExist.text = gender
+                dataBinding.profileGenderExist.text = if (gender == "MALE") getString(R.string.laki_laki) else getString(R.string.perempuan)
                 dataBinding.profileGenderExist.visibility = View.VISIBLE
             }
         })
