@@ -329,7 +329,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
     fun validateDetailsScreenForUpdate(): Boolean {
         if (!isDetailsNamaPilihanValid.value!! || !isDetailsPilihanMaksimalValid.value!!) return false
-        setLoading(true)
+
         val updateMenuChoice = AdvanceMenuEdit(
                 product_id = productId.value,
                 template_name = detailsNamaPilihan.value!!,
@@ -364,6 +364,41 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         })
 
         return true
+    }
+
+    fun updateAdvanceMenu() {
+        val updateMenuChoice = AdvanceMenuEdit(
+                product_id = productId.value,
+                template_name = detailsNamaPilihan.value!!,
+                template_type = if (detailsPilihanMaksimal.value!! == 1) AdvanceMenuTemplateType.RADIO.toString() else AdvanceMenuTemplateType.CHECKBOX.toString(),
+                active = isDetailsAktif.value!!,
+                mandatory = isDetailsWajib.value!!,
+                max_choose = detailsPilihanMaksimal.value!!,
+                id = advanceId.value!!,
+                ext_menus = detailsAdditionalMenuListEdit.value ?: listOf()
+        )
+
+        var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+
+        // TODO: Update API call.
+        PikappApiService().api.uptadeAdvanceMenu(
+                getUUID(), timestamp, getClientID(), signature, token, updateMenuChoice
+        ).enqueue(object : Callback<ListAdvanceMenuEditResp> {
+            override fun onResponse(call: Call<ListAdvanceMenuEditResp>, response: Response<ListAdvanceMenuEditResp>) {
+                setLoading(false)
+                setLocalLoading(false)
+            }
+
+            override fun onFailure(call: Call<ListAdvanceMenuEditResp>, t: Throwable) {
+                setLoading(false)
+                Log.e("failed", t.message.toString())
+            }
+
+        })
     }
     /*EDIT EXTRA MENUS END*/
 
@@ -526,8 +561,6 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
     }
 
     fun deleteAdditionalMenuEdit() {
-//        mutableDetailsAdditionalMenuEdit.value = detailsAdditionalMenuListEdit.value?.filter { it.ext_menu_name != choiceName }
-
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -536,8 +569,6 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
         val mid = sessionManager.getUserData()!!.mid!!
         val pid = productId.value.toString()
 
-        /*PREPARE FOR SEND DATA TO DELETE EXTRA MENUS API ON EXISTING ADVANCE MENU*/
-        /*AFTER HITTING EDIT API, HIT AGAIN GET ADVANCE MENU AND RESTORE IN LIVE DATA*/
         setNewMenuChoice(2)
         val extId = menuExtId.value.toString()
 
@@ -575,7 +606,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
                                 setDetailsAdditionalMenuEditList(objectAdvanceMenuSelection.ext_menus)
                                 if (detailsPilihanMaksimal.value!! > objectAdvanceMenuSelection.ext_menus.size) {
                                     setDetailsPilihanMaksimal(detailsPilihanMaksimal.value!! - 1)
-                                    validateDetailsScreenForUpdate()
+                                    updateAdvanceMenu()
                                 } else {
                                     setLoading(false)
                                     setLocalLoading(false)
