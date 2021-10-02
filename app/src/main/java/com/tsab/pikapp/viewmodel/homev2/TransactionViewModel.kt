@@ -111,6 +111,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     }
 
     var logisticList = ArrayList<LogisticsDetailOmni>()
+    var logisticListDone = ArrayList<LogisticsDetailOmni>()
+    var logisticListBatal = ArrayList<LogisticsDetailOmni>()
 
     fun filterOn (pikappStatus: Boolean
                   , tokpedStatus: Boolean, grabStatus: Boolean, shopeeStatus: Boolean, size: Int){
@@ -286,7 +288,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         var sessionManager = SessionManager(getApplication())
         val mid = sessionManager.getUserData()!!.mid!!
         val page = "0"
-        val size = "5"
+        val size = "50"
         Log.e("uid", getUUID())
         Log.e("timestamp", getTimestamp())
         Log.e("client id", getClientID())
@@ -341,7 +343,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = batalList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListBatal as MutableList<LogisticsDetailOmni>, empty)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -350,7 +352,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = doneList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListDone as MutableList<LogisticsDetailOmni>, empty)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -378,6 +380,16 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     for (result in arrayResultLit){
                         if (result.logistics != null) {
                             logisticList.add(result.logistics)
+                            if(result.status == "PAYMENT_CONFIRMATION" || result.status == "PAYMENT_VERIFIED" || result.status == "SELLER_ACCEPT_ORDER" || result.status == "WAITING_FOR_PICKUP"){
+                                logisticList.add(result.logistics)
+                                //result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
+                            }else if(result.status == "SELLER_CANCEL_ORDER" || result.status == "ORDER_REJECTED_BY_SELLER"){
+                                logisticListBatal.add(result.logistics)
+                                //result.producDetails?.let { producList1.add(it as ArrayList<ProductDetailOmni>) }
+                            }else{
+                                logisticListDone.add(result.logistics)
+                                //result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
+                            }
                         }
                     }
                 }
