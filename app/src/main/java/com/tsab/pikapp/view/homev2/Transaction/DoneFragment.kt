@@ -23,6 +23,7 @@ class DoneFragment : Fragment() {
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var linearLayoutManager1: LinearLayoutManager
     private lateinit var dataBinding: FragmentDoneBinding
     private val sessionManager = SessionManager()
 
@@ -43,10 +44,14 @@ class DoneFragment : Fragment() {
 
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
-                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager1 =
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
-
+        recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
         activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone) }
+        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_done, requireActivity().supportFragmentManager, requireActivity(), "Done", emptyStateDone) }
+
 
         observeViewModel()
     }

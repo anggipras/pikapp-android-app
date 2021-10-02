@@ -14,6 +14,7 @@ import com.tsab.pikapp.databinding.FragmentCancelBinding
 import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
+import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 
@@ -22,6 +23,7 @@ class CancelFragment : Fragment() {
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
+    lateinit var linearLayoutManager1: LinearLayoutManager
     private lateinit var dataBinding: FragmentCancelBinding
 
 
@@ -41,10 +43,14 @@ class CancelFragment : Fragment() {
 
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
-                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager1 =
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
+        recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal", requireActivity().supportFragmentManager, emptyState1) }
+        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_cancel, requireActivity().supportFragmentManager, requireActivity(), "Batal", emptyState1) }
 
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal",  requireActivity().supportFragmentManager, emptyState1) }
         observeViewModel()
     }
 
