@@ -14,6 +14,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.HomeActivity
 import kotlinx.android.synthetic.main.activity_sort.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +24,7 @@ import java.util.*
 class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListener {
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
+    private val sessionManager = SessionManager()
 
     var categoryListName: MutableList<categories_name> = mutableListOf()
     lateinit var sortCategoryAdapter: SortCategoryAdapter
@@ -176,7 +178,13 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         }
 
         headerLayout.setOnClickListener {
-            onBackPressed()
+            if (sessionManager.getSortNav() == 1) {
+                finish()
+            } else {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
@@ -185,5 +193,15 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         categoryOrder = sortCategoryAdapter.menuCategoryList[position].category_order.toString()
         activationToggle = sortCategoryAdapter.menuCategoryList[position].is_active.toString()
         categoryId = sortCategoryAdapter.menuCategoryList[position].id.toString()
+    }
+
+    override fun onBackPressed() {
+        if (sessionManager.getSortNav() == 1) {
+            finish()
+        } else {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

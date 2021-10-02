@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
@@ -26,6 +27,7 @@ class MenuFragment : Fragment() {
 
     private var categoryList: List<String> = listOf()
     lateinit var linearLayoutManager: LinearLayoutManager
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,6 +115,8 @@ class MenuFragment : Fragment() {
 
         dataBinding.sortButton.setOnClickListener {
             if (viewModel.size.value != null) {
+                sessionManager.setSortNav(0)
+                sessionManager.setHomeNav(1)
                 Intent(activity?.baseContext, SortActivity::class.java).apply {
                     activity?.startActivity(this)
                 }

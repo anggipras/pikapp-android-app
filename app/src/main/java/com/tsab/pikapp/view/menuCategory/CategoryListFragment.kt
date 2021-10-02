@@ -86,6 +86,7 @@ class CategoryListFragment : Fragment() {
         }, view)
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {
+            sessionManager.setSortNav(1)
             Intent(activity?.baseContext, SortActivity::class.java).apply {
                 startActivity(this)
             }

@@ -24,6 +24,7 @@ class SessionManager {
         private var PREF_HOME_NAV = "home nav"
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
+        private const val PREF_SORT_NAV = "sort nav"
 
         private var prefs: SharedPreferences? = null
 
@@ -167,4 +168,13 @@ class SessionManager {
 
     fun getBannerUri() = prefs?.getString(PREF_MERCHANT_BANNER, null)
     fun getLogoUri() = prefs?.getString(PREF_MERCHANT_LOGO, null)
+
+    //SORT NAVIGATION
+    fun setSortNav(intData: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_SORT_NAV, intData)
+        }
+    }
+
+    fun getSortNav() = prefs?.getInt(PREF_SORT_NAV, 0)
 }
