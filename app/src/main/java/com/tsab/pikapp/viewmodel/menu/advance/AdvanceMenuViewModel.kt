@@ -329,7 +329,7 @@ class AdvanceMenuViewModel(application: Application) : BaseViewModel(application
 
     fun validateDetailsScreenForUpdate(): Boolean {
         if (!isDetailsNamaPilihanValid.value!! || !isDetailsPilihanMaksimalValid.value!!) return false
-
+        setLoading(true)
         val updateMenuChoice = AdvanceMenuEdit(
                 product_id = productId.value,
                 template_name = detailsNamaPilihan.value!!,
