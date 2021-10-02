@@ -118,7 +118,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                   , tokpedStatus: Boolean, grabStatus: Boolean, shopeeStatus: Boolean, size: Int){
 
         if(size == 0){
-            Log.e("ejqnf", "0")
             mutableEmpty.value!!.isVisible
             mutableEmpty.value!!.visibility = View.VISIBLE
         }
@@ -289,10 +288,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val mid = sessionManager.getUserData()!!.mid!!
         val page = "0"
         val size = "50"
-        Log.e("uid", getUUID())
-        Log.e("timestamp", getTimestamp())
-        Log.e("client id", getClientID())
-        Log.e("mid", mid)
 
         PikappApiService().api.getListOrderOmni(
                 getUUID(), getTimestamp(), getClientID(), mid, page, size
@@ -310,9 +305,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 var productList = ArrayList<ArrayList<ProductDetailOmni>>()
                 var producList1 = ArrayList<ArrayList<ProductDetailOmni>>()
                 var productList2 = ArrayList<ArrayList<ProductDetailOmni>>()
-                Log.e("err code", response?.errCode.toString())
-                Log.e("err msg", response?.errMessage.toString())
-                Log.e("err result", response?.results.toString())
                 if (resultList != null){
                     for (result in resultList){
                         getOrderDetailOmni(result.orderId.toString())
