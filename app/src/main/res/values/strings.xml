@@ -26,6 +26,9 @@
     <string name="alert_dialog">Apakah anda yakin ingin menghapus menu ini?</string>
     <string name="alert_dialog_menuChoice">Anda yakin ingin menghapus pilihan ini dari menu restoran Anda?</string>
 
+    <string name="tolak">Tolak</string>
+    <string name="pesanan_siap">Pesanan Siap</string>
+
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
     <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>

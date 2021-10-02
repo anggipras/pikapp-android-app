@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
-    android:layout_marginBottom="10dp">
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,13 +21,13 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/proximanova_regular"
-            android:text="Makan di Tempat"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Makan di Tempat" />
 
         <TextView
             android:id="@+id/tableNumber"
@@ -36,14 +36,14 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/proximanova_semibold"
-            android:text="Meja 1"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginTop="5dp" />
+            app:layout_goneMarginTop="5dp"
+            tools:text="Meja 1" />
 
         <TextView
             android:id="@+id/orderDate"
@@ -52,13 +52,13 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="58dp"
             android:fontFamily="@font/proximanova_regular"
-            android:text="10 juni"
             android:textColor="@color/borderSubtle"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.002"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10 juni" />
 
         <TextView
             android:id="@+id/paymentStatus"
@@ -100,11 +100,65 @@
             android:layout_marginTop="57dp"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/proximanova_semibold"
-            android:text="4 menit yang lalu"
             android:textColor="@color/borderSubtle"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4 menit yang lalu" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.033"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderDate"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_transaction_menu" />
+
+        <TextView
+            android:id="@+id/menuCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:textColor="@color/borderSubtle"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu"
+            tools:text="Total 3 items:" />
+
+        <TextView
+            android:id="@+id/totalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuCount"
+            tools:text="Rp. 70.000" />
+
+        <Button
+            android:id="@+id/rejectButton"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_red_transparent"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Tolak"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/acceptButton"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu" />
 
         <Button
             android:id="@+id/acceptButton"
@@ -119,87 +173,6 @@
             android:textColor="@color/green"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        <Button
-            android:id="@+id/rejectButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/button_red_transparent"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="Tolak"
-            android:textAllCaps="false"
-            android:textColor="@color/red"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/acceptButton"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.033"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDate" />
-
-        <TextView
-            android:id="@+id/menuCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="Total 3 items:"
-            android:textColor="@color/borderSubtle"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        <TextView
-            android:id="@+id/totalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="Rp. 70.000"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menuCount" />
-
-        <TextView
-            android:id="@+id/totalPrice2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/proximanova_semibold"
-            android:text="Rp. 70.000"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/totalPrice"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="337dp" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="330dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/lightGrey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu" />
 
         <include

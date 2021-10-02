@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/grabFoodImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/grabfood"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/transactionId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/grabFoodImage"
+                tools:text="GF - 151" />
+
+            <TextView
+                android:id="@+id/transactionTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transactionId"
+                tools:text="10 Jun 10:09" />
+
+            <TextView
+                android:id="@+id/transactionStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_red_square"
+                android:fontFamily="@font/proximanova_semibold"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="12dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/transactionId"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/grabFoodImage"
+                tools:text="BARU" />
+
+            <TextView
+                android:id="@+id/transactionTimeUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/transactionTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/transactionTime"
+                tools:text="4 menit yang lalu" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/transactionItemList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transactionTime"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_transaction_menu" />
+
+            <TextView
+                android:id="@+id/transactionItemCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_semibold"
+                android:textColor="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/transactionItemList"
+                tools:text="Total 3 items:" />
+
+            <TextView
+                android:id="@+id/transactionTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/proximanova_semibold"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/transactionItemCount"
+                tools:text="Rp. 70.000" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/transactionButtonGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/transactionRejectButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/button_red_transparent"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="@string/tolak"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/transactionAcceptButton"
+                app:layout_constraintDimensionRatio="42:30"
+                app:layout_constraintEnd_toStartOf="@+id/transactionAcceptButton"
+                app:layout_constraintTop_toTopOf="@id/transactionAcceptButton" />
+
+            <Button
+                android:id="@+id/transactionAcceptButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@drawable/button_green_transparent"
+                android:fontFamily="@font/proximanova_semibold"
+                android:paddingHorizontal="8dp"
+                android:text="@string/pesanan_siap"
+                android:textAllCaps="false"
+                android:textColor="@color/green"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/transactionTotalPrice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/transactionItemCount" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
