@@ -4,24 +4,28 @@ import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.BaseResponse
-import com.tsab.pikapp.models.model.CategoryListResult
-import com.tsab.pikapp.models.model.MerchantListCategoryResponse
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.CategoryAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,7 +39,6 @@ import java.io.FileOutputStream
 class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     private var sessionManager = SessionManager(getApplication())
-    private var prefHelper = SharedPreferencesUtil(getApplication())
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
@@ -43,6 +46,24 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     var size: String = "0"
 
     var name1: String = "Test"
+
+    private val mutableMenuList = MutableLiveData<SearchItem>()
+    val menuList: LiveData<SearchItem> get() = mutableMenuList
+    fun setMenu(menu: SearchItem) {
+        mutableMenuList.value = menu
+        menu.product_id?.let { fetchAdvanceMenuData(it) }
+        menu.on_off?.let { setMenuActive(it.toBoolean()) }
+        mutableImg.value = menu.pict_01?.toUri()
+        mutableCategoryId.value = menu.merchant_category_id.toString()
+        isCategoryValid.value = true
+        isMenuValid.value = true
+    }
+
+    private val mutableAddOrEdit = MutableLiveData<Boolean>()
+    val addOrEdit: LiveData<Boolean> get() = mutableAddOrEdit
+    fun setAddOrEdit(bool: Boolean) {
+        mutableAddOrEdit.value = bool
+    }
 
     private val mutableMenu = MutableLiveData(Uri.EMPTY)
     private val mutableMenuError = MutableLiveData("")
@@ -55,6 +76,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     private val isCategoryValid = MutableLiveData(false)
     val category: LiveData<String> get() = mutableCategory
     val categoryError: LiveData<String> get() = mutableCategoryError
+
+    private val mutableEtalase = MutableLiveData("")
+    private val mutableEtalaseError = MutableLiveData("")
+    private val isEtalaseValid = MutableLiveData(false)
+    val etalase: LiveData<String> get() = mutableEtalase
+    val etalaseError: LiveData<String> get() = mutableEtalaseError
 
     private val mutableCategoryId = MutableLiveData("")
     private val mutableCategoryIdError = MutableLiveData("")
@@ -73,17 +100,47 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     val nama: LiveData<String> get() = mutableNama
     val namaError: LiveData<String> get() = mutableNamaError
 
-    private val mutableAdvance = MutableLiveData("None")
-    private val mutableAdvanceError = MutableLiveData("")
-    private val isAdvanceValid = MutableLiveData(false)
-    val advance: LiveData<String> get() = mutableAdvance
-    val advanceError: LiveData<String> get() = mutableAdvanceError
+    private val mutableAdvanceMenuList = MutableLiveData<AddAdvanceMenuRequest>()
+    val advanceMenuList: LiveData<AddAdvanceMenuRequest> = mutableAdvanceMenuList
+    fun setAdvanceMenuList(advanceMenuList: List<AdvanceMenu>) {
+        mutableAdvanceMenuList.value = AddAdvanceMenuRequest(advanceMenuList)
+    }
+
+    private val mutableAdvanceMenuEditList = MutableLiveData<EditAdvanceMenuRequest>()
+    val advanceMenuEditList: LiveData<EditAdvanceMenuRequest> = mutableAdvanceMenuEditList
+    fun setAdvanceMenuEditList(advanceMenuList: List<AdvanceMenuEdit>) {
+        mutableAdvanceMenuEditList.value = EditAdvanceMenuRequest(advanceMenuList)
+    }
+
+    private val mutableDesc = MutableLiveData("")
+    private val mutableDescError = MutableLiveData("")
+    private val isDescValid = MutableLiveData(false)
+    val desc: LiveData<String> get() = mutableDesc
+    val descError: LiveData<String> get() = mutableDescError
 
     private val mutableHarga = MutableLiveData("")
     private val mutableHargaError = MutableLiveData("")
     private val isHargaValid = MutableLiveData(false)
     val harga: LiveData<String> get() = mutableHarga
     val hargaError: LiveData<String> get() = mutableHargaError
+
+    private val mutableIsMenuActive = MutableLiveData<Boolean>(false)
+    val isMenuActive: LiveData<Boolean> = mutableIsMenuActive
+    fun setMenuActive(isActive: Boolean) {
+        mutableIsMenuActive.value = isActive
+    }
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+    fun setLoading(bool: Boolean) {
+        _isLoading.value = bool
+    }
+
+    private val _isLoadingFinish = MutableLiveData<Boolean>(true)
+    val isLoadingFinish: LiveData<Boolean> get() = _isLoadingFinish
+    fun setLoadingFinish(bool: Boolean) {
+        _isLoadingFinish.value = bool
+    }
 
     fun showTooltip(context: Context): Balloon {
         var balloon = createBalloon(context) {
@@ -111,11 +168,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return mutableCategory.value
     }
 
-    fun getCategoryName1(): String? {
-        Log.e("nama", name1)
-        return name1
-    }
-
     fun backBtn() {
         mutableImg.value = null
     }
@@ -124,6 +176,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         mutableMenuError.value = ""
         mutableHargaError.value = ""
         mutableNamaError.value = ""
+        mutableDescError.value = ""
     }
 
     fun validateMenu(menu: Uri?): Boolean {
@@ -138,11 +191,18 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isMenuValid.value!!
     }
 
+    fun validateImgEdit(img: Uri?): Uri? {
+        mutableImg.value = img
+        mutableMenu.value = img
+        return img
+    }
+
     fun validateImg(img: Uri?): Uri? {
         if (menu == null || menu == Uri.EMPTY) {
-            Log.e("Kosong", "Kosongg")
+            Log.e("EMPTYURI", "It's empty")
         } else {
             mutableImg.value = img
+            mutableMenuError.value = ""
         }
         return img
     }
@@ -161,7 +221,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun validateCategory(Category: String): Boolean {
         if (Category.isEmpty() || Category.isBlank()) {
-            mutableCategoryError.value = "Nama menu tidak boleh kosong"
+            mutableCategoryError.value = "Nama kategori tidak boleh kosong"
         } else {
             mutableCategoryError.value = ""
         }
@@ -170,9 +230,20 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isCategoryValid.value!!
     }
 
+    fun validateEtalase(Etalase: String): Boolean {
+        if (Etalase.isEmpty() || Etalase.isBlank()) {
+            mutableEtalaseError.value = "Nama kategori tidak boleh kosong"
+        } else {
+            mutableEtalaseError.value = ""
+        }
+        mutableEtalase.value =Etalase
+        isEtalaseValid.value = mutableEtalaseError.value!!.isEmpty()
+        return isEtalaseValid.value!!
+    }
+
     fun validateCategoryId(CategoryId: String): Boolean {
         if (CategoryId.isEmpty() || CategoryId.isBlank()) {
-            mutableCategoryIdError.value = "Nama menu tidak boleh kosong"
+            mutableCategoryIdError.value = "Nama kategori tidak boleh kosong"
         } else {
             mutableCategoryIdError.value = ""
         }
@@ -193,16 +264,16 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         return isHargaValid.value!!
     }
 
-    fun validateAdvance(advance: String): Boolean {
-        if (advance.isEmpty() || advance.isBlank()) {
-            mutableAdvanceError.value = "Harga tidak boleh kosong"
+    fun validateDesc(desc: String): Boolean {
+        if (desc.isEmpty() || desc.isBlank()) {
+            mutableDescError.value = "Deskripsi tidak boleh kosong"
         } else {
-            mutableAdvanceError.value = ""
+            mutableDescError.value = ""
         }
 
-        mutableAdvance.value = advance
-        isAdvanceValid.value = mutableAdvanceError.value!!.isEmpty()
-        return isAdvanceValid.value!!
+        mutableDesc.value = desc
+        isDescValid.value = mutableDescError.value!!.isEmpty()
+        return isDescValid.value!!
     }
 
     fun getCategory(
@@ -232,20 +303,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
                 val categoryResponse = response.body()
                 var categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
-                Log.e("uuid", getUUID())
-                Log.e("timestamp", timestamp)
-                Log.e("client id", getClientID())
-                Log.e("signature", signature)
-                Log.e("token", token)
-
-                Log.i("MyTag", "onCreate")
-                Log.e("size", categoryResponse?.results?.size.toString())
                 size = categoryResponse?.results?.size.toString()
-                Log.e("size on response", size)
 
                 categoryAdapter = CategoryAdapter(
                     baseContext,
@@ -259,9 +317,12 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         })
     }
 
-    fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!!
+    fun validatePage(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!! && isCategoryValid.value!!
+
+    fun validatePageTokped(): Boolean = isMenuValid.value!! && isNamaValid.value!! && isHargaValid.value!! && isDescValid.value!! && isCategoryValid.value!! && isEtalaseValid.value!!
 
     fun postMenu() {
+        setLoading(true)
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -272,60 +333,160 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val gson = Gson()
         val type = object : TypeToken<BaseResponse>() {}.type
 
-        val menuParcelFileDescriptor = application.contentResolver.openFileDescriptor(
-            menu.value!!,
-            "r", null
-        ) ?: return
-        val menuInputStream = FileInputStream(menuParcelFileDescriptor.fileDescriptor)
-        val menuFile = File(
-            application.cacheDir, application.contentResolver.getFileName(
-                menu.value!!
-            )
-        )
-        val menuOutputStream = FileOutputStream(menuFile)
-        menuInputStream.copyTo(menuOutputStream)
+        val actionMenu = if (addOrEdit.value == true) "MODIFY" else "ADD"
+        val statusMenu = if (addOrEdit.value == true) isMenuActive.value.toString() else "true"
+        val jsonString = GsonBuilder().create().toJson(advanceMenuList.value)
+        val productId = if (menuList.value?.product_id.isNullOrEmpty()) null else menuList.value?.product_id
 
-        apiService.api.uploadMenu(
-            getUUID(), timestamp, getClientID(), signature, token, mid,
-            MultipartBody.Part.createFormData(
-                "file_01", menuFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
-            ),
-            MultipartBody.Part.createFormData(
-                "file_02", menuFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
-            ),
-            MultipartBody.Part.createFormData(
-                "file_03", menuFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
-            ),
-            RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "Desc Makanan"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "ADD"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "True"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
-            RequestBody.create(MediaType.parse("multipart/form-data"), advance.value)
+        if (menu.value == null || menu.value == Uri.EMPTY) {
+            apiService.api.uploadEditMenu(
+                    getUUID(), timestamp, getClientID(), signature, token, mid, productId,
+                    RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), desc.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), statusMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
+            ).enqueue(object : Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                        setLoading(false)
+                        setLoadingFinish(false)
+                        val toastAddEdit = "Perubahan berhasil tersimpan"
+                        Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
+                    } else {
+                        setLoading(false)
+                        var errorResponse: BaseResponse? =
+                                gson.fromJson(response.errorBody()!!.charStream(), type)
+                        Log.e(
+                                "Result",
+                                generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e("UploadRegisterError", t.message.toString())
+                }
+            })
+        } else {
+            val menuParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+                    menu.value!!,
+                    "r", null
+            ) ?: return
+            val menuInputStream = FileInputStream(menuParcelFileDescriptor.fileDescriptor)
+            val menuFile = File(
+                    application.cacheDir, application.contentResolver.getFileName(
+                    menu.value!!
+            )
+            )
+            val menuOutputStream = FileOutputStream(menuFile)
+            menuInputStream.copyTo(menuOutputStream)
+
+            apiService.api.uploadMenu(
+                    getUUID(), timestamp, getClientID(), signature, token, mid, productId,
+                    MultipartBody.Part.createFormData(
+                            "file_01", menuFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_02", menuFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_03", menuFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), menuFile)
+                    ),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), nama.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), desc.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), categoryId.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), harga.value),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), actionMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), statusMenu),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
+                    RequestBody.create(MediaType.parse("multipart/form-data"), jsonString)
+            ).enqueue(object : Callback<BaseResponse> {
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                        setLoading(false)
+                        setLoadingFinish(false)
+                        val toastAddEdit = if (actionMenu == "ADD") "Menu berhasil ditambahkan" else "Perubahan berhasil tersimpan"
+                        Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
+                    } else {
+                        setLoading(false)
+                        var errorResponse: BaseResponse? =
+                                gson.fromJson(response.errorBody()!!.charStream(), type)
+                        Log.e(
+                                "Result",
+                                generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e("UploadRegisterError", t.message.toString())
+                }
+            })
+        }
+    }
+
+    fun deleteMenu() {
+        setLoading(true)
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
+
+        apiService.api.deleteMenu(
+                getUUID(), timestamp, getClientID(), signature, token, mid, menuList.value?.product_id.toString(),
+                RequestBody.create(MediaType.parse("multipart/form-data"), "new"),
+                RequestBody.create(MediaType.parse("multipart/form-data"), "DELETE"),
+                RequestBody.create(MediaType.parse("multipart/form-data"), "1")
         ).enqueue(object : Callback<BaseResponse> {
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Log.e("SUCCEED", categoryId.value)
-                    Log.e("Advance", advance.value)
-                } else {
-                    var errorResponse: BaseResponse? =
-                        gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Log.e(
-                        "Result",
-                        generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
-                    )
+                    setLoading(false)
+                    setLoadingFinish(false)
+                    Toast.makeText(getApplication(), "Menu berhasil dihapus", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                Log.e("UploadRegisterError", t.message.toString())
+                setLoading(false)
+                Log.e("MenuDeleteFailed", t.message.toString())
             }
         })
+    }
+
+    fun fetchAdvanceMenuData(productId: String) {
+        setLoading(true)
+        val timeStamp = getTimestamp()
+        disposable.add(
+                apiService.listAdvanceMenuEdit(
+                        email = sessionManager.getUserData()?.email ?: "",
+                        token = sessionManager.getUserToken() ?: "",
+                        pid = productId,
+                        timeStamp = timeStamp
+                ).subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuEditResponse>() {
+                            override fun onSuccess(response: ListAdvanceMenuEditResponse) {
+                                if (response.results.isNotEmpty()) {
+                                    setAdvanceMenuEditList(response.results)
+                                }
+                                setLoading(false)
+                            }
+
+                            override fun onError(e: Throwable) {
+                                Log.e("ERRORFETCH", e.message.toString())
+                                setLoading(false)
+                            }
+                        })
+        )
     }
 }

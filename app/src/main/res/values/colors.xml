@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#4056C6</color>
     <color name="colorSecondary">#FEB614</color>
     <color name="colorAccent">#4056C6</color>
+    <color name="orange">#F4B55B</color>
 
     <color name="tooltipText">#767676</color>
     <color name="tooltipBackground">#F8FAFC</color>
@@ -22,6 +23,7 @@
     <color name="lightGrey">#EEEEEE</color>
 
     <color name="green">#4BB7AC</color>
+    <color name="darkGreen">#3D6C54</color>
     <color name="red">#DC6A84</color>
     <color name="yellow">#FBA83C</color>
     <color name="black">#111111</color>
@@ -29,5 +31,7 @@
 
     <color name="textSubtle">#767676</color>
     <color name="borderSubtle">#AAAAAA</color>
+
+    <color name="editTextGray">#D9CECE</color>
 
 </resources>

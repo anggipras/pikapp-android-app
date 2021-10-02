@@ -108,14 +108,17 @@ class SignupV2ThirdFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.ktp.observe(viewLifecycleOwner, Observer { ktpUri ->
             dataBinding.ktpImageSelector.setImageURI(ktpUri)
+            dataBinding.ktpErrorText.text = ""
         })
 
         viewModel.logo.observe(viewLifecycleOwner, Observer { logoUri ->
             dataBinding.logoRestoranImageSelector.setImageURI(logoUri)
+            dataBinding.logoRestoranErrorText.text = ""
         })
 
         viewModel.latar.observe(viewLifecycleOwner, Observer { latarUri ->
             dataBinding.latarRestoranImageSelector.setImageURI(latarUri)
+            dataBinding.latarRestoranErrorText.text = ""
         })
     }
 
@@ -139,138 +142,161 @@ class SignupV2ThirdFragment : Fragment() {
 
             if (!viewModel.validateThirdPage()) return@setOnClickListener
 
-            toggleLoadingView(true)
             uploadData()
         }
     }
 
     private fun uploadData() {
         val ktpParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
-            viewModel.ktp.value!!, "r", null
+                viewModel.ktp.value!!, "r", null
         ) ?: return
         val ktpInputStream = FileInputStream(ktpParcelFileDescriptor.fileDescriptor)
         val ktpFile = File(
-            requireActivity().cacheDir,
-            requireActivity().contentResolver.getFileName(viewModel.ktp.value!!)
+                requireActivity().cacheDir,
+                requireActivity().contentResolver.getFileName(viewModel.ktp.value!!)
         )
         val ktpOutputStream = FileOutputStream(ktpFile)
         ktpInputStream.copyTo(ktpOutputStream)
 
         val logoParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
-            viewModel.logo.value!!, "r", null
+                viewModel.logo.value!!, "r", null
         ) ?: return
         val logoInputStream = FileInputStream(logoParcelFileDescriptor.fileDescriptor)
         val logoFile = File(
-            requireActivity().cacheDir,
-            requireActivity().contentResolver.getFileName(viewModel.logo.value!!)
+                requireActivity().cacheDir,
+                requireActivity().contentResolver.getFileName(viewModel.logo.value!!)
         )
         val logoOutputStream = FileOutputStream(logoFile)
         logoInputStream.copyTo(logoOutputStream)
 
         val latarParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
-            viewModel.latar.value!!, "r", null
+                viewModel.latar.value!!, "r", null
         ) ?: return
         val latarInputStream = FileInputStream(latarParcelFileDescriptor.fileDescriptor)
         val latarFile = File(
-            requireActivity().cacheDir,
-            requireActivity().contentResolver.getFileName(viewModel.latar.value!!)
+                requireActivity().cacheDir,
+                requireActivity().contentResolver.getFileName(viewModel.latar.value!!)
         )
         val latarOutputStream = FileOutputStream(latarFile)
         latarInputStream.copyTo(latarOutputStream)
 
-        PikappApiService().api.uploadRegister(
-            getUUID(), getClientID(), getTimestamp(),
-            MultipartBody.Part.createFormData(
-                "file_01", latarFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
-            ),
-            MultipartBody.Part.createFormData(
-                "file_02", logoFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
-            ),
-            MultipartBody.Part.createFormData(
-                "file_03", ktpFile.name,
-                RequestBody.create(MediaType.parse("multipart/form-data"), ktpFile)
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.alamat.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                "1"
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.namaBank.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.fullName.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.nomorRekening.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.namaRekening.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.email.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.phone.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.namaRestoran.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                fcm.toString()
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.pin.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.namaBank.value!!
-            ),
-            RequestBody.create(
-                MediaType.parse("multipart/form-data"),
-                viewModel.namaFoodcourt.value!!
-            )
-        ).enqueue(object : Callback<BaseResponse> {
-            override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                Log.e("UploadRegisterError", t.message.toString())
-                toggleLoadingView(false)
-            }
+        val ktpFileSize = (ktpFile.length() / 1024).toString().toInt()
+        val logoFileSize = (logoFile.length() / 1024).toString().toInt()
+        val bannerFileSize = (latarFile.length() / 1024).toString().toInt()
 
-            override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
-                toggleLoadingView(false)
+        var imageValidation = false
+        if (ktpFileSize > 1024) {
+            ktpErrorText.text = "Ukuran gambar harus kurang dari 1MB"
+        }
 
-                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
-                        activity?.startActivity(this)
-                        this@SignupV2ThirdFragment.activity?.finish()
-                    }
-                } else {
-                    val errorResponse: BaseResponse? = gson.fromJson(
-                        response.errorBody()!!.charStream(), typeToken
+        if (logoFileSize > 1024) {
+            logoRestoranErrorText.text = "Ukuran gambar harus kurang dari 1MB"
+        }
+
+        if (bannerFileSize > 1024) {
+            latarRestoranErrorText.text = "Ukuran gambar harus kurang dari 1MB"
+        }
+
+        if (ktpFileSize < 1024 && logoFileSize < 1024 && bannerFileSize < 1024) {
+            imageValidation = true
+        }
+
+        if (imageValidation) {
+            toggleLoadingView(true)
+            PikappApiService().api.uploadRegister(
+                    getUUID(), getClientID(), getTimestamp(),
+                    MultipartBody.Part.createFormData(
+                            "file_01", latarFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_02", logoFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
+                    ),
+                    MultipartBody.Part.createFormData(
+                            "file_03", ktpFile.name,
+                            RequestBody.create(MediaType.parse("multipart/form-data"), ktpFile)
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.alamat.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            "1"
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.namaBank.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.fullName.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.nomorRekening.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.namaRekening.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.email.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.phone.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.namaRestoran.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            fcm.toString()
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.pin.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.namaBank.value!!
+                    ),
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"),
+                            viewModel.namaFoodcourt.value!!
                     )
-                    Toast.makeText(
-                        context, generateResponseMessage(
-                            errorResponse?.errCode,
-                            errorResponse?.errMessage
-                        ), Toast.LENGTH_LONG
-                    ).show()
+            ).enqueue(object : Callback<BaseResponse> {
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e("UploadRegisterError", t.message.toString())
+                    toggleLoadingView(false)
                 }
-            }
-        })
+
+                override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
+                    toggleLoadingView(false)
+
+                    if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                        Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
+                            activity?.startActivity(this)
+                            this@SignupV2ThirdFragment.activity?.finish()
+                        }
+                    } else {
+                        val errorResponse: BaseResponse? = gson.fromJson(
+                                response.errorBody()!!.charStream(), typeToken
+                        )
+                        Toast.makeText(
+                                context, generateResponseMessage(
+                                errorResponse?.errCode,
+                                errorResponse?.errMessage
+                        ), Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            })
+        }
     }
 
     private fun toggleLoadingView(isLoading: Boolean) {

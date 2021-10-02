@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.menu.advance.lists
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,13 +26,13 @@ class AdvanceMenuAdditionalAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_title_description_action, parent, false)
+                .inflate(R.layout.item_menu_extra, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.titleText.text = additionalMenuList[position].advanceAdditionalMenuName
-        holder.priceText.text = "Rp ${additionalMenuList[position].advanceAdditionalMenuPrice}"
+        holder.titleText.text = additionalMenuList[position].ext_menu_name
+        holder.priceText.text = "Rp ${additionalMenuList[position].ext_menu_price}"
 
         holder.itemView.setOnClickListener {
             onItemClickListener.onItemClick(additionalMenuList[position])
@@ -44,5 +45,11 @@ class AdvanceMenuAdditionalAdapter(
         this.additionalMenuList.clear()
         this.additionalMenuList.addAll(additionalMenuList)
         notifyDataSetChanged()
+    }
+
+    fun removeMenuChoice(model: AdvanceAdditionalMenu) {
+        val position = additionalMenuList.indexOf(model)
+        additionalMenuList.remove(model)
+        notifyItemRemoved(position)
     }
 }

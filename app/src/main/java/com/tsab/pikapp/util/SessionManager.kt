@@ -21,6 +21,10 @@ class SessionManager {
         private const val PREF_MERCHANT_DATA = "merchant data"
         private const val PREF_MERCHANT_DOB = "merchant dob"
         private const val PREF_MERCHANT_GENDER = "merchant gender"
+        private var PREF_HOME_NAV = "home nav"
+        private const val PREF_MERCHANT_BANNER = "merchant banner"
+        private const val PREF_MERCHANT_LOGO = "merchant logo"
+        private const val PREF_SORT_NAV = "sort nav"
 
         private var prefs: SharedPreferences? = null
 
@@ -48,6 +52,10 @@ class SessionManager {
     }
 
     fun isLoggingIn() = prefs?.getBoolean(PREF_ISLOGGINGIN, false)
+
+    fun transactionUpdate(){
+        PREF_HOME_NAV = "0"
+    }
 
     private fun saveUserToken(token: String) {
         prefs?.edit(commit = true) {
@@ -144,4 +152,29 @@ class SessionManager {
     fun setGenderProfile(gender: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_GENDER, gender) }
     fun getDOBProfile() = prefs?.getString(PREF_MERCHANT_DOB, null)
     fun getGenderProfile() = prefs?.getString(PREF_MERCHANT_GENDER, null)
+
+    //HOME NAVIGATION STATUS
+    fun setHomeNav(intData: Int){
+        prefs?.edit(commit = true) {
+            putInt(PREF_HOME_NAV, intData)
+        }
+    }
+
+    fun getHomeNav() = prefs?.getInt(PREF_HOME_NAV, 0)
+
+    //SET AND GET CONTENT URI
+    fun setBannerUri(banner: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_BANNER, banner) }
+    fun setLogoUri(logo: String?) = prefs?.edit(commit = true) { putString(PREF_MERCHANT_LOGO, logo) }
+
+    fun getBannerUri() = prefs?.getString(PREF_MERCHANT_BANNER, null)
+    fun getLogoUri() = prefs?.getString(PREF_MERCHANT_LOGO, null)
+
+    //SORT NAVIGATION
+    fun setSortNav(intData: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_SORT_NAV, intData)
+        }
+    }
+
+    fun getSortNav() = prefs?.getInt(PREF_SORT_NAV, 0)
 }

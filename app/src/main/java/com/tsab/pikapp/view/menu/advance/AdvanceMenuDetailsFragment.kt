@@ -2,13 +2,15 @@ package com.tsab.pikapp.view.menu.advance
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -37,6 +39,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
     private val viewModel: AdvanceMenuViewModel by activityViewModels()
     private lateinit var navController: NavController
     private lateinit var dataBinding: FragmentAdvanceMenuDetailsBinding
+    var numberOfChoice = mutableListOf<String>()
+    var selectedChoice = "1"
 
     private lateinit var additionalMenuAdapter: AdvanceMenuAdditionalAdapter
 
@@ -60,6 +64,39 @@ class AdvanceMenuDetailsFragment : Fragment() {
         observeViewModel()
         attachInputListeners()
         setupRecyclerView()
+        spinnerView()
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewModel.addOrEdit.value == true) {
+                    navController.navigate(R.id.action_advanceMenuDetailsFragment_to_editMenuAdvanceMainFragment, bundleOf(EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+                } else {
+                    navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                            bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+                }
+            }
+        })
+    }
+
+    private fun spinnerView() {
+        numberOfChoice.clear()
+        for (i in 1..(viewModel.detailsAdditionalMenuList.value?.size ?: 1)) {
+            numberOfChoice.plusAssign(i.toString())
+        }
+        var arrayChoiceAdapter: ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.style_spinner_menu, numberOfChoice)
+        dataBinding.spinnerMenuChoice.adapter = arrayChoiceAdapter
+        dataBinding.spinnerMenuChoice.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedChoice = numberOfChoice[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
     }
 
     private fun fetchArguments() {
@@ -68,9 +105,13 @@ class AdvanceMenuDetailsFragment : Fragment() {
             viewModel.setDetailsAktif(arguments?.getBoolean(ARGUMENT_AKTIF) ?: true)
             viewModel.setDetailsWajib(arguments?.getBoolean(ARGUMENT_WAJIB) ?: true)
             viewModel.setDetailsPilihanMaksimal(arguments?.getInt(ARGUMENT_PILIHAN_MAKSIMAL) ?: 1)
+            selectedChoice = if (arguments?.getInt(ARGUMENT_PILIHAN_MAKSIMAL) != 1) arguments?.getInt(ARGUMENT_PILIHAN_MAKSIMAL).toString() else "1"
+            dataBinding.spinnerMenuChoice.setSelection(selectedChoice.toInt() - 1)
             viewModel.setDetailsAdditionalMenuList(
                 arguments?.get(ARGUMENT_ADDITIONAL_MENU) as List<AdvanceAdditionalMenu>? ?: listOf()
             )
+        } else {
+            viewModel.detailsAdditionalMenuList.value?.size?.minus(1)?.let { viewModel.setDetailsPilihanMaksimal(it) }
         }
     }
 
@@ -98,13 +139,12 @@ class AdvanceMenuDetailsFragment : Fragment() {
         })
 
         viewModel.detailsPilihanMaksimal.observe(viewLifecycleOwner, Observer { pilihanMaksimal ->
-            dataBinding.jumlahPilihanMaksimalInputText.setText(pilihanMaksimal.toString())
+            dataBinding.spinnerMenuChoice.setSelection(pilihanMaksimal - 1)
         })
         viewModel.detailsPilihanMaksimalError.observe(
             viewLifecycleOwner,
             Observer { pilihanMaksimalError ->
-                dataBinding.jumlahPilihanMaksimalErrorText.visibility =
-                    if (pilihanMaksimalError.isEmpty() || viewModel.detailsAdditionalMenuList.value!!.isEmpty()) View.GONE else View.VISIBLE
+                dataBinding.jumlahPilihanMaksimalErrorText.visibility = if (pilihanMaksimalError.isEmpty() || viewModel.detailsAdditionalMenuList.value!!.isEmpty()) View.GONE else View.VISIBLE
                 dataBinding.jumlahPilihanMaksimalErrorText.text = pilihanMaksimalError
             })
 
@@ -113,24 +153,46 @@ class AdvanceMenuDetailsFragment : Fragment() {
             Observer { additionalMenuList ->
                 if (additionalMenuList.isNotEmpty()) {
                     dataBinding.jumlahPilihanMaksimalKosongText.visibility = View.GONE
-                    dataBinding.jumlahPilihanMaksimalInputText.visibility = View.VISIBLE
+                    dataBinding.spinnerMenuChoice.visibility = View.VISIBLE
 
                     dataBinding.daftarPilihanGroup.visibility = View.VISIBLE
                 } else {
                     dataBinding.jumlahPilihanMaksimalKosongText.visibility = View.VISIBLE
-                    dataBinding.jumlahPilihanMaksimalInputText.visibility = View.GONE
+                    dataBinding.spinnerMenuChoice.visibility = View.GONE
 
                     dataBinding.daftarPilihanGroup.visibility = View.GONE
                 }
 
-                Log.d("AdvanceMenuDetails", additionalMenuList.toString())
                 additionalMenuAdapter.setAdditionalMenuList(additionalMenuList)
             })
+
+        viewModel.isLocalLoading.observe(viewLifecycleOwner, Observer { bool ->
+            if (!bool) {
+                if (viewModel.addOrEdit.value == true) {
+                    navController.navigate(R.id.action_advanceMenuDetailsFragment_to_editMenuAdvanceMainFragment,
+                            bundleOf(
+                                    EditMenuAdvanceMainFragment.ARGUMENT_MENU_EDIT to true,
+                                    EditMenuAdvanceMainFragment.ARGUMENT_PRODUCT_ID to viewModel.productId.value
+                            ))
+                } else {
+                    navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                            bundleOf(
+                                    AdvanceMenuMainFragment.ARGUMENT_MENU_EDIT to true,
+                                    AdvanceMenuMainFragment.ARGUMENT_PRODUCT_ID to viewModel.productId.value
+                            ))
+                }
+                viewModel.setLocalLoading(true)
+            }
+        })
     }
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            navController.navigateUp()
+            if (viewModel.addOrEdit.value == true) {
+                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_editMenuAdvanceMainFragment, bundleOf(EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+            } else {
+                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment, bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+            }
         }, view)
 
         dataBinding.namaPilihanInputText.setOnEditorActionListener { _, actionId, event ->
@@ -149,20 +211,15 @@ class AdvanceMenuDetailsFragment : Fragment() {
             viewModel.setDetailsWajib(isChecked)
         }
 
-        dataBinding.jumlahPilihanMaksimalInputText.setOnEditorActionListener { _, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
-                return@setOnEditorActionListener !viewModel.validateDetailsPilihanMaksimal(
-                    dataBinding.jumlahPilihanMaksimalInputText.text.toString()
-                )
-            }
-            false
+        dataBinding.daftarPilihanChangeOrderButton.setOnClickListener {
+            navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuDetailsSortFragment)
         }
 
         dataBinding.tambahPilihanGroup.setAllOnClickListener(View.OnClickListener {
             hideKeyboard()
 
             viewModel.validateDetailsNamaPilihan(dataBinding.namaPilihanInputText.text.toString())
-            viewModel.validateDetailsPilihanMaksimal(dataBinding.jumlahPilihanMaksimalInputText.text.toString())
+            selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
             if (!viewModel.validateDetailsScreen()) return@OnClickListener
 
@@ -174,10 +231,15 @@ class AdvanceMenuDetailsFragment : Fragment() {
             hideKeyboard()
 
             viewModel.validateDetailsNamaPilihan(dataBinding.namaPilihanInputText.text.toString())
-            viewModel.validateDetailsPilihanMaksimal(dataBinding.jumlahPilihanMaksimalInputText.text.toString())
+            selectedChoice?.let { it1 -> viewModel.validateDetailsPilihanMaksimal(it1) }
 
-            if (!viewModel.validateDetailsScreen()) return@setOnClickListener
-            navController.navigateUp()
+            if (viewModel.addOrEdit.value == true) {
+                if (!viewModel.addNewAdvanceMenus()) return@setOnClickListener
+            } else {
+                if (!viewModel.validateDetailsScreen()) return@setOnClickListener
+                navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment,
+                        bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
+            }
         }
     }
 
@@ -190,8 +252,8 @@ class AdvanceMenuDetailsFragment : Fragment() {
                         R.id.action_advanceMenuDetailsFragment_to_advanceMenuAdditionalFragment,
                         bundleOf(
                             AdvanceMenuAdditionalFragment.ARGUMENT_IS_EDIT to true,
-                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_NAME to advanceAdditionalMenu.advanceAdditionalMenuName,
-                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.advanceAdditionalMenuPrice
+                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_NAME to advanceAdditionalMenu.ext_menu_name,
+                            AdvanceMenuAdditionalFragment.ARGUMENT_MENU_PRICE to advanceAdditionalMenu.ext_menu_price
                         )
                     )
                 }

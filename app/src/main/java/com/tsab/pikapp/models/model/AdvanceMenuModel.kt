@@ -9,9 +9,50 @@ enum class AdvanceMenuTemplateType {
     fun isMandatory(): Boolean = this != CHECKBOX
 }
 
+/*ADD NEW ADVANCE MENU AND EXTRA MENU ON EDIT START*/
+data class AddNewAdvanceMenu(
+        @SerializedName("product_id")
+        var product_id: String,
+        @SerializedName("advance_menu")
+        var advance_menu: AdvanceMenu
+)
+
+data class ListNewAdvanceMenuResponse(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+        @SerializedName("results")
+        var results: AdvanceMenu
+)
+
+data class AddNewExtraMenu(
+        @SerializedName("advance_menu_id")
+        var advance_menu_id: Long,
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean,
+        @SerializedName("product_id")
+        var product_id: String
+)
+
+data class NewExtraMenuResponse(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+        @SerializedName("results")
+        var results: AddNewExtraMenu
+)
+/*ADD NEW ADVANCE MENU ON EDIT END*/
+
+/*ADD ADVANCE MENU START*/
 data class AddAdvanceMenuRequest(
     @SerializedName("advance_menus")
-    var advanceMenus: List<AdvanceMenu>
+    var advance_menus: List<AdvanceMenu>
 )
 
 data class AddAdvanceMenuResponse(
@@ -35,25 +76,87 @@ data class ListAdvanceMenuResponse(
 )
 
 data class AdvanceMenu(
-    @SerializedName("template_name")
-    var templateName: String,
-    @SerializedName("template_type")
-    var templateType: String,
+        @SerializedName("template_name")
+        var template_name: String,
+        @SerializedName("template_type")
+        var template_type: String,
 
-    @SerializedName("active")
-    var isActive: Boolean,
-    @SerializedName("mandatory")
-    var isMandatory: Boolean,
+        @SerializedName("active")
+        var active: Boolean,
+        @SerializedName("mandatory")
+        var mandatory: Boolean,
 
-    @SerializedName("max_choose")
-    var maxChoice: Int,
-    @SerializedName("ext_menus")
-    var advanceAdditionalMenus: List<AdvanceAdditionalMenu>
+        @SerializedName("max_choose")
+        var max_choose: Int,
+        @SerializedName("ext_menus")
+        var ext_menus: List<AdvanceAdditionalMenu>
 )
 
 data class AdvanceAdditionalMenu(
-    @SerializedName("ext_menu_name")
-    var advanceAdditionalMenuName: String,
-    @SerializedName("ext_menu_price")
-    var advanceAdditionalMenuPrice: String
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean
 )
+/*ADD ADVANCE MENU END*/
+
+/*EDIT ADVANCE MENU START*/
+data class EditAdvanceMenuRequest(
+        @SerializedName("advance_menus")
+        var advance_menus: List<AdvanceMenuEdit>
+)
+
+data class ListAdvanceMenuEditResponse(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+
+        @SerializedName("results")
+        var results: List<AdvanceMenuEdit>
+)
+
+data class ListAdvanceMenuEditResp(
+        @SerializedName("err_code")
+        var errorCode: String,
+        @SerializedName("err_message")
+        var errorMessage: String,
+
+        @SerializedName("results")
+        var results: AdvanceMenuEdit
+)
+
+data class AdvanceMenuEdit(
+        @SerializedName("product_id")
+        var product_id: String? = null,
+        @SerializedName("template_name")
+        var template_name: String,
+        @SerializedName("template_type")
+        var template_type: String,
+
+        @SerializedName("active")
+        var active: Boolean,
+        @SerializedName("mandatory")
+        var mandatory: Boolean,
+
+        @SerializedName("max_choose")
+        var max_choose: Int,
+        @SerializedName("id")
+        var id: Long,
+        @SerializedName("ext_menus")
+        var ext_menus: List<AdvanceAdditionalMenuEdit>
+)
+
+data class AdvanceAdditionalMenuEdit(
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean,
+        @SerializedName("ext_id")
+        var ext_id: Long
+)
+/*EDIT ADVANCE MENU END*/

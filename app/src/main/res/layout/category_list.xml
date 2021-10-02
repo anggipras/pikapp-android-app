@@ -3,22 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
     android:orientation="vertical">
 
-    <TextView
+    <RadioButton
         android:id="@+id/resultText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:fontFamily="@font/proximanova_regular"
         android:text="BANK CIMB NIAGA"
+        android:fontFamily="@font/proximanova_regular"
+        android:textSize="20dp"
+        android:layoutDirection="rtl"
         android:textAlignment="textStart"
-        android:textAllCaps="true"
-        android:textSize="20dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/line" />
+        android:textAllCaps="false"
+        android:textColor="@color/textSubtle" />
 
 </LinearLayout>

@@ -428,6 +428,7 @@ class PikappApiService {
             status
         )
     }
+
     // Advanced menu
     fun addAdvanceMenu(
         email: String,
@@ -452,13 +453,91 @@ class PikappApiService {
     fun listAdvanceMenu(
         email: String,
         token: String,
-        pid: String
+        pid: String,
+        timeStamp: String
     ): Single<ListAdvanceMenuResponse> = api.listAdvanceMenu(
+        requestId = getUUID(),
+        requestTimestamp = timeStamp,
+        clientId = getClientID(),
+        signature = getSignature(email, timeStamp),
+        token = token,
+        productId = pid
+    )
+
+    fun listAdvanceMenuEdit(
+            email: String,
+            token: String,
+            pid: String,
+            timeStamp: String
+    ): Single<ListAdvanceMenuEditResponse> = api.listAdvanceMenuEdit(
+            requestId = getUUID(),
+            requestTimestamp = timeStamp,
+            clientId = getClientID(),
+            signature = getSignature(email, timeStamp),
+            token = token,
+            productId = pid
+    )
+
+    fun changePinOfMerchant(
+        email: String,
+        token: String,
+        oldPin: String?,
+        mid: String?,
+        newPin: String?
+    ): Single<OtherBaseResponse> {
+        val timeStamp = getTimestamp()
+        val signature = getSignature(email, timeStamp)
+        val pinModel = pinMerchant(oldPin, mid, newPin)
+
+        return api.changePinMerchantDisposable(
+            uuid = getUUID(),
+            time = timeStamp,
+            clientID = getClientID(),
+            signature = signature,
+            token = token,
+            pinModel = pinModel
+        )
+    }
+
+    // Omnichannel Integration
+    fun listIntegration(
+        merchantId: String
+    ): Single<IntegrationArrayResponse> = api.listIntegration(
         requestId = getUUID(),
         requestTimestamp = getTimestamp(),
         clientId = getClientID(),
-        signature = getSignature(email, token),
-        token = token,
-        productId = pid
+        merchantId = merchantId
+    )
+
+    fun connectIntegration(
+        merchantId: String,
+        email: String,
+        phoneNumber: String,
+        shopName: String,
+        shopDomain: String,
+        channelType: OmnichannelType,
+        shopCategory: ShopCategory
+    ): Single<IntegrationObjectResponse> = api.connectIntegration(
+        requestId = getUUID(),
+        requestTimestamp = getTimestamp(),
+        clientId = getClientID(),
+        connectIntegrationRequest = ConnectIntegrationRequest(
+            merchantId = merchantId,
+            email = email,
+            phoneNumber = phoneNumber,
+            shopName = shopName,
+            shopDomain = shopDomain,
+            channelType = channelType,
+            shopCategory = shopCategory
+        )
+    )
+
+    fun disconnectIntegration(
+        channelId: String
+    ): Single<IntegrationObjectResponse> = api.disconnectIntegration(
+        requestId = getUUID(),
+        requestTimestamp = getTimestamp(),
+        clientId = getClientID(),
+        channelId = channelId
     )
 }

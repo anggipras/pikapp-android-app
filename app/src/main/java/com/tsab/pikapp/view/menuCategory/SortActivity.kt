@@ -14,7 +14,8 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import kotlinx.android.synthetic.main.activity_test.*
+import com.tsab.pikapp.view.homev2.HomeActivity
+import kotlinx.android.synthetic.main.activity_sort.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,8 +24,8 @@ import java.util.*
 class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListener {
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
+    private val sessionManager = SessionManager()
 
-    val dataList: MutableList<CategoryListResult> = mutableListOf()
     var categoryListName: MutableList<categories_name> = mutableListOf()
     lateinit var sortCategoryAdapter: SortCategoryAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -37,7 +38,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.activity_sort)
 
         recyclerview_category.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(this)
@@ -69,12 +70,13 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     target.adapterPosition
                 )
 
-                categoryListName = sortCategoryAdapter.menuCategoryList.map {
+                categoryListName = sortCategoryAdapter.menuCategoryList.mapIndexed { index, value ->
                     categories_name(
-                        category_name = it.category_name,
-                        category_order = it.category_order,
-                        activation = it.is_active,
-                        id = it.id
+                            category_name = value.category_name,
+                            category_order = index,
+                            activation = value.is_active,
+                            id = value.id,
+                            product_size = value.product_size
                     )
                 }.toMutableList()
 
@@ -110,14 +112,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
                 val categoryResponse = response.body()
                 val categoryResult = response.body()?.results
-                Log.e("result", categoryResponse?.results.toString())
-                Log.e("Response raw", response.raw().toString())
-                Log.e("response body", response.body().toString())
-                Log.d("SUCCEED", "succeed")
-
-                Log.e("size", categoryResponse?.results?.size.toString())
                 size = categoryResponse?.results?.size.toString()
-                Log.e("size on response", size)
 
                 sortCategoryAdapter = SortCategoryAdapter(
                     baseContext,
@@ -132,14 +127,10 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                         category_name = it.category_name,
                         category_order = it.category_order,
                         activation = it.is_active,
-                        id = it.id
+                        id = it.id,
+                            product_size = it.product_size
                     )
                 }.toMutableList()
-                Log.e("get", categoryListName.toString())
-                val sort = sortCategoryAdapter.menuCategoryList.map {
-                    sort_name(category_name = it.category_name)
-                }
-                Log.e("sort_name", sort.toString())
             }
 
         })
@@ -154,7 +145,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
             var sortReq = SortCategoryRequest()
             sortReq.categories_menu = categoryListName
-            Log.e("sort", sortReq.categories_menu.toString())
 
             PikappApiService().api.sortMenuCategory(
                 getUUID(), timestamp, getClientID(), signature, token, mid, sortReq
@@ -168,8 +158,9 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
                     response: Response<BaseResponse>
                 ) {
                     if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                        Toast.makeText(baseContext, "sorted", Toast.LENGTH_SHORT).show()
-                        onBackPressed()
+                        Toast.makeText(baseContext, "Urutan kategori berhasil diubah", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
+                        startActivity(intent)
                     } else {
                         var errorResponse: BaseResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -186,28 +177,31 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
             })
         }
 
-        backBtn.setOnClickListener {
-            val intent = Intent(this@SortActivity, CategoryNavigation::class.java)
-            startActivity(intent)
+        headerLayout.setOnClickListener {
+            if (sessionManager.getSortNav() == 1) {
+                finish()
+            } else {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
-
     }
 
-    data class sort_name(val category_name: String?)
-
     override fun onItemClick(position: Int) {
-        Toast.makeText(this, "item $position clicked", Toast.LENGTH_SHORT).show()
-
         categoryName = sortCategoryAdapter.menuCategoryList[position].category_name.toString()
-        Log.e("category name", categoryName)
-
         categoryOrder = sortCategoryAdapter.menuCategoryList[position].category_order.toString()
-        Log.e("category order", categoryOrder)
-
         activationToggle = sortCategoryAdapter.menuCategoryList[position].is_active.toString()
-        Log.e("activation", activationToggle)
-
         categoryId = sortCategoryAdapter.menuCategoryList[position].id.toString()
-        Log.e("category id", categoryId)
+    }
+
+    override fun onBackPressed() {
+        if (sessionManager.getSortNav() == 1) {
+            finish()
+        } else {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

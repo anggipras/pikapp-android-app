@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.omni.integration.connect.IntegrationConnectFirstFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey">
+
+            <!-- Header layout -->
+            <include
+                android:id="@+id/headerLayout"
+                layout="@layout/layout_header_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/headerHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/oi_connect_first_header"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/headerLayout"
+                app:layout_constraintStart_toStartOf="@id/headerLayout" />
+
+            <!-- Tokopedia button -->
+            <ImageView
+                android:id="@+id/tokopediaImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_10"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/logo_tokopedia"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/grabFoodImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout"
+                tools:ignore="ContentDescription" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/tokopediaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tokopediaImage" />
+
+            <!-- GrabFood button -->
+            <ImageView
+                android:id="@+id/grabFoodImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rounded_10"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/logo_grabfood"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tokopediaImage"
+                app:layout_constraintTop_toTopOf="@id/tokopediaImage"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/grabFoodComingSoonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="@string/akan_datang"
+                android:textColor="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/grabFoodImage"
+                app:layout_constraintEnd_toEndOf="@id/grabFoodImage" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/grabFoodButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:constraint_referenced_ids="grabFoodImage,grabFoodComingSoonText" />
+
+            <!-- GoFood button -->
+            <ImageView
+                android:id="@+id/goFoodImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_10"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/logo_gofood"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/shopeeImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tokopediaImage"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/goFoodComingSoonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="@string/akan_datang"
+                android:textColor="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/goFoodImage"
+                app:layout_constraintEnd_toEndOf="@id/goFoodImage" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/goFoodButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="goFoodImage,goFoodComingSoonText" />
+
+            <!-- Shopee button -->
+            <ImageView
+                android:id="@+id/shopeeImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rounded_10"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/logo_shopee"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/goFoodImage"
+                app:layout_constraintTop_toTopOf="@id/goFoodImage"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/shopeeComingSoonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="@string/akan_datang"
+                android:textColor="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/shopeeImage"
+                app:layout_constraintEnd_toEndOf="@id/shopeeImage" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/shopeeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="shopeeImage,shopeeComingSoonText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>

@@ -2,8 +2,40 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_advanced_menu"
-    app:startDestination="@id/advanceMenuMainFragment">
+    android:id="@+id/nav_advance_menu"
+    app:startDestination="@id/updateMenuAddAdvFragment">
+
+    <fragment
+        android:id="@+id/updateMenuAddAdvFragment"
+        android:name="com.tsab.pikapp.view.menu.AddMenuFragment"
+        android:label="AddMenuFragment"
+        tools:layout="@layout/fragment_add_menu">
+        <action
+            android:id="@+id/action_update_menu_add_adv_to_category_name"
+            app:destination="@id/updateMenuCategoryNameAdvFragment" />
+        <action
+            android:id="@+id/action_updateMenuAddFragment_to_advanceMenuMainFragment"
+            app:destination="@id/advanceMenuMainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateMenuEditAdvFragment"
+        android:name="com.tsab.pikapp.view.menu.EditMenuFragment"
+        android:label="EditMenuFragment"
+        tools:layout="@layout/fragment_edit_menu">
+        <action
+            android:id="@+id/action_update_menu_edit_adv_to_category_name"
+            app:destination="@id/updateMenuCategoryNameAdvFragment" />
+        <action
+            android:id="@+id/action_updateMenuEditAdvFragment_to_advanceMenuMainFragment"
+            app:destination="@id/editMenuAdvanceMainFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/updateMenuCategoryNameAdvFragment"
+        android:name="com.tsab.pikapp.view.menu.CategoryNameFragment"
+        android:label="fragment_category_name"
+        tools:layout="@layout/fragment_category_name" />
 
     <fragment
         android:id="@+id/advanceMenuMainFragment"
@@ -13,8 +45,10 @@
 
         <action
             android:id="@+id/action_advanceMenuMainFragment_to_advanceMenuDetailsFragment"
-            app:destination="@id/advanceMenuDetailsFragment"
-            app:launchSingleTop="true" />
+            app:destination="@id/advanceMenuDetailsFragment" />
+        <action
+            android:id="@+id/action_advanceMenuMainFragment_to_updateMenuAddAdvFragment"
+            app:popUpTo="@id/updateMenuAddAdvFragment" />
     </fragment>
 
     <fragment
@@ -25,8 +59,16 @@
 
         <action
             android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuAdditionalFragment"
-            app:destination="@id/advanceMenuAdditionalFragment"
-            app:launchSingleTop="true" />
+            app:destination="@id/advanceMenuAdditionalFragment" />
+        <action
+            android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuMainFragment"
+            app:destination="@id/advanceMenuMainFragment" />
+        <action
+            android:id="@+id/action_advanceMenuDetailsFragment_to_advanceMenuDetailsSortFragment"
+            app:destination="@id/advanceMenuDetailsSortFragment" />
+        <action
+            android:id="@+id/action_advanceMenuDetailsFragment_to_editMenuAdvanceMainFragment"
+            app:destination="@id/editMenuAdvanceMainFragment" />
     </fragment>
 
     <fragment
@@ -40,6 +82,72 @@
         <argument
             android:name="additionalMenuPrice"
             app:argType="string" />
+        <action
+            android:id="@+id/action_advanceMenuAdditionalFragment_to_advanceMenuDetailsFragment"
+            app:destination="@id/advanceMenuDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/advanceMenuDetailsSortFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.AdvanceMenuDetailsSortFragment"
+        android:label="fragment_advance_menu_details_sort"
+        tools:layout="@layout/fragment_advance_menu_details_sort" >
+        <action
+            android:id="@+id/action_advanceMenuDetailsSortFragment_to_advanceMenuDetailsFragment"
+            app:destination="@id/advanceMenuDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMenuAdvanceMainFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.EditMenuAdvanceMainFragment"
+        android:label="EditMenuAdvanceMainFragment"
+        tools:layout="@layout/fragment_edit_menu_advance_main">
+        <action
+            android:id="@+id/action_editMenuAdvanceMainFragment_to_updateMenuEditAdvFragment"
+            app:popUpTo="@id/updateMenuEditAdvFragment" />
+        <action
+            android:id="@+id/action_editMenuAdvanceMainFragment_to_editMenuAdvanceDetailsFragment"
+            app:destination="@id/editMenuAdvanceDetailsFragment" />
+        <action
+            android:id="@+id/action_editMenuAdvanceMainFragment_to_advanceMenuDetailsFragment"
+            app:destination="@id/advanceMenuDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMenuAdvanceDetailsFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.EditMenuAdvanceDetailsFragment"
+        android:label="EditMenuAdvanceDetailsFragment"
+        tools:layout="@layout/fragment_edit_menu_advance_details">
+        <action
+            android:id="@+id/action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceMainFragment"
+            app:destination="@id/editMenuAdvanceMainFragment" />
+        <action
+            android:id="@+id/action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceAdditionalFragment"
+            app:destination="@id/editMenuAdvanceAdditionalFragment" />
+        <action
+            android:id="@+id/action_editMenuAdvanceDetailsFragment_to_editMenuDetailsSortFragment"
+            app:destination="@id/editMenuDetailsSortFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMenuAdvanceAdditionalFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.EditMenuAdvanceAdditionalFragment"
+        android:label="EditMenuAdvanceAdditionalFragment"
+        tools:layout="@layout/fragment_edit_menu_advance_additional">
+        <argument
+            android:name="additionalMenuName"
+            app:argType="string" />
+        <argument
+            android:name="additionalMenuPrice"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editMenuAdvanceAdditionalFragment_to_editMenuAdvanceDetailsFragment"
+            app:destination="@id/editMenuAdvanceDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMenuDetailsSortFragment"
+        android:name="com.tsab.pikapp.view.menu.advance.EditMenuDetailsSortFragment"
+        android:label="EditMenuDetailsSortFragment"
+        tools:layout="@layout/fragment_edit_menu_details_sort">
+        <action
+            android:id="@+id/action_editMenuDetailsSortFragment_to_editMenuAdvanceDetailsFragment"
+            app:destination="@id/editMenuAdvanceDetailsFragment" />
     </fragment>
 
 </navigation>

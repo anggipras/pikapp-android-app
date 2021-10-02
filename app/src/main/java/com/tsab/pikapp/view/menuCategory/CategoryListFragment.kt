@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCategoryListBinding
 import com.tsab.pikapp.models.model.MenuCategory
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 
@@ -25,6 +28,7 @@ class CategoryListFragment : Fragment() {
     private lateinit var dataBinding: FragmentCategoryListBinding
 
     private lateinit var categoryListAdapter: CategoryListAdapter
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,18 @@ class CategoryListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                        startActivity(this)
+                    }
+                }
+            })
+
         navController = Navigation.findNavController(view)
+        sessionManager.setHomeNav(1)
 
         observeViewModel()
         attachInputListeners()
@@ -65,10 +80,13 @@ class CategoryListFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
-            activity?.finish()
+            Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                startActivity(this)
+            }
         }, view)
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {
+            sessionManager.setSortNav(1)
             Intent(activity?.baseContext, SortActivity::class.java).apply {
                 startActivity(this)
             }
@@ -88,6 +106,7 @@ class CategoryListFragment : Fragment() {
                     viewModel.getCategoryOrder(category.categoryOrder.toString())
                     viewModel.getCategoryActivation(category.isActive.toString())
                     viewModel.getCategoryId(category.id.toString())
+                    viewModel.getCategoryMenuSize(category.productSize.toString())
 
                     navController.navigate(R.id.action_categoryListPage_to_editCategoryPage)
                 }

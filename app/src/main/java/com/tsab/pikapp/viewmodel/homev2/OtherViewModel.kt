@@ -1,14 +1,10 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tsab.pikapp.models.model.MerchantProfileData
-import com.tsab.pikapp.models.model.MerchantProfileResponse
-import com.tsab.pikapp.models.model.MerchantTimeManagement
-import com.tsab.pikapp.models.model.ShopSchedule
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -57,13 +53,12 @@ class OtherViewModel : ViewModel() {
     }
 
     fun merchantProfileRetrieved(response: MerchantProfileData) {
-        Log.d("RESPONSEE", response.toString())
         merchantResult.value = response
         sessionManager.setMerchantProfile(response)
     }
 
     fun getMerchantShopStatus(context: Context) {
-        val sdf = SimpleDateFormat("EEEE")
+        val sdf = SimpleDateFormat("EEEE", Locale.ENGLISH)
         val d = Date()
         val dayOfTheWeek: String = sdf.format(d)
 

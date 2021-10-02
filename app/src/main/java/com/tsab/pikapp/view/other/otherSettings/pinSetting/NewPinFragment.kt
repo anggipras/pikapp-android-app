@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentNewPinBinding
+import com.tsab.pikapp.util.isPinValid
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 
 class NewPinFragment : Fragment() {
@@ -37,9 +39,15 @@ class NewPinFragment : Fragment() {
             val newPin = dataBinding.newPinInput.text.toString()
             if (newPin.length == 6) {
                 hideKeyboard()
-                viewModel.setNewPin(newPin)
-                Navigation.findNavController(view).navigate(R.id.navigateTo_confirmPinFragment)
-                dataBinding.newPinInput.setText("")
+                if (!newPin.isPinValid()) {
+                    dataBinding.newPinInput.setText("")
+                    Toast.makeText(requireActivity(), "PIN harus memiliki digit yang berulang", Toast.LENGTH_SHORT).show()
+                    showKeyboard()
+                } else {
+                    viewModel.setNewPin(newPin)
+                    Navigation.findNavController(view).navigate(R.id.navigateTo_confirmPinFragment)
+                    dataBinding.newPinInput.setText("")
+                }
             }
         }
 

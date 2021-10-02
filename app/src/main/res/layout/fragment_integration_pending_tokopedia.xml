@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.omni.integration.status.TokopediaIntegrationPendingFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Header layout -->
+            <include
+                android:id="@+id/headerLayout"
+                layout="@layout/layout_header_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/headerHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/oi_status_tokopedia_header"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/headerLayout"
+                app:layout_constraintStart_toStartOf="@id/headerLayout" />
+
+            <!-- Tokopedia logo -->
+            <ImageView
+                android:id="@+id/tokopediaImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/logo_tokopedia"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerLayout"
+                app:layout_constraintWidth_percent="0.5"
+                tools:ignore="ContentDescription" />
+
+            <!-- Nama toko details -->
+            <TextView
+                android:id="@+id/namaTokoHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/oi_status_tokopedia_nama_toko_header"
+                android:textColor="@color/textSubtle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tokopediaImage" />
+
+            <TextView
+                android:id="@+id/namaTokoDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaTokoHeaderText"
+                tools:text="Tokopedia Restaurant" />
+
+            <!-- Waktu integrasi details -->
+            <TextView
+                android:id="@+id/waktuIntegrasiHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/oi_status_tokopedia_waktu_integrasi_header"
+                android:textColor="@color/textSubtle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/namaTokoDetailsText" />
+
+            <TextView
+                android:id="@+id/waktuIntegrasiDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/waktuIntegrasiHeaderText"
+                tools:text="10 Jun 2021 10:09" />
+
+            <!-- Status toko details -->
+            <TextView
+                android:id="@+id/statusTokoHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/oi_status_tokopedia_status_toko_header"
+                android:textColor="@color/textSubtle"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/waktuIntegrasiDetailsText" />
+
+            <View
+                android:id="@+id/statusTokoIndicator"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/rounded_10"
+                android:backgroundTint="@color/yellow"
+                app:layout_constraintBottom_toBottomOf="@id/statusTokoDetailsText"
+                app:layout_constraintStart_toStartOf="@id/statusTokoHeaderText"
+                app:layout_constraintTop_toTopOf="@id/statusTokoDetailsText" />
+
+            <TextView
+                android:id="@+id/statusTokoDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proximanova_regular"
+                android:text="@string/oi_status_menunggu"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/statusTokoIndicator"
+                app:layout_constraintTop_toBottomOf="@id/statusTokoHeaderText" />
+
+            <!-- Pelajari lebih lanjut button -->
+            <Button
+                android:id="@+id/pelajariButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_green_small"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/pelajari_lebih_lanjut"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="7:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>
