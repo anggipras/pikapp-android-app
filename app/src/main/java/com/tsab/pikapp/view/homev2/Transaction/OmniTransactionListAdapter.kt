@@ -110,14 +110,14 @@ class OmniTransactionListAdapter (
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var orderDate: TextView = itemView.orderDate
+        var orderDate: TextView = itemView.orderDateOmni
         var paymentStatus: TextView = itemView.paymentStatus
         var menuCount: TextView = itemView.menuCount
         var price: TextView = itemView.totalPrice
         var price2: TextView = itemView.totalPrice2
         var acceptBtn: Button = itemView.acceptButton
         var rejectBtn: Button = itemView.rejectButton
-        var rView: RecyclerView = itemView.recyclerview_menu
+        var rView: RecyclerView = itemView.recyclerview_menu_omni
         var lastOrder: TextView = itemView.lastOrder
         var loadingOverlay: View = itemView.loadingOverlay
         var deliveryStatus: TextView = itemView.deliveryStatus
@@ -185,8 +185,6 @@ class OmniTransactionListAdapter (
             timeAgo(omniList[position].orderTime.toString(), holder.lastOrder)
         } else if (omniList[position].status == "SELLER_CANCEL_ORDER" || omniList[position].status == "ORDER_REJECTED_BY_SELLER"){
             setDate(position)
-            holder.orderDate.visibility = View.GONE
-            holder.price2.visibility = View.GONE
             holder.rView.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
             holder.rejectBtn.visibility = View.GONE
@@ -203,8 +201,6 @@ class OmniTransactionListAdapter (
             jumlah = 0
         } else if (omniList[position].status == "ORDER_DELIVERED" || omniList[position].status == "ORDER_FINISHED"){
             setDate(position)
-            holder.orderDate.visibility = View.GONE
-            holder.price2.visibility = View.GONE
             holder.rView.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
             holder.rejectBtn.visibility = View.GONE
@@ -222,8 +218,6 @@ class OmniTransactionListAdapter (
             jumlah = 0
         } else if (omniList[position].status == "ORDER_SHIPMENT" || omniList[position].status == "DELIVERED_TO_PICKUP_POINT"){
             setDate(position)
-            holder.orderDate.visibility = View.GONE
-            holder.price2.visibility = View.GONE
             holder.rView.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
             holder.rejectBtn.visibility = View.GONE
@@ -241,8 +235,6 @@ class OmniTransactionListAdapter (
             jumlah = 0
         } else if (omniList[position].status == "BUYER_OPEN_A_CASE_TO_FINISH_AN_ORDER"){
             setDate(position)
-            holder.orderDate.visibility = View.GONE
-            holder.price2.visibility = View.GONE
             holder.rView.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
             holder.rejectBtn.visibility = View.GONE

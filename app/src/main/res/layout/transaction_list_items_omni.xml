@@ -59,7 +59,7 @@
             app:layout_goneMarginTop="5dp" />
 
         <TextView
-            android:id="@+id/orderDate"
+            android:id="@+id/orderDateOmni"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -134,13 +134,13 @@
             app:layout_constraintTop_toBottomOf="@+id/divider" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_menu"
+            android:id="@+id/recyclerview_menu_omni"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.033"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDate" />
+            app:layout_constraintTop_toBottomOf="@+id/lastOrder" />
 
         <TextView
             android:id="@+id/menuCount"
@@ -197,7 +197,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu_omni" />
 
         <include
             android:id="@+id/loadingOverlay"
