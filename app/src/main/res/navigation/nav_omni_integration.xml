@@ -39,6 +39,10 @@
         <action
             android:id="@+id/action_integrationListFragment_to_tokopediaIntegrationPendingFragment"
             app:destination="@id/tokopediaIntegrationPendingFragment" />
+
+        <action
+            android:id="@+id/action_integrationListFragment_to_tokopediaIntegrationExpiredFragment"
+            app:destination="@id/tokopediaIntegrationExpiredFragment" />
     </fragment>
 
     <fragment
@@ -94,9 +98,36 @@
             app:popUpTo="@id/integrationListFragment"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_tokopediaIntegrationPendingFragment_to_integrationDialogTokopediaFragment"
+            app:destination="@id/integrationDialogTokopediaFragment" />
+
         <argument
             android:name="omnichannel"
             app:argType="com.tsab.pikapp.models.model.Omnichannel" />
     </fragment>
+
+    <fragment
+        android:id="@+id/tokopediaIntegrationExpiredFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.status.TokopediaIntegrationExpiredFragment"
+        android:label="TokopediaIntegrationExpired"
+        tools:layout="@layout/fragment_integration_expired_tokopedia">
+
+        <action
+            android:id="@+id/action_tokopediaIntegrationExpiredFragment_to_integrationListFragment"
+            app:destination="@id/integrationListFragment"
+            app:popUpTo="@id/integrationListFragment"
+            app:popUpToInclusive="true" />
+
+        <argument
+            android:name="omnichannel"
+            app:argType="com.tsab.pikapp.models.model.Omnichannel" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/integrationDialogTokopediaFragment"
+        android:name="com.tsab.pikapp.view.omni.integration.dialogs.IntegrationDialogTokopediaFragment"
+        android:label="fragment_integration_dialog_tokopedia"
+        tools:layout="@layout/fragment_integration_dialog_tokopedia" />
 
 </navigation>

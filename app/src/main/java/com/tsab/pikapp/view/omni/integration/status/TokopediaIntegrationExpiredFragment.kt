@@ -11,15 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentIntegrationPendingTokopediaBinding
+import com.tsab.pikapp.databinding.FragmentIntegrationExpiredTokopediaBinding
 import com.tsab.pikapp.models.model.Omnichannel
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
 
-class TokopediaIntegrationPendingFragment : Fragment() {
+class TokopediaIntegrationExpiredFragment : Fragment() {
     private lateinit var navController: NavController
-    private lateinit var dataBinding: FragmentIntegrationPendingTokopediaBinding
+    private lateinit var dataBinding: FragmentIntegrationExpiredTokopediaBinding
     private val viewModel: IntegrationViewModel by activityViewModels()
 
     private lateinit var omnichannel: Omnichannel
@@ -29,7 +29,7 @@ class TokopediaIntegrationPendingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_integration_pending_tokopedia, container, false
+            inflater, R.layout.fragment_integration_expired_tokopedia, container, false
         )
         return dataBinding.root
     }
@@ -63,8 +63,12 @@ class TokopediaIntegrationPendingFragment : Fragment() {
             navController.navigateUp()
         }, view)
 
-        dataBinding.pelajariButton.setOnClickListener {
-            navController.navigate(R.id.action_tokopediaIntegrationPendingFragment_to_integrationDialogTokopediaFragment)
+        dataBinding.hapusTokoButton.setOnClickListener {
+            //TODO: Implement hapus toko button.
+        }
+
+        dataBinding.integrasiUlangButton.setOnClickListener {
+            //TODO: Implement integrasi ulang button.
         }
     }
 }

@@ -66,8 +66,14 @@
         <item name="colorAccent">@color/green</item>
         <item name="android:textColorSecondary">@color/borderSubtle</item>
     </style>
+
     <style name="dialogAnimation">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="NoMarginsDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 </resources>

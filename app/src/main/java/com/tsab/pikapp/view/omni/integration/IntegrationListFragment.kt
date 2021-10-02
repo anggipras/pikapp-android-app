@@ -31,7 +31,6 @@ import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity.Companion.ARGUMENT_OMNICHANNEL
 import com.tsab.pikapp.view.omni.integration.lists.IntegrationListAdapter
 import com.tsab.pikapp.viewmodel.omni.integration.IntegrationViewModel
-import java.util.*
 
 class IntegrationListFragment : Fragment() {
     private val viewModel: IntegrationViewModel by activityViewModels()
@@ -41,7 +40,7 @@ class IntegrationListFragment : Fragment() {
     private val sessionManager = SessionManager()
 
     private lateinit var integrationListAdapter: IntegrationListAdapter
-    private var alarmMgr : AlarmManager? = null
+    private var alarmMgr: AlarmManager? = null
     private lateinit var alarmIntent: PendingIntent
 
     override fun onCreateView(
@@ -65,13 +64,15 @@ class IntegrationListFragment : Fragment() {
     }
 
     private fun onBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                    startActivity(this)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                        startActivity(this)
+                    }
                 }
-            }
-        })
+            })
     }
 
     private fun observeViewModel() {
@@ -148,9 +149,14 @@ class IntegrationListFragment : Fragment() {
                             R.id.action_integrationListFragment_to_tokopediaIntegrationConnectedFragment,
                             bundle
                         )
-                    } else {
+                    } else if (omnichannel.status == OmnichannelStatus.ON_PROGRESS) {
                         navController.navigate(
                             R.id.action_integrationListFragment_to_tokopediaIntegrationPendingFragment,
+                            bundle
+                        )
+                    } else {
+                        navController.navigate(
+                            R.id.action_integrationListFragment_to_tokopediaIntegrationExpiredFragment,
                             bundle
                         )
                     }

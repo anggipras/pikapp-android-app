@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.omni.integration.status.TokopediaIntegrationPendingFragment">
+    tools:context=".view.omni.integration.status.TokopediaIntegrationConnectedFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:background="@drawable/rounded_10"
-                android:backgroundTint="@color/yellow"
+                android:backgroundTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/statusTokoDetailsText"
                 app:layout_constraintStart_toStartOf="@id/statusTokoHeaderText"
                 app:layout_constraintTop_toTopOf="@id/statusTokoDetailsText" />
@@ -129,31 +129,51 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/proximanova_regular"
-                android:text="@string/oi_status_menunggu"
+                android:text="@string/oi_status_kadaluwarsa"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@id/statusTokoIndicator"
                 app:layout_constraintTop_toBottomOf="@id/statusTokoHeaderText" />
 
-            <!-- Pelajari lebih lanjut button -->
+            <!-- Hapus toko button -->
             <Button
-                android:id="@+id/pelajariButton"
+                android:id="@+id/hapusTokoButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="28dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/button_light_gray_small"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/oi_hapus_toko"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintEnd_toStartOf="@id/integrasiUlangButton"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Integrasi ulang button -->
+            <Button
+                android:id="@+id/integrasiUlangButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/button_green_small"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="@string/pelajari_lebih_lanjut"
+                android:text="@string/oi_integrasi_ulang"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="7:1"
+                app:layout_constraintDimensionRatio="4:1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/hapusTokoButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

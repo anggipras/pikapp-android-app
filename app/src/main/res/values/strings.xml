@@ -235,6 +235,7 @@
     </string-array>
     <string name="oi_status_terhubung">Terhubung</string>
     <string name="oi_status_menunggu">Menunggu</string>
+    <string name="oi_status_kadaluwarsa">Kadaluwarsa</string>
 
     <string name="oi_tambah_toko">Tambah Toko</string>
     <string name="oi_main_header">Integrasi</string>
@@ -263,6 +264,7 @@
     <string name="oi_status_tokopedia_status_toko_header">Status Toko</string>
 
     <string name="oi_hapus_toko">Hapus Toko</string>
+    <string name="oi_integrasi_ulang">Integrasi Ulang</string>
 
     <!-- Omnichannel menu (om) screens -->
     <string name="om_tambah_menu">Tambah Menu</string>
@@ -281,7 +283,7 @@
     <string name="etalase_delete_menu">Kosongkan menu pada etalase ini<br />terlebih dahulu</string>
 
     <!-- Tokopedia Order -->
-    <string name="tokopedia_upload_resi_dialog">Mohon upload resi di aplikasi e-<br/>commerce sesuai pesanan untuk<br/>menyelesaikan order ini.</string>
+    <string name="tokopedia_upload_resi_dialog">Mohon upload resi di aplikasi e-<br />commerce sesuai pesanan untuk<br />menyelesaikan order ini.</string>
     <string name="tokopedia_tolak_dialog">Tolak melalui aplikasi tokopedia</string>
 
 </resources>
