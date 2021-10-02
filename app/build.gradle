@@ -10,7 +10,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     signingConfigs {
         release {
-            storeFile file('/Users/johanessteven/Pikapp/key/apk-keystore.jks')
+            storeFile file('D:\\PIKAPP\\PRODUCTION\\apk-keystore.jks')
             storePassword 'mantapmantap8'
             keyAlias 'apk'
             keyPassword 'mantapmantap9'

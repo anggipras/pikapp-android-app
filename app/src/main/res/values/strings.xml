@@ -93,13 +93,13 @@
     <string name="registrasi_nama_rekening_hint">Masukkan nama pemilik rekening</string>
 
     <string name="registrasi_ktp_header">KTP Pemilik Restoran&#160;</string>
-    <string name="registrasi_ktp_hint">(Format .png, .jpg, max. 2MB)</string>
+    <string name="registrasi_ktp_hint">(Format .png, .jpg, max. 1MB)</string>
 
     <string name="registrasi_logo_header">Logo Restoran&#160;</string>
-    <string name="registrasi_logo_hint">(Format .png, .jpg, max. 2MB)</string>
+    <string name="registrasi_logo_hint">(Format .png, .jpg, max. 1MB)</string>
 
     <string name="registrasi_latar_header">Gambar Latar&#160;</string>
-    <string name="registrasi_latar_hint">(Format .png, .jpg, max. 2MB)</string>
+    <string name="registrasi_latar_hint">(Format .png, .jpg, max. 1MB)</string>
     <string name="title_activity_bottom_navigation">MainActivity</string>
 
     <!-- Sign up screens -->
