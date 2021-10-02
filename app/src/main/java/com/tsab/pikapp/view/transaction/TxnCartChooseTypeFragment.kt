@@ -9,23 +9,30 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentTxnCartChooseTypeBinding
 import com.tsab.pikapp.util.SELECTED_TYPE
 import com.tsab.pikapp.viewmodel.transaction.TxnCartChooseTypeViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
-class TxnCartChooseTypeFragment(val dialogDismissInterface: DialogDismissInterface) : BottomSheetDialogFragment() {
+class TxnCartChooseTypeFragment(val dialogDismissInterface: DialogDismissInterface) :
+    BottomSheetDialogFragment() {
 
     private lateinit var dataBinding: FragmentTxnCartChooseTypeBinding
     private lateinit var viewModel: TxnCartChooseTypeViewModel
     var selected = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_txn_cart_choose_type, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_txn_cart_choose_type,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(TxnCartChooseTypeViewModel::class.java)
         return dataBinding.root
     }
@@ -34,31 +41,31 @@ class TxnCartChooseTypeFragment(val dialogDismissInterface: DialogDismissInterfa
         super.onViewCreated(view, savedInstanceState)
         val mArgs = arguments
         selected = mArgs!!.getString(SELECTED_TYPE).toString()
-        if (selected == "DINE_IN"){
+        if (selected == "DINE_IN") {
             dataBinding.radioDineIn.isChecked = true
         } else if (selected == "TAKE_AWAY") {
             dataBinding.radioTakeAway.isChecked = true
         }
 
-        dataBinding.buttonDineIn.setOnClickListener{
+        dataBinding.buttonDineIn.setOnClickListener {
             dataBinding.radioDineIn.isChecked = true
             dataBinding.radioTakeAway.isChecked = false
             selected = "DINE_IN"
         }
 
-        dataBinding.radioDineIn.setOnClickListener{
+        dataBinding.radioDineIn.setOnClickListener {
             dataBinding.radioDineIn.isChecked = true
             dataBinding.radioTakeAway.isChecked = false
             selected = "DINE_IN"
         }
 
-        dataBinding.buttonTakeAway.setOnClickListener{
+        dataBinding.buttonTakeAway.setOnClickListener {
             dataBinding.radioDineIn.isChecked = false
             dataBinding.radioTakeAway.isChecked = true
             selected = "TAKE_AWAY"
         }
 
-        dataBinding.radioTakeAway.setOnClickListener{
+        dataBinding.radioTakeAway.setOnClickListener {
             dataBinding.radioDineIn.isChecked = false
             dataBinding.radioTakeAway.isChecked = true
             selected = "TAKE_AWAY"
@@ -66,12 +73,14 @@ class TxnCartChooseTypeFragment(val dialogDismissInterface: DialogDismissInterfa
 
         dataBinding.buttonSave.setOnClickListener {
             if (selected.isEmpty()) {
-                Toast.makeText(context, "Silakan pilih Tipe pengambilan Anda", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Silakan pilih Tipe pengambilan Anda", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 if (selected == "TAKE_AWAY") {
                     Toast.makeText(context, "Anda memilih \"Take away\"", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Anda memilih \"Makan di tempat\"", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Anda memilih \"Makan di tempat\"", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 viewModel.setType(selected)
             }
@@ -81,7 +90,7 @@ class TxnCartChooseTypeFragment(val dialogDismissInterface: DialogDismissInterfa
 
     private fun observeViewModel() {
         viewModel.success.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dismiss()
             }
         })

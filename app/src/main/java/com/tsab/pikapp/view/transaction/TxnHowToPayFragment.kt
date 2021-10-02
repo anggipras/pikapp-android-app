@@ -17,7 +17,12 @@ class TxnHowToPayFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_txn_cart_choose_type, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_txn_cart_choose_type,
+            container,
+            false
+        )
         return inflater.inflate(R.layout.fragment_txn_how_to_pay, container, false)
     }
 }

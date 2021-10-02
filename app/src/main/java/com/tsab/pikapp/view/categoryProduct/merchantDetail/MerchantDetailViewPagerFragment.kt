@@ -1,10 +1,10 @@
 package com.tsab.pikapp.view.categoryProduct.merchantDetail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.view.home.HomeLivechatFragment
 import com.tsab.pikapp.view.home.HomeViewPagerAdapter
@@ -26,7 +26,8 @@ class MerchantDetailViewPagerFragment : Fragment() {
             HomeLivechatFragment()
         )
 
-        val adapter = HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle )
+        val adapter =
+            HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         view.merchantViewPager.adapter = adapter
 
         return view

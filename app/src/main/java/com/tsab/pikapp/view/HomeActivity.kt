@@ -44,8 +44,11 @@ class HomeActivity : AppCompatActivity() {
         })
 
         viewModel.cartError.observe(this, Observer {
-            if(it.errCode == "EC0021") {
-                viewModel.createToastShort(application, "Kamu login di perangkat lain. Silakan login kembali")
+            if (it.errCode == "EC0021") {
+                viewModel.createToastShort(
+                    application,
+                    "Kamu login di perangkat lain. Silakan login kembali"
+                )
                 viewModel.clearSession(this)
             }
         })
@@ -80,7 +83,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view: View? = currentFocus
-        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.getName().startsWith("android.webkit.")
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name
+                .startsWith("android.webkit.")
         ) {
             val scrcoords = IntArray(2)
             view.getLocationOnScreen(scrcoords)

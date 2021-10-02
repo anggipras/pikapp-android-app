@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentStoreHomeBinding
 import com.tsab.pikapp.view.StoreActivity
@@ -22,20 +21,22 @@ class StoreHomeFragment : Fragment() {
     private var isFirstTime = true
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProviders.of(this).get(StoreHomeViewModel::class.java)
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_home, container,
-                false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_store_home, container,
+            false
+        )
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-                object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        activity?.moveTaskToBack(true)
-                        exitProcess(-1)
-                    }
-                })
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    activity?.moveTaskToBack(true)
+                    exitProcess(-1)
+                }
+            })
 
         return dataBinding.root
     }
@@ -59,8 +60,7 @@ class StoreHomeFragment : Fragment() {
             viewModel.goToOrderList(activity as StoreActivity, 2)
         }
         dataBinding.buttonMyProduct.setOnClickListener {
-            val action = StoreHomeFragmentDirections.actionToStoreMyProductFragment()
-            Navigation.findNavController(view).navigate(action)
+//            Navigation.findNavController(view).navigate(R.id.action_storeHomeFragment_to_addMenuFragment)
         }
 
         observeViewModel()

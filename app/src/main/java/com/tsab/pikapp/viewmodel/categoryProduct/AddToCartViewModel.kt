@@ -56,15 +56,23 @@ class AddToCartViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
-    fun validateCart(mid: String, pid: String, pName: String, pImage: String, qty: Int, pPrice: String, notes: String) {
+    fun validateCart(
+        mid: String,
+        pid: String,
+        pName: String,
+        pImage: String,
+        qty: Int,
+        pPrice: String,
+        notes: String
+    ) {
         loading.value = true
         val price = pPrice.toInt()
         val newCart = CartModel(mid, pid, pName, pImage, qty, notes, price)
         val size = carts.size - 1
         if (carts.isEmpty()) {
             addToCart(newCart)
-        } else if(carts[0].merchantID == newCart.merchantID) addToCart(newCart) else {
-            Log.d("Debug","kesini anjing")
+        } else if (carts[0].merchantID == newCart.merchantID) addToCart(newCart) else {
+            Log.d("Debug", "kesini anjing")
             differentCart.value = arrayListOf(newCart)
         }
     }
@@ -83,7 +91,12 @@ class AddToCartViewModel(application: Application) : BaseViewModel(application) 
             carts.add(newCart)
             isAdded = true
         }
-        if (isAdded) cartSuccess() else addToCartFail(AddToCartResponse("EC0001", "Gagal masuk ke keranjang"))
+        if (isAdded) cartSuccess() else addToCartFail(
+            AddToCartResponse(
+                "EC0001",
+                "Gagal masuk ke keranjang"
+            )
+        )
     }
 
     private fun addToCartFail(err: AddToCartResponse) {

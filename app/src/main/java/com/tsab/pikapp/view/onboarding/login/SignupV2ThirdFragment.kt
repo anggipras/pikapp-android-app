@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.onboarding.login
 
 import android.content.ContentValues
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,16 +11,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentSignupV2ThirdBinding
 import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.LoginV2Activity
+import com.tsab.pikapp.viewmodel.onboarding.signup.SignupOnboardingViewModelV2
 import kotlinx.android.synthetic.main.fragment_signup_v2_third.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -33,41 +39,39 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-val gson = Gson()
-val typeToken = object : TypeToken<BaseResponse>() {}.type
-
 class SignupV2ThirdFragment : Fragment() {
-    private var ktpImage: Uri? = null
-    private var logoImage: Uri? = null
-    private var latarImage: Uri? = null
+    private val viewModel: SignupOnboardingViewModelV2 by activityViewModels()
+    private lateinit var navController: NavController
+    private lateinit var dataBinding: FragmentSignupV2ThirdBinding
 
-    lateinit var email: String
-    lateinit var name: String
-    lateinit var phone: String
-    lateinit var pin: String
-
-    var bankName: String? = null
-    var resto: String? = null
-    var fcourt: String? = null
-    var alamat: String? = null
-    var rekno: String? = null
-    var rekname: String? = null
+    private val gson = Gson()
+    private val typeToken = object : TypeToken<BaseResponse>() {}.type
 
     private var fcm: String? = null
 
+    private val pickerKTP =
+        registerForActivityResult(ActivityResultContracts.GetContent(),
+            ActivityResultCallback { uri: Uri ->
+                viewModel.validateKtp(uri)
+            }
+        )
+
+    private val logoPicker =
+        registerForActivityResult(ActivityResultContracts.GetContent(),
+            ActivityResultCallback { uri: Uri ->
+                viewModel.validateLogo(uri)
+            }
+        )
+
+    private val latarPicker =
+        registerForActivityResult(ActivityResultContracts.GetContent(),
+            ActivityResultCallback { uri: Uri ->
+                viewModel.validateLatar(uri)
+            }
+        )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        email = requireArguments().getString("email").toString()
-        name = requireArguments().getString("name").toString()
-        phone = requireArguments().getString("phone").toString()
-        pin = requireArguments().getString("pin").toString()
-        bankName = requireArguments().getString("bank")
-        resto = requireArguments().getString("restaurant")
-        fcourt = requireArguments().getString("foodcourt")
-        alamat = requireArguments().getString("alamat")
-        rekno = requireArguments().getString("norek")
-        rekname = requireArguments().getString("namarek")
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -81,97 +85,104 @@ class SignupV2ThirdFragment : Fragment() {
         })
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_signup_v2_third,
+            container, false
+        )
+        return dataBinding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ktpImageSelector.setOnClickListener {
-            registerForActivityResult(ActivityResultContracts.GetContent(),
-                    ActivityResultCallback { uri ->
-                        ktpImageSelector.setImageURI(uri)
-                        ktpImage = uri
-                        ktpErrorText.text = ""
-                    }
-            ).launch("image/*")
-        }
+        navController = Navigation.findNavController(view)
 
-        logoRestoranImageSelector.setOnClickListener {
-            registerForActivityResult(ActivityResultContracts.GetContent(),
-                    ActivityResultCallback { uri ->
-                        logoRestoranImageSelector.setImageURI(uri)
-                        logoImage = uri
-                        logoRestoranErrorText.text = ""
-                    }
-            ).launch("image/*")
-        }
-
-        latarRestoranImageSelector.setOnClickListener {
-            registerForActivityResult(ActivityResultContracts.GetContent(),
-                    ActivityResultCallback { uri ->
-                        latarRestoranImageSelector.setImageURI(uri)
-                        latarImage = uri
-                        latarRestoranErrorText.text = ""
-                    }
-            ).launch("image/*")
-        }
-
-        nextButton.setOnClickListener {
-            if (ktpImage == null) {
-                ktpErrorText.text = "KTP Tidak Boleh Kosong"
-                ktpErrorText.setTextColor(Color.parseColor("#DC6A84"))
-            }
-
-            if (logoImage == null) {
-                logoRestoranErrorText.text = "Logo Restoran Tidak Boleh Kosong"
-                logoRestoranErrorText.setTextColor(Color.parseColor("#DC6A84"))
-            }
-
-            if (latarImage == null) {
-                latarRestoranErrorText.text = "Gambar Latar Tidak Boleh Kosong"
-                latarRestoranErrorText.setTextColor(Color.parseColor("#DC6A84"))
-            }
-
-            if (ktpImage != null && logoImage != null && latarImage != null) {
-                uploadData()
-            }
-        }
+        observeViewModel()
+        attachInputListeners()
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signup_v2_third, container, false)
+    private fun observeViewModel() {
+        viewModel.ktp.observe(viewLifecycleOwner, Observer { ktpUri ->
+            dataBinding.ktpImageSelector.setImageURI(ktpUri)
+            dataBinding.ktpErrorText.text = ""
+        })
+
+        viewModel.logo.observe(viewLifecycleOwner, Observer { logoUri ->
+            dataBinding.logoRestoranImageSelector.setImageURI(logoUri)
+            dataBinding.logoRestoranErrorText.text = ""
+        })
+
+        viewModel.latar.observe(viewLifecycleOwner, Observer { latarUri ->
+            dataBinding.latarRestoranImageSelector.setImageURI(latarUri)
+            dataBinding.latarRestoranErrorText.text = ""
+        })
+    }
+
+    private fun attachInputListeners() {
+        dataBinding.ktpImageSelector.setOnClickListener {
+            pickerKTP.launch("image/*")
+        }
+
+        dataBinding.logoRestoranImageSelector.setOnClickListener {
+            logoPicker.launch("image/*")
+        }
+
+        dataBinding.latarRestoranImageSelector.setOnClickListener {
+            latarPicker.launch("image/*")
+        }
+
+        dataBinding.nextButton.setOnClickListener {
+            viewModel.validateKtp(viewModel.ktp.value)
+            viewModel.validateLogo(viewModel.logo.value)
+            viewModel.validateLatar(viewModel.latar.value)
+
+            if (!viewModel.validateThirdPage()) return@setOnClickListener
+
+            uploadData()
+        }
     }
 
     private fun uploadData() {
-        val parcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(ktpImage!!,
-                "r", null) ?: return
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file = File(requireActivity().cacheDir,
-                requireActivity().contentResolver.getFileName(ktpImage!!))
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
+        val ktpParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
+            viewModel.ktp.value!!, "r", null
+        ) ?: return
+        val ktpInputStream = FileInputStream(ktpParcelFileDescriptor.fileDescriptor)
+        val ktpFile = File(
+            requireActivity().cacheDir,
+            requireActivity().contentResolver.getFileName(viewModel.ktp.value!!)
+        )
+        val ktpOutputStream = FileOutputStream(ktpFile)
+        ktpInputStream.copyTo(ktpOutputStream)
 
-        val parcelFileDescriptor1 = requireActivity().contentResolver.openFileDescriptor(
-                logoImage!!, "r", null) ?: return
-        val inputStream1 = FileInputStream(parcelFileDescriptor1.fileDescriptor)
-        val file1 = File(requireActivity().cacheDir,
-                requireActivity().contentResolver.getFileName(logoImage!!))
-        val outputStream1 = FileOutputStream(file1)
-        inputStream1.copyTo(outputStream1)
+        val logoParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
+            viewModel.logo.value!!, "r", null
+        ) ?: return
+        val logoInputStream = FileInputStream(logoParcelFileDescriptor.fileDescriptor)
+        val logoFile = File(
+            requireActivity().cacheDir,
+            requireActivity().contentResolver.getFileName(viewModel.logo.value!!)
+        )
+        val logoOutputStream = FileOutputStream(logoFile)
+        logoInputStream.copyTo(logoOutputStream)
 
-        val parcelFileDescriptor2 = requireActivity().contentResolver.openFileDescriptor(
-                latarImage!!, "r", null) ?: return
-        val inputStream2 = FileInputStream(parcelFileDescriptor2.fileDescriptor)
-        val file2 = File(requireActivity().cacheDir,
-                requireActivity().contentResolver.getFileName(latarImage!!))
-        val outputStream2 = FileOutputStream(file2)
-        inputStream2.copyTo(outputStream2)
+        val latarParcelFileDescriptor = requireActivity().contentResolver.openFileDescriptor(
+            viewModel.latar.value!!, "r", null
+        ) ?: return
+        val latarInputStream = FileInputStream(latarParcelFileDescriptor.fileDescriptor)
+        val latarFile = File(
+            requireActivity().cacheDir,
+            requireActivity().contentResolver.getFileName(viewModel.latar.value!!)
+        )
+        val latarOutputStream = FileOutputStream(latarFile)
+        latarInputStream.copyTo(latarOutputStream)
 
-        val ktpFileSize = (file.length() / 1024).toString().toInt()
-        val logoFileSize = (file1.length() / 1024).toString().toInt()
-        val bannerFileSize = (file2.length() / 1024).toString().toInt()
+        val ktpFileSize = (ktpFile.length() / 1024).toString().toInt()
+        val logoFileSize = (logoFile.length() / 1024).toString().toInt()
+        val bannerFileSize = (latarFile.length() / 1024).toString().toInt()
 
         var imageValidation = false
         if (ktpFileSize > 1024) {
@@ -193,28 +204,74 @@ class SignupV2ThirdFragment : Fragment() {
         if (imageValidation) {
             toggleLoadingView(true)
             PikappApiService().api.uploadRegister(
-                    getUUID(), getClientID(), getTimestamp(),
-                    MultipartBody.Part.createFormData("file_01", file2.name,
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file2)),
-                    MultipartBody.Part.createFormData("file_02", file1.name,
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file1)),
-                    MultipartBody.Part.createFormData("file_03", file.name,
-                            RequestBody.create(MediaType.parse("multipart/form-data"), file)),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), alamat),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), "1"),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), bankName),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), resto),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), rekno),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), rekname),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), email),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), phone),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), resto),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), fcm.toString()),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), pin),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), "No Bank"),
-                    RequestBody.create(MediaType.parse("multipart/form-data"), fcourt)
+                getUUID(), getClientID(), getTimestamp(),
+                MultipartBody.Part.createFormData(
+                    "file_01", latarFile.name,
+                    RequestBody.create(MediaType.parse("multipart/form-data"), latarFile)
+                ),
+                MultipartBody.Part.createFormData(
+                    "file_02", logoFile.name,
+                    RequestBody.create(MediaType.parse("multipart/form-data"), logoFile)
+                ),
+                MultipartBody.Part.createFormData(
+                    "file_03", ktpFile.name,
+                    RequestBody.create(MediaType.parse("multipart/form-data"), ktpFile)
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.alamat.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    "1"
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.namaBank.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.fullName.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.nomorRekening.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.namaRekening.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.email.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.phone.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.namaRestoran.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    fcm.toString()
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.pin.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.namaBank.value!!
+                ),
+                RequestBody.create(
+                    MediaType.parse("multipart/form-data"),
+                    viewModel.namaFoodcourt.value!!
+                )
             ).enqueue(object : Callback<BaseResponse> {
                 override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    Log.e("UploadRegisterError", t.message.toString())
                     toggleLoadingView(false)
                 }
 
@@ -222,14 +279,20 @@ class SignupV2ThirdFragment : Fragment() {
                     toggleLoadingView(false)
 
                     if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                        val intent = Intent(activity?.baseContext, LoginV2Activity::class.java)
-                        activity?.startActivity(intent)
-                        this@SignupV2ThirdFragment.activity?.finish()
+                        Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
+                            activity?.startActivity(this)
+                            this@SignupV2ThirdFragment.activity?.finish()
+                        }
                     } else {
                         val errorResponse: BaseResponse? = gson.fromJson(
-                                response.errorBody()!!.charStream(), typeToken)
-                        Toast.makeText(context, generateResponseMessage(errorResponse?.errCode,
-                                errorResponse?.errMessage), Toast.LENGTH_LONG).show()
+                            response.errorBody()!!.charStream(), typeToken
+                        )
+                        Toast.makeText(
+                            context, generateResponseMessage(
+                                errorResponse?.errCode,
+                                errorResponse?.errMessage
+                            ), Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             })

@@ -31,7 +31,8 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_merchant_detail, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_merchant_detail, container, false)
         viewModel = ViewModelProviders.of(this).get(MerchantDetailViewModel::class.java)
         return dataBinding.root
     }
@@ -46,7 +47,7 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
             val gridLayoutManager =
                 GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL, false)
             layoutManager = gridLayoutManager
-            val spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing)
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
             addItemDecoration(ItemHomeCategoryDecoration(spacingInPixels))
             adapter = merchantProductListAdapter
         }
@@ -59,7 +60,7 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
         viewModel.merchantDetailResponse.observe(this, Observer { merchantDetail ->
             merchantDetail?.let {
                 dataBinding.merchantDetail = merchantDetail
-                dataBinding.toolbar.setTitle(merchantDetail.merchantName)
+                dataBinding.toolbar.title = merchantDetail.merchantName
             }
         })
 
@@ -72,13 +73,14 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
             }
         })
 
-        viewModel.cart.observe(this, Observer {status ->
-            val buttonFloat: View? = (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
+        viewModel.cart.observe(this, Observer { status ->
+            val buttonFloat: View? =
+                (activity as HomeActivity).findViewById<View>(R.id.buttonCartContainer)
             buttonFloat?.let {
                 if (status) {
-                    buttonFloat.visibility= View.VISIBLE
+                    buttonFloat.visibility = View.VISIBLE
                     setButtonCartPosition()
-                } else buttonFloat.visibility= View.GONE
+                } else buttonFloat.visibility = View.GONE
             }
         })
     }
@@ -100,6 +102,7 @@ class MerchantDetailFragment : Fragment(), ProductListAdapter.ProductAddInterfac
             }
         }
     }
+
     override fun onAdd(mid: String, pid: String, pName: String, pImage: String, pPrice: String) {
         viewModel.onAddProduct(mid, pid, pName, pImage, pPrice, context as HomeActivity)
     }

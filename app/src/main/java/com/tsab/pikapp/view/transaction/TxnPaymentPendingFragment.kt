@@ -19,9 +19,18 @@ class TxnPaymentPendingFragment : Fragment() {
     lateinit var dataBinding: FragmentTxnPaymentPendingBinding
     lateinit var viewModel: TxnCartViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_txn_payment_pending, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_txn_payment_pending,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(TxnCartViewModel::class.java)
         return dataBinding.root
     }
@@ -46,23 +55,24 @@ class TxnPaymentPendingFragment : Fragment() {
                 dataBinding.apply {
                     imagePaymentType.setImageResource(R.drawable.ic_ovo)
                     textPaymentType.text = "OVO"
-                    textHowToPay.text = "Silakan cek notifikasi Anda atau buka aplikasi OVO Anda untuk menyelesaikan pembayaran"
+                    textHowToPay.text =
+                        "Silakan cek notifikasi Anda atau buka aplikasi OVO Anda untuk menyelesaikan pembayaran"
                 }
-            } else if(it == "WALLET_DANA") {
+            } else if (it == "WALLET_DANA") {
                 dataBinding.apply {
                     imagePaymentType.setImageResource(R.drawable.ic_dana)
                     textPaymentType.text = "DANA"
                 }
-            } else if(it == "PAY_BY_CASHIER") {
+            } else if (it == "PAY_BY_CASHIER") {
                 dataBinding.apply {
                     imagePaymentType.setImageResource(R.drawable.ic_cashier)
                     textPaymentType.text = "Bayar di kasir"
-                    textHowToPay.text = "Silakan tunjukkan transaksi ini ke kasir untuk melakukan pembayaran"
+                    textHowToPay.text =
+                        "Silakan tunjukkan transaksi ini ke kasir untuk melakukan pembayaran"
                 }
             }
         })
     }
-
 
 
 }

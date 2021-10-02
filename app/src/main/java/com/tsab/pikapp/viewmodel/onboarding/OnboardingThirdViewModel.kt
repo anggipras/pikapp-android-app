@@ -5,7 +5,6 @@ import android.view.View
 import androidx.navigation.Navigation
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.view.onboarding.OnboardingViewPagerFragmentDirections
-import com.tsab.pikapp.view.onboarding.screens.OnboardingThirdDirections
 import com.tsab.pikapp.viewmodel.BaseViewModel
 
 class OnboardingThirdViewModel(application: Application) : BaseViewModel(application) {
@@ -30,8 +29,8 @@ class OnboardingThirdViewModel(application: Application) : BaseViewModel(applica
 //            val action = OnboardingThirdDirections.actionToSignupFragment()
 //            Navigation.findNavController(view).navigate(action)
 //        } else {
-            val action = OnboardingViewPagerFragmentDirections.actionToSignupOnboardingFragment()
-            Navigation.findNavController(view).navigate(action)
+        val action = OnboardingViewPagerFragmentDirections.actionToSignupOnboardingFragment()
+        Navigation.findNavController(view).navigate(action)
 //        }
     }
 }

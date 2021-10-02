@@ -1,36 +1,22 @@
 package com.tsab.pikapp.viewmodel.home
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import android.os.Looper
 import android.util.Log
 import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import com.tsab.pikapp.models.model.UserAccess
+import com.tsab.pikapp.util.LocationLiveData
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.view.HomeActivity
+import com.tsab.pikapp.view.OrderListActivity
 import com.tsab.pikapp.view.StoreActivity
 import com.tsab.pikapp.view.home.HomeFragmentDirections
 import com.tsab.pikapp.view.home.ProfileFragment
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnCompleteListener
-import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.LocationModel
-import com.tsab.pikapp.util.LocationLiveData
-import com.tsab.pikapp.view.OrderListActivity
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
@@ -50,7 +36,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         val profileFragment = ProfileFragment()
         profileFragment.show(
             (context as HomeActivity).supportFragmentManager,
-            profileFragment.getTag()
+            profileFragment.tag
         )
     }
 
@@ -68,7 +54,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
     fun checkDeeplink() {
         val deeplink = prefHelper.getDeeplink()
-        if(deeplink.mid!! != "") {
+        if (deeplink.mid!! != "") {
             deeplinkTarget = "merchant"
             isDeeplinkEnabled.value = true
         } else if (deeplink.address!! != "") {
@@ -98,20 +84,21 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     fun goToMerchant(view: View) {
         val deeplink = prefHelper.getDeeplink()
 //        if (Navigation.findNavController(view).currentDestination?.id == R.id.homeFragment) {
-            if(deeplinkTarget == "merchant"){
-                val action = HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
-                Navigation.findNavController(view).navigate(action)
-            } else if(deeplinkTarget == "list"){
-                val action = HomeFragmentDirections.actionToCategoryFragment(1L)
-                Navigation.findNavController(view).navigate(action)
-            }
+        if (deeplinkTarget == "merchant") {
+            val action =
+                HomeFragmentDirections.actionFromHomeFragmentToMerchantDetailFragment(deeplink.mid!!)
+            Navigation.findNavController(view).navigate(action)
+        } else if (deeplinkTarget == "list") {
+            val action = HomeFragmentDirections.actionToCategoryFragment(1L)
+            Navigation.findNavController(view).navigate(action)
+        }
 //        }
     }
 
     fun checkNotification() {
         val notif = prefHelper.getNotificationDetail()
         notif?.let {
-            it.isMerchant?.let {isMerchant ->
+            it.isMerchant?.let { isMerchant ->
                 if (!isMerchant) notificationActive.value = true
             }
         }

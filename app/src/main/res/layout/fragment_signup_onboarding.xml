@@ -142,9 +142,9 @@
                 android:id="@+id/textFieldOnboardingSignupFullName"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
-                android:maxLength="50"
                 android:hint="Masukan nama anda"
                 android:inputType="textPersonName"
+                android:maxLength="50"
                 android:textColor="#000000"
                 android:textSize="14sp"
                 android:visibility="gone"
@@ -179,9 +179,9 @@
                 android:layout_height="37dp"
                 android:hint="contoh: 081xxxxxxxxx"
                 android:inputType="phone"
+                android:maxLength="15"
                 android:textColor="#000000"
                 android:textSize="14sp"
-                android:maxLength="15"
                 android:visibility="gone"
                 app:autoSizeMaxTextSize="20sp"
                 app:autoSizeTextType="uniform" />
@@ -400,8 +400,8 @@
                 android:id="@+id/loginSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="25dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <TextView

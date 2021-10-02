@@ -14,10 +14,10 @@
             android:id="@+id/actionToTxnPaymentPendingFragment"
             app:destination="@id/txnPaymentPendingFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/txnPaymentPendingFragment"
         android:name="com.tsab.pikapp.view.transaction.TxnPaymentPendingFragment"
-        android:label="fragment_txn_payment_pending"/>
+        android:label="fragment_txn_payment_pending" />
 </navigation>

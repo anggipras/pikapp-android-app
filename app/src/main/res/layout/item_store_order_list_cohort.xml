@@ -180,7 +180,7 @@
                             android:layout_height="25dp"
                             android:layout_marginEnd="10dp"
                             android:src="@drawable/ic_cashier"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/textTableNo"

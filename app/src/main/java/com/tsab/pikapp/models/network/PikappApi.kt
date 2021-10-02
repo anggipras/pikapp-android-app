@@ -1,14 +1,10 @@
 package com.tsab.pikapp.models.network
 
 import com.tsab.pikapp.models.model.*
-import com.tsab.pikapp.models.model.MerchantListResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 interface PikappApi {
@@ -24,25 +20,25 @@ interface PikappApi {
     @Multipart
     @POST("merchant/v1/merchant-registration/")
     fun uploadRegister(
-            @Header("x-request-id") uuid: String,
-            @Header("x-client-id") clientID: String,
-            @Header("x-request-timestamp") time: String,
-            @Part file_01: MultipartBody.Part,
-            @Part file_02: MultipartBody.Part,
-            @Part file_03: MultipartBody.Part,
-            @Part ("address") address: RequestBody,
-            @Part ("category") category: RequestBody,
-            @Part ("bank_name") bank_name: RequestBody,
-            @Part ("merchant_name") merchant_name: RequestBody,
-            @Part ("bank_account_no") bank_account_no: RequestBody,
-            @Part ("bank_account_name") bank_account_name: RequestBody,
-            @Part ("email") email: RequestBody,
-            @Part ("phone_number") phone_number: RequestBody,
-            @Part ("restaurant_name") restaurant_name: RequestBody,
-            @Part ("fcm_token") fcm_token: RequestBody,
-            @Part ("pin") pin: RequestBody,
-            @Part ("bank_branch") bank_branch: RequestBody,
-            @Part ("food_court_name") food_court_name: RequestBody
+        @Header("x-request-id") uuid: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-request-timestamp") time: String,
+        @Part file_01: MultipartBody.Part,
+        @Part file_02: MultipartBody.Part,
+        @Part file_03: MultipartBody.Part,
+        @Part("address") address: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part("bank_name") bank_name: RequestBody,
+        @Part("merchant_name") merchant_name: RequestBody,
+        @Part("bank_account_no") bank_account_no: RequestBody,
+        @Part("bank_account_name") bank_account_name: RequestBody,
+        @Part("email") email: RequestBody,
+        @Part("phone_number") phone_number: RequestBody,
+        @Part("restaurant_name") restaurant_name: RequestBody,
+        @Part("fcm_token") fcm_token: RequestBody,
+        @Part("pin") pin: RequestBody,
+        @Part("bank_branch") bank_branch: RequestBody,
+        @Part("food_court_name") food_court_name: RequestBody
     ): Call<BaseResponse>
 
     @POST("auth/login")
@@ -71,10 +67,10 @@ interface PikappApi {
 
     @GET("merchant/exit/")
     fun logoutMerchant(
-            @Header("x-request-id") uuid: String,
-            @Header("x-client-id") clientID: String,
-            @Header("x-request-timestamp") time: String,
-            @Header("x-session-id") sessionID: String
+        @Header("x-request-id") uuid: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-session-id") sessionID: String
     ): Single<LogoutResponseV2>
 
     // HOME
@@ -147,9 +143,72 @@ interface PikappApi {
         @Path("latitude") latitude: String
     ): Single<ProductDetailResponse>
 
+    @POST("merchant/v1/menu/category/")
+    fun menuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body MenuCategoryRequest: MenuCategoryRequest
+    ): Call<BaseResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    fun listMenuCategory(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") merchantId: String
+    ): Single<ListMenuCategoryResponse>
+
+    // TODO: Delete old API call
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    fun getMenuCategoryList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Call<MerchantListCategoryResponse>
+
+    @POST("merchant/v1/menu/category/update/")
+    fun updateMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body UpdateMenuCategoryRequest: UpdateMenuCategoryRequest
+    ): Call<BaseResponse>
+
+    @GET("merchant/v1/menu/{id}/category/delete/")
+    fun deleteMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Path("id") id: String
+    ): Call<BaseResponse>
+
+    @POST("merchant/v1/menu/category/bulk/update/")
+    fun sortMenuCategory(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body SortCategoryRequest: SortCategoryRequest
+    ): Call<BaseResponse>
 
     // STORE
-
     @GET("merchant/v1/product-list/")
     fun getStoreProductList(
         @Header("x-request-id") uuid: String,
@@ -244,9 +303,7 @@ interface PikappApi {
         @Part("action") action: RequestBody
     ): Single<StoreProductActionResponse>
 
-
     // TRANSACTIONS
-
     @POST("txn/v1/cart-post/")
     fun addToCart(
         @Header("x-request-id") uuid: String,
@@ -296,7 +353,6 @@ interface PikappApi {
     ): Single<GetOrderDetailResponse>
 
     // TRANSACTIONS - Merchant
-
     @GET("merchant/v1/mch-order-history/")
     fun getTransactionListMerchant(
         @Header("x-request-id") uuid: String,
@@ -318,8 +374,7 @@ interface PikappApi {
         @Path("tableNo") tableNo: String
     ): Single<GetStoreOrderDetailResponse>
 
-    //update status
-
+    // Update status
     @Multipart
     @POST("txn/v1/txn-update/")
     fun postUpdateTransactionStatus(
@@ -331,4 +386,276 @@ interface PikappApi {
         @Part("transaction_id") transactionID: RequestBody,
         @Part("status") status: RequestBody
     ): Single<UpdateStatusResponse>
+
+    @Multipart
+    @POST("merchant/v2/product-action/")
+    fun uploadMenu(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Header("pid") pid: String? = null,
+        @Part file_01: MultipartBody.Part,
+        @Part file_02: MultipartBody.Part,
+        @Part file_03: MultipartBody.Part,
+        @Part("product_name") product_name: RequestBody,
+        @Part("product_desc") product_desc: RequestBody,
+        @Part("menu_category_id") id: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("condition") condition: RequestBody,
+        @Part("action") action: RequestBody,
+        @Part("status") status: RequestBody,
+        @Part("product_qty") qty: RequestBody,
+        @Part("extra_menu") extra: RequestBody
+    ): Call<BaseResponse>
+
+    @Multipart
+    @POST("merchant/v2/product-action/")
+    fun uploadEditMenu(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String? = null,
+            @Part("product_name") product_name: RequestBody,
+            @Part("product_desc") product_desc: RequestBody,
+            @Part("menu_category_id") id: RequestBody,
+            @Part("price") price: RequestBody,
+            @Part("condition") condition: RequestBody,
+            @Part("action") action: RequestBody,
+            @Part("status") status: RequestBody,
+            @Part("product_qty") qty: RequestBody,
+            @Part("extra_menu") extra: RequestBody
+    ): Call<BaseResponse>
+
+    @Multipart
+    @POST("merchant/v2/product-action/")
+    fun deleteMenu(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String,
+            @Part("condition") condition: RequestBody,
+            @Part("action") action: RequestBody,
+            @Part("product_qty") qty: RequestBody
+    ): Call<BaseResponse>
+
+    @GET("/merchant/v1/merchant/{mid}/profile/")
+    fun getMerchantProfile(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Path("mid") mid: String
+    ): Single<MerchantProfileResponse>
+
+    // Advanced Menu
+    @POST("merchant/v1/menu/advance/add/")
+    fun addAdvanceMenu(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") merchantId: String,
+        @Body addAdvancedMenuRequest: AddAdvanceMenuRequest
+    ): Single<AddAdvanceMenuResponse>
+
+    @POST("merchant/v1/menu/advance/update/")
+    fun uptadeAdvanceMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Body editAdvancedMenuRequest: AdvanceMenuEdit
+    ): Call<ListAdvanceMenuEditResp>
+
+    @GET("merchant/v1/menu/advance/{pid}/list/")
+    fun listAdvanceMenu(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("pid") productId: String
+    ): Single<ListAdvanceMenuResponse>
+
+    @GET("merchant/v1/menu/advance/{pid}/list/")
+    fun listAdvanceMenuEdit(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Path("pid") productId: String
+    ): Single<ListAdvanceMenuEditResponse>
+
+    @POST("merchant/v1/menu/advance/add/new/")
+    fun addNewAdvanceMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body addNewAdvancedMenuRequest: AddNewAdvanceMenu
+    ): Call<ListNewAdvanceMenuResponse>
+
+    @POST("merchant/v1/menu/extra/add/")
+    fun addNewExtraMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body addNewExtraMenuRequest: AddNewExtraMenu
+    ): Call<NewExtraMenuResponse>
+
+    @DELETE("merchant/v1/menu/extra/delete/{id}")
+    fun deleteExtraMenu(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Header("pid") pid: String,
+            @Path("id") extId: String
+    ): Call<BaseResponse>
+
+    @GET("/merchant/v1/shop/management/list/")
+    fun getMerchantShopManagement(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String
+    ): Call<MerchantTimeManagement>
+
+    @Multipart
+    @POST("merchant/v1/merchant/update/profile/")
+    fun uploadMerchantProfile(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Part file_01: MultipartBody.Part,
+            @Part file_02: MultipartBody.Part,
+            @Part ("address") address: RequestBody,
+            @Part ("merchant_name") merchant_name: RequestBody,
+            @Part ("gender") gender: RequestBody,
+            @Part ("dob") dob: RequestBody,
+            @Part ("bank_account_no") bank_account_no: RequestBody,
+            @Part ("bank_account_name") bank_account_name: RequestBody,
+            @Part ("bank_name") bank_name: RequestBody,
+            @Part ("mid") mid: RequestBody
+    ): Call<BaseResponse>
+
+    @POST("merchant/v1/shop/management/update/")
+    fun updateShopManagement(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Header("mid") mid: String,
+            @Body shopManagementUpdateRequest: ShopManagementUpdateRequest
+    ): Call<BaseResponse>
+
+    @POST("merchant/v1/merchant/change/pin/")
+    fun changePinMerchantDisposable(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body pinModel: pinMerchant
+    ): Single<OtherBaseResponse>
+
+    @POST("merchant/v1/merchant/change/pin/")
+    fun changePinMerchant(
+        @Header("Content-Type") contentType: String? = "application/json",
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body pinModel: pinMerchant
+    ): Call<OtherBaseResponse>
+
+    @POST("merchant/v2/product-list/")
+    fun searchMenu(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Body search: SearchRequest
+    ): Call<SearchResponse>
+
+    // Omnichannel integration
+    @GET("channel/v1/channel-integration/list/")
+    fun listIntegration(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("mid") merchantId: String
+    ): Single<IntegrationArrayResponse>
+
+    @POST("channel/v1/channel-integration/add/")
+    fun connectIntegration(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Body connectIntegrationRequest: ConnectIntegrationRequest
+    ): Single<IntegrationObjectResponse>
+
+    @DELETE("channel/v1/channel-integration/{id}/disconnect/")
+    fun disconnectIntegration(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Path("id") channelId: String
+    ): Single<IntegrationObjectResponse>
+
+    @GET("channel/v1/order-omni-channel/list/")
+    fun getListOrderOmni(
+        @Header("x-request-id") requestId: String,
+        @Header("x-request-timestamp") requestTimestamp: String,
+        @Header("x-client-id") clientId: String,
+        @Header("mid") merchantId: String,
+        @Header("page") page: String,
+        @Header("size") size: String
+    ): Call<ListOrderOmni>
+
+    @GET("channel/v1/order-omni-channel/detail/{orderId}/")
+    fun getListOrderDetailOmni(
+            @Header("x-request-id") requestId: String,
+            @Header("x-request-timestamp") requestTimestamp: String,
+            @Header("x-client-id") clientId: String,
+            @Path("orderId") orderId: String
+    ): Call<ListOrderDetailOmni>
+
+    @POST("channel/v1/ack/order/")
+    fun acceptOrderTokopedia(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Body AcceptOrderTokopediaRequest: AcceptOrderTokopediaRequest
+    ): Call<AcceptOrderTokopediaResponse>
 }

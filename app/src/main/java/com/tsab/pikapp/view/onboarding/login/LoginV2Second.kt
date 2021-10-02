@@ -8,13 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentLoginV2SecondBinding
-import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModelV2
 
 class LoginV2Second : Fragment() {
@@ -29,11 +30,13 @@ class LoginV2Second : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_v2_second,
-                container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_login_v2_second,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -42,12 +45,23 @@ class LoginV2Second : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(LoginOnboardingViewModelV2::class.java)
 
-        dataBinding.logPin.setPinViewEventListener { pinview, fromUser ->
+        dataBinding.logPin.addTextChangedListener {
             val email = email
-            val password = dataBinding.logPin.value.toString()
+            val password = dataBinding.logPin.text.toString()
+
+            if (password.length == 6) {
+                hideKeyboard()
+            }
 
             viewModel.login(email, password)
         }
+
+//        dataBinding.logPin.setPinViewEventListener { pinview, fromUser ->
+//            val email = email
+//            val password = dataBinding.logPin.value.toString()
+//
+//            viewModel.login(email, password)
+//        }
         observeViewModel()
     }
 
@@ -55,7 +69,7 @@ class LoginV2Second : Fragment() {
     private fun observeViewModel() {
         viewModel.loginResponse.observe(this, Observer { response ->
             response?.let {
-                val intent = Intent(activity?.baseContext, StoreActivity::class.java)
+                val intent = Intent(activity?.baseContext, HomeActivity::class.java)
                 activity?.startActivity(intent)
             }
         })
@@ -68,7 +82,8 @@ class LoginV2Second : Fragment() {
 
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = activity?.getSystemService(
-                Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)

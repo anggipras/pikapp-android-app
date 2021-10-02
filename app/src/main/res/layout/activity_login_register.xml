@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        tools:context=".view.loginv2.LoginRegisterActivity">
+
+        <ImageView
+            android:id="@+id/pikappLogo_auth"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/pikapp"
+            app:layout_constraintDimensionRatio="108:36"
+            app:layout_constraintStart_toStartOf="@id/carouselImage_auth"
+            app:layout_constraintTop_toTopOf="@id/carouselImage_auth" />
+
+        <ImageView
+            android:id="@+id/carouselImage_auth"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:src="@drawable/img_carousel_3"
+            app:layout_constraintBottom_toTopOf="@+id/carouselHeaderText_auth"
+            app:layout_constraintDimensionRatio="272:203"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/carouselHeaderText_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="52dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/carousel_3_header"
+            android:textColor="@color/colorWhite"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toTopOf="@+id/daftarButton_auth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/carouselImage_auth"
+            tools:text="@string/carousel_3_header_preview" />
+
+        <Button
+            android:id="@+id/daftarButton_auth"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="44dp"
+            android:background="@drawable/button_green_small"
+            android:backgroundTint="@color/colorGreen"
+            android:elevation="20dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/daftar"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/sudahPunyaAkunText_auth"
+            app:layout_constraintDimensionRatio="5:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/carouselHeaderText_auth" />
+
+        <TextView
+            android:id="@+id/sudahPunyaAkunText_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/sudah_punya_akun"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/privacyText_auth"
+            app:layout_constraintEnd_toStartOf="@+id/masukButton_auth"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/daftarButton_auth" />
+
+        <TextView
+            android:id="@+id/masukButton_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/masuk"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle=""
+            app:layout_constraintBottom_toBottomOf="@id/sudahPunyaAkunText_auth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/sudahPunyaAkunText_auth"
+            app:layout_constraintTop_toTopOf="@id/sudahPunyaAkunText_auth" />
+
+        <TextView
+            android:id="@+id/privacyText_auth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="52dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/setuju_kebijakan_privasi"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sudahPunyaAkunText_auth" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

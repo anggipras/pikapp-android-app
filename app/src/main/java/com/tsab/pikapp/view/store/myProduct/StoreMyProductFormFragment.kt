@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -96,10 +95,22 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
             val condition = dataBinding.textCondition.text.trim().toString()
 
             if (isAdd) {
-                viewModel.submitProduct((activity as StoreActivity), productName, textDescription, price, condition)
+                viewModel.submitProduct(
+                    (activity as StoreActivity),
+                    productName,
+                    textDescription,
+                    price,
+                    condition
+                )
             } else {
                 val pid = dataBinding.textProductID.text.toString()
-                viewModel.editProduct((activity as StoreActivity), pid, productName, textDescription, price)
+                viewModel.editProduct(
+                    (activity as StoreActivity),
+                    pid,
+                    productName,
+                    textDescription,
+                    price
+                )
             }
         }
 
@@ -110,7 +121,7 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
     private fun observeViewModel() {
 
         viewModel.loading.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dataBinding.loadingView.visibility = View.VISIBLE
                 dataBinding.buttonToGallery.isEnabled = false
                 dataBinding.buttonActionProduct.isEnabled = false
@@ -192,7 +203,7 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
         storeImageUploadAdapter.addAllProductList(imageArrayFromDB)
 
         //product name
-        dataBinding.textProductID.setText(storeProductList.productId)
+        dataBinding.textProductID.text = storeProductList.productId
         dataBinding.textProductName.setText(storeProductList.productName)
         dataBinding.textDescription.setText(storeProductList.productDesc)
         dataBinding.textPrice.setText(storeProductList.productPrice.toString())
@@ -202,7 +213,11 @@ class StoreMyProductFormFragment : Fragment(), StoreImageUploadAdapter.DeleteIma
         if (imageCount < 1) {
             pickImageIntent()
         } else {
-            Toast.makeText(context, "Maksimum gambar yang diperbolehkan hanya 1", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                "Maksimum gambar yang diperbolehkan hanya 1",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

@@ -1,10 +1,10 @@
 package com.tsab.pikapp.view.onboarding.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 
 class OnboardingFirst : Fragment() {

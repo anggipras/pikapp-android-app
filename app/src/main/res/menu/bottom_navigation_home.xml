@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_transaction"
+        android:icon="@drawable/navigation_transaction"
+        android:title="Transaksi" />
+
+    <item
+        android:id="@+id/nav_menu"
+        android:icon="@drawable/navigation_menu"
+        android:title="Menu" />
+
+    <item
+        android:id="@+id/nav_promo"
+        android:icon="@drawable/navigation_promo"
+        android:title="Promo" />
+
+    <item
+        android:id="@+id/nav_other"
+        android:icon="@drawable/navigation_other"
+        android:title="Lainnya" />
+
+</menu>

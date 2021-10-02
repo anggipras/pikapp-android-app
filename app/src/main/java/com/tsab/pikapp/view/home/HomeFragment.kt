@@ -4,23 +4,20 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentHomeBinding
 import com.tsab.pikapp.util.LOCATION_REQUEST
-import com.tsab.pikapp.util.getSignature
-import com.tsab.pikapp.util.getTimestamp
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.viewmodel.home.HomeViewModel
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_home_view_pager.view.*
 
 class HomeFragment : Fragment() {
@@ -88,7 +85,7 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.isLocationRetrieved.observe(this, Observer {
-            if(it) {
+            if (it) {
                 viewModel.checkDeeplink()
                 viewModel.checkUserMerchantStatus()
             }
@@ -119,11 +116,18 @@ class HomeFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve")
     private fun startLocationUpdate() {
         viewModel.getLocationData().observe(this, Observer {
-            viewModel.saveUserLocation(longitude = it.longitude.toString(), latitude = it.latitude.toString())
+            viewModel.saveUserLocation(
+                longitude = it.longitude.toString(),
+                latitude = it.latitude.toString()
+            )
         })
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_REQUEST) {
             if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -135,18 +139,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
             != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             viewModel.setStatusLocation(false)
             requestPermission()
         } else {
             viewModel.setStatusLocation(true)
         }
     }
+
     fun requestPermission() {
         requestPermissions(
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ), LOCATION_REQUEST
         )
     }
 }

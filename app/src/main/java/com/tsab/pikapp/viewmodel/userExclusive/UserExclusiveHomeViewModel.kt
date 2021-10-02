@@ -9,7 +9,7 @@ import com.tsab.pikapp.view.UserExclusiveActivity
 import com.tsab.pikapp.view.userExclusive.UserExclusiveProfileFragment
 import com.tsab.pikapp.viewmodel.BaseViewModel
 
-class UserExclusiveHomeViewModel(application: Application): BaseViewModel(application) {
+class UserExclusiveHomeViewModel(application: Application) : BaseViewModel(application) {
 
     val userData = MutableLiveData<UserAccess>()
 
@@ -21,7 +21,10 @@ class UserExclusiveHomeViewModel(application: Application): BaseViewModel(applic
 
     fun goToProfile(context: Context) {
         val userExclusiveProfileFragment = UserExclusiveProfileFragment()
-        userExclusiveProfileFragment.show((context as UserExclusiveActivity).supportFragmentManager, userExclusiveProfileFragment.getTag())
+        userExclusiveProfileFragment.show(
+            (context as UserExclusiveActivity).supportFragmentManager,
+            userExclusiveProfileFragment.tag
+        )
     }
 
 

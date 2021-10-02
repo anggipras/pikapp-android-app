@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/itemActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/green"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/itemTitleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/proximanova_semibold"
+        android:textColor="@color/textSubtle"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/itemActionButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Tingkat Kepedasan" />
+
+    <TextView
+        android:id="@+id/itemDescriptionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:textColor="@color/borderSubtle"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/itemTitleText"
+        app:layout_constraintStart_toStartOf="@id/itemTitleText"
+        app:layout_constraintTop_toBottomOf="@id/itemTitleText"
+        tools:text="3 pilihan" />
+
+    <View
+        android:id="@+id/itemDivider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/lightGrey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/itemDescriptionText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

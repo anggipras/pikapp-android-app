@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toTopOf="@id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textView2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -28,13 +28,13 @@
         android:text="Tanpa Nunggu, Skip Antrian"
         android:textColor="#000000"
         android:textStyle="bold"
-        app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="30sp"
         app:autoSizeMaxTextSize="45sp"
+        app:autoSizeMinTextSize="30sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintBottom_toTopOf="@id/textView3"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/textView3"
@@ -47,12 +47,12 @@
         android:lineSpacingExtra="4sp"
         android:text="Belanja di toko, restoran, atau cafe di mana pun tanpa harus antri! Pesan dan bayar dahulu lewat PikApp dan skip antrian di toko manapun anda berbelanja."
         android:textColor="#000000"
-        app:autoSizeTextType="uniform"
-        app:autoSizeMinTextSize="13sp"
         app:autoSizeMaxTextSize="19sp"
+        app:autoSizeMinTextSize="13sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

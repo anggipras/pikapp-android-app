@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.tsab.pikapp.models.model.ErrorResponse
@@ -35,11 +36,13 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     val loginResponse = MutableLiveData<LoginResponseV2>()
     val loginErrorResponse = MutableLiveData<ErrorResponse>()
     val loading = MutableLiveData<Boolean>()
+    val firstAppData = MutableLiveData<Int>()
 
-    val emailError = MutableLiveData<String>()
+    private val mutableEmailError = MutableLiveData("")
+    val emailError: LiveData<String> get() = mutableEmailError
     val passwordError = MutableLiveData<String>()
 
-    private var isEmailValid = false
+    var isEmailValid = false
     private var isPasswordValid = false
 
     fun login(username: String, pin: String) {
@@ -49,15 +52,28 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         }
     }
 
-    private fun checkUserInput(username: String, pin: String) {
-        if (username.isEmpty()) {
-            emailError.value = "Silakan masukkan email anda"
+    fun validateEmail(email: String) {
+        if (email.isEmpty()) {
+            mutableEmailError.value = "Silakan masukkan nomor telepon anda"
             isEmailValid = false
-        } else if (!isUsernameValid(username)) {
-            emailError.value = "Silakan masukkan username anda secara valid"
+        } else if (email.trim().length <= 8) {
+            mutableEmailError.value = "Nomor telepon harus lebih dari 8 digit"
             isEmailValid = false
         } else {
-            emailError.value = ""
+            mutableEmailError.value = ""
+            isEmailValid = true
+        }
+    }
+
+    private fun checkUserInput(username: String, pin: String) {
+        if (username.isEmpty()) {
+            mutableEmailError.value = "Silakan masukkan email anda"
+            isEmailValid = false
+        } else if (!isUsernameValid(username)) {
+            mutableEmailError.value = "Silakan masukkan username anda secara valid"
+            isEmailValid = false
+        } else {
+            mutableEmailError.value = ""
             isEmailValid = true
         }
 
@@ -76,35 +92,37 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     private fun loginProcess(username: String, pin: String) {
         loading.value = true
         disposable.add(
-                apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
-                            override fun onSuccess(t: LoginResponseV2) {
-                                loginSuccess(t)
-                            }
+            apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
+                    override fun onSuccess(t: LoginResponseV2) {
+                        loginSuccess(t)
+                    }
 
-                            override fun onError(e: Throwable) {
-                                Log.d("Debug", "error : " + e)
-                                var errorResponse: ErrorResponse
-                                try {
-                                    val responseBody = (e as HttpException)
-                                    val body = responseBody.response()?.errorBody()?.string()
-                                    errorResponse =
-                                            Gson().fromJson(body, ErrorResponse::class.java)
-                                } catch (err: Throwable) {
-                                    errorResponse =
-                                            ErrorResponse(
-                                                    "503",
-                                                    "Service Unavailable"
-                                            )
-                                }
-                                loginFail(errorResponse)
-                                createToastShort(getApplication(),
-                                        "error: ${errorResponse.errMessage}")
-                                //                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                    override fun onError(e: Throwable) {
+                        Log.d("Debug", "error : " + e)
+                        var errorResponse: ErrorResponse
+                        try {
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse =
+                                ErrorResponse(
+                                    "503",
+                                    "Service Unavailable"
+                                )
+                        }
+                        loginFail(errorResponse)
+                        createToastShort(
+                            getApplication(),
+                            "error: ${errorResponse.errMessage}"
+                        )
+                        //                        Toast.makeText(getApplication(), "error: ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
+                    }
+                })
         )
     }
 
@@ -136,6 +154,15 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         val userExclusiveActivity = Intent(context, UserExclusiveActivity::class.java)
         context.startActivity(userExclusiveActivity)
         (context as OnboardingActivity).finish()
+    }
+
+    fun onBackPressed() {
+        val firstApp = sessionManager.getFirstApp()
+        if (firstApp == 1) {
+            firstAppData.value = 1
+        } else {
+            firstAppData.value = 0
+        }
     }
 
     fun createToast(m: String) {

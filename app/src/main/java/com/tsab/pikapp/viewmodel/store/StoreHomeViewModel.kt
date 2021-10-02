@@ -6,13 +6,15 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
+import com.tsab.pikapp.view.CarouselActivity
+import com.tsab.pikapp.view.StoreActivity
+import com.tsab.pikapp.view.StoreOrderListActivity
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
-import com.tsab.pikapp.models.model.*
-import com.tsab.pikapp.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -50,81 +52,82 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
         }
 
         disposable.add(
-                pikappService.getMerchantDetail(mid, "109382", "123456")
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object : DisposableSingleObserver<MerchantDetailResponse>() {
-                        override fun onSuccess(t: MerchantDetailResponse) {
-                            t.results?.let { it1 -> merchantDetailRetrieved(it1) }
-                        }
+            pikappService.getMerchantDetail(mid, "109382", "123456")
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<MerchantDetailResponse>() {
+                    override fun onSuccess(t: MerchantDetailResponse) {
+                        t.results?.let { it1 -> merchantDetailRetrieved(it1) }
+                    }
 
-                        override fun onError(e: Throwable) {
-                            var errorResponse: MerchantListErrorResponse
-                            try {
-                                Log.d("Debug", "error merchant detail : " + e + " ${e.message}")
-                                val responseBody = (e as HttpException)
-                                val body = responseBody.response()?.errorBody()?.string()
-                                errorResponse =
-                                    Gson().fromJson<MerchantListErrorResponse>(
-                                        body,
-                                        MerchantListErrorResponse::class.java
-                                    )
-                            } catch (err: Throwable) {
-                                errorResponse = MerchantListErrorResponse(
-                                    "now", "503", "Unavailable", "Unavailable", "Unavailable"
+                    override fun onError(e: Throwable) {
+                        var errorResponse: MerchantListErrorResponse
+                        try {
+                            Log.d("Debug", "error merchant detail : " + e + " ${e.message}")
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson<MerchantListErrorResponse>(
+                                    body,
+                                    MerchantListErrorResponse::class.java
                                 )
-                            }
-
-                            merchantFail(errorResponse)
-                            Toast.makeText(
-                                getApplication(),
-                                "${errorResponse.message} ${errorResponse.path}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            Log.d(
-                                "Debug",
-                                "error merchant detail : ${errorResponse.message} ${errorResponse.path}"
+                        } catch (err: Throwable) {
+                            errorResponse = MerchantListErrorResponse(
+                                "now", "503", "Unavailable", "Unavailable", "Unavailable"
                             )
                         }
-                    })
-                )
+
+                        merchantFail(errorResponse)
+                        Toast.makeText(
+                            getApplication(),
+                            "${errorResponse.message} ${errorResponse.path}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d(
+                            "Debug",
+                            "error merchant detail : ${errorResponse.message} ${errorResponse.path}"
+                        )
+                    }
+                })
+        )
     }
 
     fun logout(context: Context) {
         val sessionId = sessionManager.getUserData()?.sessionId!!
-        Log.d("debug","sessionid : $sessionId")
+        Log.d("debug", "sessionid : $sessionId")
         logoutProcess(sessionId)
     }
 
     private fun logoutProcess(sessionid: String) {
         loading.value = true
         disposable.add(
-                pikappService.logoutMerchant(sessionid)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<LogoutResponseV2>() {
-                            override fun onSuccess(t: LogoutResponseV2) {
-                                logoutSuccess(t)
-                            }
-                            override fun onError(e: Throwable) {
-                                Log.d("Debug", "error : " + e)
-                                var errorResponse: ErrorResponse
-                                try {
-                                    val responseBody = (e as HttpException)
-                                    val body = responseBody.response()?.errorBody()?.string()
-                                    errorResponse =
-                                            Gson().fromJson(body, ErrorResponse::class.java)
-                                } catch (err: Throwable) {
-                                    errorResponse =
-                                            ErrorResponse(
-                                                    "503",
-                                                    "Service Unavailable"
-                                            )
-                                }
-                                logoutFail(errorResponse)
-                            }
+            pikappService.logoutMerchant(sessionid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<LogoutResponseV2>() {
+                    override fun onSuccess(t: LogoutResponseV2) {
+                        logoutSuccess(t)
+                    }
 
-                        })
+                    override fun onError(e: Throwable) {
+                        Log.d("Debug", "error : " + e)
+                        var errorResponse: ErrorResponse
+                        try {
+                            val responseBody = (e as HttpException)
+                            val body = responseBody.response()?.errorBody()?.string()
+                            errorResponse =
+                                Gson().fromJson(body, ErrorResponse::class.java)
+                        } catch (err: Throwable) {
+                            errorResponse =
+                                ErrorResponse(
+                                    "503",
+                                    "Service Unavailable"
+                                )
+                        }
+                        logoutFail(errorResponse)
+                    }
+
+                })
         )
     }
 
@@ -148,7 +151,7 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
         val notif = prefHelper.getNotificationDetail()
 //        prefHelper.deleteNotificationDetail()
         notif?.let {
-            it.isMerchant?.let {isMerchant ->
+            it.isMerchant?.let { isMerchant ->
                 if (isMerchant) notificationActive.value = true
                 prefHelper.deleteNotificationDetail()
             }
@@ -183,8 +186,8 @@ class StoreHomeViewModel(application: Application) : BaseViewModel(application) 
 
     private fun goToOnboarding(context: Context) {
         val onboardingActivity = Intent(context, CarouselActivity::class.java)
-        context?.startActivity(onboardingActivity)
-        (context as StoreActivity).finish()
+        context.startActivity(onboardingActivity)
+        (context as StoreActivity).finishAffinity()
     }
 
     fun createToast(m: String) {

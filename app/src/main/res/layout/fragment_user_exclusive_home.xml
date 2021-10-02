@@ -86,10 +86,10 @@
                 android:layout_marginTop="32dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user_exclusive_success"
+                app:layout_constraintBottom_toTopOf="@id/imageViewBG"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/imageViewBG"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageViewBG"
@@ -120,10 +120,10 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Selamat ya,"
                     android:textColor="#000000"
-                    app:autoSizeTextType="uniform"
-                    app:autoSizeMinTextSize="30sp"
+                    android:visibility="visible"
                     app:autoSizeMaxTextSize="40sp"
-                    android:visibility="visible" />
+                    app:autoSizeMinTextSize="30sp"
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/textUsername"
@@ -132,10 +132,10 @@
                     android:fontFamily="@font/montserrat"
                     android:text="User Name"
                     android:textColor="#000000"
-                    app:autoSizeTextType="uniform"
-                    app:autoSizeMinTextSize="30sp"
+                    android:visibility="visible"
                     app:autoSizeMaxTextSize="40sp"
-                    android:visibility="visible" />
+                    app:autoSizeMinTextSize="30sp"
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/textTex1"
@@ -146,10 +146,10 @@
                     android:lineSpacingExtra="4sp"
                     android:text="Kamu sudah terdaftar dan dapat dengan segera mencoba aplikasi PikApp di tempat rekomendasi-mu."
                     android:textColor="#000000"
-                    app:autoSizeTextType="uniform"
-                    app:autoSizeMinTextSize="15sp"
+                    android:visibility="visible"
                     app:autoSizeMaxTextSize="20sp"
-                    android:visibility="visible" />
+                    app:autoSizeMinTextSize="15sp"
+                    app:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/textTex2"
@@ -160,10 +160,10 @@
                     android:lineSpacingExtra="4sp"
                     android:text="Nantikan pengalaman belanja tanpa harus mengantri. #antriantriclub"
                     android:textColor="#000000"
-                    app:autoSizeTextType="uniform"
-                    app:autoSizeMinTextSize="15sp"
+                    android:visibility="visible"
                     app:autoSizeMaxTextSize="20sp"
-                    android:visibility="visible" />
+                    app:autoSizeMinTextSize="15sp"
+                    app:autoSizeTextType="uniform" />
 
             </LinearLayout>
 

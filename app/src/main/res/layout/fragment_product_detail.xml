@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="productDetail"
             type="com.tsab.pikapp.models.model.ProductDetail" />
+
         <variable
             name="Listener"
             type="com.tsab.pikapp.view.categoryProduct.ProductClickListener" />
@@ -132,8 +134,8 @@
                                     android:layout_height="40dp"
                                     android:scaleType="fitXY"
                                     android:src="@drawable/ic_favorite"
-                                    app:tint="@color/placeholderBackground"
-                                    android:visibility="gone"/>
+                                    android:visibility="gone"
+                                    app:tint="@color/placeholderBackground" />
 
                             </LinearLayout>
 
@@ -351,9 +353,9 @@
             android:layout_marginEnd="20dp"
             android:src="@drawable/ic_message"
             android:tint="@android:color/white"
+            android:visibility="gone"
             app:layout_anchor="@id/appBarLayout"
-            app:layout_anchorGravity="top|right|end"
-            android:visibility="gone"/>
+            app:layout_anchorGravity="top|right|end" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
@@ -384,10 +386,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/proximanova_regular"
+                    android:justificationMode="inter_word"
                     android:lineSpacingExtra="4sp"
                     android:text="@{String.valueOf(productDetail.productDesc)}"
                     android:textColor="#000000"
-                    android:justificationMode="inter_word"
                     android:textSize="15sp" />
 
                 <LinearLayout
@@ -401,12 +403,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Informasi produk"
-                    android:layout_marginTop="20dp"
                     android:textColor="#000000"
                     android:textSize="18sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -472,8 +474,8 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/button_green"
             android:fontFamily="@font/montserrat_bold"
-            android:text="ADD +"
             android:onClick="@{Listener::onProductClicked}"
+            android:text="ADD +"
             android:textColor="#ffffff"
             android:textSize="20sp"
             app:layout_anchor="@id/scrollView"

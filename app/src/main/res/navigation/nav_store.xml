@@ -29,7 +29,7 @@
         android:id="@+id/storeMyProductFormFragment"
         android:name="com.tsab.pikapp.view.store.myProduct.StoreMyProductFormFragment"
         android:label="fragment_store_my_product_form"
-        tools:layout="@layout/fragment_store_my_product_form" >
+        tools:layout="@layout/fragment_store_my_product_form">
         <argument
             android:name="isAdd"
             app:argType="boolean" />

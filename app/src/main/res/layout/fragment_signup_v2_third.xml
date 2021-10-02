@@ -15,7 +15,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/imageHeader"
@@ -25,7 +25,8 @@
                     android:src="@drawable/header"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="contentDescription" />
 
                 <TextView
                     android:id="@+id/textHeader"
@@ -63,8 +64,8 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="36dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="KTP Pemilik Restoran"
-                        android:textColor="#000000"
+                        android:text="@string/registrasi_ktp_header"
+                        android:textColor="@color/darkGrey"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -73,10 +74,9 @@
                         android:id="@+id/ktpRequiredText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat_bold"
                         android:text="@string/star"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/red"
                         android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/ktpHeaderText"
                         app:layout_constraintTop_toBottomOf="@id/ktpHeaderText"
@@ -88,8 +88,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/proximanova_regular"
-                        android:text="(Format .png, .jpg, max. 1MB)"
-                        android:textColor="#767676"
+                        android:text="@string/registrasi_ktp_hint"
+                        android:textColor="@color/textSubtle"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/ktpHeaderText"
                         app:layout_constraintTop_toBottomOf="@id/ktpHeaderText" />
@@ -102,6 +102,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="32dp"
                         android:background="@drawable/inputimage"
+                        android:contentDescription="@string/registrasi_ktp_header"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ktpHintText" />
@@ -113,7 +114,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/proximanova_regular"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/red"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/ktpImageSelector"
                         app:layout_constraintTop_toBottomOf="@id/ktpImageSelector" />
@@ -126,8 +127,8 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="Logo Restoran"
-                        android:textColor="#000000"
+                        android:text="@string/registrasi_logo_header"
+                        android:textColor="@color/darkGrey"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ktpErrorText" />
@@ -136,10 +137,9 @@
                         android:id="@+id/logoRestoranRequiredText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat_bold"
                         android:text="@string/star"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/red"
                         android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/logoRestoranHeaderText"
                         app:layout_constraintTop_toBottomOf="@id/logoRestoranHeaderText"
@@ -151,8 +151,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/proximanova_regular"
-                        android:text="(Format .png, .jpg, max. 1MB)"
-                        android:textColor="#767676"
+                        android:text="@string/registrasi_logo_hint"
+                        android:textColor="@color/textSubtle"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/logoRestoranHeaderText"
                         app:layout_constraintTop_toBottomOf="@id/logoRestoranHeaderText" />
@@ -165,6 +165,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="32dp"
                         android:background="@drawable/inputimage"
+                        android:contentDescription="@string/registrasi_logo_header"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/logoRestoranHintText" />
@@ -173,10 +174,9 @@
                         android:id="@+id/logoRestoranErrorText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/proximanova_regular"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/red"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/logoRestoranImageSelector"
                         app:layout_constraintTop_toBottomOf="@id/logoRestoranImageSelector" />
@@ -189,8 +189,8 @@
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat_bold"
-                        android:text="Gambar Latar"
-                        android:textColor="#000000"
+                        android:text="@string/registrasi_latar_header"
+                        android:textColor="@color/darkGrey"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/logoRestoranErrorText" />
@@ -199,10 +199,9 @@
                         android:id="@+id/latarRestoranRequiredText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/montserrat_bold"
                         android:text="@string/star"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/red"
                         android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@id/latarRestoranHeaderText"
                         app:layout_constraintTop_toBottomOf="@id/latarRestoranHeaderText"
@@ -214,8 +213,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/proximanova_regular"
-                        android:text="(Format .png, .jpg, max. 1MB)"
-                        android:textColor="#767676"
+                        android:text="@string/registrasi_latar_hint"
+                        android:textColor="@color/textSubtle"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/latarRestoranHeaderText"
                         app:layout_constraintTop_toBottomOf="@id/latarRestoranHeaderText" />
@@ -228,6 +227,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="32dp"
                         android:background="@drawable/inputimage"
+                        android:contentDescription="@string/registrasi_latar_header"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/latarRestoranHintText" />
@@ -236,10 +236,9 @@
                         android:id="@+id/latarRestoranErrorText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/proximanova_regular"
-                        android:textColor="@color/colorRed"
+                        android:textColor="@color/red"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/latarRestoranImageSelector"
                         app:layout_constraintTop_toBottomOf="@id/latarRestoranImageSelector" />
@@ -254,11 +253,11 @@
                         android:layout_marginEnd="32dp"
                         android:layout_marginBottom="40dp"
                         android:background="@drawable/button_green_small"
-                        android:backgroundTint="@color/colorGreen"
+                        android:backgroundTint="@color/green"
                         android:fontFamily="@font/montserrat"
                         android:text="@string/selanjutnya"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"

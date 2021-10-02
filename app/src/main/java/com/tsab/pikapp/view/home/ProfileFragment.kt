@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,19 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProfileBinding
 import com.tsab.pikapp.util.getInitial
+import com.tsab.pikapp.util.substringPhone
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.viewmodel.home.HomeProfileViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.tsab.pikapp.util.substringPhone
-import com.tsab.pikapp.view.OnboardingActivity
-import com.tsab.pikapp.view.OrderListActivity
 
 class ProfileFragment : BottomSheetDialogFragment() {
 
@@ -85,7 +81,7 @@ class ProfileFragment : BottomSheetDialogFragment() {
     private fun observeViewModel() {
 
         viewModel.loading.observe(this, Observer { it ->
-            if(it) {
+            if (it) {
                 dataBinding.loadingView.visibility = View.VISIBLE
             } else {
                 dataBinding.loadingView.visibility = View.GONE
@@ -93,14 +89,18 @@ class ProfileFragment : BottomSheetDialogFragment() {
         })
 
         viewModel.userSuccess.observe(this, Observer {
-            if(it) {
+            if (it) {
                 viewModel.getUserData()
             }
         })
 
         viewModel.errorResponse.observe(this, Observer {
-            if(it.errCode == "EC0021") {
-                Toast.makeText(activity as HomeActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
+            if (it.errCode == "EC0021") {
+                Toast.makeText(
+                    activity as HomeActivity,
+                    "Kamu login di perangkat lain. Silakan login kembali",
+                    Toast.LENGTH_SHORT
+                ).show()
                 viewModel.clearSession(activity as HomeActivity)
                 viewModel.goToOnboardingFromHome(activity as HomeActivity)
             }
@@ -118,7 +118,7 @@ class ProfileFragment : BottomSheetDialogFragment() {
                 text = getInitial(t.customerName.toString())
             }
 
-            if(t.userLevel == "LEVEL_EXCLUSIVE") {
+            if (t.userLevel == "LEVEL_EXCLUSIVE") {
                 dataBinding.textViewGrade.apply {
                     text = "Exclusive User"
                     setBackgroundResource(R.drawable.button_gold)

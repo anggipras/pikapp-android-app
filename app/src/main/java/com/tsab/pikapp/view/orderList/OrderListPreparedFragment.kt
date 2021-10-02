@@ -2,18 +2,17 @@ package com.tsab.pikapp.view.orderList
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentOrderListPreparedBinding
-import com.tsab.pikapp.databinding.FragmentOrderListUnpaidBinding
 import com.tsab.pikapp.view.OrderListActivity
 import com.tsab.pikapp.viewmodel.orderList.OrderListCohortViewModel
 
@@ -23,8 +22,17 @@ class OrderListPreparedFragment : Fragment(), OrderListCohortAdapter.OrderListIn
     private lateinit var viewModel: OrderListCohortViewModel
     private val orderListCohortAdapter = OrderListCohortAdapter(arrayListOf(), this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_list_prepared, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        dataBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_order_list_prepared,
+            container,
+            false
+        )
         viewModel = ViewModelProviders.of(this).get(OrderListCohortViewModel::class.java)
         return dataBinding.root
     }
@@ -69,14 +77,18 @@ class OrderListPreparedFragment : Fragment(), OrderListCohortAdapter.OrderListIn
         })
 
         viewModel.loading.observe(this, Observer {
-            if(it) {
+            if (it) {
                 dataBinding.loadingView.visibility = View.VISIBLE
             } else dataBinding.loadingView.visibility = View.GONE
         })
 
         viewModel.errorResponse.observe(this, Observer {
-            if(it.errCode == "EC0021") {
-                Toast.makeText(activity as OrderListActivity, "Kamu login di perangkat lain. Silakan login kembali", Toast.LENGTH_SHORT).show()
+            if (it.errCode == "EC0021") {
+                Toast.makeText(
+                    activity as OrderListActivity,
+                    "Kamu login di perangkat lain. Silakan login kembali",
+                    Toast.LENGTH_SHORT
+                ).show()
                 viewModel.clearSession(activity as OrderListActivity)
                 viewModel.goToOnboardingFromOrderList(activity as OrderListActivity)
             }

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,7 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentSignupV2FirstBinding
-import com.tsab.pikapp.viewmodel.onboarding.login.SignupOnboardingViewModelV2
+import com.tsab.pikapp.viewmodel.onboarding.signup.SignupOnboardingViewModelV2
 
 class SignupV2First : Fragment() {
     private val viewModel: SignupOnboardingViewModelV2 by activityViewModels()
@@ -25,11 +24,13 @@ class SignupV2First : Fragment() {
     private lateinit var dataBinding: FragmentSignupV2FirstBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup_v2_first,
-                container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_signup_v2_first,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -37,24 +38,28 @@ class SignupV2First : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
-        observeViewModel()
 
+        observeViewModel()
         attachInputListeners()
     }
 
     private fun observeViewModel() {
+        dataBinding.emailInputText.setText(viewModel.email.value)
         viewModel.emailError.observe(viewLifecycleOwner, Observer { emailError ->
             dataBinding.emailErrorText.text = if (emailError.isEmpty()) "" else emailError
         })
 
+        dataBinding.fullNameInputText.setText(viewModel.fullName.value)
         viewModel.fullNameError.observe(viewLifecycleOwner, Observer { fullNameError ->
             dataBinding.fullNameErrorText.text = if (fullNameError.isEmpty()) "" else fullNameError
         })
 
+        dataBinding.phoneInputText.setText(viewModel.phone.value)
         viewModel.phoneError.observe(viewLifecycleOwner, Observer { phoneError ->
             dataBinding.phoneErrorText.text = if (phoneError.isEmpty()) "" else phoneError
         })
 
+        dataBinding.pinInputText.setText(viewModel.pin.value)
         viewModel.pinError.observe(viewLifecycleOwner, Observer { pinError ->
             dataBinding.pinErrorText.text = if (pinError.isEmpty()) "" else pinError
             hideKeyboard()
@@ -71,19 +76,14 @@ class SignupV2First : Fragment() {
             viewModel.validatePin(dataBinding.pinInputText.text.toString())
 
             if (!viewModel.validateFirstPage()) return@setOnClickListener
-
-            val bundle = bundleOf(
-                    "email" to dataBinding.emailInputText.text.toString(),
-                    "name" to dataBinding.fullNameInputText.text.toString(),
-                    "phone" to dataBinding.phoneInputText.text.toString(),
-                    "pin" to dataBinding.pinInputText.text.toString())
-            navController.navigate(R.id.action_signupV2First_to_signupV2Second, bundle)
+            navController.navigate(R.id.action_signupV2First_to_signupV2Second)
         }
 
         dataBinding.emailInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateEmail(
-                        dataBinding.emailInputText.text.toString())
+                    dataBinding.emailInputText.text.toString()
+                )
             }
             false
         }
@@ -91,7 +91,8 @@ class SignupV2First : Fragment() {
         dataBinding.fullNameInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validateFullName(
-                        dataBinding.fullNameInputText.text.toString())
+                    dataBinding.fullNameInputText.text.toString()
+                )
             }
             false
         }
@@ -99,7 +100,8 @@ class SignupV2First : Fragment() {
         dataBinding.phoneInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 return@setOnEditorActionListener !viewModel.validatePhone(
-                        dataBinding.phoneInputText.text.toString())
+                    dataBinding.phoneInputText.text.toString()
+                )
             }
             false
         }
@@ -114,7 +116,8 @@ class SignupV2First : Fragment() {
 
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = activity?.getSystemService(
-                Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)

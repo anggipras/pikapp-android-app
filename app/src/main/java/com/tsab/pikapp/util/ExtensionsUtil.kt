@@ -9,7 +9,9 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.widget.Group
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -39,11 +41,11 @@ fun getProgressDrawable(context: Context): CircularProgressDrawable {
 
 fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
-            .placeholder(progressDrawable)
+        .placeholder(progressDrawable)
     Glide.with(context)
-            .setDefaultRequestOptions(options)
-            .load(uri)
-            .into(this)
+        .setDefaultRequestOptions(options)
+        .load(uri)
+        .into(this)
 }
 
 @BindingAdapter("android:imageUri")
@@ -108,6 +110,17 @@ fun getTimestamp(): String {
     return timeStamp
 }
 
+@SuppressLint("SimpleDateFormat")
+fun getHour(): String {
+    val hour: String = SimpleDateFormat("HH:mm").format(Date())
+    return hour
+}
+
+fun getDay(): String{
+    val day: String = SimpleDateFormat("EEEE").format(Date())
+    return day
+}
+
 fun getClientID(): String {
     val clientId = BuildConfig.CLIENT_ID
     return clientId
@@ -129,7 +142,6 @@ fun getSignature(email: String, timestamp: String): String {
     val sk: Key = SecretKeySpec(byte, "HmacSHA256")
     val mac = Mac.getInstance(sk.algorithm)
     val mess = "${getClientID()}:${email}:${getClientSecret()}:${timestamp}"
-    Log.d("debug", "kenapa ni : ${mess}")
     mac.init(sk)
     val hmac = mac.doFinal(mess.toByteArray(charset("UTF-8")))
     return toHexString(hmac)
@@ -210,4 +222,10 @@ fun isUsernameValid(str: String?): Boolean {
 
     //TODO : check only allow for digit
     return true
+}
+
+fun Group.setAllOnClickListener(listener: View.OnClickListener?, view: View? = null) {
+    referencedIds.forEach { id ->
+        (view ?: rootView).findViewById<View>(id).setOnClickListener(listener)
+    }
 }

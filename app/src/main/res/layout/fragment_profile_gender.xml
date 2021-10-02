@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:elevation="50dp"
+    tools:context=".view.other.otherSettings.profileSetting.ProfileGenderFragment">
+
+    <ImageView
+        android:id="@+id/gender_close_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/ic_baseline_close_24"
+        android:layout_gravity="right"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/jenis_kelamin"
+        android:textColor="#000000"
+        android:textSize="16dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/pilih_jenis_kelamin"
+        android:textSize="15dp"
+        android:fontFamily="@font/proximanova_regular"
+        android:textColor="@color/textSubtle"
+        android:layout_gravity="center"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:id="@+id/gender_selection"
+        android:checkedButton="@id/female_gender"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_gravity="center"
+        android:theme="@style/RadioButtonStyle">
+
+        <RadioButton
+            android:id="@+id/female_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/perempuan"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="18dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:textColor="@color/textSubtle" />
+
+        <RadioButton
+            android:id="@+id/male_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/laki_laki"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:layoutDirection="rtl"
+            android:textAlignment="textStart"
+            android:textColor="@color/textSubtle"/>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/save_gender_button"
+        android:layout_width="335dp"
+        android:layout_height="45dp"
+        android:background="@drawable/button_green_small"
+        android:text="@string/simpan"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="18dp"
+        android:layout_marginTop="42dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"/>
+
+</LinearLayout>

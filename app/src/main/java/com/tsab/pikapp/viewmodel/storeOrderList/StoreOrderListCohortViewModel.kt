@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.model.ErrorResponse
+import com.tsab.pikapp.models.model.GetStoreOrderListResponse
+import com.tsab.pikapp.models.model.StoreOrderList
+import com.tsab.pikapp.models.model.UpdateStatusResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.CONST_TABLE_NO
 import com.tsab.pikapp.util.CONST_TRANSACTION_ID
@@ -23,7 +26,8 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.HttpException
 
-class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(application), StoreOrderListDetailFragment.StoreOrderListDetailInterface {
+class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(application),
+    StoreOrderListDetailFragment.StoreOrderListDetailInterface {
 
     private var sessionManager = SessionManager(getApplication())
     private var prefHelper = SharedPreferencesUtil(getApplication())
@@ -73,7 +77,10 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
                         }
 
                         storeOrderListFail(errorResponse)
-                        Log.d("Debug", "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
+                        Log.d(
+                            "Debug",
+                            "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
+                        )
                     }
                 })
         )
@@ -84,13 +91,12 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
             storeOrderListRetrieve.value = false
             loading.value = false
         } else {
-            val bufferOrderList =  arrayListOf<StoreOrderList>()
-            for(order in orderList) {
-                if(order.status == "OPEN") {
+            val bufferOrderList = arrayListOf<StoreOrderList>()
+            for (order in orderList) {
+                if (order.status == "OPEN") {
                     if (order.paymentWith == "PAY_BY_CASHIER")
                         bufferOrderList.add(order)
-                }
-                else {
+                } else {
                     bufferOrderList.add(order)
                 }
             }
@@ -111,11 +117,11 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
 
     fun setPrepared() {
         val orderList = prefHelper.getStoreOrderList()
-        val bufferOrderList =  arrayListOf<StoreOrderList>()
+        val bufferOrderList = arrayListOf<StoreOrderList>()
         orderList?.let {
             if (it.isNotEmpty()) {
-                for(order in it) {
-                    if(order.status == "OPEN" || order.status == "PAID" || order.status == "MERCHANT_CONFIRM") {
+                for (order in it) {
+                    if (order.status == "OPEN" || order.status == "PAID" || order.status == "MERCHANT_CONFIRM") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -128,11 +134,11 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
 
     fun setReady() {
         val orderList = prefHelper.getStoreOrderList()
-        val bufferOrderList =  arrayListOf<StoreOrderList>()
+        val bufferOrderList = arrayListOf<StoreOrderList>()
         orderList?.let {
             if (it.isNotEmpty()) {
-                for(order in it) {
-                    if(order.status == "FINALIZE") {
+                for (order in it) {
+                    if (order.status == "FINALIZE") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -144,11 +150,11 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
 
     fun setFinish() {
         val orderList = prefHelper.getStoreOrderList()
-        val bufferOrderList =  arrayListOf<StoreOrderList>()
+        val bufferOrderList = arrayListOf<StoreOrderList>()
         orderList?.let {
             if (it.isNotEmpty()) {
-                for(order in it) {
-                    if(order.status == "CLOSE") {
+                for (order in it) {
+                    if (order.status == "CLOSE") {
                         bufferOrderList.add(order)
                     }
                 }
@@ -159,7 +165,7 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
     }
 
     fun updateOrderStatus(transactionID: String, status: String) {
-        if(status == "PAID") {
+        if (status == "PAID") {
             updateStatus(transactionID, "MERCHANT_CONFIRM")
         }
     }
@@ -172,15 +178,20 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
         Log.d("Debug", "txn id : ${transactionID}, table no: ${tableNo}")
         val storeOrderListDetailFragment = StoreOrderListDetailFragment(this)
         storeOrderListDetailFragment.arguments = args
-        storeOrderListDetailFragment.show((context as StoreOrderListActivity).supportFragmentManager, storeOrderListDetailFragment.tag)
+        storeOrderListDetailFragment.show(
+            (context as StoreOrderListActivity).supportFragmentManager,
+            storeOrderListDetailFragment.tag
+        )
     }
 
     private fun updateStatus(transactionID: String, newStatus: String) {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
 
-        val txnID: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), transactionID)
-        val status: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), newStatus)
+        val txnID: RequestBody =
+            RequestBody.create(MediaType.parse("multipart/form-data"), transactionID)
+        val status: RequestBody =
+            RequestBody.create(MediaType.parse("multipart/form-data"), newStatus)
         disposable.add(
             pikappService.postUpdateOrderStatus(email, token, txnID, status)
                 .subscribeOn(Schedulers.newThread())
@@ -206,7 +217,10 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
                         }
 
                         storeOrderListFail(errorResponse)
-                        Log.d("Debug", "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
+                        Log.d(
+                            "Debug",
+                            "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
+                        )
                     }
                 })
         )
@@ -219,7 +233,7 @@ class StoreOrderListCohortViewModel(application: Application) : BaseViewModel(ap
     override fun changeOrderStatus(txnID: String, stts: String) {
         if (stts == "PAID") {
             updateStatus(txnID, "MERCHANT_CONFIRM")
-        } else if (stts == "MERCHANT_CONFIRM" ) {
+        } else if (stts == "MERCHANT_CONFIRM") {
             updateStatus(txnID, "FINALIZE")
         } else if (stts == "FINALIZE") {
             updateStatus(txnID, "CLOSE")

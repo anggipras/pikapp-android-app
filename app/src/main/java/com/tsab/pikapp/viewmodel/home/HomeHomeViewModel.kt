@@ -4,12 +4,12 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.tsab.pikapp.models.*
+import com.google.gson.Gson
+import com.tsab.pikapp.models.PikappDatabase
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -63,7 +63,7 @@ class HomeHomeViewModel(application: Application) : BaseViewModel(application) {
                     override fun onError(e: Throwable) {
                         var errorResponse: ErrorResponse
                         try {
-                            Log.d("Debug","error slider : " + e)
+                            Log.d("Debug", "error slider : " + e)
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
                             errorResponse =

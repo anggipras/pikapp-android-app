@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.tsab.pikapp.models.model.TransactionResponseDetail
 import com.google.gson.Gson
+import com.tsab.pikapp.models.model.TransactionResponseDetail
 
 class TransactionUtil {
 
@@ -53,7 +53,8 @@ class TransactionUtil {
         Log.d("Debug", "transaction active json : $json")
         json?.let {
             if (json.isNotEmpty()) {
-                val txnList : List<TransactionResponseDetail> = gson.fromJson(json, Array<TransactionResponseDetail>::class.java).toList()
+                val txnList: List<TransactionResponseDetail> =
+                    gson.fromJson(json, Array<TransactionResponseDetail>::class.java).toList()
                 return txnList
             }
         }

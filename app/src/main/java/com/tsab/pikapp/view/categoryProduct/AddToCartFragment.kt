@@ -11,16 +11,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddToCartBinding
 import com.tsab.pikapp.models.model.CartModel
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.viewmodel.categoryProduct.AddToCartViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_add_to_cart.*
 
-class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : BottomSheetDialogFragment() {
+class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) :
+    BottomSheetDialogFragment() {
 
     private lateinit var dataBinding: FragmentAddToCartBinding
     private lateinit var viewModel: AddToCartViewModel
@@ -36,7 +37,8 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_to_cart, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_to_cart, container, false)
         viewModel = ViewModelProviders.of(this).get(AddToCartViewModel::class.java)
         return dataBinding.root
     }
@@ -62,7 +64,15 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
         }
 
         dataBinding.buttonAddToCart.setOnClickListener {
-            viewModel.validateCart(mid, pid, pName, pImage, qty, pPrice, dataBinding.editTextMultiLine.text.trim().toString())
+            viewModel.validateCart(
+                mid,
+                pid,
+                pName,
+                pImage,
+                qty,
+                pPrice,
+                dataBinding.editTextMultiLine.text.trim().toString()
+            )
         }
         observeViewModel()
     }
@@ -96,8 +106,11 @@ class AddToCartFragment(val dialogDismissInterface: DialogDismissInterface) : Bo
         })
 
         viewModel.addedToCart.observe(this, Observer {
-            if(it) {
-                viewModel.createToastShort((activity as HomeActivity).application, "Barang berhasil masuk ke keranjang")
+            if (it) {
+                viewModel.createToastShort(
+                    (activity as HomeActivity).application,
+                    "Barang berhasil masuk ke keranjang"
+                )
                 this.dismiss()
             }
         })

@@ -8,6 +8,8 @@ class CarouselViewModel : ViewModel() {
     private val mutableCurrentPage = MutableLiveData(0)
     val currentPage: LiveData<Int> get() = mutableCurrentPage
 
+//    private var sessionManager = SessionManager()
+
     fun setCurrentPage(currentPage: Int) {
         mutableCurrentPage.value = currentPage
     }
@@ -19,4 +21,8 @@ class CarouselViewModel : ViewModel() {
     fun previousPage() {
         mutableCurrentPage.value = mutableCurrentPage.value?.minus(1)
     }
+
+//    fun setFirstApp() {
+//        val firstApp = sessionManager.setFirstApp(1)
+//    }
 }

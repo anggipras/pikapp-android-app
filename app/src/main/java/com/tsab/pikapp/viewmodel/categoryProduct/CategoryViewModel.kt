@@ -8,16 +8,19 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.google.gson.Gson
 import com.tsab.pikapp.models.PikappDatabase
-import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.model.ItemHomeCategory
+import com.tsab.pikapp.models.model.MerchantList
+import com.tsab.pikapp.models.model.MerchantListErrorResponse
+import com.tsab.pikapp.models.model.MerchantListResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.CartUtil
+import com.tsab.pikapp.util.LocationLiveData
 import com.tsab.pikapp.util.SharedPreferencesUtil
 import com.tsab.pikapp.view.HomeActivity
 import com.tsab.pikapp.view.categoryProduct.CategoryFragmentDirections
 import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
-import com.tsab.pikapp.util.LocationLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -79,7 +82,6 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         address = addresses[0].getAddressLine(0)
         locationResponse.value = address
     }
-
 
 
     fun fetch(uuid: Long) {
@@ -151,7 +153,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
 
     private fun merchantRetrieved(merchantList: List<MerchantList>) {
         val deeplink = prefHelper.getDeeplink()
-        if(deeplink.address != "") {
+        if (deeplink.address != "") {
             filterMerchant(merchantList)
         } else {
             merchantResponse.value = merchantList
@@ -163,8 +165,8 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     private fun filterMerchant(merchantList: List<MerchantList>) {
         val deeplink = prefHelper.getDeeplink()
         var filteredMerchant = arrayListOf<MerchantList>()
-        for(merchant in merchantList) {
-            if(merchant.merchantAddress!!.contains(deeplink.address!!)) {
+        for (merchant in merchantList) {
+            if (merchant.merchantAddress!!.contains(deeplink.address!!)) {
                 filteredMerchant.add(merchant)
             }
         }
@@ -179,14 +181,14 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
     }
 
 
-
     fun goToMerchantDetail(mid: String, view: View) {
         val action = CategoryFragmentDirections.actionToMerchantDetailFragment(mid)
         Navigation.findNavController(view).navigate(action)
     }
 
     fun goToProductDetail(pid: String, view: View) {
-        val action = CategoryFragmentDirections.actionFromCategoryFragmentToProductDetailFragment(pid)
+        val action =
+            CategoryFragmentDirections.actionFromCategoryFragmentToProductDetailFragment(pid)
         Navigation.findNavController(view).navigate(action)
     }
 

@@ -23,7 +23,11 @@ class OrderListStatusFragment : Fragment() {
     private lateinit var dataBinding: FragmentOrderListStatusBinding
     private lateinit var viewModel: OrderListStatusViewModel
     var tabSelected = 0
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
 
         val fragmentList = arrayListOf<Fragment>(
@@ -33,9 +37,11 @@ class OrderListStatusFragment : Fragment() {
             OrderListGiveRatingFragment()
         )
 
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_list_status, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_order_list_status, container, false)
         viewModel = ViewModelProviders.of(this).get(OrderListStatusViewModel::class.java)
-        val adapter = HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
+        val adapter =
+            HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
 //        dataBinding.orderListViewPager.isUserInputEnabled = false
         dataBinding.orderListViewPager.adapter = adapter
         return dataBinding.root
@@ -80,7 +86,7 @@ class OrderListStatusFragment : Fragment() {
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
         viewModel.notificationActive.observe(this, Observer { t ->
-            if(t.isNotEmpty()) {
+            if (t.isNotEmpty()) {
                 viewModel.goToOrderListDetail(activity as OrderListActivity)
             }
         })

@@ -8,16 +8,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.google.gson.Gson
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.TransactionActivity
 import com.tsab.pikapp.view.transaction.TxnCartChoosePaymentTypeFragment
 import com.tsab.pikapp.view.transaction.TxnCartChooseTypeFragment
-import com.tsab.pikapp.viewmodel.BaseViewModel
-import com.google.gson.Gson
-import com.tsab.pikapp.view.categoryProduct.CategoryFragmentDirections
 import com.tsab.pikapp.view.transaction.TxnCartFragmentDirections
+import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -25,7 +24,9 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
 
 
-class TxnCartViewModel(application: Application): BaseViewModel(application), TxnCartChooseTypeFragment.DialogDismissInterface, TxnCartChoosePaymentTypeFragment.DialogDismissInterface {
+class TxnCartViewModel(application: Application) : BaseViewModel(application),
+    TxnCartChooseTypeFragment.DialogDismissInterface,
+    TxnCartChoosePaymentTypeFragment.DialogDismissInterface {
 
     private var cartUtil = CartUtil(getApplication())
     private var sessionManager = SessionManager(getApplication())
@@ -102,7 +103,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
 
     fun getPaymentType() {
         paymentType.value = cartUtil.getPaymentType()
-        if(cartUtil.getPaymentType() == "PAY_BY_CASHIER")
+        if (cartUtil.getPaymentType() == "PAY_BY_CASHIER")
             phoneNumber.value = ""
         else
             phoneNumber.value = sessionManager.getUserData()!!.phoneNumber
@@ -199,13 +200,14 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
             cartUtil.setCartIsNew(false)
         } else {
             type?.let {
-                if(it == "TAKE_AWAY") {
+                if (it == "TAKE_AWAY") {
                     tableNo = 0
                     cartUtil.setPaymentType("WALLET_OVO")
                 } else if (it == "DINE_IN") {
                     val deeplink = prefHelper.getStoredDeepLink()
                     deeplink?.let { deeplink ->
-                        tableNo = if (deeplink.tableNo.isNullOrEmpty()) 0 else deeplink.tableNo.toInt()
+                        tableNo =
+                            if (deeplink.tableNo.isNullOrEmpty()) 0 else deeplink.tableNo.toInt()
                         cartUtil.setCartType("DINE_IN")
                     }
                 }
@@ -216,7 +218,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     }
 
     fun increaseQty(product: CartModel) {
-        val sameProduct : CartModel? = tmpCart.find { p ->
+        val sameProduct: CartModel? = tmpCart.find { p ->
             p.productID == product.productID
         }
 
@@ -229,7 +231,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     }
 
     fun decreaseQty(product: CartModel) {
-        val sameProduct : CartModel? = tmpCart.find { p ->
+        val sameProduct: CartModel? = tmpCart.find { p ->
             p.productID == product.productID
         }
 
@@ -242,7 +244,7 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     }
 
     fun deleteProduct(product: CartModel) {
-        val sameProduct : CartModel? = tmpCart.find { p ->
+        val sameProduct: CartModel? = tmpCart.find { p ->
             p.productID == product.productID
         }
 
@@ -262,7 +264,10 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
         args.putString(SELECTED_TYPE, cartUtil.getCartType())
         val txnCartChooseTypeFragment = TxnCartChooseTypeFragment(this)
         txnCartChooseTypeFragment.arguments = args
-        txnCartChooseTypeFragment.show((context as TransactionActivity).supportFragmentManager, txnCartChooseTypeFragment.tag)
+        txnCartChooseTypeFragment.show(
+            (context as TransactionActivity).supportFragmentManager,
+            txnCartChooseTypeFragment.tag
+        )
     }
 
     fun goToPaymentType(context: Context) {
@@ -270,7 +275,10 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
         args.putString(SELECTED_PAYMENT, cartUtil.getPaymentType())
         val txnCartChoosePaymentTypeFragment = TxnCartChoosePaymentTypeFragment(this)
         txnCartChoosePaymentTypeFragment.arguments = args
-        txnCartChoosePaymentTypeFragment.show((context as TransactionActivity).supportFragmentManager, txnCartChoosePaymentTypeFragment.tag)
+        txnCartChoosePaymentTypeFragment.show(
+            (context as TransactionActivity).supportFragmentManager,
+            txnCartChoosePaymentTypeFragment.tag
+        )
     }
 
     override fun onDialogDismiss() {
@@ -294,10 +302,11 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
             pikappService.postTransaction(email, token, transactionModel)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<TransactionResponse>(){
+                .subscribeWith(object : DisposableSingleObserver<TransactionResponse>() {
                     override fun onSuccess(t: TransactionResponse) {
                         t.results?.let { it1 -> transactionSuccess(it1) }
                     }
+
                     override fun onError(e: Throwable) {
                         var errorResponse: ErrorResponse
                         try {
@@ -314,7 +323,10 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
                         }
 
                         transactionFail(errorResponse)
-                        Log.d("Debug", "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
+                        Log.d(
+                            "Debug",
+                            "error merchant detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
+                        )
                     }
                 })
         )
@@ -323,17 +335,24 @@ class TxnCartViewModel(application: Application): BaseViewModel(application), Tx
     private fun createTransactionModel(totalPrice: String): TransactionModel {
         val postCart = arrayListOf<CartTxnModel>()
 
-        for(cart in tmpCart) {
+        for (cart in tmpCart) {
             postCart.add(CartTxnModel(cart.productID, cart.notes, cart.qty))
         }
 
         Log.d("Debug", "isi post cart : $postCart")
 
-        return TransactionModel(merchantID = tmpCart[0].merchantID, totalPrices = totalPrice, paymentWith = cartUtil.getPaymentType(), bizType = cartUtil.getCartType(), tableNo = tableNo.toString(), products = postCart)
+        return TransactionModel(
+            merchantID = tmpCart[0].merchantID,
+            totalPrices = totalPrice,
+            paymentWith = cartUtil.getPaymentType(),
+            bizType = cartUtil.getCartType(),
+            tableNo = tableNo.toString(),
+            products = postCart
+        )
     }
 
     private fun transactionSuccess(transactionResponseDetails: List<TransactionResponseDetail>) {
-        if(transactionResponseDetails.isNotEmpty()) {
+        if (transactionResponseDetails.isNotEmpty()) {
             val txnList = arrayListOf<TransactionResponseDetail>()
             val txn = transactionUtil.getTransactionActive()
             txn?.let {

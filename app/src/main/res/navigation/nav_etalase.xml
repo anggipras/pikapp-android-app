@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_etalase"
+    app:startDestination="@id/etalaseListPage">
+
+    <fragment
+        android:id="@+id/etalaseListPage"
+        android:name="com.tsab.pikapp.view.homev2.menu.tokopedia.EtalaseListPage"
+        android:label="fragment_etalase_list_page"
+        tools:layout="@layout/fragment_etalase_list_page" >
+        <action
+            android:id="@+id/action_etalaseListPage_to_addEtalasePage"
+            app:destination="@id/addEtalasePage" />
+        <action
+            android:id="@+id/action_etalaseListPage_to_editEtalasePage"
+            app:destination="@id/editEtalasePage" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEtalasePage"
+        android:name="com.tsab.pikapp.view.homev2.menu.tokopedia.AddEtalasePage"
+        android:label="fragment_add_etalase_page"
+        tools:layout="@layout/fragment_add_etalase_page" >
+        <action
+            android:id="@+id/action_addEtalasePage_to_etalaseListPage"
+            app:destination="@id/etalaseListPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/editEtalasePage"
+        android:name="com.tsab.pikapp.view.homev2.menu.tokopedia.EditEtalasePage"
+        android:label="fragment_edit_etalase_page"
+        tools:layout="@layout/fragment_edit_etalase_page" >
+        <action
+            android:id="@+id/action_editEtalasePage_to_etalaseListPage"
+            app:destination="@id/etalaseListPage" />
+    </fragment>
+</navigation>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityCarouselBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.onboarding.CarouselViewPagerAdapter
 import com.tsab.pikapp.view.onboarding.screens.CarouselOneFragment
 import com.tsab.pikapp.view.onboarding.screens.CarouselThreeFragment
@@ -20,11 +21,16 @@ class CarouselActivity : AppCompatActivity() {
     private val viewModel: CarouselViewModel by viewModels()
     private lateinit var dataBinding: ActivityCarouselBinding
 
+    private var sessionManager = SessionManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         dataBinding = ActivityCarouselBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
+
+        sessionManager.setFirstApp(1)
+        sessionManager.setProfileNum(0)
 
         setupViewPager()
         attachInputListener()
@@ -33,8 +39,11 @@ class CarouselActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        val firstApp = sessionManager.getFirstApp()
         if (viewModel.currentPage.value == 0) {
-            super.onBackPressed()
+            if (firstApp == 1) {
+                finishAffinity()
+            }
         } else {
             viewModel.previousPage()
         }
@@ -42,15 +51,15 @@ class CarouselActivity : AppCompatActivity() {
 
     private fun setupViewPager() {
         val fragments: ArrayList<Fragment> = arrayListOf(
-                CarouselOneFragment(),
-                CarouselTwoFragment(),
-                CarouselThreeFragment()
+            CarouselOneFragment(),
+            CarouselTwoFragment(),
+            CarouselThreeFragment()
         )
 
         val adapter = CarouselViewPagerAdapter(fragments, this)
         dataBinding.carouselViewPager.adapter = adapter
         dataBinding.carouselViewPager.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 viewModel.setCurrentPage(position)
                 super.onPageSelected(position)
@@ -73,19 +82,29 @@ class CarouselActivity : AppCompatActivity() {
             dataBinding.carouselViewPager.currentItem = currentPage
 
             dataBinding.carouselPage1.setColorFilter(
-                    if (currentPage == 0) ContextCompat.getColor(applicationContext,
-                            R.color.colorGreen)
-                    else Color.TRANSPARENT)
+                if (currentPage == 0) ContextCompat.getColor(
+                    applicationContext,
+                    R.color.colorGreen
+                )
+                else Color.TRANSPARENT
+            )
             dataBinding.carouselPage2.setColorFilter(
-                    if (currentPage == 1) ContextCompat.getColor(applicationContext,
-                            R.color.colorGreen)
-                    else Color.TRANSPARENT)
+                if (currentPage == 1) ContextCompat.getColor(
+                    applicationContext,
+                    R.color.colorGreen
+                )
+                else Color.TRANSPARENT
+            )
             dataBinding.carouselPage3.setColorFilter(
-                    if (currentPage == 2) ContextCompat.getColor(applicationContext,
-                            R.color.colorGreen)
-                    else Color.TRANSPARENT)
+                if (currentPage == 2) ContextCompat.getColor(
+                    applicationContext,
+                    R.color.colorGreen
+                )
+                else Color.TRANSPARENT
+            )
 
-            dataBinding.nextButton.visibility = if (currentPage == 2) View.INVISIBLE else View.VISIBLE
+            dataBinding.nextButton.visibility =
+                if (currentPage == 2) View.INVISIBLE else View.VISIBLE
         })
     }
 }

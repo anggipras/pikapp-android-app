@@ -1,10 +1,10 @@
 package com.tsab.pikapp.view.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import kotlinx.android.synthetic.main.fragment_home_view_pager.view.*
 
@@ -22,7 +22,8 @@ class HomeViewPagerFragment : Fragment() {
             HomeLivechatFragment()
         )
 
-        val adapter = HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle )
+        val adapter =
+            HomeViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         view.homeViewPager.adapter = adapter
         view.homeViewPager.isUserInputEnabled = false
 

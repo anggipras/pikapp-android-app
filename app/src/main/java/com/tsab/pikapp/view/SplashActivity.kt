@@ -11,6 +11,8 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.SplashViewModel
 
@@ -23,6 +25,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        Firebase.messaging.isAutoInitEnabled = true
 
         appUpdateManager = AppUpdateManagerFactory.create(this)
 
@@ -53,10 +57,10 @@ class SplashActivity : AppCompatActivity() {
 
     fun runSplash() {
         supportActionBar?.hide()
-        getIntent().getExtras()
+        intent.extras
         viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
-        if(intent != null && intent.hasExtra("is_merchant")) {
+        if (intent != null && intent.hasExtra("is_merchant")) {
             val isMerchant = intent.extras!!.getString("is_merchant")
             val transactionID = intent.extras!!.getString("transaction_id")
             val tableNo = intent.extras!!.getString("table_no")
@@ -67,14 +71,14 @@ class SplashActivity : AppCompatActivity() {
             var mid: String? = null
             var address: String? = null
             var tableNo: String? = null
-            if(uri != null) {
+            if (uri != null) {
                 val uriString = uri.toString()
-                if(uriString.contains("list")) {
-                    val params : List<String> = uri.pathSegments
+                if (uriString.contains("list")) {
+                    val params: List<String> = uri.pathSegments
                     address = params[2]
                     tableNo = params[3]
                 } else {
-                    val params : List<String> = uri.pathSegments
+                    val params: List<String> = uri.pathSegments
                     mid = params[1]
                     tableNo = params[2]
                 }

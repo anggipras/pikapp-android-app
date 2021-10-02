@@ -5,7 +5,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.model.ErrorResponse
+import com.tsab.pikapp.models.model.GetOrderDetailResponse
+import com.tsab.pikapp.models.model.OrderDetail
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
@@ -31,7 +33,7 @@ class OrderListDetailViewModel(application: Application) : BaseViewModel(applica
         loading.value = true
         val notif = prefHelper.getNotificationDetail()
         notif?.let {
-            it.transactionId?.let {txnID ->
+            it.transactionId?.let { txnID ->
                 if (txnID.isNotEmpty()) {
                     getTransactionDetail(txnID)
                     prefHelper.deleteNotificationDetail()
@@ -55,7 +57,7 @@ class OrderListDetailViewModel(application: Application) : BaseViewModel(applica
                     }
 
                     override fun onError(e: Throwable) {
-                        val errorResponse= try {
+                        val errorResponse = try {
                             Log.d("Debug", "error order detail : " + e + " ${e.message}")
                             val responseBody = (e as HttpException)
                             val body = responseBody.response()?.errorBody()?.string()
@@ -65,8 +67,15 @@ class OrderListDetailViewModel(application: Application) : BaseViewModel(applica
                         }
 
                         orderDetailFail(errorResponse)
-                        Toast.makeText(getApplication(), "${errorResponse.errCode} ${errorResponse.errMessage}", Toast.LENGTH_SHORT).show()
-                        Log.d("Debug", "error order detail : ${errorResponse.errCode} ${errorResponse.errMessage}")
+                        Toast.makeText(
+                            getApplication(),
+                            "${errorResponse.errCode} ${errorResponse.errMessage}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d(
+                            "Debug",
+                            "error order detail : ${errorResponse.errCode} ${errorResponse.errMessage}"
+                        )
                     }
                 })
         )

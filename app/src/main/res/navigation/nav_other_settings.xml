@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_other"
+    app:startDestination="@id/settingFragment">
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.SettingFragment"
+        android:label="setting_fragment"
+        tools:layout="@layout/setting_fragment" >
+        <action
+            android:id="@+id/navigateTo_informationFragment"
+            app:destination="@id/informationFragment"
+            app:enterAnim="@anim/fade_in_balloon_library"
+            app:exitAnim="@anim/fade_out_balloon_library"/>
+        <action
+            android:id="@+id/navigateTo_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/fade_in_balloon_library"
+            app:exitAnim="@anim/fade_out_balloon_library"/>
+        <action
+            android:id="@+id/navigateTo_currentPinFragment"
+            app:destination="@id/currentPinFragment"
+            app:enterAnim="@anim/fade_in_balloon_library"
+            app:exitAnim="@anim/fade_out_balloon_library" />
+        <action
+            android:id="@+id/navigateTo_shopManagementFragment"
+            app:destination="@id/shopManagementFragment" />
+        <action
+            android:id="@+id/navigateTo_dataBankFragment"
+            app:destination="@id/dataBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/informationFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.informationSetting.InformationFragment"
+        android:label="information_fragment"
+        tools:layout="@layout/information_fragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/profile_fragment" >
+        <action
+            android:id="@+id/openDialogTo_profileGenderFragment"
+            app:destination="@id/profileGenderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentPinFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.pinSetting.CurrentPinFragment"
+        android:label="fragment_current_pin"
+        tools:layout="@layout/fragment_current_pin" >
+        <action
+            android:id="@+id/navigateTo_newPinFragment"
+            app:destination="@id/newPinFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPinFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.pinSetting.NewPinFragment"
+        android:label="fragment_new_pin"
+        tools:layout="@layout/fragment_new_pin" >
+        <action
+            android:id="@+id/navigateTo_confirmPinFragment"
+            app:destination="@id/confirmPinFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmPinFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.pinSetting.ConfirmPinFragment"
+        android:label="fragment_confirm_pin"
+        tools:layout="@layout/fragment_confirm_pin" >
+        <action
+            android:id="@+id/navigateBackTo_settingFragment"
+            app:popUpTo="@id/settingFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/navigateBackTo_currentPinFragment"
+            app:popUpTo="@id/currentPinFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <dialog
+        android:id="@+id/profileGenderFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileGenderFragment"
+        android:label="fragment_profile_gender"
+        tools:layout="@layout/fragment_profile_gender" >
+    </dialog>
+    <fragment
+        android:id="@+id/shopManagementFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementFragment"
+        android:label="fragment_shop_management"
+        tools:layout="@layout/fragment_shop_management" >
+        <action
+            android:id="@+id/navigateTo_shopMgmtStatusFragment"
+            app:destination="@id/shopMgmtStatusFragment" />
+        <action
+            android:id="@+id/navigateBackToFromShopManagementFragment_settingFragment"
+            app:popUpTo="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopMgmtStatusFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopMgmtStatusFragment"
+        android:label="fragment_shop_mgmt_status"
+        tools:layout="@layout/fragment_shop_mgmt_status" >
+        <action
+            android:id="@+id/navigateToFromShopMgmtStatusFragment_shopManagementFragment"
+            app:destination="@id/shopManagementFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dataBankFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.DataBankFragment"
+        android:label="fragment_data_bank"
+        tools:layout="@layout/fragment_data_bank" >
+        <action
+            android:id="@+id/action_dataBankFragment_to_settingFragment"
+            app:destination="@id/settingFragment"
+            app:popUpTo="@id/settingFragment" />
+        <action
+            android:id="@+id/action_dataBankFragment_to_pinBankFragment"
+            app:destination="@id/pinBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pinBankFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.PinBankFragment"
+        android:label="fragment_pin_bank"
+        tools:layout="@layout/fragment_pin_bank" >
+        <action
+            android:id="@+id/action_pinBankFragment_to_dataBankFragment"
+            app:destination="@id/dataBankFragment" />
+        <action
+            android:id="@+id/action_pinBankFragment_to_editRekFragment"
+            app:destination="@id/editRekFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editRekFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.bankSetting.EditRekFragment"
+        android:label="fragment_edit_rek"
+        tools:layout="@layout/fragment_edit_rek" >
+        <action
+            android:id="@+id/action_editRekFragment_to_dataBankFragment"
+            app:destination="@id/dataBankFragment" />
+    </fragment>
+</navigation>

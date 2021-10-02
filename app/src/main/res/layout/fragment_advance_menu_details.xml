@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Header layout -->
+                <include
+                    android:id="@+id/headerLayout"
+                    layout="@layout/layout_header_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/headerHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginBottom="24dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/am_details_tambah_header"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/headerLayout"
+                    app:layout_constraintStart_toStartOf="@id/headerLayout" />
+
+                <!-- Nama pilihan input group -->
+                <TextView
+                    android:id="@+id/namaPilihanHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/am_details_nama_pilihan_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+                <TextView
+                    android:id="@+id/namaPilihanRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/namaPilihanHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/namaPilihanHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/namaPilihanHeaderText" />
+
+                <EditText
+                    android:id="@+id/namaPilihanInputText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:backgroundTint="@color/borderSubtle"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:hint="@string/am_details_nama_pilihan_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColorHint="@color/borderSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaPilihanHeaderText" />
+
+                <TextView
+                    android:id="@+id/namaPilihanErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/namaPilihanInputText"
+                    app:layout_constraintTop_toBottomOf="@id/namaPilihanInputText"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/namaPilihanInputBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="namaPilihanInputText,namaPilihanErrorText" />
+
+                <!-- Pilihan menu aktif switch -->
+                <TextView
+                    android:id="@+id/pilihanAktifHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/am_details_aktif_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/namaPilihanInputBarrier" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/pilihanAktifSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:thumb="@drawable/selector_thumb"
+                    app:layout_constraintBottom_toBottomOf="@id/pilihanAktifHeaderText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/pilihanAktifHeaderText"
+                    app:track="@drawable/selector_track" />
+
+                <!-- Pilihan menu wajib switch -->
+                <TextView
+                    android:id="@+id/pilihanWajibHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/am_details_wajib_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pilihanAktifSwitch" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/pilihanWajibSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:thumb="@drawable/selector_thumb"
+                    app:layout_constraintBottom_toBottomOf="@id/pilihanWajibHeaderText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/pilihanWajibHeaderText"
+                    app:track="@drawable/selector_track" />
+
+                <!-- Jumlah pilihan maksimal input group -->
+                <TextView
+                    android:id="@+id/jumlahPilihanMaksimalHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/am_details_pilihan_maksimal_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pilihanWajibSwitch" />
+
+                <TextView
+                    android:id="@+id/jumlahPilihanMaksimalRequiredText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/star"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/jumlahPilihanMaksimalHeaderText"
+                    app:layout_constraintStart_toEndOf="@id/jumlahPilihanMaksimalHeaderText"
+                    app:layout_constraintTop_toTopOf="@id/jumlahPilihanMaksimalHeaderText" />
+
+                <TextView
+                    android:id="@+id/jumlahPilihanMaksimalKosongText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:text="@string/am_details_pilihan_maksimal_kosong"
+                    android:textColor="@color/textSubtle"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />
+
+                <Spinner
+                    android:id="@+id/spinner_menuChoice"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_advanced_menu"
+                    app:layout_constraintStart_toStartOf="@+id/jumlahPilihanMaksimalHeaderText"
+                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalHeaderText" />
+
+                <TextView
+                    android:id="@+id/jumlahPilihanMaksimalErrorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/proximanova_regular"
+                    android:textColor="@color/red"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@id/jumlahPilihanMaksimalHeaderText"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_menuChoice"
+                    tools:text="Nama pilihan tidak boleh kosong!" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/jumlahPilihanMaksimalInputGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="spinner_menuChoice,jumlahPilihanMaksimalErrorText" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/jumlahPilihanMaksimalBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="jumlahPilihanMaksimalKosongText,jumlahPilihanMaksimalErrorText" />
+
+                <!-- Daftar pilihan menu -->
+                <TextView
+                    android:id="@+id/daftarPilihanHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/am_daftar_pilihan_header"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/jumlahPilihanMaksimalHeaderText"
+                    app:layout_constraintTop_toBottomOf="@id/jumlahPilihanMaksimalBarrier" />
+
+                <ImageView
+                    android:id="@+id/daftarPilihanChangeOrderButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:src="@drawable/ic_change_order"
+                    app:layout_constraintBottom_toBottomOf="@id/daftarPilihanHeaderText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/daftarPilihanHeaderText"
+                    tools:ignore="ContentDescription" />
+
+                <View
+                    android:id="@+id/daftarPilihanDivider"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@color/lightGrey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daftarPilihanHeaderText" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/daftarPilihanRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daftarPilihanDivider"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_title_description_action" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/daftarPilihanGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="daftarPilihanHeaderText,daftarPilihanChangeOrderButton,daftarPilihanDivider,daftarPilihanRecyclerView" />
+
+                <!-- Tambah pilihan button -->
+                <ImageView
+                    android:id="@+id/tambahPilihanImage"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/daftarPilihanRecyclerView"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tambahPilihanHeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/am_tambah_pilihan_header"
+                    android:textColor="@color/yellow"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tambahPilihanImage"
+                    app:layout_constraintStart_toEndOf="@id/tambahPilihanImage"
+                    app:layout_constraintTop_toTopOf="@id/tambahPilihanImage" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/tambahPilihanGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="tambahPilihanImage,tambahPilihanHeaderText" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <!-- Next button -->
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_green_small"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/simpan"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true" />
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>
