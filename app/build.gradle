@@ -23,7 +23,7 @@ android {
         applicationId "com.tsab.pikapp"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 6
+        versionCode 8
         versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
