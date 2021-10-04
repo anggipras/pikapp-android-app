@@ -178,7 +178,8 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         }
 
         headerLayout.setOnClickListener {
-            if (sessionManager.getSortNav() == 1) {
+            val sortNav = intent.getIntExtra("SORT_NAV", 0)
+            if (sortNav == 1) {
                 finish()
             } else {
                 val intent = Intent(this, HomeActivity::class.java)
@@ -196,7 +197,8 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
     }
 
     override fun onBackPressed() {
-        if (sessionManager.getSortNav() == 1) {
+        val sortNav = intent.getIntExtra("SORT_NAV", 0)
+        if (sortNav == 1) {
             finish()
         } else {
             val intent = Intent(this, HomeActivity::class.java)
