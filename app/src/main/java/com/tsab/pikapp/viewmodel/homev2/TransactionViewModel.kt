@@ -233,9 +233,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 }else if(transaction.status == "FAILED" || transaction.status == "ERROR"){
                                     batalList.add(transaction)
                                     transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
-                                }else{
+                                }else if(transaction.status == "DELIVER" || transaction.status == "CLOSE" || transaction.status== "FINALIZE"){
                                     doneList.add(transaction)
                                     transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
+                                }else{
+                                    Log.e("Wrong", "INVALID TXN")
                                 }
                             }
                         }
