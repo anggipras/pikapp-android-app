@@ -369,8 +369,6 @@ class TransactionListAdapter(
                                 sortOrderList(result)
                                 setProcessOrder(context, recyclerView, status, supportFragmentManager)
                                 setIsLoading(false)
-                                Log.e("result", result.toString())
-                                Log.e("get list", "bisa")
                                 holder.loadingOverlay.visibility = View.GONE
                             }
 
