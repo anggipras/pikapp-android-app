@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.Transaction
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -246,7 +247,10 @@ class TransactionListAdapter(
         holder.loadingOverlay.visibility = View.VISIBLE
         setIsLoading(true)
         postUpdate(txnId, status)
-        getStoreOrderList(orderStatus, holder)
+        Handler().postDelayed({
+            getStoreOrderList(orderStatus, holder)
+            notifyDataSetChanged()
+        }, 2000)
     }
 
     private fun setMenu(recyclerView: RecyclerView, transactionList1: MutableList<OrderDetailDetail>){
@@ -395,14 +399,16 @@ class TransactionListAdapter(
 
     fun setProcessOrder(baseContext: Context, recyclerView: RecyclerView, status: String, support: FragmentManager){
         if(status == "Proses"){
+            transactionList.clear()
             categoryAdapter = TransactionListAdapter(
                     baseContext,
                     prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
-            categoryAdapter.notifyDataSetChanged()
+            notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
-            categoryAdapter.notifyDataSetChanged()
+            notifyDataSetChanged()
         }
         if(status == "Batal"){
+            transactionList.clear()
             categoryAdapter = TransactionListAdapter(
                     baseContext,
                     batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
@@ -411,6 +417,7 @@ class TransactionListAdapter(
             categoryAdapter.notifyDataSetChanged()
         }
         if(status == "Done"){
+            transactionList.clear()
             categoryAdapter = TransactionListAdapter(
                     baseContext,
                     doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)

@@ -184,78 +184,104 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
+        val transReq = TransactionListRequest(page = 0, size = 1, transaction_id = "", status = listOf())
 
         disposable.add(
-                pikappService.getTransactionListMerchant(email, token, mid)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
-                            override fun onSuccess(t: GetStoreOrderListResponse) {
-                                val transactionList = t.results
-                                var prosesList = ArrayList<StoreOrderList>()
-                                var batalList = ArrayList<StoreOrderList>()
-                                var doneList = ArrayList<StoreOrderList>()
-                                var menuList = ArrayList<ArrayList<OrderDetailDetail>>()
-                                var menuList1 = ArrayList<ArrayList<OrderDetailDetail>>()
-                                var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
-                                if (transactionList != null) {
-                                    for(transaction in transactionList){
-                                        if(transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS"){
-                                            prosesList.add(transaction)
-                                            transaction.detailProduct?.let { menuList.add(it as ArrayList<OrderDetailDetail>) }
-                                        }else if(transaction.status == "FAILED" || transaction.status == "ERROR"){
-                                            batalList.add(transaction)
-                                            transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
-                                        }else{
-                                            doneList.add(transaction)
-                                            transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
-                                        }
-                                    }
-                                }
-                                mutableProses.value = prosesList.size
-                                mutableBatal.value = batalList.size
-                                mutableDone.value = doneList.size
-                                if(status == "Proses"){
-                                    empty.isVisible = prosesList.isEmpty()
-                                    categoryAdapter = TransactionListAdapter(
-                                            baseContext,
-                                            prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
-                                    categoryAdapter.notifyDataSetChanged()
-                                    recyclerview_transaction.adapter = categoryAdapter
-                                    categoryAdapter.notifyDataSetChanged()
-                                    //setLoading(false)
-                                }
-                                if(status == "Batal"){
-                                    empty.isVisible = batalList.isEmpty()
-                                    categoryAdapter = TransactionListAdapter(
-                                            baseContext,
-                                            batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
-                                    categoryAdapter.notifyDataSetChanged()
-                                    recyclerview_transaction.adapter = categoryAdapter
-                                    categoryAdapter.notifyDataSetChanged()
-                                    //setLoading(false)
-                                }
-                                if(status == "Done"){
-                                    empty.isVisible = doneList.isEmpty()
-                                    categoryAdapter = TransactionListAdapter(
-                                            baseContext,
-                                            doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
-                                    categoryAdapter.notifyDataSetChanged()
-                                    recyclerview_transaction.adapter = categoryAdapter
-                                    categoryAdapter.notifyDataSetChanged()
-                                    //setLoading(false)
-                                }
+            pikappService.getTransactionListV2Merchant(email, token, mid, transReq)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListV2Response>() {
+                    override fun onSuccess(t: GetStoreOrderListV2Response) {
+                        val totalItemsTrans = t.total_items
+                        getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
+                    }
 
-                                setLoading(false)
+                    override fun onError(e: Throwable) {
+                        var errorResponse: ErrorResponse
+                        Log.e("failedgettotal", e.message.toString())
+                        setLoading(false)
+                    }
+                })
+        )
+    }
 
+    fun getStoreOrderAllList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, totalItems: Int?) {
+        var sessionManager = SessionManager(getApplication())
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        val transReq = TransactionListRequest(page = 0, size = totalItems, transaction_id = "", status = listOf())
+
+        disposable.add(
+            pikappService.getTransactionListV2Merchant(email, token, mid, transReq)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListV2Response>() {
+                    override fun onSuccess(t: GetStoreOrderListV2Response) {
+                        val transactionList = t.results
+                        var prosesList = ArrayList<StoreOrderList>()
+                        var batalList = ArrayList<StoreOrderList>()
+                        var doneList = ArrayList<StoreOrderList>()
+                        var menuList = ArrayList<ArrayList<OrderDetailDetail>>()
+                        var menuList1 = ArrayList<ArrayList<OrderDetailDetail>>()
+                        var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
+                        if (transactionList != null) {
+                            for(transaction in transactionList){
+                                if(transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS"){
+                                    prosesList.add(transaction)
+                                    transaction.detailProduct?.let { menuList.add(it as ArrayList<OrderDetailDetail>) }
+                                }else if(transaction.status == "FAILED" || transaction.status == "ERROR"){
+                                    batalList.add(transaction)
+                                    transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
+                                }else if(transaction.status == "DELIVER" || transaction.status == "CLOSE" || transaction.status== "FINALIZE"){
+                                    doneList.add(transaction)
+                                    transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
+                                }else{
+                                    Log.e("Wrong", "INVALID TXN")
+                                }
                             }
+                        }
+                        mutableProses.value = prosesList.size
+                        mutableBatal.value = batalList.size
+                        mutableDone.value = doneList.size
+                        if(status == "Proses"){
+                            empty.isVisible = prosesList.isEmpty()
+                            categoryAdapter = TransactionListAdapter(
+                                baseContext,
+                                prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
+                            categoryAdapter.notifyDataSetChanged()
+                            recyclerview_transaction.adapter = categoryAdapter
+                            categoryAdapter.notifyDataSetChanged()
+                        }
+                        if(status == "Batal"){
+                            empty.isVisible = batalList.isEmpty()
+                            categoryAdapter = TransactionListAdapter(
+                                baseContext,
+                                batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
+                            categoryAdapter.notifyDataSetChanged()
+                            recyclerview_transaction.adapter = categoryAdapter
+                            categoryAdapter.notifyDataSetChanged()
+                        }
+                        if(status == "Done"){
+                            empty.isVisible = doneList.isEmpty()
+                            categoryAdapter = TransactionListAdapter(
+                                baseContext,
+                                doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
+                            categoryAdapter.notifyDataSetChanged()
+                            recyclerview_transaction.adapter = categoryAdapter
+                            categoryAdapter.notifyDataSetChanged()
+                        }
 
-                            override fun onError(e: Throwable) {
-                                var errorResponse: ErrorResponse
-                                Log.e("failed", e.message.toString())
-                                setLoading(false)
-                            }
-                        })
+                        setLoading(false)
+
+                    }
+
+                    override fun onError(e: Throwable) {
+                        var errorResponse: ErrorResponse
+                        Log.e("failed", e.message.toString())
+                        setLoading(false)
+                    }
+                })
         )
     }
 

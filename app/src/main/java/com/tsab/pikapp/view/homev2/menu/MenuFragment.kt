@@ -115,9 +115,10 @@ class MenuFragment : Fragment() {
 
         dataBinding.sortButton.setOnClickListener {
             if (viewModel.size.value != null) {
-                sessionManager.setSortNav(0)
+//                sessionManager.setSortNav(0)
                 sessionManager.setHomeNav(1)
                 Intent(activity?.baseContext, SortActivity::class.java).apply {
+                    putExtra("SORT_NAV", 0)
                     activity?.startActivity(this)
                 }
             } else if (viewModel.size.value == 0) {

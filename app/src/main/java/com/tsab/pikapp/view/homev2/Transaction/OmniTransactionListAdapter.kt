@@ -313,7 +313,10 @@ class OmniTransactionListAdapter (
         holder.loadingOverlay.visibility = View.VISIBLE
         setIsLoading(true)
         postUpdate(channel, orderId)
-        getListOmni(context, recyclerView, supportFragmentManager, activity, status, empty, holder)
+        Handler().postDelayed({
+            getListOmni(context, recyclerView, supportFragmentManager, activity, status, empty, holder)
+            notifyDataSetChanged()
+        }, 2000)
     }
 
     private fun setMenu(recyclerView: RecyclerView, omniDetailList: MutableList<ProductDetailOmni>){
@@ -391,9 +394,6 @@ class OmniTransactionListAdapter (
         acceptOrderReq.channel = channel
         acceptOrderReq.orderId = orderId
         acceptOrderReq.mid = mid
-        Log.e("accept order channel", channel)
-        Log.e("accept order id", orderId)
-        Log.e("mid", mid)
 
         PikappApiService().api.acceptOrderTokopedia(
                 getUUID(), getTimestamp(), getClientID(), acceptOrderReq
@@ -406,11 +406,6 @@ class OmniTransactionListAdapter (
                 var orderResponse = response.body()
                 var errorResponse: AcceptOrderTokopediaResponse? =
                     gson.fromJson(response.errorBody()!!.charStream(), type)
-                Log.e("acceot order err code", orderResponse?.errCode.toString())
-                Log.e("acceot order err msg", orderResponse?.errMessage.toString())
-                Log.e("acceot order result", orderResponse?.results.toString())
-                Log.e("accept error response", errorResponse?.errCode)
-                Log.e("accept error response", errorResponse?.errMessage)
                 Toast.makeText(context, "error: " + errorResponse?.errMessage, Toast.LENGTH_SHORT).show()
             }
         })
