@@ -10,6 +10,29 @@ data class GetStoreOrderListResponse(
     val results: List<StoreOrderList>?
 ) : Response
 
+data class GetStoreOrderListV2Response(
+    @SerializedName("err_code")
+    val errCode: String?,
+    @SerializedName("err_message")
+    val errMessage: String?,
+    @SerializedName("total_items")
+    val total_items: Int?,
+    @SerializedName("total_page")
+    val total_page: Int?,
+    val results: List<StoreOrderList>?
+)
+
+data class TransactionListRequest(
+    @SerializedName("page")
+    val page: Int?,
+    @SerializedName("size")
+    val size: Int?,
+    @SerializedName("transaction_id")
+    val transaction_id: String?,
+    @SerializedName("status")
+    val status: List<String>?
+)
+
 data class StoreOrderList(
     @SerializedName("transaction_id")
     val transactionID: String?,

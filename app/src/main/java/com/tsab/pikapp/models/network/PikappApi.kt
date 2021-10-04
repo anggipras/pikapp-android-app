@@ -363,6 +363,17 @@ interface PikappApi {
         @Header("mid") merchantID: String
     ): Single<GetStoreOrderListResponse>
 
+    @POST("merchant/v2/mch-order-history/")
+    fun getTransactionListV2Merchant(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") merchantID: String,
+        @Body transactionList: TransactionListRequest
+    ): Single<GetStoreOrderListV2Response>
+
     @GET("merchant/v1/order/{txnId}/{tableNo}")
     fun getTransactionDetailMerchant(
         @Header("x-request-id") uuid: String,

@@ -56,13 +56,13 @@ class TransactionFragment : Fragment() {
         }
         Handler().postDelayed({
             dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
-        }, 2000)
+        }, 5000)
         Handler().postDelayed({
             dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
-        }, 2000)
+        }, 5000)
         Handler().postDelayed({
             dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
-        }, 2000)
+        }, 5000)
         swipeRefreshLayout = swipeTransactionMenu
         swipeRefreshLayout.setOnRefreshListener {
             val position = dataBinding.tabs.selectedTabPosition

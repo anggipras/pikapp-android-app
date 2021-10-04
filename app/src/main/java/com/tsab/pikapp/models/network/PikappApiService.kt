@@ -389,6 +389,32 @@ class PikappApiService {
         )
     }
 
+    fun getTransactionListV2Merchant(
+        email: String,
+        token: String,
+        mid: String,
+        transactionReq: TransactionListRequest
+    ): Single<GetStoreOrderListV2Response> {
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        Log.e("uuid", getUUID())
+        Log.e("timestamp", timestamp)
+        Log.e("clientId", getClientID())
+        Log.e("signature", signature)
+        Log.e("token", token)
+        Log.e("mid", mid)
+        Log.e("trans", transactionReq.toString())
+        return api.getTransactionListV2Merchant(
+            getUUID(),
+            timestamp,
+            getClientID(),
+            signature,
+            token,
+            mid,
+            transactionReq
+        )
+    }
+
     fun getTransactionDetailMerchant(
         email: String,
         token: String,
