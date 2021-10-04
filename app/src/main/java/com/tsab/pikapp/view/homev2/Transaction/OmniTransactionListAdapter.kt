@@ -313,7 +313,10 @@ class OmniTransactionListAdapter (
         holder.loadingOverlay.visibility = View.VISIBLE
         setIsLoading(true)
         postUpdate(channel, orderId)
-        getListOmni(context, recyclerView, supportFragmentManager, activity, status, empty, holder)
+        Handler().postDelayed({
+            getListOmni(context, recyclerView, supportFragmentManager, activity, status, empty, holder)
+            notifyDataSetChanged()
+        }, 2000)
     }
 
     private fun setMenu(recyclerView: RecyclerView, omniDetailList: MutableList<ProductDetailOmni>){
