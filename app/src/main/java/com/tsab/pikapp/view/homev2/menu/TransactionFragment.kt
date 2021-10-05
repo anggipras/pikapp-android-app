@@ -92,7 +92,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun setUpTabs(){
-        val adapter = activity?.let { TransactionAdapter(it.supportFragmentManager) }
+        val adapter = activity?.let { TransactionAdapter(childFragmentManager) }
         if (adapter != null) {
             adapter.addFragment(ProcessFragment(), "Diproses")
             adapter.addFragment(DoneFragment(), "Selesai")
@@ -103,7 +103,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun refreshPage(){
-        val adapter = activity?.let { TransactionAdapter(it.supportFragmentManager) }
+        val adapter = activity?.let { TransactionAdapter(childFragmentManager) }
         if (adapter != null) {
             adapter.rmFragment(ProcessFragment(), "Diproses")
             adapter.rmFragment(DoneFragment(), "Selesai")

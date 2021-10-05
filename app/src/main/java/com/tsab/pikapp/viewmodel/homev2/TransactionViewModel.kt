@@ -9,6 +9,7 @@ import android.widget.Button
 import android.os.Handler
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -61,6 +62,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableFilter = MutableLiveData<RecyclerView>()
     val filter: LiveData<RecyclerView> get() = mutableFilter
 
+    private val mutableString = MutableLiveData<TextView>()
+    val string: LiveData<TextView> get() = mutableString
+
     private val mutableEmpty = MutableLiveData<ImageView>()
     val empty: LiveData<ImageView> get() = mutableEmpty
 
@@ -100,12 +104,13 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val categoryName: LiveData<String> get() = mutableCategoryName
 
     fun editList (list: RecyclerView, list1: RecyclerView, pikapp: Button
-                  , tokped: Button, grab: Button, shopee: Button, empty:ImageView){
+                  , tokped: Button, grab: Button, shopee: Button, empty:ImageView, string: TextView){
         mutableEmpty.value = empty
         mutableFilter.value = list
         mutableFilter1.value = list1
         mutablePikapp.value = pikapp
         mutableGrab.value = grab
+        mutableString.value = string
         mutableTokped.value = tokped
         mutableShopee.value = shopee
     }
@@ -119,7 +124,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
         if(size == 0){
             mutableEmpty.value!!.isVisible
+            mutableString.value!!.isVisible
             mutableEmpty.value!!.visibility = View.VISIBLE
+            mutableString.value!!.visibility = View.VISIBLE
         }
 
         if(pikappStatus){
