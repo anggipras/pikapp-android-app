@@ -1,72 +1,67 @@
 package com.tsab.pikapp.view
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.tasks.OnSuccessListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.tsab.pikapp.BuildConfig
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.SplashViewModel
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 
 class SplashActivity : AppCompatActivity() {
-    private val MY_REQUEST_CODE : Int = 100
+    private val viewModel: SplashViewModel by viewModels()
 
-    private lateinit var appUpdateManager : AppUpdateManager
-    private lateinit var viewModel: SplashViewModel
+    private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var appUpdateListener: OnSuccessListener<AppUpdateInfo>
+    private lateinit var appUpdateInfo: AppUpdateInfo
+    private val myRequestCode: Int = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
         Firebase.messaging.isAutoInitEnabled = true
 
-        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateListener = OnSuccessListener { appUpdateInfo ->
+            this.appUpdateInfo = appUpdateInfo
 
-        // Returns an intent object that you use to check for an update.
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-        // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                // This example applies an immediate update. To apply a flexible update
-                // instead, pass in AppUpdateType.FLEXIBLE
+            if (appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
+                runSplash()
+            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
                 appUpdateManager.startUpdateFlowForResult(
-                    // Pass the intent that is returned by 'getAppUpdateInfo()'.
                     appUpdateInfo,
-                    // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
                     AppUpdateType.IMMEDIATE,
-                    // The current activity making the update request.
                     this,
-                    // Include a request code to later monitor this update request.
-                    MY_REQUEST_CODE)
-            } else if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                // This example applies an immediate update. To apply a flexible update
-                // instead, pass in AppUpdateType.FLEXIBLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-            ) {
-              Log.e("NOTHING", "exception condition")
-            } else if(appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                Log.e("UPDATE_PROGRESS", "update on progress")
+                    myRequestCode
+                )
+            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                Timber.d("Update on progress...")
             } else {
-                runSplash()
+                Timber.d("Update went wrong!")
             }
         }
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener(appUpdateListener)
     }
 
-    fun runSplash() {
+    private fun runSplash() {
         supportActionBar?.hide()
-        intent.extras
-        viewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
 
         if (intent != null && intent.hasExtra("is_merchant")) {
             val isMerchant = intent.extras!!.getString("is_merchant")
@@ -74,11 +69,13 @@ class SplashActivity : AppCompatActivity() {
             val tableNo = intent.extras!!.getString("table_no")
             viewModel.saveNotification(isMerchant!!, transactionID!!, tableNo!!)
         }
+
         Handler().postDelayed({
             val uri: Uri? = intent.data
             var mid: String? = null
             var address: String? = null
             var tableNo: String? = null
+
             if (uri != null) {
                 val uriString = uri.toString()
                 if (uriString.contains("list")) {
@@ -97,35 +94,51 @@ class SplashActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == MY_REQUEST_CODE) {
+        if (requestCode == myRequestCode) {
             if (resultCode != RESULT_OK) {
-                Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
-                // If the update is cancelled or fails,
-                // you can request to start the update again.
+                // If user doesn't update, show dialog to close the app.
+                showUpdateDialog()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    // Checks that the update is not stalled during 'onResume()'.
-    // However, you should execute this check at all entry points into the app.
     override fun onResume() {
         super.onResume()
 
-        appUpdateManager
-            .appUpdateInfo
+        appUpdateManager.appUpdateInfo
             .addOnSuccessListener { appUpdateInfo ->
-                if (appUpdateInfo.updateAvailability()
-                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
-                ) {
+                if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                     // If an in-app update is already running, resume the update.
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         AppUpdateType.IMMEDIATE,
                         this,
-                        MY_REQUEST_CODE
+                        myRequestCode
                     )
                 }
             }
+    }
+
+    private fun showUpdateDialog() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Perbarui Aplikasi")
+            setMessage("Anda yakin ingin keluar?")
+
+            setPositiveButton("Ya") { _, _ ->
+                finish()
+            }
+            setNegativeButton("Tidak") { _, _ ->
+                // Restart update flow.
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this@SplashActivity,
+                    myRequestCode
+                )
+            }
+
+            show()
+        }
     }
 }
