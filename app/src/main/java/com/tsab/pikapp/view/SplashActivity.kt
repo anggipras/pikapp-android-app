@@ -49,6 +49,14 @@ class SplashActivity : AppCompatActivity() {
                     this,
                     // Include a request code to later monitor this update request.
                     MY_REQUEST_CODE)
+            } else if(appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                // This example applies an immediate update. To apply a flexible update
+                // instead, pass in AppUpdateType.FLEXIBLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            ) {
+              Log.e("NOTHING", "exception condition")
+            } else if(appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                Log.e("UPDATE_PROGRESS", "update on progress")
             } else {
                 runSplash()
             }
@@ -117,8 +125,6 @@ class SplashActivity : AppCompatActivity() {
                         this,
                         MY_REQUEST_CODE
                     )
-                } else {
-                    runSplash()
                 }
             }
     }
