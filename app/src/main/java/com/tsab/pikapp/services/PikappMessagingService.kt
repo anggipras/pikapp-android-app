@@ -42,7 +42,6 @@ class PikappMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        Log.e("REMOTE_MESSAGE", remoteMessage.toString())
         showNotif(remoteMessage.data)
 //        showNotification(remoteMessage.data)
 //        if (remoteMessage.data.isEmpty())
