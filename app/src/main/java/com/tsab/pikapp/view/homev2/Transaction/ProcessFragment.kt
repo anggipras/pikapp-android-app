@@ -72,7 +72,7 @@ class ProcessFragment : Fragment() {
         activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState) }
 
         viewModel.editList(recyclerview_transaction, recyclerview_tokopedia, buttonFilterPikapp, buttonFilterTokped,
-                buttonFilterGrab, buttonFilterShopee, icon)
+                buttonFilterGrab, buttonFilterShopee, icon, text)
 
         buttonFilterCount.setOnClickListener {
             filterSheet.show(requireActivity().supportFragmentManager, "show")

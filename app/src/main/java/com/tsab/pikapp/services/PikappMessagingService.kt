@@ -13,6 +13,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -22,6 +23,7 @@ import com.tsab.pikapp.models.model.NotificationModel
 import com.tsab.pikapp.util.NOTIFICATION_CHANNEL_ID
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.SharedPreferencesUtil
+import com.tsab.pikapp.view.SplashActivity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import java.util.*
@@ -30,6 +32,7 @@ import java.util.*
 class PikappMessagingService : FirebaseMessagingService() {
 
     private var prefHelper = SharedPreferencesUtil()
+    private var sessionManager = SessionManager()
 
     val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
     val att = AudioAttributes.Builder()
@@ -136,6 +139,7 @@ class PikappMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         prefHelper.setFcmToken(p0)
+        sessionManager.setTokenFCM(p0)
     }
 
     private fun showNotif(data: Map<String, String>) {
@@ -148,12 +152,17 @@ class PikappMessagingService : FirebaseMessagingService() {
             clickAction = Intent(applicationContext, IntegrationActivity::class.java)
             SessionManager().setHomeNav(3)
         } else {
-            val intent = Intent("receivedTransaction");
-            val bundle = Bundle();
-            bundle.putString("transaction", "pikapp")
-            intent.putExtras(bundle);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-            SessionManager().setHomeNav(0)
+            val isUserLogin = sessionManager.isLoggingIn() ?: false
+            if (!isUserLogin) {
+                clickAction = Intent(applicationContext, SplashActivity::class.java)
+            } else {
+                val intent = Intent("receivedTransaction");
+                val bundle = Bundle();
+                bundle.putString("transaction", "pikapp")
+                intent.putExtras(bundle);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+                SessionManager().setHomeNav(0)
+            }
         }
 
         val intent = clickAction
