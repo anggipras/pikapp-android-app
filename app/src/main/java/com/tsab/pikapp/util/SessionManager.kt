@@ -24,7 +24,7 @@ class SessionManager {
         private var PREF_HOME_NAV = "home nav"
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
-        private const val PREF_SORT_NAV = "sort nav"
+        private const val PREF_TOKEN_FCM = "token fcm"
 
         private var prefs: SharedPreferences? = null
 
@@ -44,6 +44,14 @@ class SessionManager {
             return SessionManager()
         }
     }
+
+    fun setTokenFCM(token: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_TOKEN_FCM, token)
+        }
+    }
+
+    fun getTokenFCM() = prefs?.getString(PREF_TOKEN_FCM, "")
 
     fun saveUserLogin(boolean: Boolean) {
         prefs?.edit(commit = true) {

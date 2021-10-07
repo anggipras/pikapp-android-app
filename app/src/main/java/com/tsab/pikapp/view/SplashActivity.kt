@@ -39,9 +39,7 @@ class SplashActivity : AppCompatActivity() {
         appUpdateListener = OnSuccessListener { appUpdateInfo ->
             this.appUpdateInfo = appUpdateInfo
 
-            if (appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
-                runSplash()
-            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
                 appUpdateManager.startUpdateFlowForResult(
@@ -52,6 +50,8 @@ class SplashActivity : AppCompatActivity() {
                 )
             } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                 Timber.d("Update on progress...")
+            } else if(appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
+                runSplash()
             } else {
                 Timber.d("Update went wrong!")
             }
@@ -123,10 +123,15 @@ class SplashActivity : AppCompatActivity() {
     private fun showUpdateDialog() {
         AlertDialog.Builder(this).apply {
             setTitle("Perbarui Aplikasi")
-            setMessage("Tidak dapat melanjutkan, mohon perbarui aplikasi terlebih dahulu")
+            setMessage("Anda yakin ingin keluar?")
 
-            setPositiveButton("Oke") { _, _ ->
+            setPositiveButton("Ya") { _, _ ->
                 finish()
+            }
+            setNegativeButton("Tidak") { _, _ ->
+                // Restart activity to start update flow.
+                finish()
+                startActivity(intent)
             }
 
             show()

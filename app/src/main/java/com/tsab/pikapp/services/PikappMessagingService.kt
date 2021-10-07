@@ -42,6 +42,7 @@ class PikappMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
+        Log.e("REMOTE_MESSAGE", remoteMessage.toString())
         showNotif(remoteMessage.data)
 //        showNotification(remoteMessage.data)
 //        if (remoteMessage.data.isEmpty())
@@ -139,6 +140,7 @@ class PikappMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         prefHelper.setFcmToken(p0)
+        sessionManager.setTokenFCM(p0)
     }
 
     private fun showNotif(data: Map<String, String>) {

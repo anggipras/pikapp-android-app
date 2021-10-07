@@ -91,8 +91,9 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
 
     private fun loginProcess(username: String, pin: String) {
         loading.value = true
+        val tokenFCM = sessionManager.getTokenFCM()
         disposable.add(
-            apiService.loginMerchant(username, pin, prefHelper.getFcmToken().toString())
+            apiService.loginMerchant(username, pin, tokenFCM.toString())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<LoginResponseV2>() {
