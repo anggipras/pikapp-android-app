@@ -123,19 +123,10 @@ class SplashActivity : AppCompatActivity() {
     private fun showUpdateDialog() {
         AlertDialog.Builder(this).apply {
             setTitle("Perbarui Aplikasi")
-            setMessage("Anda yakin ingin keluar?")
+            setMessage("Tidak dapat melanjutkan, mohon perbarui aplikasi terlebih dahulu")
 
-            setPositiveButton("Ya") { _, _ ->
+            setPositiveButton("Oke") { _, _ ->
                 finish()
-            }
-            setNegativeButton("Tidak") { _, _ ->
-                // Restart update flow.
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this@SplashActivity,
-                    myRequestCode
-                )
             }
 
             show()
