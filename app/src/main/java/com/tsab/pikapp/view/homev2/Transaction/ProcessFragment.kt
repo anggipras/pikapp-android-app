@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.buttonFilterCount
@@ -88,6 +90,15 @@ class ProcessFragment : Fragment() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             dataBinding.loadingOverlay.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
+        })
+
+        viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
+            Log.e("errcode", errCode)
+            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+                Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
+                    activity?.startActivity(this)
+                }
+            }
         })
 
     }

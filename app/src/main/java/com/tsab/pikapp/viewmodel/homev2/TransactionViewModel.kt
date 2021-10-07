@@ -17,6 +17,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
@@ -52,8 +54,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableSize = MutableLiveData(0)
     val size: LiveData<Int> get() = mutableSize
 
-    private val mutableSize1 = MutableLiveData(0)
-    val size1: LiveData<Int> get() = mutableSize1
+    private val mutableProsesOmni = MutableLiveData(0)
+    val prosesOmni: LiveData<Int> get() = mutableProsesOmni
+
+    private val mutableBatalOmni = MutableLiveData(0)
+    val batalOmni: LiveData<Int> get() = mutableBatalOmni
+
+    private val mutableDoneOmni = MutableLiveData(0)
+    val doneOmni: LiveData<Int> get() = mutableDoneOmni
 
     private val mutableProses = MutableLiveData(0)
     val proses: LiveData<Int> get() = mutableProses
@@ -98,6 +106,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
+
+    private val mutableErrCode = MutableLiveData("")
+    val errCode: LiveData<String> get() = mutableErrCode
 
     fun editList (list: RecyclerView, list1: RecyclerView, pikapp: Button
                   , tokped: Button, grab: Button, shopee: Button, empty:ImageView){
@@ -186,23 +197,32 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val mid = sessionManager.getUserData()!!.mid!!
         val transReq = TransactionListRequest(page = 0, size = 1, transaction_id = "", status = listOf())
 
-        disposable.add(
-            pikappService.getTransactionListV2Merchant(email, token, mid, transReq)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListV2Response>() {
-                    override fun onSuccess(t: GetStoreOrderListV2Response) {
-                        val totalItemsTrans = t.total_items
-                        getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
-                    }
+        val timestamp = getTimestamp()
 
-                    override fun onError(e: Throwable) {
-                        var errorResponse: ErrorResponse
-                        Log.e("failedgettotal", e.message.toString())
-                        setLoading(false)
-                    }
-                })
-        )
+        PikappApiService().api.getTransactionListV2Merchant(
+                getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
+        ).enqueue(object : Callback<GetStoreOrderListV2Response>{
+            override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
+                Log.e("failedgettotal", t.message.toString())
+            }
+
+            override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
+                val gson = Gson()
+                val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    val totalItemsTrans = response.body()?.total_items
+                    getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
+                }  else {
+                    var errorResponse: GetStoreOrderListV2Response? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Log.e("err code", errorResponse?.errCode)
+                    Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
+                    Log.e("error", "logged out")
+                    mutableErrCode.value = errorResponse?.errCode
+                }
+            }
+
+        })
     }
 
     fun getStoreOrderAllList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, totalItems: Int?) {
@@ -211,78 +231,86 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
         val transReq = TransactionListRequest(page = 0, size = totalItems, transaction_id = "", status = listOf())
+        val timestamp = getTimestamp()
 
-        disposable.add(
-            pikappService.getTransactionListV2Merchant(email, token, mid, transReq)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListV2Response>() {
-                    override fun onSuccess(t: GetStoreOrderListV2Response) {
-                        val transactionList = t.results
-                        var prosesList = ArrayList<StoreOrderList>()
-                        var batalList = ArrayList<StoreOrderList>()
-                        var doneList = ArrayList<StoreOrderList>()
-                        var menuList = ArrayList<ArrayList<OrderDetailDetail>>()
-                        var menuList1 = ArrayList<ArrayList<OrderDetailDetail>>()
-                        var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
-                        if (transactionList != null) {
-                            for(transaction in transactionList){
-                                if(transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS"){
-                                    prosesList.add(transaction)
-                                    transaction.detailProduct?.let { menuList.add(it as ArrayList<OrderDetailDetail>) }
-                                }else if(transaction.status == "FAILED" || transaction.status == "ERROR"){
-                                    batalList.add(transaction)
-                                    transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
-                                }else if(transaction.status == "DELIVER" || transaction.status == "CLOSE" || transaction.status== "FINALIZE"){
-                                    doneList.add(transaction)
-                                    transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
-                                }else{
-                                    Log.e("Wrong", "INVALID TXN")
-                                }
+        PikappApiService().api.getTransactionListV2Merchant(
+                getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
+        ).enqueue(object : Callback<GetStoreOrderListV2Response>{
+            override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
+                Log.e("failedgettotal", t.message.toString())
+            }
+
+            override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
+                val gson = Gson()
+                val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
+                val result = response.body()
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    val transactionList = result?.results
+                    var prosesList = ArrayList<StoreOrderList>()
+                    var batalList = ArrayList<StoreOrderList>()
+                    var doneList = ArrayList<StoreOrderList>()
+                    var menuList = ArrayList<ArrayList<OrderDetailDetail>>()
+                    var menuList1 = ArrayList<ArrayList<OrderDetailDetail>>()
+                    var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
+                    if (transactionList != null) {
+                        for(transaction in transactionList){
+                            if(transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS"){
+                                prosesList.add(transaction)
+                                transaction.detailProduct?.let { menuList.add(it as ArrayList<OrderDetailDetail>) }
+                            }else if(transaction.status == "FAILED" || transaction.status == "ERROR"){
+                                batalList.add(transaction)
+                                transaction.detailProduct?.let { menuList1.add(it as ArrayList<OrderDetailDetail>) }
+                            }else if(transaction.status == "DELIVER" || transaction.status == "CLOSE" || transaction.status== "FINALIZE"){
+                                doneList.add(transaction)
+                                transaction.detailProduct?.let { menuList2.add(it as ArrayList<OrderDetailDetail>) }
+                            }else{
+                                Log.e("Wrong", "INVALID TXN")
                             }
                         }
-                        mutableProses.value = prosesList.size
-                        mutableBatal.value = batalList.size
-                        mutableDone.value = doneList.size
-                        if(status == "Proses"){
-                            empty.isVisible = prosesList.isEmpty()
-                            categoryAdapter = TransactionListAdapter(
+                    }
+                    mutableProses.value = prosesList.size
+                    mutableBatal.value = batalList.size
+                    mutableDone.value = doneList.size
+                    if(status == "Proses"){
+                        empty.isVisible = prosesList.isEmpty()
+                        categoryAdapter = TransactionListAdapter(
                                 baseContext,
                                 prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
-                            categoryAdapter.notifyDataSetChanged()
-                            recyclerview_transaction.adapter = categoryAdapter
-                            categoryAdapter.notifyDataSetChanged()
-                        }
-                        if(status == "Batal"){
-                            empty.isVisible = batalList.isEmpty()
-                            categoryAdapter = TransactionListAdapter(
+                        categoryAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = categoryAdapter
+                        categoryAdapter.notifyDataSetChanged()
+                    }
+                    if(status == "Batal"){
+                        empty.isVisible = batalList.isEmpty()
+                        categoryAdapter = TransactionListAdapter(
                                 baseContext,
                                 batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
-                            categoryAdapter.notifyDataSetChanged()
-                            recyclerview_transaction.adapter = categoryAdapter
-                            categoryAdapter.notifyDataSetChanged()
-                        }
-                        if(status == "Done"){
-                            empty.isVisible = doneList.isEmpty()
-                            categoryAdapter = TransactionListAdapter(
+                        categoryAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = categoryAdapter
+                        categoryAdapter.notifyDataSetChanged()
+                    }
+                    if(status == "Done"){
+                        empty.isVisible = doneList.isEmpty()
+                        categoryAdapter = TransactionListAdapter(
                                 baseContext,
                                 doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
-                            categoryAdapter.notifyDataSetChanged()
-                            recyclerview_transaction.adapter = categoryAdapter
-                            categoryAdapter.notifyDataSetChanged()
-                        }
-
-                        setLoading(false)
-
+                        categoryAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = categoryAdapter
+                        categoryAdapter.notifyDataSetChanged()
                     }
 
-                    override fun onError(e: Throwable) {
-                        var errorResponse: ErrorResponse
-                        Log.e("failed", e.message.toString())
-                        setLoading(false)
-                    }
-                })
-        )
+                    setLoading(false)
+                }  else {
+                    var errorResponse: GetStoreOrderListV2Response? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Log.e("err code", errorResponse?.errCode)
+                    Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
+                    Log.e("error", "logged out")
+                    mutableErrCode.value = errorResponse?.errCode
+                }
+            }
+
+        })
     }
 
     fun postUpdate(id: String, status: String){
@@ -320,6 +348,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         ).enqueue(object : Callback<ListOrderOmni> {
             override fun onFailure(call: Call<ListOrderOmni>, t: Throwable) {
                 Toast.makeText(baseContext, "error: $t", Toast.LENGTH_SHORT).show()
+                Log.e("omni", t.message)
             }
 
             override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
@@ -331,6 +360,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 var productList = ArrayList<ArrayList<ProductDetailOmni>>()
                 var producList1 = ArrayList<ArrayList<ProductDetailOmni>>()
                 var productList2 = ArrayList<ArrayList<ProductDetailOmni>>()
+                Log.e("response", response?.errCode.toString())
                 if (resultList != null){
                     for (result in resultList){
                         getOrderDetailOmni(result.orderId.toString())
@@ -345,7 +375,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
                         }
                     }
-                    mutableSize1.value = prosesList.size
+                    mutableProsesOmni.value = prosesList.size
+                    mutableBatalOmni.value = batalList.size
+                    mutableDoneOmni.value = doneList.size
                 }
                 Handler().postDelayed({
                     if(status == "Proses"){

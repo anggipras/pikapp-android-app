@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,13 @@ import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
+import kotlinx.android.synthetic.main.fragment_proccess.*
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -40,7 +43,7 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getMenuCategoryList()
+        activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
         setMenuInvisible()
         observeViewModel()
     }
@@ -94,6 +97,15 @@ class MenuFragment : Fragment() {
                 dataBinding.tabs.visibility = View.VISIBLE
                 dataBinding.appbar.visibility = View.VISIBLE
                 dataBinding.plusBtn.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
+            Log.e("errcode", errCode)
+            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+                Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
+                    activity?.startActivity(this)
+                }
             }
         })
     }

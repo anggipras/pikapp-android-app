@@ -1,12 +1,21 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.CategoryListResult
 import com.tsab.pikapp.models.model.MerchantListCategoryResponse
+import com.tsab.pikapp.models.model.SearchItem
+import com.tsab.pikapp.models.model.SearchResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.menu.SearchAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,7 +41,10 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
-    fun getMenuCategoryList() {
+    private val mutableErrCode = MutableLiveData("")
+    val errCode: LiveData<String> get() = mutableErrCode
+
+    fun getMenuCategoryList(baseContext: Context) {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -48,8 +60,20 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 call: Call<MerchantListCategoryResponse>,
                 response: Response<MerchantListCategoryResponse>
             ) {
-                setCategoryList(response.body()?.results ?: listOf())
-                mutableIsLoading.value = false
+                val gson = Gson()
+                val type = object : TypeToken<MerchantListCategoryResponse>() {}.type
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    setCategoryList(response.body()?.results ?: listOf())
+                    mutableIsLoading.value = false
+                }  else {
+                    var errorResponse: MerchantListCategoryResponse? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Log.e("err code", errorResponse?.errCode)
+                    Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
+                    Log.e("error", "logged out")
+                    mutableErrCode.value = errorResponse?.errCode
+                    mutableIsLoading.value = false
+                }
             }
         })
     }

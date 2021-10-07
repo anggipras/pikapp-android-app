@@ -1,9 +1,13 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -23,6 +27,9 @@ class OtherViewModel : ViewModel() {
 
     val merchantResult = MutableLiveData<MerchantProfileData>()
     val merchantShopStatus = MutableLiveData<ShopSchedule>()
+
+    private val mutableErrCode = MutableLiveData("")
+    val errCode: LiveData<String> get() = mutableErrCode
 
     fun getMerchantProfile(context: Context) {
         val timeStamp = getTimestamp()
@@ -81,11 +88,22 @@ class OtherViewModel : ViewModel() {
                 call: Call<MerchantTimeManagement>,
                 response: Response<MerchantTimeManagement>
             ) {
-                val timeManagementResult = response.body()?.results?.timeManagement
-                val filteredDay = timeManagementResult?.filter { selectedDay ->
-                    selectedDay.days == dayOfTheWeek.toUpperCase()
+                val gson = Gson()
+                val type = object : TypeToken<MerchantTimeManagement>() {}.type
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    val timeManagementResult = response.body()?.results?.timeManagement
+                    val filteredDay = timeManagementResult?.filter { selectedDay ->
+                        selectedDay.days == dayOfTheWeek.toUpperCase()
+                    }
+                    merchantShopStatus.value = filteredDay?.get(0)
+                }  else {
+                    var errorResponse: MerchantTimeManagement? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Log.e("err code", errorResponse?.errCode)
+                    Toast.makeText(context, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
+                    Log.e("error", "logged out")
+                    mutableErrCode.value = errorResponse?.errCode
                 }
-                merchantShopStatus.value = filteredDay?.get(0)
             }
         })
     }

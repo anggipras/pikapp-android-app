@@ -28,7 +28,7 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
         closeBtn.setOnClickListener {
             dismiss()
         }
-        var size: Int = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+        var size: Int = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
 
         btnNext.setText("Tampilkan " + size + " Pesanan")
 
@@ -50,7 +50,7 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
             }else if(!pikapp.isChecked){
                 if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked) {
 
-                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
 
@@ -64,21 +64,21 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
             if(tokopedia.isChecked){
                 if (!pikapp.isChecked && !grab.isChecked && !shopee.isChecked) {
 
-                    size = viewModel.size1.value!!.toInt()
+                    size = viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
 
-                    size = size + viewModel.size1.value!!.toInt()
+                    size = size + viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }else if(!tokopedia.isChecked){
                 if (!pikapp.isChecked && !grab.isChecked && !shopee.isChecked) {
 
-                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
 
-                    size = size - viewModel.size1.value!!.toInt()
+                    size = size - viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 }
             }
@@ -98,7 +98,7 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
             }else if(!grab.isChecked){
                 if (!tokopedia.isChecked && !pikapp.isChecked && !shopee.isChecked) {
 
-                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
 
@@ -120,7 +120,7 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
             } else if (!shopee.isChecked) {
                 if (!tokopedia.isChecked && !grab.isChecked && !pikapp.isChecked) {
 
-                    size = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                    size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
                     btnNext.setText("Tampilkan " + size + " Pesanan")
                 } else {
 

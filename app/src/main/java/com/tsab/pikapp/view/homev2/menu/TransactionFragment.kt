@@ -55,26 +55,26 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
         }
         Handler().postDelayed({
-            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
         }, 5000)
         Handler().postDelayed({
-            dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
+            dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
         }, 5000)
         Handler().postDelayed({
-            dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
+            dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
         }, 5000)
         swipeRefreshLayout = swipeTransactionMenu
         swipeRefreshLayout.setOnRefreshListener {
             val position = dataBinding.tabs.selectedTabPosition
             refreshPage()
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
+                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
             }, 2000)
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
+                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
             }, 2000)
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
+                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
             }, 2000)
             dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
             swipeRefreshLayout.isRefreshing = false
