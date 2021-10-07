@@ -139,7 +139,6 @@ class PikappMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         prefHelper.setFcmToken(p0)
-        sessionManager.setTokenFCM(p0)
     }
 
     private fun showNotif(data: Map<String, String>) {
