@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
@@ -25,6 +26,7 @@ class OtherFragment : Fragment() {
     private lateinit var dataBinding: OtherFragmentBinding
     private lateinit var viewModel: OtherViewModel
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,6 +81,7 @@ class OtherFragment : Fragment() {
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
             Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+                sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
                 }

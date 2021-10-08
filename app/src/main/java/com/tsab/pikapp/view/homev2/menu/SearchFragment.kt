@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentSearchBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.SearchViewModel
@@ -24,7 +25,7 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentSearchBinding
-
+    private val sessionManager = SessionManager()
     lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(
@@ -75,6 +76,7 @@ class SearchFragment : Fragment() {
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
             Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+                sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
                 }
