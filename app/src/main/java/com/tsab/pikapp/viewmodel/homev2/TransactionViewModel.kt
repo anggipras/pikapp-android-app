@@ -436,7 +436,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     arrayResultLit.add(resultList)
                     for (result in arrayResultLit){
                         if (result.logistics != null) {
-                            logisticList.add(result.logistics)
                             if(result.status == "PAYMENT_CONFIRMATION" || result.status == "PAYMENT_VERIFIED" || result.status == "SELLER_ACCEPT_ORDER" || result.status == "WAITING_FOR_PICKUP"){
                                 logisticList.add(result.logistics)
                                 //result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
