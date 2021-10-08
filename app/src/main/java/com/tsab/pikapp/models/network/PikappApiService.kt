@@ -389,7 +389,7 @@ class PikappApiService {
         )
     }
 
-    fun getTransactionListV2Merchant(
+    /*fun getTransactionListV2Merchant(
         email: String,
         token: String,
         mid: String,
@@ -406,7 +406,7 @@ class PikappApiService {
             mid,
             transactionReq
         )
-    }
+    }*/
 
     fun getTransactionDetailMerchant(
         email: String,

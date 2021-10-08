@@ -23,8 +23,8 @@ android {
         applicationId "com.tsab.pikapp"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 8
-        versionName "1.2"
+        versionCode 9
+        versionName "1.2.001"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release

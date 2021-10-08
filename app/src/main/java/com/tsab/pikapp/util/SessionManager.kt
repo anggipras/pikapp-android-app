@@ -2,6 +2,7 @@ package com.tsab.pikapp.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.gson.GsonBuilder
@@ -24,7 +25,6 @@ class SessionManager {
         private var PREF_HOME_NAV = "home nav"
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
-        private const val PREF_SORT_NAV = "sort nav"
 
         private var prefs: SharedPreferences? = null
 
