@@ -2,18 +2,24 @@ package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.model.SearchItem
 import com.tsab.pikapp.models.model.SearchRequest
 import com.tsab.pikapp.models.model.SearchResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.menu.SearchAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
@@ -23,6 +29,9 @@ import retrofit2.Response
 class SearchViewModel(application: Application) : BaseViewModel(application) {
 
     lateinit var searchAdapter: SearchAdapter
+
+    private val mutableErrCode = MutableLiveData("")
+    val errCode: LiveData<String> get() = mutableErrCode
 
     private val mutableIsLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> = mutableIsLoading
@@ -49,6 +58,8 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
                 call: Call<SearchResponse>,
                 response: Response<SearchResponse>
             ) {
+                val gson = Gson()
+                val type = object : TypeToken<SearchResponse>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val searchResult = response.body()?.results
                     val categoryList = ArrayList<String>()
@@ -79,9 +90,13 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
                     searchAdapter.notifyDataSetChanged()
                     recyclerview_category.adapter = searchAdapter
                     setLoading(false)
-
-                } else {
-                    Log.e("FAIL", "Fail")
+                }  else {
+                    var errorResponse: SearchResponse? =
+                            gson.fromJson(response.errorBody()!!.charStream(), type)
+                    Log.e("err code", errorResponse?.errCode)
+                    Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
+                    Log.e("error", "logged out")
+                    mutableErrCode.value = errorResponse?.errCode
                     setLoading(false)
                 }
             }
