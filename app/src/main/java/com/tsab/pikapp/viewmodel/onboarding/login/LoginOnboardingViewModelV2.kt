@@ -38,6 +38,12 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     val loading = MutableLiveData<Boolean>()
     val firstAppData = MutableLiveData<Int>()
 
+    private val mutableTokenFcm = MutableLiveData<String>()
+    val tokenFcm: LiveData<String> get() = mutableTokenFcm
+    fun setFcmToken(token: String) {
+        mutableTokenFcm.value = token
+    }
+
     private val mutableEmailError = MutableLiveData("")
     val emailError: LiveData<String> get() = mutableEmailError
     val passwordError = MutableLiveData<String>()
@@ -91,7 +97,7 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
 
     private fun loginProcess(username: String, pin: String) {
         loading.value = true
-        val tokenFCM = sessionManager.getTokenFCM()
+        val tokenFCM = tokenFcm.value
         disposable.add(
             apiService.loginMerchant(username, pin, tokenFCM.toString())
                 .subscribeOn(Schedulers.newThread())
