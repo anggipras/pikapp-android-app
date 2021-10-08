@@ -3,16 +3,20 @@ package com.tsab.pikapp.view.homev2.menu
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentSearchBinding
+import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.SearchViewModel
 
@@ -67,6 +71,14 @@ class SearchFragment : Fragment() {
         viewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer { isLoading ->
             dataBinding.loadingOverlay.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
+        })
+        viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
+            Log.e("errcode", errCode)
+            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+                Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
+                    activity?.startActivity(this)
+                }
+            }
         })
     }
 

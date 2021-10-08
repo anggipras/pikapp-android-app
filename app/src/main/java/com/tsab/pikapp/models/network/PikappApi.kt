@@ -372,7 +372,7 @@ interface PikappApi {
         @Header("token") token: String,
         @Header("mid") merchantID: String,
         @Body transactionList: TransactionListRequest
-    ): Single<GetStoreOrderListV2Response>
+    ): Call<GetStoreOrderListV2Response>
 
     @GET("merchant/v1/order/{txnId}/{tableNo}")
     fun getTransactionDetailMerchant(

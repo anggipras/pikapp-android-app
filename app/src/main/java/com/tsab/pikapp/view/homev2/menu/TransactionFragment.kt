@@ -47,37 +47,40 @@ class TransactionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.overridePendingTransition(0, 0)
-        setUpTabs()
-        dataBinding.report.setOnClickListener {
-            val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
-            activity?.startActivityForResult(intent, 1)
+        val activityMain = activity
+        if (activityMain != null) {
             activity?.overridePendingTransition(0, 0)
-        }
-        Handler().postDelayed({
-            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
-        }, 5000)
-        Handler().postDelayed({
-            dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
-        }, 5000)
-        Handler().postDelayed({
-            dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
-        }, 5000)
-        swipeRefreshLayout = swipeTransactionMenu
-        swipeRefreshLayout.setOnRefreshListener {
-            val position = dataBinding.tabs.selectedTabPosition
-            refreshPage()
+            setUpTabs()
+            dataBinding.report.setOnClickListener {
+                val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
+                activity?.startActivityForResult(intent, 1)
+                activity?.overridePendingTransition(0, 0)
+            }
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.size1.value!!.toInt()
-            }, 2000)
+                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+            }, 5000)
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt()
-            }, 2000)
+                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
+            }, 5000)
             Handler().postDelayed({
-                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt()
-            }, 2000)
-            dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
-            swipeRefreshLayout.isRefreshing = false
+                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+            }, 5000)
+            swipeRefreshLayout = swipeTransactionMenu
+            swipeRefreshLayout.setOnRefreshListener {
+                val position = dataBinding.tabs.selectedTabPosition
+                refreshPage()
+                Handler().postDelayed({
+                    dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+                }, 2000)
+                Handler().postDelayed({
+                    dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
+                }, 2000)
+                Handler().postDelayed({
+                    dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+                }, 2000)
+                dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
+                swipeRefreshLayout.isRefreshing = false
+            }
         }
     }
 
