@@ -188,7 +188,7 @@
                 android:autofillHints="phoneNumber"
                 android:backgroundTint="@color/borderSubtle"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="@string/registrasi_nama_lengkap_hint"
+                android:hint="@string/registrasi_nomor_hp_hint"
                 android:inputType="phone"
                 android:textColorHint="@color/borderSubtle"
                 android:textSize="12sp"
