@@ -45,6 +45,7 @@ class SettingFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     Intent(activity?.baseContext, HomeActivity::class.java).apply {
                         startActivity(this)
+                        activity?.finish()
                     }
                 }
             })
@@ -58,6 +59,7 @@ class SettingFragment : Fragment() {
         dataBinding.backButton.setOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
+                activity?.finish()
             }
         }
 
@@ -91,6 +93,7 @@ class SettingFragment : Fragment() {
                 activity?.let {
                     val intent = Intent(it, LoginRegisterActivity::class.java)
                     it.startActivity(intent)
+                    activity?.finish()
                 }
             }
         })
