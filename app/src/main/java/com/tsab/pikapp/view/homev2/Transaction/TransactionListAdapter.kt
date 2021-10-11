@@ -90,7 +90,6 @@ class TransactionListAdapter(
                 formatNumber()
                 holder.price.text = "Rp " + str
                 price = 0
-                holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Terima"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
@@ -117,7 +116,6 @@ class TransactionListAdapter(
                 formatNumber()
                 holder.price.text = "Rp " + str
                 price = 0
-                holder.price2.visibility = View.GONE
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
@@ -146,7 +144,6 @@ class TransactionListAdapter(
                 formatNumber()
                 holder.price.text = "Rp " + str
                 price = 0
-                holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Pesanan Siap"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
@@ -171,7 +168,7 @@ class TransactionListAdapter(
             holder.menuCount.text = "Total " + jumlah + " Items"
             jumlah = 0
             formatNumber()
-            holder.price2.text = "Rp " + str
+            holder.price.text = "Rp " + str
             price = 0
             holder.price.visibility = View.GONE
         } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
@@ -216,9 +213,8 @@ class TransactionListAdapter(
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
                 formatNumber()
-                holder.price2.text = "Rp " + str
+                holder.price.text = "Rp " + str
                 price = 0
-                holder.price.visibility = View.GONE
             }
         }
     }
@@ -235,7 +231,6 @@ class TransactionListAdapter(
         var paymentStatus: TextView = itemView.paymentStatus
         var menuCount: TextView = itemView.menuCount
         var price: TextView = itemView.totalPrice
-        var price2: TextView = itemView.totalPrice2
         var acceptBtn: Button = itemView.acceptButton
         var rejectBtn: Button = itemView.rejectButton
         var rView: RecyclerView = itemView.recyclerview_menu
