@@ -72,6 +72,7 @@ class EditMenuFragment : Fragment() {
             override fun handleOnBackPressed() {
                 val intent = Intent(activity?.baseContext, HomeActivity::class.java)
                 activity?.startActivity(intent)
+                activity?.finish()
             }
         })
     }
@@ -80,6 +81,7 @@ class EditMenuFragment : Fragment() {
         dataBinding.header.backButton.setAllOnClickListener(View.OnClickListener {
             val intent = Intent(activity?.baseContext, HomeActivity::class.java)
             activity?.startActivity(intent)
+            activity?.finish()
         }, view)
 
         dataBinding.infoBtn.setOnClickListener {

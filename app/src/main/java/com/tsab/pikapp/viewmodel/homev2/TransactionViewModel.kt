@@ -108,6 +108,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         mutableIsLoading.value = isLoading
     }
 
+    private val mutableAmountOfTransaction = MutableLiveData(0)
+    val amountOfTransaction: LiveData<Int> = mutableAmountOfTransaction
+    fun setAmountOfTrans(isAmount: Int) {
+        mutableAmountOfTransaction.value = isAmount
+    }
+
     private val mutableCategoryName = MutableLiveData(" ")
     val categoryName: LiveData<String> get() = mutableCategoryName
 
@@ -307,6 +313,10 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     }
 
                     setLoading(false)
+                    val countTrans = amountOfTransaction.value?.plus(1)
+                    if (countTrans != null) {
+                        setAmountOfTrans(countTrans)
+                    }
                 }  else {
                     var errorResponse: GetStoreOrderListV2Response? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -413,6 +423,10 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
+                    }
+                    val countTrans = amountOfTransaction.value?.plus(1)
+                    if (countTrans != null) {
+                        setAmountOfTrans(countTrans)
                     }
                 }, 1500)
             }
