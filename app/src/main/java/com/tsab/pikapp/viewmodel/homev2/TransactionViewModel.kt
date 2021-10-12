@@ -18,6 +18,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.play.core.internal.t
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.R
@@ -112,6 +113,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val amountOfTransaction: LiveData<Int> = mutableAmountOfTransaction
     fun setAmountOfTrans(isAmount: Int) {
         mutableAmountOfTransaction.value = isAmount
+    }
+
+    private val mutableProcessBadges = MutableLiveData(0)
+    val processBadges: LiveData<Int> = mutableProcessBadges
+    fun setProcessBadges(bagde: Int) {
+        mutableProcessBadges.value = bagde
     }
 
     private val mutableCategoryName = MutableLiveData(" ")
@@ -216,7 +223,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
         ).enqueue(object : Callback<GetStoreOrderListV2Response>{
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
-                Log.e("failedgettotal", t.message.toString())
+                Log.e("Failed_Get_Total", t.message.toString())
             }
 
             override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
@@ -224,7 +231,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val totalItemsTrans = response.body()?.total_items
-                    getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
+                    if (totalItemsTrans != 0) {
+                        getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
+                    } else {
+                        setLoading(false)
+                    }
                 }  else {
                     var errorResponse: GetStoreOrderListV2Response? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -245,12 +256,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val mid = sessionManager.getUserData()!!.mid!!
         val transReq = TransactionListRequest(page = 0, size = totalItems, transaction_id = "", status = listOf())
         val timestamp = getTimestamp()
+        setProcessBadges(0)
 
         PikappApiService().api.getTransactionListV2Merchant(
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
         ).enqueue(object : Callback<GetStoreOrderListV2Response>{
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
-                Log.e("failedgettotal", t.message.toString())
+                Log.e("FAILED_GET_LIST_TRANS", t.message.toString())
+                setLoading(false)
             }
 
             override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
@@ -282,10 +295,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                     }
                     mutableProses.value = prosesList.size
+                    val processSize = processBadges.value?.plus(prosesList.size)
+                    if (processSize != null) {
+                        setProcessBadges(processSize)
+                    }
                     mutableBatal.value = batalList.size
                     mutableDone.value = doneList.size
                     if(status == "Proses"){
-                        empty.isVisible = prosesList.isEmpty()
+//                        empty.isVisible = prosesList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
                                 prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
@@ -393,12 +410,16 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                     }
                     mutableProsesOmni.value = prosesList.size
+                    val processSize = processBadges.value?.plus(prosesList.size)
+                    if (processSize != null) {
+                        setProcessBadges(processSize)
+                    }
                     mutableBatalOmni.value = batalList.size
                     mutableDoneOmni.value = doneList.size
                 }
                 Handler().postDelayed({
                     if(status == "Proses"){
-                        empty.isVisible = prosesList.isEmpty()
+//                        empty.isVisible = prosesList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
                                 prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
