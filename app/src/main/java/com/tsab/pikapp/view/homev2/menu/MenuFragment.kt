@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.homev2.menu
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
+import java.io.File
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -33,8 +35,8 @@ class MenuFragment : Fragment() {
     private val sessionManager = SessionManager()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.menu_fragment, container, false)
         return dataBinding.root
@@ -59,6 +61,7 @@ class MenuFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.restartFragment()
+        deleteCache(requireContext())
     }
 
     private fun observeViewModel() {
@@ -102,7 +105,7 @@ class MenuFragment : Fragment() {
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
             Log.e("errcode", errCode)
-            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
@@ -128,7 +131,6 @@ class MenuFragment : Fragment() {
 
         dataBinding.sortButton.setOnClickListener {
             if (viewModel.size.value != null) {
-//                sessionManager.setSortNav(0)
                 sessionManager.setHomeNav(1)
                 Intent(activity?.baseContext, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
@@ -177,9 +179,9 @@ class MenuFragment : Fragment() {
     private fun initViews() {
         dataBinding.viewpager.offscreenPageLimit = 5
         dataBinding.viewpager.addOnPageChangeListener(
-            TabLayout.TabLayoutOnPageChangeListener(
-                dataBinding.tabs
-            )
+                TabLayout.TabLayoutOnPageChangeListener(
+                        dataBinding.tabs
+                )
         )
 
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -204,8 +206,34 @@ class MenuFragment : Fragment() {
         }
 
         val mDynamicFragmentAdapter =
-            DynamicFragmentAdapter(fragmentManager, categoryList.size, categoryList)
+            DynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
         dataBinding.viewpager.adapter = mDynamicFragmentAdapter
         dataBinding.viewpager.currentItem = 0
+    }
+
+    fun deleteCache(context: Context) {
+        try {
+            val dir: File = context.cacheDir
+            deleteDir(dir)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun deleteDir(dir: File?): Boolean {
+        return if (dir != null && dir.isDirectory) {
+            val children: Array<String> = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+            dir.delete()
+        } else if (dir != null && dir.isFile()) {
+            dir.delete()
+        } else {
+            false
+        }
     }
 }
