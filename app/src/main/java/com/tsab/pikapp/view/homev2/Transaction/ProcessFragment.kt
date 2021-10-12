@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -83,7 +84,7 @@ class ProcessFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        dataBinding.emptyState.isVisible = viewModel.proses.value == 0 && viewModel.prosesOmni.value == 0
     }
 
     private fun observeViewModel() {
@@ -102,6 +103,9 @@ class ProcessFragment : Fragment() {
             }
         })
 
+        viewModel.processBadges.observe(viewLifecycleOwner, Observer {
+            dataBinding.emptyState.isVisible = it == 0
+        })
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -111,7 +115,6 @@ class ProcessFragment : Fragment() {
             linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
-            //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
     }
 
@@ -125,6 +128,11 @@ class ProcessFragment : Fragment() {
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.setProcessBadges(0)
     }
 
     override fun onDetach() {

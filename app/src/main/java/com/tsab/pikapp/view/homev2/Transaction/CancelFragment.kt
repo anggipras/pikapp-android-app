@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -52,6 +53,11 @@ class CancelFragment : Fragment() {
         activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_cancel, requireActivity().supportFragmentManager, requireActivity(), "Batal", emptyState1) }
 
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        dataBinding.emptyState1.isVisible = viewModel.batal.value == 0 && viewModel.batalOmni.value == 0
     }
 
     private fun observeViewModel() {
