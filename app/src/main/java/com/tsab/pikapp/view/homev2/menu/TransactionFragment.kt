@@ -81,13 +81,21 @@ class TransactionFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.amountOfTransaction.observe(viewLifecycleOwner, Observer { amount ->
             amount?.let {
-                if (it == 2) {
+                if (it >= 2) {
                     dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
                     dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
                     dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+                    val amountOfBadgeProcess = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+                    viewModel.setTotalProcessBadge(amountOfBadgeProcess)
                 } else {
                     Log.e("NotFinished", "All transaction total amount still on progress")
                 }
+            }
+        })
+
+        viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->
+            amount?.let {
+                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = it
             }
         })
     }

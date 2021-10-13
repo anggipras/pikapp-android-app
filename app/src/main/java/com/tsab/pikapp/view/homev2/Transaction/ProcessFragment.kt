@@ -24,11 +24,9 @@ import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.buttonFilterCount
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
-import kotlinx.android.synthetic.main.fragment_txn_report.*
-import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
 
 
-class ProcessFragment : Fragment() {
+class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -69,7 +67,7 @@ class ProcessFragment : Fragment() {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia.layoutManager = linearLayoutManager1
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState, this) }
         activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState) }
 
         viewModel.editList(recyclerview_transaction, recyclerview_tokopedia, buttonFilterPikapp, buttonFilterTokped,
@@ -106,6 +104,12 @@ class ProcessFragment : Fragment() {
         viewModel.processBadges.observe(viewLifecycleOwner, Observer {
             dataBinding.emptyState.isVisible = it == 0
         })
+
+        viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->
+            amount?.let {
+                dataBinding.emptyState.isVisible = it == 0
+            }
+        })
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -122,7 +126,7 @@ class ProcessFragment : Fragment() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 if (context != null) {
-                    viewModel.getStoreOrderList(context, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState)
+                    viewModel.getStoreOrderList(context, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState, this@ProcessFragment)
                     viewModel.getListOmni(context, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState)
                 }
             }
@@ -138,5 +142,9 @@ class ProcessFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         bm?.unregisterReceiver(mMessageReceiver)
+    }
+
+    override fun onItemClick(i: Int) {
+        viewModel.setDecreaseBadge(i)
     }
 }
