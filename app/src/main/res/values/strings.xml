@@ -289,4 +289,15 @@
     <string name="tokopedia_upload_resi_dialog">Mohon upload resi di aplikasi e-<br />commerce sesuai pesanan untuk<br />menyelesaikan order ini.</string>
     <string name="tokopedia_tolak_dialog">Tolak melalui aplikasi tokopedia</string>
 
+    <!-- Add menu -->
+    <string name="nama_menu">Nama Menu</string>
+    <string name="nama_menu_hint">Masukkan Nama Menu</string>
+    <string name="pilih_kategori">Pilih Kategori</string>
+    <string name="pilih_etalase_hint">Pilih Etalase</string>
+    <string name="deskripsi_header">Deskripsi</string>
+    <string name="deskripsi_hint">Masukkan Deskripsi Menu</string>
+    <string name="harga_hint">Contoh: Rp10.000</string>
+    <string name="add_menu_in_pikapp">Tambahkan Menu Ini Di PikApp</string>
+    <string name="hapus_menu">Hapus Menu</string>
+
 </resources>

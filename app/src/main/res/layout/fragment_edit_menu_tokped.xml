@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.homev2.menu.tokopedia.AddMenuFragment">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".view.homev2.menu.tokopedia.EditMenuFragmentTokped">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="161dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -87,8 +89,8 @@
                 android:id="@+id/menuImg"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="25dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/inputimage"
@@ -178,8 +180,8 @@
                 android:id="@+id/categoryTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
                 android:text="@string/category_header"
                 android:textColor="#000000"
@@ -212,8 +214,8 @@
                 android:id="@+id/etalaseTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/montserrat"
                 android:text="@string/etalase_header"
                 android:textColor="#000000"
@@ -383,31 +385,69 @@
                 android:fontFamily="@font/proximanova_regular"
                 android:textColor="@color/colorRed"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/checkbox"
+                app:layout_constraintBottom_toTopOf="@id/aktifkanHeaderText"
                 app:layout_constraintHorizontal_bias="0.09"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/hargaField" />
 
+            <!-- Aktifkan pilihan menu switch -->
+            <TextView
+                android:id="@+id/aktifkanHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Aktifkan menu"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hargaErrorText" />
+
             <CheckBox
+                android:id="@+id/checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkbox"
                 android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/proximanova_regular"
-                android:textColor="@color/black"
                 android:text="@string/add_menu_in_pikapp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@id/deleteMenuText"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hargaErrorText"
-                app:layout_constraintBottom_toTopOf="@id/btnNext"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/aktifkanHeaderText" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/aktifkanSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:thumb="@drawable/selector_thumb"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/aktifkanHeaderText"
+                app:track="@drawable/selector_track" />
+
+            <TextView
+                android:id="@+id/deleteMenuText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/hapus_menu"
+                android:textColor="@color/colorRed"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/checkbox" />
 
             <Button
                 android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
                 android:layout_marginStart="38dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="38dp"
                 android:background="@drawable/button_green_small"
                 android:backgroundTint="@color/green"
@@ -419,15 +459,15 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/checkbox"/>
+                app:layout_constraintTop_toBottomOf="@id/deleteMenuText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <include
-        android:id="@+id/loadingOverlay"
-        layout="@layout/layout_loading_overlay"
-        android:visibility="gone" />
+    android:id="@+id/loadingOverlay"
+    layout="@layout/layout_loading_overlay"
+    android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
