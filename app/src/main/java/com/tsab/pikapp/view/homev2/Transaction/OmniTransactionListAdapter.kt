@@ -422,7 +422,7 @@ class OmniTransactionListAdapter(
         val mid = sessionManager.getUserData()!!.mid!!
         var acceptOrderReq = AcceptOrderTokopediaRequest()
         acceptOrderReq.channel = channel
-        acceptOrderReq.orderId = orderId
+        acceptOrderReq.order_id = orderId
         acceptOrderReq.mid = mid
 
         PikappApiService().api.acceptOrderTokopedia(
@@ -432,15 +432,8 @@ class OmniTransactionListAdapter(
                 Toast.makeText(context, "fail: $t", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onResponse(
-                call: Call<AcceptOrderTokopediaResponse>,
-                response: Response<AcceptOrderTokopediaResponse>
-            ) {
-                var orderResponse = response.body()
-                var errorResponse: AcceptOrderTokopediaResponse? =
-                    gson.fromJson(response.errorBody()!!.charStream(), type)
-                Toast.makeText(context, "error: " + errorResponse?.errMessage, Toast.LENGTH_SHORT)
-                    .show()
+            override fun onResponse(call: Call<AcceptOrderTokopediaResponse>, response: Response<AcceptOrderTokopediaResponse>) {
+                Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
             }
         })
     }

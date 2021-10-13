@@ -50,6 +50,7 @@ class CategoryListFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     Intent(activity?.baseContext, HomeActivity::class.java).apply {
                         startActivity(this)
+                        activity?.finish()
                     }
                 }
             })
@@ -82,11 +83,11 @@ class CategoryListFragment : Fragment() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
+                activity?.finish()
             }
         }, view)
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {
-//            sessionManager.setSortNav(1)
             Intent(activity?.baseContext, SortActivity::class.java).apply {
                 putExtra("SORT_NAV", 1)
                 startActivity(this)

@@ -75,6 +75,7 @@ class SignupV2Second : Fragment() {
         dataBinding.namaRekeningInputText.setText(viewModel.namaRekening.value)
         viewModel.namaRekeningError.observe(viewLifecycleOwner, Observer { namaRekeningError ->
             dataBinding.namaRekeningErrorText.text = namaRekeningError
+            hideKeyboard()
         })
     }
 

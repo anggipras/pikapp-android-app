@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.buttonFilterCount
@@ -81,7 +84,7 @@ class ProcessFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
+        dataBinding.emptyState.isVisible = viewModel.proses.value == 0 && viewModel.prosesOmni.value == 0
     }
 
     private fun observeViewModel() {
@@ -90,6 +93,19 @@ class ProcessFragment : Fragment() {
                     if (isLoading) View.VISIBLE else View.GONE
         })
 
+        viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
+            Log.e("errcode", errCode)
+            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+                sessionManager.logout()
+                Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
+                    activity?.startActivity(this)
+                }
+            }
+        })
+
+        viewModel.processBadges.observe(viewLifecycleOwner, Observer {
+            dataBinding.emptyState.isVisible = it == 0
+        })
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -99,7 +115,6 @@ class ProcessFragment : Fragment() {
             linearLayoutManager =
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
-            //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
     }
 
@@ -113,6 +128,11 @@ class ProcessFragment : Fragment() {
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.setProcessBadges(0)
     }
 
     override fun onDetach() {

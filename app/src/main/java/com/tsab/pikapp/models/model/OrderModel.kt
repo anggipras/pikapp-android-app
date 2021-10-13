@@ -193,7 +193,7 @@ data class AcceptOrderTokopediaRequest(
     @SerializedName("channel")
     var channel: String? = null,
     @SerializedName("order_id")
-    var orderId: String? = null,
+    var order_id: String? = null,
     @SerializedName("mid")
     var mid: String? = null
 )
@@ -203,7 +203,7 @@ data class AcceptOrderTokopediaResponse(
     override val errCode: String?,
     @SerializedName("err_message")
     override val errMessage: String?,
-    val results: List<AcceptOrderTokopediaResult>?
+    val results: AcceptOrderTokopediaResult
 ) : Response
 
 data class AcceptOrderTokopediaResult(
