@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 
-class CancelFragment : Fragment() {
+class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
@@ -49,7 +49,7 @@ class CancelFragment : Fragment() {
             LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal", requireActivity().supportFragmentManager, emptyState1) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal", requireActivity().supportFragmentManager, emptyState1, this) }
         activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_cancel, requireActivity().supportFragmentManager, requireActivity(), "Batal", emptyState1) }
 
         observeViewModel()
@@ -65,5 +65,9 @@ class CancelFragment : Fragment() {
             dataBinding.loadingOverlay.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
         })
+    }
+
+    override fun onItemClick(i: Int) {
+        TODO("Not yet implemented")
     }
 }
