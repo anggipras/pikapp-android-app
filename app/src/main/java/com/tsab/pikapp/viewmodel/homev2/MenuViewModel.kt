@@ -9,10 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tsab.pikapp.models.model.CategoryListResult
-import com.tsab.pikapp.models.model.MerchantListCategoryResponse
-import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.models.model.SearchResponse
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.menu.SearchAdapter
@@ -62,9 +59,19 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             ) {
                 val gson = Gson()
                 val type = object : TypeToken<MerchantListCategoryResponse>() {}.type
+                var activeList = ArrayList<CategoryListResult>()
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    setCategoryList(response.body()?.results ?: listOf())
-                    mutableIsLoading.value = false
+                    val resultList = response.body()?.results
+                    if (resultList != null) {
+                        for (result in resultList) {
+                            if (result.is_active == true) {
+                                activeList.add(result)
+                            }
+                        }
+                        setCategoryList(activeList)
+                        mutableIsLoading.value = false
+                        Log.e("category menuviewmodel", categoryListResult.value.toString())
+                    }
                 }  else {
                     var errorResponse: MerchantListCategoryResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
