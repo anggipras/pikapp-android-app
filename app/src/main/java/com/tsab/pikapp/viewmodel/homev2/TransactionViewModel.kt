@@ -26,11 +26,13 @@ import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.Transaction.TransactionListAdapter
+import com.tsab.pikapp.view.homev2.Transaction.TxnReportAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_txn_report.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -104,30 +106,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val isLoading: LiveData<Boolean> = mutableIsLoading
     fun setLoading(isLoading: Boolean) {
         mutableIsLoading.value = isLoading
-    }
-
-    private val mutableAmountOfTransaction = MutableLiveData(0)
-    val amountOfTransaction: LiveData<Int> = mutableAmountOfTransaction
-    fun setAmountOfTrans(isAmount: Int) {
-        mutableAmountOfTransaction.value = isAmount
-    }
-
-    private val mutableProcessBadges = MutableLiveData(0)
-    val processBadges: LiveData<Int> = mutableProcessBadges
-    fun setProcessBadges(badge: Int) {
-        mutableProcessBadges.value = badge
-    }
-
-    private val mutableDecreaseBadge = MutableLiveData<Int>()
-    val decreaseBadge: LiveData<Int> = mutableDecreaseBadge
-    fun setTotalProcessBadge(badge: Int) {
-        mutableDecreaseBadge.value = badge
-    }
-    fun setDecreaseBadge(badge: Int) {
-        val totalProcessBadges = decreaseBadge.value
-        if (totalProcessBadges != null) {
-            mutableDecreaseBadge.value = totalProcessBadges - badge
-        }
     }
 
     private val mutableCategoryName = MutableLiveData(" ")
@@ -217,7 +195,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, listener: TransactionListAdapter.OnItemClickListener) {
+    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout) {
         setLoading(true)
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
@@ -232,7 +210,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
         ).enqueue(object : Callback<GetStoreOrderListV2Response>{
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
-                Log.e("Failed_Get_Total", t.message.toString())
+                Log.e("failedgettotal", t.message.toString())
             }
 
             override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
@@ -240,11 +218,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val totalItemsTrans = response.body()?.total_items
-                    if (totalItemsTrans != 0) {
-                        getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans, listener)
-                    } else {
-                        setLoading(false)
-                    }
+                    getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
                 }  else {
                     var errorResponse: GetStoreOrderListV2Response? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -258,21 +232,19 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         })
     }
 
-    fun getStoreOrderAllList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, totalItems: Int?, listener: TransactionListAdapter.OnItemClickListener) {
+    fun getStoreOrderAllList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, totalItems: Int?) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
         val transReq = TransactionListRequest(page = 0, size = totalItems, transaction_id = "", status = listOf())
         val timestamp = getTimestamp()
-        setProcessBadges(0)
 
         PikappApiService().api.getTransactionListV2Merchant(
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
         ).enqueue(object : Callback<GetStoreOrderListV2Response>{
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
-                Log.e("FAILED_GET_LIST_TRANS", t.message.toString())
-                setLoading(false)
+                Log.e("failedgettotal", t.message.toString())
             }
 
             override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
@@ -304,17 +276,13 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                     }
                     mutableProses.value = prosesList.size
-                    val processSize = processBadges.value?.plus(prosesList.size)
-                    if (processSize != null) {
-                        setProcessBadges(processSize)
-                    }
                     mutableBatal.value = batalList.size
                     mutableDone.value = doneList.size
                     if(status == "Proses"){
-//                        empty.isVisible = prosesList.isEmpty()
+                        empty.isVisible = prosesList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
-                                prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction, listener)
+                                prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
                         categoryAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = categoryAdapter
                         categoryAdapter.notifyDataSetChanged()
@@ -323,7 +291,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = batalList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
-                                batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction, listener)
+                                batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
                         categoryAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = categoryAdapter
                         categoryAdapter.notifyDataSetChanged()
@@ -332,17 +300,13 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = doneList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
-                                doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction, listener)
+                                doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
                         categoryAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = categoryAdapter
                         categoryAdapter.notifyDataSetChanged()
                     }
 
                     setLoading(false)
-                    val countTrans = amountOfTransaction.value?.plus(1)
-                    if (countTrans != null) {
-                        setAmountOfTrans(countTrans)
-                    }
                 }  else {
                     var errorResponse: GetStoreOrderListV2Response? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -419,16 +383,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                     }
                     mutableProsesOmni.value = prosesList.size
-                    val processSize = processBadges.value?.plus(prosesList.size)
-                    if (processSize != null) {
-                        setProcessBadges(processSize)
-                    }
                     mutableBatalOmni.value = batalList.size
                     mutableDoneOmni.value = doneList.size
                 }
                 Handler().postDelayed({
                     if(status == "Proses"){
-//                        empty.isVisible = prosesList.isEmpty()
+                        empty.isVisible = prosesList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
                                 prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
@@ -453,10 +413,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
-                    }
-                    val countTrans = amountOfTransaction.value?.plus(1)
-                    if (countTrans != null) {
-                        setAmountOfTrans(countTrans)
                     }
                 }, 1500)
             }

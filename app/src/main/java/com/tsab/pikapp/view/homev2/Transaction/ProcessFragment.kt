@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,9 +23,11 @@ import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.buttonFilterCount
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
+import kotlinx.android.synthetic.main.fragment_txn_report.*
+import kotlinx.android.synthetic.main.layout_loading_overlay.view.*
 
 
-class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class ProcessFragment : Fragment() {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -45,7 +46,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         actionReceiver.addAction("receivedTransaction")
         bm!!.registerReceiver(mMessageReceiver, actionReceiver)
     }
-    
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -67,7 +68,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia.layoutManager = linearLayoutManager1
-        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState, this) }
+        activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState) }
 
         viewModel.editList(recyclerview_transaction, recyclerview_tokopedia, buttonFilterPikapp, buttonFilterTokped,
@@ -82,7 +83,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        dataBinding.emptyState.isVisible = viewModel.proses.value == 0 && viewModel.prosesOmni.value == 0
+        //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
     }
 
     private fun observeViewModel() {
@@ -101,15 +102,6 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             }
         })
 
-        viewModel.processBadges.observe(viewLifecycleOwner, Observer {
-            dataBinding.emptyState.isVisible = it == 0
-        })
-
-        viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->
-            amount?.let {
-                dataBinding.emptyState.isVisible = it == 0
-            }
-        })
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -117,8 +109,9 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         if(isVisibleToUser){
             recyclerview_transaction.setHasFixedSize(true)
             linearLayoutManager =
-                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
+            //activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState) }
         }
     }
 
@@ -126,7 +119,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null) {
                 if (context != null) {
-                    viewModel.getStoreOrderList(context, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState, this@ProcessFragment)
+                    viewModel.getStoreOrderList(context, recyclerview_transaction, "Proses", requireActivity().supportFragmentManager, emptyState)
                     viewModel.getListOmni(context, recyclerview_tokopedia, requireActivity().supportFragmentManager, requireActivity(), "Proses", emptyState)
                 }
             }
@@ -134,17 +127,8 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.setProcessBadges(0)
-    }
-
     override fun onDetach() {
         super.onDetach()
         bm?.unregisterReceiver(mMessageReceiver)
-    }
-
-    override fun onItemClick(i: Int) {
-        viewModel.setDecreaseBadge(i)
     }
 }
