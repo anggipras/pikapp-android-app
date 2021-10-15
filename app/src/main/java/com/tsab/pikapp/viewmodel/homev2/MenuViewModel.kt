@@ -59,19 +59,9 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
             ) {
                 val gson = Gson()
                 val type = object : TypeToken<MerchantListCategoryResponse>() {}.type
-                var activeList = ArrayList<CategoryListResult>()
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    val resultList = response.body()?.results
-                    if (resultList != null) {
-                        for (result in resultList) {
-                            if (result.is_active == true) {
-                                activeList.add(result)
-                            }
-                        }
-                        setCategoryList(activeList)
-                        mutableIsLoading.value = false
-                        Log.e("category menuviewmodel", categoryListResult.value.toString())
-                    }
+                    setCategoryList(response.body()?.results ?: listOf())
+                    mutableIsLoading.value = false
                 }  else {
                     var errorResponse: MerchantListCategoryResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
