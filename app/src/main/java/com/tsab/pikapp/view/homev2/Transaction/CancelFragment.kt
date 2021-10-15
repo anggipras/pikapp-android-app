@@ -29,8 +29,8 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         dataBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_cancel,
@@ -44,9 +44,9 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         linearLayoutManager1 =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
         activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal", requireActivity().supportFragmentManager, emptyState1, this) }

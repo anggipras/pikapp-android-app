@@ -46,7 +46,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         actionReceiver.addAction("receivedTransaction")
         bm!!.registerReceiver(mMessageReceiver, actionReceiver)
     }
-    
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -307,7 +307,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         if(isVisibleToUser){
             recyclerview_transaction.setHasFixedSize(true)
             linearLayoutManager =
-                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
             recyclerview_transaction.layoutManager = linearLayoutManager
         }
     }

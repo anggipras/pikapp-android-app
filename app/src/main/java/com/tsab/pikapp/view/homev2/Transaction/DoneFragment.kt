@@ -27,8 +27,8 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         dataBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_done,
@@ -42,9 +42,9 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
         recyclerview_transaction.setHasFixedSize(true)
         linearLayoutManager =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         linearLayoutManager1 =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
 

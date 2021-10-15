@@ -13,6 +13,47 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scrollFilter"
+                android:id="@+id/emptyState"/>
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="0dp"
+                android:layout_height="137dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:visibility="invisible"
+                android:layout_marginRight="32dp"
+                android:src="@drawable/ongoingicon"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scrollFilter" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:visibility="invisible"
+                android:fontFamily="@font/proximanova_semibold"
+                android:text="Belum ada menu yang diproses hari ini"
+                android:textAlignment="center"
+                android:textColor="#767676"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon"
+                app:layout_constraintVertical_bias="0.050000012" />
+
+
+
             <HorizontalScrollView
                 android:id="@+id/scrollFilter"
                 android:layout_width="wrap_content"
@@ -85,49 +126,6 @@
                 </LinearLayout>
 
             </HorizontalScrollView>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/emptyState"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="130dp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scrollFilter"
-                app:layout_constraintVertical_bias="0.0">
-
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="0dp"
-                    android:layout_height="137dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp"
-                    android:src="@drawable/ongoingicon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginRight="32dp"
-                    android:fontFamily="@font/proximanova_semibold"
-                    android:text="Belum ada menu yang diproses hari ini"
-                    android:textAlignment="center"
-                    android:textColor="#767676"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/icon" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_transaction"

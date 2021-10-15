@@ -129,7 +129,7 @@ class OmniTransactionListAdapter (
         var paymentStatus: TextView = itemView.paymentStatus
         var menuCount: TextView = itemView.menuCount
         var price: TextView = itemView.totalPrice
-        var price2: TextView = itemView.totalPrice2
+        var price2: TextView = itemView.totalPriceOmni
         var acceptBtn: Button = itemView.acceptButton
         var rejectBtn: Button = itemView.rejectButton
         var rView: RecyclerView = itemView.recyclerview_menu_omni
