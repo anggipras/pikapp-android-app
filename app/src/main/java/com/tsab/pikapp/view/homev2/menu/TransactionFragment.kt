@@ -138,6 +138,8 @@ class TransactionFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.setAmountOfTrans(0)
+        viewModel.setProcessBadges(null)
+//        viewModel.setDecreaseBadge(null)
     }
 
 }

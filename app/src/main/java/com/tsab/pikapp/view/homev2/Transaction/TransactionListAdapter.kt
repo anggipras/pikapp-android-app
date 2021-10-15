@@ -149,7 +149,7 @@ class TransactionListAdapter(
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "DELIVER", "Proses", holder)
-                    listener.onItemClick(1)
+//                    listener.onItemClick(1)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.visibility = View.GONE
@@ -245,7 +245,7 @@ class TransactionListAdapter(
         setIsLoading(true)
         postUpdate(txnId, status)
         Handler().postDelayed({
-            getStoreOrderList(orderStatus, holder)
+            getStoreOrderList(status, orderStatus, holder)
             notifyDataSetChanged()
         }, 2000)
     }
@@ -347,7 +347,7 @@ class TransactionListAdapter(
         )
     }
 
-    fun getStoreOrderList(status: String, holder: ViewHolder) {
+    fun getStoreOrderList(deliveryStatus: String, status: String, holder: ViewHolder) {
         setIsLoading(true)
         prefHelper.clearStoreOrderList()
         val email = sessionManager.getUserData()!!.email!!
@@ -367,6 +367,9 @@ class TransactionListAdapter(
                                 setProcessOrder(context, recyclerView, status, supportFragmentManager, listener)
                                 setIsLoading(false)
                                 holder.loadingOverlay.visibility = View.GONE
+                                if (deliveryStatus == "DELIVER") {
+                                    listener.onItemClick(1)
+                                }
                             }
 
                             override fun onError(e: Throwable) {
