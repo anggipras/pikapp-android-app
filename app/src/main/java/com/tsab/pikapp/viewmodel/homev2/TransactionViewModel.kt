@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,13 +27,11 @@ import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.Transaction.TransactionListAdapter
-import com.tsab.pikapp.view.homev2.Transaction.TxnReportAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_txn_report.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -67,6 +66,18 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableProses = MutableLiveData(0)
     val proses: LiveData<Int> get() = mutableProses
 
+    val mutablePikappFilter = MutableLiveData<Boolean>(false)
+    val pikappFilter: LiveData<Boolean> get() = mutablePikappFilter
+
+    val mutableGrabFilter = MutableLiveData<Boolean>(false)
+    val grabFilter: LiveData<Boolean> get() = mutableGrabFilter
+
+    val mutableTokpedFilter = MutableLiveData<Boolean>(false)
+    val tokpedFilter: LiveData<Boolean> get() = mutableTokpedFilter
+
+    val mutableShopeeFilter = MutableLiveData<Boolean>(false)
+    val shopeeFilter: LiveData<Boolean> get() = mutableShopeeFilter
+
     private val mutableFilter = MutableLiveData<RecyclerView>()
     val filter: LiveData<RecyclerView> get() = mutableFilter
 
@@ -97,6 +108,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableBatal = MutableLiveData(0)
     val batal: LiveData<Int> get() = mutableBatal
 
+    val mutableCountTxn = MutableLiveData(0)
+    val countTxn: LiveData<Int> get() = mutableCountTxn
+
     private val mutableDone = MutableLiveData(0)
     val done: LiveData<Int> get() = mutableDone
 
@@ -106,6 +120,30 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val isLoading: LiveData<Boolean> = mutableIsLoading
     fun setLoading(isLoading: Boolean) {
         mutableIsLoading.value = isLoading
+    }
+
+    private val mutableAmountOfTransaction = MutableLiveData(0)
+    val amountOfTransaction: LiveData<Int> = mutableAmountOfTransaction
+    fun setAmountOfTrans(isAmount: Int) {
+        mutableAmountOfTransaction.value = isAmount
+    }
+
+    private val mutableProcessBadges = MutableLiveData<Int?>()
+    val processBadges: LiveData<Int?> = mutableProcessBadges
+    fun setProcessBadges(badge: Int?) {
+        mutableProcessBadges.value = badge
+    }
+
+    private val mutableDecreaseBadge = MutableLiveData<Int>()
+    val decreaseBadge: LiveData<Int> = mutableDecreaseBadge
+    fun setTotalProcessBadge(badge: Int) {
+        mutableDecreaseBadge.value = badge
+    }
+    fun setDecreaseBadge(badge: Int?) {
+        val totalProcessBadges = decreaseBadge.value
+        if (totalProcessBadges != null) {
+            mutableDecreaseBadge.value = totalProcessBadges - badge!!
+        }
     }
 
     private val mutableCategoryName = MutableLiveData(" ")
@@ -132,6 +170,17 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     fun filterOn (pikappStatus: Boolean
                   , tokpedStatus: Boolean, grabStatus: Boolean, shopeeStatus: Boolean, size: Int){
+
+        if(!pikappStatus && !tokpedStatus && !grabStatus && !shopeeStatus){
+            mutableCountTxn.value = 0
+        }else{
+            mutableCountTxn.value = size
+        }
+
+        mutablePikappFilter.value = pikappStatus
+        mutableTokpedFilter.value = tokpedStatus
+        mutableGrabFilter.value = grabStatus
+        mutableShopeeFilter.value = shopeeStatus
 
         if(size == 0){
             mutableEmpty.value!!.isVisible
@@ -195,7 +244,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout) {
+    fun getStoreOrderList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, listener: TransactionListAdapter.OnItemClickListener) {
         setLoading(true)
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
@@ -210,7 +259,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
         ).enqueue(object : Callback<GetStoreOrderListV2Response>{
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
-                Log.e("failedgettotal", t.message.toString())
+                Log.e("Failed_Get_Total", t.message.toString())
             }
 
             override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
@@ -218,7 +267,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val totalItemsTrans = response.body()?.total_items
-                    getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans)
+                    if (totalItemsTrans != 0) {
+                        getStoreOrderAllList(baseContext, recyclerview_transaction, status, support, empty, totalItemsTrans, listener)
+                    } else {
+                        setLoading(false)
+                    }
                 }  else {
                     var errorResponse: GetStoreOrderListV2Response? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -232,7 +285,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         })
     }
 
-    fun getStoreOrderAllList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, totalItems: Int?) {
+    fun getStoreOrderAllList(baseContext: Context, recyclerview_transaction: RecyclerView, status: String, support: FragmentManager, empty: ConstraintLayout, totalItems: Int?, listener: TransactionListAdapter.OnItemClickListener) {
         var sessionManager = SessionManager(getApplication())
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -244,7 +297,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
         ).enqueue(object : Callback<GetStoreOrderListV2Response>{
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
-                Log.e("failedgettotal", t.message.toString())
+                Log.e("FAILED_GET_LIST_TRANS", t.message.toString())
+                setLoading(false)
             }
 
             override fun onResponse(call: Call<GetStoreOrderListV2Response>, response: Response<GetStoreOrderListV2Response>) {
@@ -279,10 +333,10 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     mutableBatal.value = batalList.size
                     mutableDone.value = doneList.size
                     if(status == "Proses"){
-                        empty.isVisible = prosesList.isEmpty()
+//                        empty.isVisible = prosesList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
-                                prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
+                                prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction, listener)
                         categoryAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = categoryAdapter
                         categoryAdapter.notifyDataSetChanged()
@@ -291,7 +345,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = batalList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
-                                batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
+                                batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction, listener)
                         categoryAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = categoryAdapter
                         categoryAdapter.notifyDataSetChanged()
@@ -300,13 +354,22 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = doneList.isEmpty()
                         categoryAdapter = TransactionListAdapter(
                                 baseContext,
-                                doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction)
+                                doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerview_transaction, listener)
                         categoryAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = categoryAdapter
                         categoryAdapter.notifyDataSetChanged()
                     }
 
                     setLoading(false)
+                    setProcessBadges(0)
+                    val processSize = processBadges.value?.plus(prosesList.size)
+                    if (processSize != null) {
+                        setProcessBadges(processSize)
+                    }
+                    val countTrans = amountOfTransaction.value?.plus(1)
+                    if (countTrans != null) {
+                        setAmountOfTrans(countTrans)
+                    }
                 }  else {
                     var errorResponse: GetStoreOrderListV2Response? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -343,7 +406,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         )
     }
 
-    fun getListOmni(baseContext: Context, recyclerview_transaction: RecyclerView, support: FragmentManager, activity: Activity, status: String, empty: ConstraintLayout){
+    fun getListOmni(baseContext: Context, recyclerview_transaction: RecyclerView, support: FragmentManager, activity: Activity, status: String, empty: ConstraintLayout, lifecycle: Fragment){
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val mid = sessionManager.getUserData()!!.mid!!
@@ -383,15 +446,19 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                     }
                     mutableProsesOmni.value = prosesList.size
+                    val processSize = processBadges.value?.plus(prosesList.size)
+                    if (processSize != null) {
+                        setProcessBadges(processSize)
+                    }
                     mutableBatalOmni.value = batalList.size
                     mutableDoneOmni.value = doneList.size
                 }
                 Handler().postDelayed({
                     if(status == "Proses"){
-                        empty.isVisible = prosesList.isEmpty()
+//                        empty.isVisible = prosesList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                                prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty, lifecycle)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -400,7 +467,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = batalList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListBatal as MutableList<LogisticsDetailOmni>, empty)
+                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListBatal as MutableList<LogisticsDetailOmni>, empty, lifecycle)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -409,10 +476,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = doneList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListDone as MutableList<LogisticsDetailOmni>, empty)
+                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListDone as MutableList<LogisticsDetailOmni>, empty, lifecycle)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
+                    }
+                    val countTrans = amountOfTransaction.value?.plus(1)
+                    if (countTrans != null) {
+                        setAmountOfTrans(countTrans)
                     }
                 }, 1500)
             }

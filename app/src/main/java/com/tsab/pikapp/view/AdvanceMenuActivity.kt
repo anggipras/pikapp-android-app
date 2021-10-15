@@ -26,6 +26,7 @@ class AdvanceMenuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(R.anim.bottom_up, R.anim.no_animation)
         setContentView(R.layout.activity_advance_menu)
 
         val navHostFragment = advancedMenuNavHost as NavHostFragment
