@@ -38,7 +38,8 @@ class TransactionListAdapter(
         private val sessionManager: SessionManager,
         private val supportFragmentManager: FragmentManager,
         private val prefHelper: SharedPreferencesUtil,
-        private val recyclerView: RecyclerView
+        private val recyclerView: RecyclerView,
+        private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -90,7 +91,6 @@ class TransactionListAdapter(
                 formatNumber()
                 holder.price.text = "Rp " + str
                 price = 0
-                holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Terima"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
@@ -117,7 +117,6 @@ class TransactionListAdapter(
                 formatNumber()
                 holder.price.text = "Rp " + str
                 price = 0
-                holder.price2.visibility = View.GONE
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
@@ -146,11 +145,11 @@ class TransactionListAdapter(
                 formatNumber()
                 holder.price.text = "Rp " + str
                 price = 0
-                holder.price2.visibility = View.GONE
                 holder.acceptBtn.text = "Pesanan Siap"
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "DELIVER", "Proses", holder)
+//                    listener.onItemClick(1)
                     Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.visibility = View.GONE
@@ -171,7 +170,7 @@ class TransactionListAdapter(
             holder.menuCount.text = "Total " + jumlah + " Items"
             jumlah = 0
             formatNumber()
-            holder.price2.text = "Rp " + str
+            holder.price.text = "Rp " + str
             price = 0
             holder.price.visibility = View.GONE
         } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
@@ -216,9 +215,8 @@ class TransactionListAdapter(
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
                 formatNumber()
-                holder.price2.text = "Rp " + str
+                holder.price.text = "Rp " + str
                 price = 0
-                holder.price.visibility = View.GONE
             }
         }
     }
@@ -235,7 +233,6 @@ class TransactionListAdapter(
         var paymentStatus: TextView = itemView.paymentStatus
         var menuCount: TextView = itemView.menuCount
         var price: TextView = itemView.totalPrice
-        var price2: TextView = itemView.totalPrice2
         var acceptBtn: Button = itemView.acceptButton
         var rejectBtn: Button = itemView.rejectButton
         var rView: RecyclerView = itemView.recyclerview_menu
@@ -248,7 +245,7 @@ class TransactionListAdapter(
         setIsLoading(true)
         postUpdate(txnId, status)
         Handler().postDelayed({
-            getStoreOrderList(orderStatus, holder)
+            getStoreOrderList(status, orderStatus, holder)
             notifyDataSetChanged()
         }, 2000)
     }
@@ -350,7 +347,7 @@ class TransactionListAdapter(
         )
     }
 
-    fun getStoreOrderList(status: String, holder: ViewHolder) {
+    fun getStoreOrderList(deliveryStatus: String, status: String, holder: ViewHolder) {
         setIsLoading(true)
         prefHelper.clearStoreOrderList()
         val email = sessionManager.getUserData()!!.email!!
@@ -367,9 +364,12 @@ class TransactionListAdapter(
                                 orderResult.addAll(result as MutableList<StoreOrderList>)
                                 transactionList.addAll(orderResult)
                                 sortOrderList(result)
-                                setProcessOrder(context, recyclerView, status, supportFragmentManager)
+                                setProcessOrder(context, recyclerView, status, supportFragmentManager, listener)
                                 setIsLoading(false)
                                 holder.loadingOverlay.visibility = View.GONE
+                                if (deliveryStatus == "DELIVER") {
+                                    listener.onItemClick(1)
+                                }
                             }
 
                             override fun onError(e: Throwable) {
@@ -397,12 +397,12 @@ class TransactionListAdapter(
         }
     }
 
-    fun setProcessOrder(baseContext: Context, recyclerView: RecyclerView, status: String, support: FragmentManager){
+    fun setProcessOrder(baseContext: Context, recyclerView: RecyclerView, status: String, support: FragmentManager, listener: OnItemClickListener){
         if(status == "Proses"){
             transactionList.clear()
             categoryAdapter = TransactionListAdapter(
                     baseContext,
-                    prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
+                    prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView, listener)
             notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
             notifyDataSetChanged()
@@ -411,7 +411,7 @@ class TransactionListAdapter(
             transactionList.clear()
             categoryAdapter = TransactionListAdapter(
                     baseContext,
-                    batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
+                    batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView, listener)
             categoryAdapter.notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
             categoryAdapter.notifyDataSetChanged()
@@ -420,7 +420,7 @@ class TransactionListAdapter(
             transactionList.clear()
             categoryAdapter = TransactionListAdapter(
                     baseContext,
-                    doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView)
+                    doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView, listener)
             categoryAdapter.notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
             categoryAdapter.notifyDataSetChanged()
@@ -429,5 +429,9 @@ class TransactionListAdapter(
 
     fun setIsLoading(value:Boolean) {
         isLoading = value
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(i: Int)
     }
 }

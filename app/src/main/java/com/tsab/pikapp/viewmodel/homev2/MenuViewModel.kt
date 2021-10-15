@@ -9,10 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tsab.pikapp.models.model.CategoryListResult
-import com.tsab.pikapp.models.model.MerchantListCategoryResponse
-import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.models.model.SearchResponse
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.menu.SearchAdapter

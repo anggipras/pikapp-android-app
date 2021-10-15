@@ -51,9 +51,8 @@ class OtherFragment : Fragment() {
         dataBinding.merchantProfile = viewModel
 
         dataBinding.merchantSettingClick.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it, OtherSettingsActivity::class.java)
-                it.startActivity(intent)
+            Intent(activity?.baseContext, OtherSettingsActivity::class.java).apply {
+                activity?.startActivity(this)
             }
         }
 
@@ -84,6 +83,7 @@ class OtherFragment : Fragment() {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
+                    activity?.finishAffinity()
                 }
             }
         })

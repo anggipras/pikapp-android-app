@@ -48,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
                 bottom_navigation.selectedItemId = R.id.nav_transaction
             }
             sessionManager.getHomeNav() == 1 -> {
+                overridePendingTransition(R.anim.bottom_down, R.anim.no_animation)
                 replaceFragment(menuFragment)
                 bottom_navigation.selectedItemId = R.id.nav_menu
             }
@@ -56,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
                 bottom_navigation.selectedItemId = R.id.nav_promo
             }
             sessionManager.getHomeNav() == 3 -> {
+                overridePendingTransition(R.anim.bottom_down, R.anim.no_animation)
                 replaceFragment(otherFragment)
                 bottom_navigation.selectedItemId = R.id.nav_other
             }

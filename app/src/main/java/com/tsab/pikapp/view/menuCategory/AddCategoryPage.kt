@@ -2,9 +2,11 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -82,7 +84,11 @@ class AddCategoryPage : Fragment() {
         }, view)
 
         dataBinding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.activation = isChecked
+            if (isChecked){
+                viewModel.activation = isChecked
+            } else {
+                viewModel.activation = false
+            }
         }
     }
 }

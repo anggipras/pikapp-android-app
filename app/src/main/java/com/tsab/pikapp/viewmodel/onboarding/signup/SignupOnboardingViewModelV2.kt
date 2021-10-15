@@ -277,6 +277,16 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
         return isKtpValid.value!!
     }
 
+    fun setKtp(ktp: Uri?): Uri? {
+        if (ktp == null || ktp == Uri.EMPTY) {
+            Log.e("EMPTYURI", "It's empty")
+        } else {
+            mutableKtp.value = ktp
+            mutableKtpError.value = ""
+        }
+        return ktp
+    }
+
     fun validateLogo(logo: Uri?): Boolean {
         if (logo == null || logo == Uri.EMPTY) {
             mutableLogoError.value = "Logo restoran tidak boleh kosong"
@@ -289,6 +299,16 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
         return isLogoValid.value!!
     }
 
+    fun setLogo(logo: Uri?): Uri? {
+        if (logo == null || logo == Uri.EMPTY) {
+            Log.e("EMPTYURI", "It's empty")
+        } else {
+            mutableLogo.value = logo
+            mutableLogoError.value = ""
+        }
+        return logo
+    }
+
     fun validateLatar(latar: Uri?): Boolean {
         if (latar == null || latar == Uri.EMPTY) {
             mutableLatarError.value = "Gambar latar tidak boleh kosong"
@@ -299,6 +319,16 @@ class SignupOnboardingViewModelV2(application: Application) : BaseViewModel(appl
             isLatarValid.value = true
         }
         return isLatarValid.value!!
+    }
+
+    fun setLatar(latar: Uri?): Uri? {
+        if (latar == null || latar == Uri.EMPTY) {
+            Log.e("EMPTYURI", "It's empty")
+        } else {
+            mutableLatar.value = latar
+            mutableLatarError.value = ""
+        }
+        return latar
     }
 
     fun validateThirdPage(): Boolean =

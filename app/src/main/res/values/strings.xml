@@ -26,6 +26,9 @@
     <string name="alert_dialog">Apakah anda yakin ingin menghapus menu ini?</string>
     <string name="alert_dialog_menuChoice">Anda yakin ingin menghapus pilihan ini dari menu restoran Anda?</string>
 
+    <string name="tolak">Tolak</string>
+    <string name="pesanan_siap">Pesanan Siap</string>
+
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
     <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>
@@ -301,5 +304,16 @@
         <item>Tidak dapat mengirim dengan kurir yang dipilih</item>
         <item>Lainnya</item>
     </string-array>
+
+    <!-- Add menu -->
+    <string name="nama_menu">Nama Menu</string>
+    <string name="nama_menu_hint">Masukkan Nama Menu</string>
+    <string name="pilih_kategori">Pilih Kategori</string>
+    <string name="pilih_etalase_hint">Pilih Etalase</string>
+    <string name="deskripsi_header">Deskripsi</string>
+    <string name="deskripsi_hint">Masukkan Deskripsi Menu</string>
+    <string name="harga_hint">Contoh: Rp10.000</string>
+    <string name="add_menu_in_pikapp">Tambahkan Menu Ini Di PikApp</string>
+    <string name="hapus_menu">Hapus Menu</string>
 
 </resources>

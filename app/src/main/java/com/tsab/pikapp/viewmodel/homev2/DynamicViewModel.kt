@@ -46,7 +46,11 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
             ) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val amountOfMenus = response.body()!!.total_items
-                    getSearchList(amountOfMenus)
+                    if (amountOfMenus != 0) {
+                        getSearchList(amountOfMenus)
+                    } else {
+                        Log.e("Zero_Product", "There is no product available")
+                    }
                 } else {
                     Log.e("FAIL", "Failed get amount of menus")
                 }

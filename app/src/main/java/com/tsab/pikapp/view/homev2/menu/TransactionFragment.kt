@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
@@ -56,15 +58,6 @@ class TransactionFragment : Fragment() {
                 activity?.startActivityForResult(intent, 1)
                 activity?.overridePendingTransition(0, 0)
             }
-            Handler().postDelayed({
-                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-            }, 5000)
-            Handler().postDelayed({
-                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
-            }, 5000)
-            Handler().postDelayed({
-                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
-            }, 5000)
             swipeRefreshLayout = swipeTransactionMenu
             swipeRefreshLayout.setOnRefreshListener {
                 val position = dataBinding.tabs.selectedTabPosition
@@ -81,7 +74,30 @@ class TransactionFragment : Fragment() {
                 dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
                 swipeRefreshLayout.isRefreshing = false
             }
+            observeViewModel()
         }
+    }
+
+    private fun observeViewModel() {
+        viewModel.amountOfTransaction.observe(viewLifecycleOwner, Observer { amount ->
+            amount?.let {
+                if (it >= 2) {
+                    dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+                    dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
+                    dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+                    val amountOfBadgeProcess = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+                    viewModel.setTotalProcessBadge(amountOfBadgeProcess)
+                } else {
+                    Log.e("NotFinished", "All transaction total amount still on progress")
+                }
+            }
+        })
+
+        viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->
+            amount?.let {
+                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = it
+            }
+        })
     }
 
     fun closeKeyboard() {
@@ -117,6 +133,13 @@ class TransactionFragment : Fragment() {
             viewpager.adapter = adapter
             tabs.setupWithViewPager(viewpager)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.setAmountOfTrans(0)
+        viewModel.setProcessBadges(null)
+//        viewModel.setDecreaseBadge(null)
     }
 
 }

@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.menuCategory
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
+import kotlin.math.log
 
 class CategoryListFragment : Fragment() {
     private val viewModel: CategoryViewModel by activityViewModels()
@@ -50,6 +52,7 @@ class CategoryListFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     Intent(activity?.baseContext, HomeActivity::class.java).apply {
                         startActivity(this)
+                        activity?.finish()
                     }
                 }
             })
@@ -82,11 +85,11 @@ class CategoryListFragment : Fragment() {
         dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
+                activity?.finish()
             }
         }, view)
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {
-//            sessionManager.setSortNav(1)
             Intent(activity?.baseContext, SortActivity::class.java).apply {
                 putExtra("SORT_NAV", 1)
                 startActivity(this)
@@ -108,6 +111,8 @@ class CategoryListFragment : Fragment() {
                     viewModel.getCategoryActivation(category.isActive.toString())
                     viewModel.getCategoryId(category.id.toString())
                     viewModel.getCategoryMenuSize(category.productSize.toString())
+                    Log.e("activation rv", category.isActive.toString())
+                    Log.e("vm", viewModel.activationToggle.value)
 
                     navController.navigate(R.id.action_categoryListPage_to_editCategoryPage)
                 }
