@@ -112,9 +112,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         mutableAmountOfTransaction.value = isAmount
     }
 
-    private val mutableProcessBadges = MutableLiveData(0)
-    val processBadges: LiveData<Int> = mutableProcessBadges
-    fun setProcessBadges(badge: Int) {
+    private val mutableProcessBadges = MutableLiveData<Int?>()
+    val processBadges: LiveData<Int?> = mutableProcessBadges
+    fun setProcessBadges(badge: Int?) {
         mutableProcessBadges.value = badge
     }
 
@@ -123,10 +123,10 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     fun setTotalProcessBadge(badge: Int) {
         mutableDecreaseBadge.value = badge
     }
-    fun setDecreaseBadge(badge: Int) {
+    fun setDecreaseBadge(badge: Int?) {
         val totalProcessBadges = decreaseBadge.value
         if (totalProcessBadges != null) {
-            mutableDecreaseBadge.value = totalProcessBadges - badge
+            mutableDecreaseBadge.value = totalProcessBadges - badge!!
         }
     }
 
@@ -265,7 +265,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val mid = sessionManager.getUserData()!!.mid!!
         val transReq = TransactionListRequest(page = 0, size = totalItems, transaction_id = "", status = listOf())
         val timestamp = getTimestamp()
-        setProcessBadges(0)
 
         PikappApiService().api.getTransactionListV2Merchant(
                 getUUID(), timestamp, getClientID(), getSignature(email, timestamp), token, mid, transReq
@@ -304,10 +303,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                     }
                     mutableProses.value = prosesList.size
-                    val processSize = processBadges.value?.plus(prosesList.size)
-                    if (processSize != null) {
-                        setProcessBadges(processSize)
-                    }
                     mutableBatal.value = batalList.size
                     mutableDone.value = doneList.size
                     if(status == "Proses"){
@@ -339,6 +334,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     }
 
                     setLoading(false)
+                    setProcessBadges(0)
+                    val processSize = processBadges.value?.plus(prosesList.size)
+                    if (processSize != null) {
+                        setProcessBadges(processSize)
+                    }
                     val countTrans = amountOfTransaction.value?.plus(1)
                     if (countTrans != null) {
                         setAmountOfTrans(countTrans)

@@ -82,7 +82,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     override fun onResume() {
         super.onResume()
         observeViewModel()
-        dataBinding.emptyState.isVisible = viewModel.proses.value == 0 && viewModel.prosesOmni.value == 0
+//        dataBinding.emptyState.isVisible = viewModel.proses.value == 0 && viewModel.prosesOmni.value == 0
     }
 
     private fun observeViewModel() {
@@ -101,8 +101,10 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             }
         })
 
-        viewModel.processBadges.observe(viewLifecycleOwner, Observer {
-            dataBinding.emptyState.isVisible = it == 0
+        viewModel.processBadges.observe(viewLifecycleOwner, Observer { amount ->
+            amount?.let {
+                dataBinding.emptyState.isVisible = it == 0
+            }
         })
 
         viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->
@@ -136,7 +138,6 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.setProcessBadges(0)
     }
 
     override fun onDetach() {
