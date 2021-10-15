@@ -57,7 +57,7 @@
     <string name="carousel_3_header_preview">Selamat Datang di <br />PikApp!</string>
 
     <string name="sudah_punya_akun">Sudah punya akun?&#160;</string>
-    <string name="setuju_kebijakan_privasi">Dengan mendaftar, Anda setuju dengan Aturan Penggunan dan Kebijakan Privasi yang berlaku</string>
+    <string name="setuju_kebijakan_privasi"><u>Dengan mendaftar, Anda setuju dengan Aturan Penggunan dan Kebijakan Privasi yang berlaku</u></string>
 
     <!-- Sign up screens -->
     <string name="registrasi_restoran_header">Registrasi Restoran</string>
@@ -285,5 +285,21 @@
     <!-- Tokopedia Order -->
     <string name="tokopedia_upload_resi_dialog">Mohon upload resi di aplikasi e-<br />commerce sesuai pesanan untuk<br />menyelesaikan order ini.</string>
     <string name="tokopedia_tolak_dialog">Tolak melalui aplikasi tokopedia</string>
+    <string-array name="spinnerReason">
+        <item>Silahkan Pilih</item>
+        <item>Stok Produk Kosong</item>
+        <item>Toko Sedang Tutup</item>
+        <item>Kendala Kurir</item>
+        <item>Pembeli Tidak Merespons</item>
+        <item>Lainnya</item>
+    </string-array>
+
+    <string-array name="kurirReason">
+        <item>Beritahu kendala kurir yang dialami</item>
+        <item>Kantor kurir tutup</item>
+        <item>Biaya Pengiriman tidak sesuai</item>
+        <item>Tidak dapat mengirim dengan kurir yang dipilih</item>
+        <item>Lainnya</item>
+    </string-array>
 
 </resources>

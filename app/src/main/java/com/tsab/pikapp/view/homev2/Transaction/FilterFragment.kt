@@ -22,17 +22,33 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
         return inflater.inflate(R.layout.fragment_filter, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        dialog!!.pikapp.isChecked = viewModel.pikappFilter.value!!
+        dialog!!.tokopedia.isChecked = viewModel.tokpedFilter.value!!
+        dialog!!.grab.isChecked = viewModel.grabFilter.value!!
+        dialog!!.shopee.isChecked = viewModel.shopeeFilter.value!!
+        dialog!!.btnNext.setText("Tampilkan " + viewModel.countTxn.value!!.toInt() + " Pesanan")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         closeBtn.setOnClickListener {
             dismiss()
         }
-        var size: Int = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+
+        pikapp.isChecked = viewModel.pikappFilter.value!!
+        tokopedia.isChecked = viewModel.tokpedFilter.value!!
+        grab.isChecked = viewModel.grabFilter.value!!
+        shopee.isChecked = viewModel.shopeeFilter.value!!
+
+        var size: Int = viewModel.countTxn.value!!.toInt()
 
         btnNext.setText("Tampilkan " + size + " Pesanan")
 
         if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked && !pikapp.isChecked){
+            size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
             btnNext.setText("Tampilkan " + size.toString() + " Pesanan")
         }
 

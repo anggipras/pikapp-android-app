@@ -50,7 +50,7 @@ class DoneFragment : Fragment() {
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
         activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone) }
-        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_done, requireActivity().supportFragmentManager, requireActivity(), "Done", emptyStateDone) }
+        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_done, requireActivity().supportFragmentManager, requireActivity(), "Done", emptyStateDone, requireParentFragment()) }
 
 
         observeViewModel()

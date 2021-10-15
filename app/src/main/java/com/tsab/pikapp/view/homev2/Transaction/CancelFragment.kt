@@ -49,7 +49,7 @@ class CancelFragment : Fragment() {
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
         activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Batal", requireActivity().supportFragmentManager, emptyState1) }
-        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_cancel, requireActivity().supportFragmentManager, requireActivity(), "Batal", emptyState1) }
+        activity?.let { viewModel.getListOmni(it.baseContext, recyclerview_tokopedia_cancel, requireActivity().supportFragmentManager, requireActivity(), "Batal", emptyState1, requireParentFragment()) }
 
         observeViewModel()
     }

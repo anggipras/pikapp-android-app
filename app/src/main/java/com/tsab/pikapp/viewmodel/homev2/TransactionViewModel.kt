@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -67,6 +68,18 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val mutableProses = MutableLiveData(0)
     val proses: LiveData<Int> get() = mutableProses
 
+    val mutablePikappFilter = MutableLiveData<Boolean>(false)
+    val pikappFilter: LiveData<Boolean> get() = mutablePikappFilter
+
+    val mutableGrabFilter = MutableLiveData<Boolean>(false)
+    val grabFilter: LiveData<Boolean> get() = mutableGrabFilter
+
+    val mutableTokpedFilter = MutableLiveData<Boolean>(false)
+    val tokpedFilter: LiveData<Boolean> get() = mutableTokpedFilter
+
+    val mutableShopeeFilter = MutableLiveData<Boolean>(false)
+    val shopeeFilter: LiveData<Boolean> get() = mutableShopeeFilter
+
     private val mutableFilter = MutableLiveData<RecyclerView>()
     val filter: LiveData<RecyclerView> get() = mutableFilter
 
@@ -96,6 +109,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableBatal = MutableLiveData(0)
     val batal: LiveData<Int> get() = mutableBatal
+
+    val mutableCountTxn = MutableLiveData(0)
+    val countTxn: LiveData<Int> get() = mutableCountTxn
 
     private val mutableDone = MutableLiveData(0)
     val done: LiveData<Int> get() = mutableDone
@@ -132,6 +148,17 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     fun filterOn (pikappStatus: Boolean
                   , tokpedStatus: Boolean, grabStatus: Boolean, shopeeStatus: Boolean, size: Int){
+
+        if(!pikappStatus && !tokpedStatus && !grabStatus && !shopeeStatus){
+            mutableCountTxn.value = 0
+        }else{
+            mutableCountTxn.value = size
+        }
+
+        mutablePikappFilter.value = pikappStatus
+        mutableTokpedFilter.value = tokpedStatus
+        mutableGrabFilter.value = grabStatus
+        mutableShopeeFilter.value = shopeeStatus
 
         if(size == 0){
             mutableEmpty.value!!.isVisible
@@ -343,7 +370,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         )
     }
 
-    fun getListOmni(baseContext: Context, recyclerview_transaction: RecyclerView, support: FragmentManager, activity: Activity, status: String, empty: ConstraintLayout){
+    fun getListOmni(baseContext: Context, recyclerview_transaction: RecyclerView, support: FragmentManager, activity: Activity, status: String, empty: ConstraintLayout, lifecycle: Fragment){
         prefHelper.clearStoreOrderList()
         var sessionManager = SessionManager(getApplication())
         val mid = sessionManager.getUserData()!!.mid!!
@@ -391,7 +418,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = prosesList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty)
+                                prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty, lifecycle)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -400,7 +427,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = batalList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListBatal as MutableList<LogisticsDetailOmni>, empty)
+                                batalList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListBatal as MutableList<LogisticsDetailOmni>, empty, lifecycle)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -409,7 +436,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         empty.isVisible = doneList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
-                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListDone as MutableList<LogisticsDetailOmni>, empty)
+                                doneList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticListDone as MutableList<LogisticsDetailOmni>, empty, lifecycle)
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
