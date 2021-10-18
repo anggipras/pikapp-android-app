@@ -60,7 +60,7 @@
     <string name="carousel_3_header_preview">Selamat Datang di <br />PikApp!</string>
 
     <string name="sudah_punya_akun">Sudah punya akun?&#160;</string>
-    <string name="setuju_kebijakan_privasi"><u>Dengan mendaftar, Anda setuju dengan Aturan Penggunan dan Kebijakan Privasi yang berlaku</u></string>
+    <string name="setuju_kebijakan_privasi">Dengan mendaftar, Anda setuju dengan <u>Aturan Penggunan dan Kebijakan Privasi</u> yang berlaku</string>
 
     <!-- Sign up screens -->
     <string name="registrasi_restoran_header">Registrasi Restoran</string>
