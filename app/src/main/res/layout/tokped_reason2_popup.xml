@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/dialog_reason_close"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="right"
-        android:background="@drawable/ic_baseline_close_24"
         android:layout_marginTop="11dp"
         android:layout_marginRight="13dp"
+        android:background="@drawable/ic_baseline_close_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,34 +22,34 @@
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
-        android:gravity="center"
-        android:textColor="@color/tooltipText"
         android:fontFamily="@font/proximanova_regular"
-        android:textSize="15dp"
+        android:gravity="center"
         android:text="Mengapa Anda ingin menolak pesanan ini?"
+        android:textColor="@color/tooltipText"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reason"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:id="@+id/reason"
         android:background="@drawable/warning_box"
-        app:layout_constraintTop_toBottomOf="@id/dialog_reason_text"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_reason_text">
 
         <ImageView
+            android:id="@+id/warninglogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/reasonwarning"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginLeft="5dp"
+            android:src="@drawable/reasonwarning"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:id="@+id/warninglogo"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="190dp"
@@ -69,53 +68,53 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stokKosong"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:id="@+id/stokKosong"
-        android:visibility="invisible"
         android:layout_marginBottom="10dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/btnGroup"
-        app:layout_constraintTop_toBottomOf="@id/reason"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reason">
 
         <TextView
+            android:id="@+id/textExplain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Beritahu pembeli anda bahwa stok kosong"
-            android:fontFamily="@font/proximanova_regular"
-            android:textSize="13sp"
-            android:id="@+id/textExplain"
-            android:textColor="@color/tooltipText"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="5dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:fontFamily="@font/proximanova_regular"
+            android:text="Beritahu pembeli anda bahwa stok kosong"
+            android:textColor="@color/tooltipText"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:id="@+id/editReason"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/editReason"
             android:layout_marginTop="5dp"
             android:background="@drawable/white_rounded_outline"
+            android:fontFamily="@font/proximanova_regular"
             android:hint="Contoh: Produk akan direstock pada..."
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
             android:textColorHint="#c4c4c4"
             android:textSize="13sp"
-            android:paddingLeft="10dp"
-            app:layout_constraintTop_toBottomOf="@id/textExplain"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:textColor="@color/black"
-            android:fontFamily="@font/proximanova_regular"/>
+            app:layout_constraintTop_toBottomOf="@id/textExplain" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/restoTutup"
         android:layout_width="270dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/btnGroup"
-        android:visibility="invisible"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/btnGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reason">
@@ -138,16 +137,16 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/white_rounded_outline"
+            android:drawableEnd="@drawable/ic_baseline_date_range_24"
+            android:focusable="false"
             android:fontFamily="@font/proximanova_regular"
             android:hint="Pilih tanggal toko akan tutup"
+            android:inputType="date"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:inputType="date"
-            android:drawableEnd="@drawable/ic_baseline_date_range_24"
             android:textColor="@color/black"
             android:textColorHint="#c4c4c4"
             android:textSize="13sp"
-            android:focusable="false"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textDate" />
@@ -186,10 +185,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/kendalaKurir"
         android:layout_width="270dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/btnGroup"
-        android:visibility="invisible"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/btnGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reason">
@@ -241,7 +240,6 @@
             android:id="@+id/editReasonOther"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:visibility="gone"
             android:layout_marginTop="5dp"
             android:background="@drawable/white_rounded_outline"
             android:fontFamily="@font/proximanova_regular"
@@ -250,6 +248,7 @@
             android:textColor="@color/black"
             android:textColorHint="#c4c4c4"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textOther" />
@@ -260,9 +259,9 @@
         android:id="@+id/btnGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginBottom="19dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

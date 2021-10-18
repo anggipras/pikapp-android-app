@@ -143,6 +143,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+
     // JJWT
     api 'io.jsonwebtoken:jjwt-api:0.11.2'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'

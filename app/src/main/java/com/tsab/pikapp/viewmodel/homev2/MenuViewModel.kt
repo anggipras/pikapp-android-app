@@ -4,15 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.model.CategoryListResult
+import com.tsab.pikapp.models.model.MerchantListCategoryResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.menu.SearchAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback

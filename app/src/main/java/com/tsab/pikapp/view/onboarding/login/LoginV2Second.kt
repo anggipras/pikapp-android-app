@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentLoginV2SecondBinding
-import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModelV2
 import kotlinx.android.synthetic.main.fragment_login_v2_second.*

@@ -17,11 +17,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emptyStateDone"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="invisible"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent">
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/icon"
@@ -37,18 +37,18 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="32dp"
                     android:text="Belum ada menu yang selesai hari ini"
+                    android:textColor="#767676"
+                    android:layout_marginRight="32dp"
                     android:fontFamily="@font/proximanova_semibold"
                     android:textSize="15sp"
-                    android:textColor="#767676"
                     android:textAlignment="center"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/icon"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

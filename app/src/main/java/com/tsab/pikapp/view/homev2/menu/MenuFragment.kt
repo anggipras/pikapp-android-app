@@ -22,7 +22,6 @@ import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_proccess.*
 import java.io.File
 
 class MenuFragment : Fragment() {
@@ -35,8 +34,8 @@ class MenuFragment : Fragment() {
     private val sessionManager = SessionManager()
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.menu_fragment, container, false)
         return dataBinding.root
@@ -66,7 +65,8 @@ class MenuFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.shimmerFrameLayoutCategory.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dataBinding.shimmerFrameLayoutCategory.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
             if (!isLoading) {
                 initViews()
                 dataBinding.shimmerFrameLayoutMenu.visibility = View.GONE
@@ -179,9 +179,9 @@ class MenuFragment : Fragment() {
     private fun initViews() {
         dataBinding.viewpager.offscreenPageLimit = 5
         dataBinding.viewpager.addOnPageChangeListener(
-                TabLayout.TabLayoutOnPageChangeListener(
-                        dataBinding.tabs
-                )
+            TabLayout.TabLayoutOnPageChangeListener(
+                dataBinding.tabs
+            )
         )
 
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -230,7 +230,7 @@ class MenuFragment : Fragment() {
                 }
             }
             dir.delete()
-        } else if (dir != null && dir.isFile()) {
+        } else if (dir != null && dir.isFile) {
             dir.delete()
         } else {
             false

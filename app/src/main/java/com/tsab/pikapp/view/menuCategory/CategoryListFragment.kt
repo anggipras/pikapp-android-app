@@ -22,7 +22,6 @@ import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.lists.CategoryListAdapter
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
-import kotlin.math.log
 
 class CategoryListFragment : Fragment() {
     private val viewModel: CategoryViewModel by activityViewModels()
