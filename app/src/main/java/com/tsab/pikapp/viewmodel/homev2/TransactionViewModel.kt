@@ -457,7 +457,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     }
 
                     setLoading(false)
-                    setProcessBadges(0)
                     val processSize = processBadges.value?.plus(prosesList.size)
                     if (processSize != null) {
                         setProcessBadges(processSize)

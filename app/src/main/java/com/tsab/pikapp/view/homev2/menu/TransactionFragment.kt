@@ -54,19 +54,6 @@ class TransactionFragment : Fragment() {
                 activity?.startActivityForResult(intent, 1)
                 activity?.overridePendingTransition(0, 0)
             }
-
-            Handler().postDelayed({
-                dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number =
-                    viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-            }, 5000)
-            Handler().postDelayed({
-                dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number =
-                    viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
-            }, 5000)
-            Handler().postDelayed({
-                dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number =
-                    viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
-            }, 5000)
             swipeRefreshLayout = swipeTransactionMenu
 
             swipeRefreshLayout = dataBinding.swipeTransactionMenu
