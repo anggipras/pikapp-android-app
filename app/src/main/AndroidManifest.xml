@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".view.report.ReportActivity"></activity>
+        <activity android:name=".view.other.otherReport.ReportActivity"></activity>
         <activity android:name=".view.homev2.menu.tokopedia.EtalaseNavigation" />
         <activity android:name=".view.AddTokpedMenuActivity" />
 

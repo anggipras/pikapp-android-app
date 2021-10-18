@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.report
+package com.tsab.pikapp.viewmodel.other
 
 import androidx.lifecycle.ViewModel
 

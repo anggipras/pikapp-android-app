@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeReportFragment"
-        android:name="com.tsab.pikapp.view.report.HomeReportFragment"
+        android:name="com.tsab.pikapp.view.other.otherReport.HomeReportFragment"
         android:label="home_report_fragment"
         tools:layout="@layout/home_report_fragment" />
 </navigation>

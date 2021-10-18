@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.report
+package com.tsab.pikapp.view.other.otherReport
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.tsab.pikapp.R
+import com.tsab.pikapp.viewmodel.other.ReportViewModel
 
 class HomeReportFragment : Fragment() {
     private lateinit var viewModel: ReportViewModel
