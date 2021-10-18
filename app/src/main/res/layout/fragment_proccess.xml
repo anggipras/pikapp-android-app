@@ -14,12 +14,12 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/emptyState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scrollFilter"
-                android:id="@+id/emptyState"/>
+                app:layout_constraintTop_toBottomOf="@id/scrollFilter" />
 
             <ImageView
                 android:id="@+id/icon"
@@ -27,9 +27,9 @@
                 android:layout_height="137dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="32dp"
-                android:visibility="invisible"
                 android:layout_marginRight="32dp"
                 android:src="@drawable/ongoingicon"
+                android:visibility="invisible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/scrollFilter" />
@@ -40,103 +40,104 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:visibility="invisible"
                 android:fontFamily="@font/proximanova_semibold"
                 android:text="Belum ada menu yang diproses hari ini"
                 android:textAlignment="center"
                 android:textColor="#767676"
                 android:textSize="15sp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/icon"
                 app:layout_constraintVertical_bias="0.050000012" />
 
-
-
             <HorizontalScrollView
                 android:id="@+id/scrollFilter"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="10dp"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:id="@+id/filter"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/header">
+                    android:paddingHorizontal="10dp">
 
                     <Button
                         android:id="@+id/buttonFilterCount"
-                        android:layout_width="70dp"
-                        android:layout_height="25dp"
-                        android:textAllCaps="false"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
                         android:background="@drawable/gray_square_btn"
-                        android:text="Filter"
-                        android:textColor="#aaaaaa" />
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/filter"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
 
                     <Button
                         android:id="@+id/buttonFilterPikapp"
-                        android:layout_width="70dp"
-                        android:layout_height="25dp"
-                        android:textAllCaps="false"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
                         android:background="@drawable/gray_square_btn"
-                        android:text="Pikapp"
-                        android:textColor="#aaaaaa" />
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/pikapp"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
 
                     <Button
                         android:id="@+id/buttonFilterTokped"
-                        android:layout_width="85dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="5dp"
-                        android:textAllCaps="false"
-                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
                         android:background="@drawable/gray_square_btn"
-                        android:text="Tokopedia"
-                        android:textColor="#aaaaaa" />
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/tokopedia"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
 
                     <Button
                         android:id="@+id/buttonFilterGrab"
-                        android:layout_width="65dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="5dp"
-                        android:textAllCaps="false"
-                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
                         android:background="@drawable/gray_square_btn"
-                        android:text="Grab"
-                        android:textColor="#aaaaaa" />
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/grab"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
 
                     <Button
                         android:id="@+id/buttonFilterShopee"
-                        android:layout_width="70dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="5dp"
-                        android:textAllCaps="false"
-                        android:layout_marginRight="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
                         android:background="@drawable/gray_square_btn"
-                        android:text="Shopee"
-                        android:textColor="#aaaaaa" />
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/shopee"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
 
                 </LinearLayout>
-
             </HorizontalScrollView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -149,7 +150,7 @@
                 android:id="@+id/recyclerview_tokopedia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -162,23 +163,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerview_transaction"/>
+                app:layout_constraintTop_toBottomOf="@+id/recyclerview_transaction" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerview_transaction" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerview_tokopedia" />
 
             <include
                 android:id="@+id/loadingOverlay"
                 layout="@layout/layout_loading_overlay"
                 android:visibility="gone" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerview_transaction"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerview_tokopedia"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

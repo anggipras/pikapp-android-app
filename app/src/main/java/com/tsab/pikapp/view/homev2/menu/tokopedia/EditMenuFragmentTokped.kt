@@ -3,7 +3,6 @@ package com.tsab.pikapp.view.homev2.menu.tokopedia
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -18,8 +18,6 @@ import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentAddMenu2Binding
-import com.tsab.pikapp.databinding.FragmentEditMenuBinding
 import com.tsab.pikapp.databinding.FragmentEditMenuTokpedBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
@@ -35,9 +33,9 @@ class EditMenuFragmentTokped : Fragment() {
     private var sessionManager = SessionManager()
 
     private val pickerContent =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-                viewModel.validateImg(uri)
-            }
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            viewModel.validateImg(uri)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,7 @@ class EditMenuFragmentTokped : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         dataBinding = FragmentEditMenuTokpedBinding.inflate(
-                inflater, container, false
+            inflater, container, false
         )
         return dataBinding.root
     }
@@ -178,15 +176,15 @@ class EditMenuFragmentTokped : Fragment() {
 
     private fun openDialog() {
         val mDialogView =
-                LayoutInflater.from(requireActivity()).inflate(R.layout.alert_dialog, null)
+            LayoutInflater.from(requireActivity()).inflate(R.layout.alert_dialog, null)
         val mBuilder = AlertDialog.Builder(requireActivity())
-                .setView(mDialogView)
+            .setView(mDialogView)
         val mAlertDialog = mBuilder.show()
         mAlertDialog.window?.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                        requireActivity(),
-                        R.drawable.dialog_background
-                )
+            AppCompatResources.getDrawable(
+                requireActivity(),
+                R.drawable.dialog_background
+            )
         )
         mDialogView.dialog_back.setOnClickListener {
             mAlertDialog.dismiss()

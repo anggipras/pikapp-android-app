@@ -2,10 +2,8 @@ package com.tsab.pikapp.view.homev2.Transaction
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,28 +15,19 @@ import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.api.internal.LifecycleActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.Transaction.shipment.ResiTokopediaDialogFragment
 import com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileBirthdayFragment
 import com.tsab.pikapp.view.other.otherSettings.profileSetting.setFragmentResultListener
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.delete_etalase_popup.view.*
-import kotlinx.android.synthetic.main.fragment_proccess.view.*
 import kotlinx.android.synthetic.main.omni_tokped_popup.view.*
 import kotlinx.android.synthetic.main.tokped_reason2_popup.view.*
 import kotlinx.android.synthetic.main.tokped_reason_popup.*
@@ -48,8 +37,6 @@ import kotlinx.android.synthetic.main.tokped_reason_popup.view.dialog_reason_tex
 import kotlinx.android.synthetic.main.tokped_reject_popup.view.*
 import kotlinx.android.synthetic.main.tokped_reject_popup.view.dialog_tokped_back
 import kotlinx.android.synthetic.main.tokped_reject_popup.view.dialog_tokped_ok
-import kotlinx.android.synthetic.main.transaction_list_items.view.*
-import kotlinx.android.synthetic.main.omni_tokped_popup.view.*
 import kotlinx.android.synthetic.main.transaction_list_items.view.acceptButton
 import kotlinx.android.synthetic.main.transaction_list_items.view.lastOrder
 import kotlinx.android.synthetic.main.transaction_list_items.view.loadingOverlay
@@ -67,18 +54,18 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class OmniTransactionListAdapter (
-        private val context: Context,
-        private var omniList: MutableList<OrderDetailOmni>,
-        private val omniDetailList: MutableList<List<ProductDetailOmni>>,
-        private val sessionManager: SessionManager,
-        private val supportFragmentManager: FragmentManager,
-        private val prefHelper: SharedPreferencesUtil,
-        private val recyclerView: RecyclerView,
-        private val activity: Activity,
-        private val logisticList: MutableList<LogisticsDetailOmni>,
-        private val empty: ConstraintLayout,
-        private val lifecycle: Fragment
+class OmniTransactionListAdapter(
+    private val context: Context,
+    private var omniList: MutableList<OrderDetailOmni>,
+    private val omniDetailList: MutableList<List<ProductDetailOmni>>,
+    private val sessionManager: SessionManager,
+    private val supportFragmentManager: FragmentManager,
+    private val prefHelper: SharedPreferencesUtil,
+    private val recyclerView: RecyclerView,
+    private val activity: Activity,
+    private val logisticList: MutableList<LogisticsDetailOmni>,
+    private val empty: ConstraintLayout,
+    private val lifecycle: Fragment
 ) : RecyclerView.Adapter<OmniTransactionListAdapter.ViewHolder>() {
 
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -287,7 +274,7 @@ class OmniTransactionListAdapter (
         }
     }
 
-    private fun rejectDialog(position: Int){
+    private fun rejectDialog(position: Int) {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.tokped_reject_popup, null)
         val mBuilder = AlertDialog.Builder(activity)
             .setView(mDialogView)
@@ -312,7 +299,7 @@ class OmniTransactionListAdapter (
         }
     }
 
-    private fun reasonDialog(position: Int){
+    private fun reasonDialog(position: Int) {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.tokped_reason_popup, null)
         val mBuilder = AlertDialog.Builder(activity)
             .setView(mDialogView)
@@ -326,55 +313,58 @@ class OmniTransactionListAdapter (
             )
         )
 
-        val spinnerAdapter = object : ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, items){
-            override fun isEnabled(position: Int): Boolean{
-                return position != 0
-            }
-
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val view: TextView = super.getDropDownView(position, convertView, parent) as TextView
-                if(position == 0) {
-                    view.setTextColor(Color.parseColor("#767676"))
-                } else {
-                    view.setTextColor(Color.parseColor("#000000"))
+        val spinnerAdapter =
+            object : ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, items) {
+                override fun isEnabled(position: Int): Boolean {
+                    return position != 0
                 }
-                return view
+
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    val view: TextView =
+                        super.getDropDownView(position, convertView, parent) as TextView
+                    if (position == 0) {
+                        view.setTextColor(Color.parseColor("#767676"))
+                    } else {
+                        view.setTextColor(Color.parseColor("#000000"))
+                    }
+                    return view
+                }
             }
-        }
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         mDialogView.spinnerReason.adapter = spinnerAdapter
 
-        mDialogView.spinnerReason.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
+        mDialogView.spinnerReason.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val value = parent!!.getItemAtPosition(position).toString()
-                reason = parent!!.getItemAtPosition(position).toString()
-                if(value == items[0]){
-                    (view as TextView).setTextColor(Color.parseColor("#767676"))
-                    mAlertDialog.btnNext.setBackgroundResource(R.drawable.button_dark_gray)
-                    mAlertDialog.btnNext.setTextColor(Color.parseColor("#ffffff"))
-                    mAlertDialog.btnNext.isEnabled = false
-                    mAlertDialog.btnNext.isClickable = false
-                }else{
-                    mAlertDialog.btnNext.setBackgroundResource(R.drawable.button_green_square)
-                    mAlertDialog.btnNext.setTextColor(Color.parseColor("#ffffff"))
-                    mAlertDialog.btnNext.isEnabled = true
-                    mAlertDialog.btnNext.isClickable = true
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val value = parent!!.getItemAtPosition(position).toString()
+                    reason = parent.getItemAtPosition(position).toString()
+                    if (value == items[0]) {
+                        (view as TextView).setTextColor(Color.parseColor("#767676"))
+                        mAlertDialog.btnNext.setBackgroundResource(R.drawable.button_dark_gray)
+                        mAlertDialog.btnNext.setTextColor(Color.parseColor("#ffffff"))
+                        mAlertDialog.btnNext.isEnabled = false
+                        mAlertDialog.btnNext.isClickable = false
+                    } else {
+                        mAlertDialog.btnNext.setBackgroundResource(R.drawable.button_green_square)
+                        mAlertDialog.btnNext.setTextColor(Color.parseColor("#ffffff"))
+                        mAlertDialog.btnNext.isEnabled = true
+                        mAlertDialog.btnNext.isClickable = true
+                    }
                 }
             }
-        }
 
         mDialogView.btnNext.setOnClickListener {
             Log.e("Result", mDialogView.spinnerReason.selectedItem.toString())
@@ -386,7 +376,6 @@ class OmniTransactionListAdapter (
             mAlertDialog.dismiss()
         }
     }
-
 
     private fun openDialogTokopedia(position: Int) {
         if (omniList[position].status == "PAYMENT_VERIFIED" || omniList[position].status == "PAYMENT_CONFIRMATION") {
@@ -408,25 +397,10 @@ class OmniTransactionListAdapter (
                 mAlertDialog.dismiss()
             }
         } else if (omniList[position].status == "SELLER_ACCEPT_ORDER") {
-            val mDialogView =
-                LayoutInflater.from(activity).inflate(R.layout.omni_tokped_popup, null)
-            val mBuilder = AlertDialog.Builder(activity)
-                .setView(mDialogView)
-            val mAlertDialog = mBuilder.show()
-            mAlertDialog.window?.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                    activity,
-                    R.drawable.dialog_background
-                )
+            ResiTokopediaDialogFragment().show(
+                supportFragmentManager,
+                ResiTokopediaDialogFragment.tag
             )
-            mDialogView.dialog_back.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-            mDialogView.dialog_close.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-            mDialogView.dialog_text.text =
-                "Mohon upload resi di aplikasi e-\ncommerce sesuai pesanan untuk\nmenyelesaikan order ini."
         } else if (omniList[position].status == "WAITING_FOR_PICKUP") {
             val mDialogView =
                 LayoutInflater.from(activity).inflate(R.layout.omni_tokped_popup, null)
@@ -450,46 +424,48 @@ class OmniTransactionListAdapter (
         }
     }
 
-    private fun rejectReason(position: Int, Reason: String){
+    private fun rejectReason(position: Int, Reason: String) {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.tokped_reason2_popup, null)
         val mBuilder = AlertDialog.Builder(activity)
-                .setView(mDialogView)
+            .setView(mDialogView)
         val items = activity.resources.getStringArray(R.array.kurirReason)
         val mAlertDialog = mBuilder.show()
         mAlertDialog.window?.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                        activity,
-                        R.drawable.dialog_background
-                )
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
         )
 
-        if(Reason == "Stok Produk Kosong"){
+        if (Reason == "Stok Produk Kosong") {
             mDialogView.stokKosong.visibility = View.VISIBLE
             mDialogView.dialog_reason_text.text = Reason
-        }else if(Reason == "Pembeli Tidak Merespons"){
+        } else if (Reason == "Pembeli Tidak Merespons") {
             mDialogView.stokKosong.visibility = View.VISIBLE
             mDialogView.dialog_reason_text.text = Reason
             mDialogView.textExplain.text = "Jelaskan kendala yang kamu alami"
             mDialogView.editReason.hint = "Contoh: Pembeli tidak jawab saat ditanya varian apa..."
-        }else if(Reason == "Lainnya"){
+        } else if (Reason == "Lainnya") {
             mDialogView.stokKosong.visibility = View.VISIBLE
             mDialogView.dialog_reason_text.text = "Alasan Penolakan Lainnya"
             mDialogView.textExplain.text = "Jelaskan alasan kamu menolak pesanan ini"
             mDialogView.editReason.hint = "Contoh: Saya tidak menerima pesanan ini karena..."
-        }else if(Reason == "Kendala Kurir"){
+        } else if (Reason == "Kendala Kurir") {
             mDialogView.kendalaKurir.visibility = View.VISIBLE
-            val spinnerAdapter = object : ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, items){
-                override fun isEnabled(position: Int): Boolean{
+            val spinnerAdapter = object :
+                ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, items) {
+                override fun isEnabled(position: Int): Boolean {
                     return position != 0
                 }
 
                 override fun getDropDownView(
-                        position: Int,
-                        convertView: View?,
-                        parent: ViewGroup
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
                 ): View {
-                    val view: TextView = super.getDropDownView(position, convertView, parent) as TextView
-                    if(position == 0) {
+                    val view: TextView =
+                        super.getDropDownView(position, convertView, parent) as TextView
+                    if (position == 0) {
                         view.setTextColor(Color.parseColor("#767676"))
                     } else {
                         view.setTextColor(Color.parseColor("#000000"))
@@ -501,76 +477,88 @@ class OmniTransactionListAdapter (
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             mDialogView.spinnerKurir.adapter = spinnerAdapter
 
-            mDialogView.spinnerKurir.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
+            mDialogView.spinnerKurir.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
 
-                override fun onItemSelected(
+                    override fun onItemSelected(
                         parent: AdapterView<*>?,
                         view: View?,
                         position: Int,
                         id: Long
-                ) {
-                    val value = parent!!.getItemAtPosition(position).toString()
-                    if(value == items[0]){
-                        (view as TextView).setTextColor(Color.parseColor("#767676"))
-                        mDialogView.textOther.visibility = View.GONE
-                        mDialogView.editReasonOther.visibility = View.GONE
-                        mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
-                        mDialogView.dialog_tokped_back.isEnabled = false
-                        mDialogView.dialog_tokped_back.isClickable = false
-                    }else if(value == items[1] || value == items[2] || value == items[3]){
-                        mDialogView.textOther.visibility = View.GONE
-                        mDialogView.editReasonOther.visibility = View.GONE
-                        mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
-                        mDialogView.dialog_tokped_back.isEnabled = true
-                        mDialogView.dialog_tokped_back.isClickable = true
-                    }else if(value == items[4]){
-                        mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
-                        mDialogView.textOther.visibility = View.VISIBLE
-                        mDialogView.dialog_tokped_back.isEnabled = false
-                        mDialogView.dialog_tokped_back.isClickable = false
-                        mDialogView.editReasonOther.visibility = View.VISIBLE
-                        mDialogView.editReasonOther.addTextChangedListener(object : TextWatcher{
-                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                            }
-
-                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                                if(!s.toString().equals("")){
-                                    mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
-                                    mDialogView.dialog_tokped_back.isEnabled = true
-                                    mDialogView.dialog_tokped_back.isClickable = true
+                    ) {
+                        val value = parent!!.getItemAtPosition(position).toString()
+                        if (value == items[0]) {
+                            (view as TextView).setTextColor(Color.parseColor("#767676"))
+                            mDialogView.textOther.visibility = View.GONE
+                            mDialogView.editReasonOther.visibility = View.GONE
+                            mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
+                            mDialogView.dialog_tokped_back.isEnabled = false
+                            mDialogView.dialog_tokped_back.isClickable = false
+                        } else if (value == items[1] || value == items[2] || value == items[3]) {
+                            mDialogView.textOther.visibility = View.GONE
+                            mDialogView.editReasonOther.visibility = View.GONE
+                            mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
+                            mDialogView.dialog_tokped_back.isEnabled = true
+                            mDialogView.dialog_tokped_back.isClickable = true
+                        } else if (value == items[4]) {
+                            mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
+                            mDialogView.textOther.visibility = View.VISIBLE
+                            mDialogView.dialog_tokped_back.isEnabled = false
+                            mDialogView.dialog_tokped_back.isClickable = false
+                            mDialogView.editReasonOther.visibility = View.VISIBLE
+                            mDialogView.editReasonOther.addTextChangedListener(object :
+                                TextWatcher {
+                                override fun beforeTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    count: Int,
+                                    after: Int
+                                ) {
                                 }
 
-                                if(s.toString().equals("")){
-                                    mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
-                                    mDialogView.dialog_tokped_back.isEnabled = false
-                                    mDialogView.dialog_tokped_back.isClickable = false
-                                }
-                            }
+                                override fun onTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    before: Int,
+                                    count: Int
+                                ) {
+                                    if (!s.toString().equals("")) {
+                                        mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
+                                        mDialogView.dialog_tokped_back.isEnabled = true
+                                        mDialogView.dialog_tokped_back.isClickable = true
+                                    }
 
-                            override fun afterTextChanged(s: Editable?) {
-                            }
-                        })
+                                    if (s.toString().equals("")) {
+                                        mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
+                                        mDialogView.dialog_tokped_back.isEnabled = false
+                                        mDialogView.dialog_tokped_back.isClickable = false
+                                    }
+                                }
+
+                                override fun afterTextChanged(s: Editable?) {
+                                }
+                            })
+                        }
                     }
                 }
-            }
-        }else if(Reason == "Toko Sedang Tutup"){
+        } else if (Reason == "Toko Sedang Tutup") {
             mDialogView.restoTutup.visibility = View.VISIBLE
             mDialogView.editDate.setOnClickListener {
                 val datePickerFragment = ProfileBirthdayFragment()
 
                 supportFragmentManager.setFragmentResultListener(
-                        "REQUEST_KEY", lifecycle.viewLifecycleOwner
+                    "REQUEST_KEY", lifecycle.viewLifecycleOwner
                 ) { resultKey, bundle ->
                     if (resultKey == "REQUEST_KEY") {
                         val date = bundle.getString("SELECTED_DATE")
                         mDialogView.editDate.setText(date)
-                        if(mDialogView.editCloseReason.text.isNotEmpty()){
+                        if (mDialogView.editCloseReason.text.isNotEmpty()) {
                             mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
                             mDialogView.dialog_tokped_back.isEnabled = true
                             mDialogView.dialog_tokped_back.isClickable = true
-                        }else{
+                        } else {
                             mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
                             mDialogView.dialog_tokped_back.isEnabled = false
                             mDialogView.dialog_tokped_back.isClickable = false
@@ -580,24 +568,29 @@ class OmniTransactionListAdapter (
                 datePickerFragment.show(supportFragmentManager, "ProfileBirthdayFragment")
             }
 
-            mDialogView.editCloseReason.addTextChangedListener(object : TextWatcher{
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            mDialogView.editCloseReason.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if(!s.toString().equals("")){
-                        if(mDialogView.editDate.text.isNotEmpty()){
+                    if (!s.toString().equals("")) {
+                        if (mDialogView.editDate.text.isNotEmpty()) {
                             mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
                             mDialogView.dialog_tokped_back.isEnabled = true
                             mDialogView.dialog_tokped_back.isClickable = true
-                        }else{
+                        } else {
                             mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
                             mDialogView.dialog_tokped_back.isEnabled = false
                             mDialogView.dialog_tokped_back.isClickable = false
                         }
                     }
 
-                    if(s.toString().equals("")){
+                    if (s.toString().equals("")) {
                         mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
                         mDialogView.dialog_tokped_back.isEnabled = false
                         mDialogView.dialog_tokped_back.isClickable = false
@@ -609,18 +602,18 @@ class OmniTransactionListAdapter (
             })
         }
 
-        mDialogView.editReason.addTextChangedListener(object : TextWatcher{
+        mDialogView.editReason.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(!s.toString().equals("")){
+                if (!s.toString().equals("")) {
                     mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_green_square)
                     mDialogView.dialog_tokped_back.isEnabled = true
                     mDialogView.dialog_tokped_back.isClickable = true
                 }
 
-                if(s.toString().equals("")){
+                if (s.toString().equals("")) {
                     mDialogView.dialog_tokped_back.setBackgroundResource(R.drawable.button_dark_gray)
                     mDialogView.dialog_tokped_back.isEnabled = false
                     mDialogView.dialog_tokped_back.isClickable = false
@@ -755,7 +748,10 @@ class OmniTransactionListAdapter (
                 Toast.makeText(context, "fail: $t", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onResponse(call: Call<AcceptOrderTokopediaResponse>, response: Response<AcceptOrderTokopediaResponse>) {
+            override fun onResponse(
+                call: Call<AcceptOrderTokopediaResponse>,
+                response: Response<AcceptOrderTokopediaResponse>
+            ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
             }
         })
@@ -816,10 +812,18 @@ class OmniTransactionListAdapter (
                     if (status == "Proses") {
                         empty.isVisible = prosesList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
-
-                                baseContext,
-                                prosesList as MutableList<OrderDetailOmni>, productList as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty, lifecycle)
-
+                            baseContext,
+                            prosesList as MutableList<OrderDetailOmni>,
+                            productList as MutableList<List<ProductDetailOmni>>,
+                            sessionManager,
+                            support,
+                            prefHelper,
+                            recyclerview_transaction,
+                            activity,
+                            logisticList,
+                            empty,
+                            lifecycle
+                        )
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -827,10 +831,18 @@ class OmniTransactionListAdapter (
                     if (status == "Batal") {
                         empty.isVisible = batalList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
-
-                                baseContext,
-                                prosesList as MutableList<OrderDetailOmni>, producList1 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty, lifecycle)
-
+                            baseContext,
+                            prosesList as MutableList<OrderDetailOmni>,
+                            producList1 as MutableList<List<ProductDetailOmni>>,
+                            sessionManager,
+                            support,
+                            prefHelper,
+                            recyclerview_transaction,
+                            activity,
+                            logisticList,
+                            empty,
+                            lifecycle
+                        )
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -838,10 +850,18 @@ class OmniTransactionListAdapter (
                     if (status == "Done") {
                         empty.isVisible = doneList.isEmpty()
                         omniAdapter = OmniTransactionListAdapter(
-
-                                baseContext,
-                                prosesList as MutableList<OrderDetailOmni>, productList2 as MutableList<List<ProductDetailOmni>>, sessionManager, support, prefHelper, recyclerview_transaction, activity, logisticList as MutableList<LogisticsDetailOmni>, empty, lifecycle)
-
+                            baseContext,
+                            prosesList as MutableList<OrderDetailOmni>,
+                            productList2 as MutableList<List<ProductDetailOmni>>,
+                            sessionManager,
+                            support,
+                            prefHelper,
+                            recyclerview_transaction,
+                            activity,
+                            logisticList,
+                            empty,
+                            lifecycle
+                        )
                         omniAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = omniAdapter
                         omniAdapter.notifyDataSetChanged()
@@ -879,5 +899,10 @@ class OmniTransactionListAdapter (
                 }
             }
         })
+    }
+
+    interface OmniTransactionClickListener {
+        // TODO: Add upload resi implementation.
+        fun onUploadResi()
     }
 }

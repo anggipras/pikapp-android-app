@@ -1,12 +1,8 @@
 package com.tsab.pikapp.view.menuCategory
 
 import android.app.AlertDialog
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,13 +19,9 @@ import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.delete_category_popup.view.*
-import kotlinx.android.synthetic.main.delete_category_popup.view.buttonBack
-import kotlinx.android.synthetic.main.delete_category_popup.view.buttonContinue
-import kotlinx.android.synthetic.main.delete_category_popup.view.closeBtn
 import kotlinx.android.synthetic.main.edit_category_popup.view.*
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
 import kotlinx.android.synthetic.main.fragment_add_category_page.categoryName
-import kotlinx.android.synthetic.main.fragment_add_category_page.toggleButton
 import kotlinx.android.synthetic.main.fragment_edit_category_page.*
 
 class EditCategoryPage : Fragment() {
@@ -79,7 +71,7 @@ class EditCategoryPage : Fragment() {
         }, view)
 
         dataBinding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 viewModel.activation = isChecked
             } else {
                 popupActivation()
@@ -89,15 +81,16 @@ class EditCategoryPage : Fragment() {
 
         dataBinding.deleteCategory.setOnClickListener {
             if (viewModel.categoryMenuSize.value != "0") {
-                val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.delete_category_warning_popup, null)
+                val mDialogView = LayoutInflater.from(requireActivity())
+                    .inflate(R.layout.delete_category_warning_popup, null)
                 val mBuilder = AlertDialog.Builder(requireActivity())
-                        .setView(mDialogView)
+                    .setView(mDialogView)
                 val mAlertDialog = mBuilder.show()
-                mAlertDialog.getWindow()?.setBackgroundDrawable(
-                        AppCompatResources.getDrawable(
-                                requireActivity(),
-                                R.drawable.dialog_background
-                        )
+                mAlertDialog.window?.setBackgroundDrawable(
+                    AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.dialog_background
+                    )
                 )
                 mDialogView.buttonBack.setOnClickListener {
                     mAlertDialog.dismiss()
@@ -106,15 +99,16 @@ class EditCategoryPage : Fragment() {
                     mAlertDialog.dismiss()
                 }
             } else {
-                val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.delete_category_popup, null)
+                val mDialogView = LayoutInflater.from(requireActivity())
+                    .inflate(R.layout.delete_category_popup, null)
                 val mBuilder = AlertDialog.Builder(requireActivity())
-                        .setView(mDialogView)
+                    .setView(mDialogView)
                 val mAlertDialog = mBuilder.show()
-                mAlertDialog.getWindow()?.setBackgroundDrawable(
-                        AppCompatResources.getDrawable(
-                                requireActivity(),
-                                R.drawable.dialog_background
-                        )
+                mAlertDialog.window?.setBackgroundDrawable(
+                    AppCompatResources.getDrawable(
+                        requireActivity(),
+                        R.drawable.dialog_background
+                    )
                 )
                 mDialogView.buttonBack.setOnClickListener {
                     mAlertDialog.dismiss()
@@ -125,8 +119,8 @@ class EditCategoryPage : Fragment() {
                 mDialogView.buttonContinue.setOnClickListener {
                     activity?.let {
                         viewModel.deleteCategoryPopup(
-                                categoryName.text.toString(),
-                                it.baseContext
+                            categoryName.text.toString(),
+                            it.baseContext
                         )
                     }
                     mAlertDialog.dismiss()
@@ -148,16 +142,17 @@ class EditCategoryPage : Fragment() {
         })
     }
 
-    private fun popupActivation(){
-        val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.edit_category_popup, null)
+    private fun popupActivation() {
+        val mDialogView =
+            LayoutInflater.from(requireActivity()).inflate(R.layout.edit_category_popup, null)
         val mBuilder = AlertDialog.Builder(requireActivity())
-                .setView(mDialogView)
+            .setView(mDialogView)
         val mAlertDialog = mBuilder.show()
-        mAlertDialog.getWindow()?.setBackgroundDrawable(
-                AppCompatResources.getDrawable(
-                        requireActivity(),
-                        R.drawable.dialog_background
-                )
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                requireActivity(),
+                R.drawable.dialog_background
+            )
         )
         mDialogView.buttonBackActivation.setOnClickListener {
             viewModel.activation = true

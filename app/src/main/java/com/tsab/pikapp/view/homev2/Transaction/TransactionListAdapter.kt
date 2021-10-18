@@ -32,14 +32,14 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class TransactionListAdapter(
-        private val context: Context,
-        private var transactionList: MutableList<StoreOrderList>,
-        private val transactionList1: MutableList<List<OrderDetailDetail>>,
-        private val sessionManager: SessionManager,
-        private val supportFragmentManager: FragmentManager,
-        private val prefHelper: SharedPreferencesUtil,
-        private val recyclerView: RecyclerView,
-        private val listener: OnItemClickListener
+    private val context: Context,
+    private var transactionList: MutableList<StoreOrderList>,
+    private val transactionList1: MutableList<List<OrderDetailDetail>>,
+    private val sessionManager: SessionManager,
+    private val supportFragmentManager: FragmentManager,
+    private val prefHelper: SharedPreferencesUtil,
+    private val recyclerView: RecyclerView,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<TransactionListAdapter.ViewHolder>() {
 
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -49,7 +49,7 @@ class TransactionListAdapter(
     var orderResult = ArrayList<StoreOrderList>()
     var jumlah = 0
     var price = 0
-    var str : String = ""
+    var str: String = ""
     val reasonsheet = CancelReasonFragment()
     var bulan: String = " Jun "
     var bulanTemp: String = ""
@@ -63,10 +63,11 @@ class TransactionListAdapter(
     var menuList2 = ArrayList<ArrayList<OrderDetailDetail>>()
 
     override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+        parent: ViewGroup,
+        viewType: Int
     ): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.transaction_list_items, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.transaction_list_items, parent, false)
         return ViewHolder(view)
     }
 
@@ -76,15 +77,19 @@ class TransactionListAdapter(
         sessionManager.setHomeNav(0)
 
         //on_procces
-        if (transactionList[position].status == "OPEN" || transactionList[position].status == "PAID" || transactionList[position].status == "ON_PROCESS"){
-            if (transactionList[position].status == "PAID"){
+        if (transactionList[position].status == "OPEN" || transactionList[position].status == "PAID" || transactionList[position].status == "ON_PROCESS") {
+            if (transactionList[position].status == "PAID") {
                 setDate(position)
                 holder.orderStatus.visibility = View.GONE
                 holder.paymentStatus.text = "NEW"
                 timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
-                holder.orderDate.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
+                holder.orderDate.text =
+                    transactionList[position].transactionTime?.substringAfterLast("-")
+                        ?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(
+                        " "
+                    )?.substringBeforeLast(":")
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
@@ -104,13 +109,17 @@ class TransactionListAdapter(
                     reasonsheet.show(supportFragmentManager, "show")
                     Log.e("paid", "bisa bos")
                 }
-            } else if (transactionList[position].status == "OPEN"){
+            } else if (transactionList[position].status == "OPEN") {
                 setDate(position)
                 holder.orderStatus.text = "NEW"
                 timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
-                holder.orderDate.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
+                holder.orderDate.text =
+                    transactionList[position].transactionTime?.substringAfterLast("-")
+                        ?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(
+                        " "
+                    )?.substringBeforeLast(":")
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
@@ -130,7 +139,7 @@ class TransactionListAdapter(
                     Log.e("paid", "bisa bos")
 
                 }
-            } else if (transactionList[position].status == "ON_PROCESS"){
+            } else if (transactionList[position].status == "ON_PROCESS") {
                 setDate(position)
                 holder.orderStatus.visibility = View.GONE
                 timeAgo(transactionList[position].transactionTime.toString(), holder.lastOrder)
@@ -138,7 +147,11 @@ class TransactionListAdapter(
                 holder.paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
-                holder.orderDate.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
+                holder.orderDate.text =
+                    transactionList[position].transactionTime?.substringAfterLast("-")
+                        ?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(
+                        " "
+                    )?.substringBeforeLast(":")
                 holder.price.text = ""
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
@@ -154,7 +167,7 @@ class TransactionListAdapter(
                 }
                 holder.rejectBtn.visibility = View.GONE
             }
-        } else if (transactionList[position].status == "FAILED" || transactionList[position].status == "ERROR"){
+        } else if (transactionList[position].status == "FAILED" || transactionList[position].status == "ERROR") {
             setDate(position)
             holder.orderStatus.visibility = View.GONE
             holder.rView.visibility = View.GONE
@@ -164,17 +177,22 @@ class TransactionListAdapter(
             holder.tableNumer.text = "Meja " + transactionList[position].tableNo
             holder.tableStatus.text = biz
             holder.orderDate.textSize = 10F
-            holder.orderDate.text = "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
+            holder.orderDate.text =
+                "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
             holder.lastOrder.textSize = 11F
-            holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
+            holder.lastOrder.text =
+                transactionList[position].transactionTime?.substringAfterLast("-")
+                    ?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(
+                    " "
+                )?.substringBeforeLast(":")
             holder.menuCount.text = "Total " + jumlah + " Items"
             jumlah = 0
             formatNumber()
             holder.price.text = "Rp " + str
             price = 0
             holder.price.visibility = View.GONE
-        } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
-            if (transactionList[position].status == "DELIVER"){
+        } else if (transactionList[position].status == "DELIVER" || transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE") {
+            if (transactionList[position].status == "DELIVER") {
                 setDate(position)
                 holder.orderStatus.visibility = View.GONE
                 holder.rView.visibility = View.GONE
@@ -185,9 +203,14 @@ class TransactionListAdapter(
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.textSize = 10F
-                holder.orderDate.text = "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
+                holder.orderDate.text =
+                    "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
                 holder.lastOrder.textSize = 11F
-                holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
+                holder.lastOrder.text =
+                    transactionList[position].transactionTime?.substringAfterLast("-")
+                        ?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(
+                        " "
+                    )?.substringBeforeLast(":")
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 formatNumber()
                 holder.price.text = "Rp " + str
@@ -198,7 +221,7 @@ class TransactionListAdapter(
                     Log.e("paid", "bisa bos")
                 }
                 jumlah = 0
-            } else if (transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE"){
+            } else if (transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE") {
                 setDate(position)
                 holder.orderStatus.visibility = View.GONE
                 holder.rView.visibility = View.GONE
@@ -209,9 +232,14 @@ class TransactionListAdapter(
                 holder.tableNumer.text = "Meja " + transactionList[position].tableNo
                 holder.tableStatus.text = biz
                 holder.orderDate.textSize = 10F
-                holder.orderDate.text = "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
+                holder.orderDate.text =
+                    "ID Transaksi: " + transactionList[position].transactionID?.substringBefore("-")
                 holder.lastOrder.textSize = 11F
-                holder.lastOrder.text = transactionList[position].transactionTime?.substringAfterLast("-")?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(" ")?.substringBeforeLast(":")
+                holder.lastOrder.text =
+                    transactionList[position].transactionTime?.substringAfterLast("-")
+                        ?.substringBefore(" ") + bulan + transactionList[position].transactionTime?.substringAfter(
+                        " "
+                    )?.substringBeforeLast(":")
                 holder.menuCount.text = "Total " + jumlah + " Items"
                 jumlah = 0
                 formatNumber()
@@ -240,7 +268,12 @@ class TransactionListAdapter(
         var loadingOverlay: View = itemView.loadingOverlay
     }
 
-    private fun updateTransaction(txnId: String, status: String, orderStatus: String, holder: ViewHolder){
+    private fun updateTransaction(
+        txnId: String,
+        status: String,
+        orderStatus: String,
+        holder: ViewHolder
+    ) {
         holder.loadingOverlay.visibility = View.VISIBLE
         setIsLoading(true)
         postUpdate(txnId, status)
@@ -250,7 +283,10 @@ class TransactionListAdapter(
         }, 2000)
     }
 
-    private fun setMenu(recyclerView: RecyclerView, transactionList1: MutableList<OrderDetailDetail>){
+    private fun setMenu(
+        recyclerView: RecyclerView,
+        transactionList1: MutableList<OrderDetailDetail>
+    ) {
         linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(false)
@@ -258,43 +294,45 @@ class TransactionListAdapter(
         recyclerView.adapter = menuList1
     }
 
-    private fun setDate(position: Int){
-        bulanTemp = transactionList[position].transactionTime?.substringAfter("-")?.substringBeforeLast("-").toString()
-        if(bulanTemp == "01"){
+    private fun setDate(position: Int) {
+        bulanTemp =
+            transactionList[position].transactionTime?.substringAfter("-")?.substringBeforeLast("-")
+                .toString()
+        if (bulanTemp == "01") {
             bulan = " Jan "
-        }else if(bulanTemp == "02"){
+        } else if (bulanTemp == "02") {
             bulan = " Feb "
-        }else if(bulanTemp == "03"){
+        } else if (bulanTemp == "03") {
             bulan = " Mar "
-        }else if(bulanTemp == "04"){
+        } else if (bulanTemp == "04") {
             bulan = " Apr "
-        }else if(bulanTemp == "05"){
+        } else if (bulanTemp == "05") {
             bulan = " Mei "
-        }else if(bulanTemp == "06"){
+        } else if (bulanTemp == "06") {
             bulan = " Jun "
-        }else if(bulanTemp == "07"){
+        } else if (bulanTemp == "07") {
             bulan = " Jul "
-        }else if(bulanTemp == "08"){
+        } else if (bulanTemp == "08") {
             bulan = " Ags "
-        }else if(bulanTemp == "09"){
+        } else if (bulanTemp == "09") {
             bulan = " Sep "
-        }else if(bulanTemp == "10"){
+        } else if (bulanTemp == "10") {
             bulan = " Okt "
-        }else if(bulanTemp == "11"){
+        } else if (bulanTemp == "11") {
             bulan = " Nov "
-        }else if(bulanTemp == "12"){
+        } else if (bulanTemp == "12") {
             bulan = " Des "
         }
 
-        if(transactionList[position].bizType == "TAKE_AWAY"){
+        if (transactionList[position].bizType == "TAKE_AWAY") {
             biz = "Bungkus/Takeaway"
-        }else if(transactionList[position].bizType == "DINE_IN"){
+        } else if (transactionList[position].bizType == "DINE_IN") {
             biz = "Makan di Tempat"
         }
 
-        for(count in transactionList1[position]){
+        for (count in transactionList1[position]) {
             jumlah = jumlah + count.productQty!!.toInt()
-            if (count.productQty > 1){
+            if (count.productQty > 1) {
                 price += count.productQty * count.productPrice!!.toInt()
             } else {
                 price += count.productPrice!!.toInt()
@@ -302,48 +340,51 @@ class TransactionListAdapter(
         }
     }
 
-    private fun formatNumber(){
+    private fun formatNumber() {
         str = NumberFormat.getNumberInstance(Locale.US).format(price)
     }
 
-    private fun timeAgo(time: String, holder:TextView){
+    private fun timeAgo(time: String, holder: TextView) {
         var format: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
-        var txnTime : Date = format.parse(time)
-        var timeNow : Date = Date()
-        var seconds : Long = TimeUnit.MILLISECONDS.toSeconds(timeNow.time - txnTime.time)
-        var minutes : Long = TimeUnit.MILLISECONDS.toMinutes(timeNow.time - txnTime.time)
-        var hours : Long = TimeUnit.MILLISECONDS.toHours(timeNow.time - txnTime.time)
-        var days : Long = TimeUnit.MILLISECONDS.toDays(timeNow.time - txnTime.time)
+        var txnTime: Date = format.parse(time)
+        var timeNow: Date = Date()
+        var seconds: Long = TimeUnit.MILLISECONDS.toSeconds(timeNow.time - txnTime.time)
+        var minutes: Long = TimeUnit.MILLISECONDS.toMinutes(timeNow.time - txnTime.time)
+        var hours: Long = TimeUnit.MILLISECONDS.toHours(timeNow.time - txnTime.time)
+        var days: Long = TimeUnit.MILLISECONDS.toDays(timeNow.time - txnTime.time)
 
-        if(seconds < 60){
+        if (seconds < 60) {
             holder.text = "Baru Saja"
-        }else if(minutes < 60){
+        } else if (minutes < 60) {
             holder.text = minutes.toString() + " Menit Yang Lalu"
-        }else{
+        } else {
             holder.text = hours.toString() + " Jam Yang Lalu"
         }
     }
 
-    fun postUpdate(id: String, status: String){
+    fun postUpdate(id: String, status: String) {
         setIsLoading(true)
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
 
         disposable.add(
-                pikappService.postUpdateOrderStatus(email, token,
-                        RequestBody.create(MediaType.parse("multipart/form-data"), id)
-                        , RequestBody.create(MediaType.parse("multipart/form-data"), status))
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>(){
-                            override fun onSuccess(t: UpdateStatusResponse) {
-                                Log.e("Berhasil", "Sukses")
-                            }
+            pikappService.postUpdateOrderStatus(
+                email,
+                token,
+                RequestBody.create(MediaType.parse("multipart/form-data"), id),
+                RequestBody.create(MediaType.parse("multipart/form-data"), status)
+            )
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>() {
+                    override fun onSuccess(t: UpdateStatusResponse) {
+                        Log.e("Berhasil", "Sukses")
+                    }
 
-                            override fun onError(e: Throwable) {
-                                Log.e("Gagal", "Fail")
-                            }
-                        })
+                    override fun onError(e: Throwable) {
+                        Log.e("Gagal", "Fail")
+                    }
+                })
         )
     }
 
@@ -355,32 +396,38 @@ class TransactionListAdapter(
         val mid = sessionManager.getUserData()!!.mid!!
 
         disposable.add(
-                pikappService.getTransactionListMerchant(email, token, mid)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
-                            override fun onSuccess(t: GetStoreOrderListResponse) {
-                                val result = t.results
-                                orderResult.addAll(result as MutableList<StoreOrderList>)
-                                transactionList.addAll(orderResult)
-                                sortOrderList(result)
-                                setProcessOrder(context, recyclerView, status, supportFragmentManager, listener)
-                                setIsLoading(false)
-                                holder.loadingOverlay.visibility = View.GONE
-                                if (deliveryStatus == "DELIVER") {
-                                    listener.onItemClick(1)
-                                }
-                            }
+            pikappService.getTransactionListMerchant(email, token, mid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<GetStoreOrderListResponse>() {
+                    override fun onSuccess(t: GetStoreOrderListResponse) {
+                        val result = t.results
+                        orderResult.addAll(result as MutableList<StoreOrderList>)
+                        transactionList.addAll(orderResult)
+                        sortOrderList(result)
+                        setProcessOrder(
+                            context,
+                            recyclerView,
+                            status,
+                            supportFragmentManager,
+                            listener
+                        )
+                        setIsLoading(false)
+                        holder.loadingOverlay.visibility = View.GONE
+                        if (deliveryStatus == "DELIVER") {
+                            listener.onItemClick(1)
+                        }
+                    }
 
-                            override fun onError(e: Throwable) {
-                                var errorResponse: ErrorResponse
-                                Toast.makeText(context, "failed: " + e.message, Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                    override fun onError(e: Throwable) {
+                        var errorResponse: ErrorResponse
+                        Toast.makeText(context, "failed: " + e.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
         )
     }
 
-    fun sortOrderList(transactionList: List<StoreOrderList>?){
+    fun sortOrderList(transactionList: List<StoreOrderList>?) {
         if (transactionList != null) {
             for (transaction in transactionList) {
                 if (transaction.status == "OPEN" || transaction.status == "PAID" || transaction.status == "ON_PROCESS") {
@@ -397,37 +444,64 @@ class TransactionListAdapter(
         }
     }
 
-    fun setProcessOrder(baseContext: Context, recyclerView: RecyclerView, status: String, support: FragmentManager, listener: OnItemClickListener){
-        if(status == "Proses"){
+    fun setProcessOrder(
+        baseContext: Context,
+        recyclerView: RecyclerView,
+        status: String,
+        support: FragmentManager,
+        listener: OnItemClickListener
+    ) {
+        if (status == "Proses") {
             transactionList.clear()
             categoryAdapter = TransactionListAdapter(
-                    baseContext,
-                    prosesList as MutableList<StoreOrderList>, menuList as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView, listener)
+                baseContext,
+                prosesList as MutableList<StoreOrderList>,
+                menuList as MutableList<List<OrderDetailDetail>>,
+                sessionManager,
+                support,
+                prefHelper,
+                recyclerView,
+                listener
+            )
             notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
             notifyDataSetChanged()
         }
-        if(status == "Batal"){
+        if (status == "Batal") {
             transactionList.clear()
             categoryAdapter = TransactionListAdapter(
-                    baseContext,
-                    batalList as MutableList<StoreOrderList>, menuList1 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView, listener)
+                baseContext,
+                batalList as MutableList<StoreOrderList>,
+                menuList1 as MutableList<List<OrderDetailDetail>>,
+                sessionManager,
+                support,
+                prefHelper,
+                recyclerView,
+                listener
+            )
             categoryAdapter.notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
             categoryAdapter.notifyDataSetChanged()
         }
-        if(status == "Done"){
+        if (status == "Done") {
             transactionList.clear()
             categoryAdapter = TransactionListAdapter(
-                    baseContext,
-                    doneList as MutableList<StoreOrderList>, menuList2 as MutableList<List<OrderDetailDetail>>, sessionManager, support, prefHelper, recyclerView, listener)
+                baseContext,
+                doneList as MutableList<StoreOrderList>,
+                menuList2 as MutableList<List<OrderDetailDetail>>,
+                sessionManager,
+                support,
+                prefHelper,
+                recyclerView,
+                listener
+            )
             categoryAdapter.notifyDataSetChanged()
             recyclerView.adapter = categoryAdapter
             categoryAdapter.notifyDataSetChanged()
         }
     }
 
-    fun setIsLoading(value:Boolean) {
+    fun setIsLoading(value: Boolean) {
         isLoading = value
     }
 
