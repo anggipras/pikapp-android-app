@@ -26,8 +26,8 @@ class HomeReportFragment : Fragment() {
     private val sessionManager = SessionManager()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         dataBinding = HomeReportFragmentBinding.inflate(inflater, container, false)
 
@@ -38,9 +38,9 @@ class HomeReportFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dataBinding.buttonUploadReport.setOnClickListener {
-             Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_uploadReportFragment)
+            Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_uploadReportFragment)
         }
-        
+
         sessionManager.setHomeNav(3)
         dataBinding.backButton.setOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
@@ -50,17 +50,21 @@ class HomeReportFragment : Fragment() {
         }
 
         dataBinding.backImage.setColorFilter(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.textSubtle
-            ), android.graphics.PorterDuff.Mode.SRC_IN
+                ContextCompat.getColor(
+                        requireContext(),
+                        R.color.textSubtle
+                ), android.graphics.PorterDuff.Mode.SRC_IN
         )
         dataBinding.downArrow.setColorFilter(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.colorSecondary
-            ), android.graphics.PorterDuff.Mode.SRC_IN
+                ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorSecondary
+                ), android.graphics.PorterDuff.Mode.SRC_IN
         )
+
+        dataBinding.downArrow.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_filterPageReport)
+        }
         dataBinding.dateChoice.text = "Hari ini"
 
         //display the current date and time
@@ -82,16 +86,16 @@ class HomeReportFragment : Fragment() {
 
     private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(
-                true
-            ) {
-                override fun handleOnBackPressed() {
-                    val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                    activity?.startActivity(intent)
-                    activity?.finish()
-                }
-            })
+                viewLifecycleOwner,
+                object : OnBackPressedCallback(
+                        true
+                ) {
+                    override fun handleOnBackPressed() {
+                        val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+                        activity?.startActivity(intent)
+                        activity?.finish()
+                    }
+                })
     }
 
     private fun webViewSetup(startDate: Any, endDate: Any) {
