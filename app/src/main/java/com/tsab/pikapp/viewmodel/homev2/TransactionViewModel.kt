@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -509,6 +510,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
             override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
                 val responseBody = response.body()
+                Log.e("result all", responseBody?.results.toString())
+
 
                 val resultList = responseBody?.results
                 val prosesList = ArrayList<OrderDetailOmni>()
@@ -529,15 +532,21 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             || result.status == "WAITING_FOR_PICKUP"
                         ) {
                             prosesList.add(result)
+                            Log.e("prosesList", prosesList.toString())
                             result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
                         } else if (result.status == "SELLER_CANCEL_ORDER"
                             || result.status == "ORDER_REJECTED_BY_SELLER"
                         ) {
                             batalList.add(result)
+                            Log.e("batalList", batalList.toString())
                             result.producDetails?.let { productList1.add(it as ArrayList<ProductDetailOmni>) }
-                        } else {
+                        } else if (result.status == "ORDER_DELIVERED" || result.status == "ORDER_FINISHED" || result.status == "ORDER_SHIPMENT" || result.status == "DELIVERED_TO_PICKUP_POINT") {
                             doneList.add(result)
+                            Log.e("doneList", doneList.toString())
                             result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
+                        } else {
+                            prosesList.add(result)
+                            result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
                         }
                     }
 

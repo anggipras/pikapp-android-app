@@ -104,6 +104,8 @@ class OmniTransactionListAdapter(
         sessionManager.setHomeNav(0)
         if (omniList[position].channel == "TOKOPEDIA") {
             setTokopediaCardView(holder, position)
+        } else if (omniList[position].channel == "GRAB"){
+            setGrabCardView(holder, position)
         }
     }
 
@@ -124,6 +126,27 @@ class OmniTransactionListAdapter(
         var loadingOverlay: View = itemView.loadingOverlay
         var deliveryStatus: TextView = itemView.deliveryStatus
         var deliveryMethod: TextView = itemView.deliveryMethod
+        var omniLogo: ImageView = itemView.omniChannelIcon
+    }
+
+    private fun setGrabCardView(holder: ViewHolder, position: Int){
+        setDate(position)
+        holder.omniLogo.setImageResource(R.drawable.grabfood)
+        holder.paymentStatus.text = "BARU"
+        holder.deliveryMethod.text = omniList[position].invoiceNo
+        holder.deliveryStatus.visibility = View.GONE
+        holder.orderDate.text = omniList[position].orderTime.toString().substringAfterLast("-")
+                .substringBefore("T") + bulan + omniList[position].orderTime.toString()
+                .substringAfter("T").substringBeforeLast(":")
+        formatNumber()
+        holder.price2.visibility = View.GONE
+        holder.price.text = "Rp. $str"
+        price = 0
+        holder.menuCount.text = "Total $jumlah items:"
+        jumlah = 0
+        holder.acceptBtn.visibility = View.GONE
+        holder.rejectBtn.visibility = View.GONE
+        timeAgo(omniList[position].orderTime.toString(), holder.lastOrder)
     }
 
     private fun setTokopediaCardView(holder: ViewHolder, position: Int) {
