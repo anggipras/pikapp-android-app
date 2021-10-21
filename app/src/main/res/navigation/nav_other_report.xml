@@ -9,5 +9,14 @@
         android:id="@+id/homeReportFragment"
         android:name="com.tsab.pikapp.view.other.otherReport.HomeReportFragment"
         android:label="home_report_fragment"
-        tools:layout="@layout/home_report_fragment" />
+        tools:layout="@layout/home_report_fragment" >
+        <action
+            android:id="@+id/action_homeReportFragment_to_filterPageReport"
+            app:destination="@id/filterPageReport" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterPageReport"
+        android:name="com.tsab.pikapp.view.other.otherReport.FilterPageReport"
+        android:label="fragment_filter_page_report"
+        tools:layout="@layout/fragment_filter_page_report" />
 </navigation>

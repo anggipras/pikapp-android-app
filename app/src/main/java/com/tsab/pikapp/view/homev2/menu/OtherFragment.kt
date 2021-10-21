@@ -19,6 +19,8 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
+import com.tsab.pikapp.view.other.otherReport.FilterPageReport
+import com.tsab.pikapp.view.other.otherReport.ReportActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
 import kotlinx.android.synthetic.main.other_fragment.*
 
@@ -58,6 +60,12 @@ class OtherFragment : Fragment() {
 
         dataBinding.integrasiButton.setOnClickListener {
             Intent(activity?.baseContext, IntegrationActivity::class.java).apply {
+                activity?.startActivity(this)
+            }
+        }
+
+        dataBinding.reportButton.setOnClickListener{
+            Intent(activity?.baseContext, ReportActivity::class.java).apply {
                 activity?.startActivity(this)
             }
         }
