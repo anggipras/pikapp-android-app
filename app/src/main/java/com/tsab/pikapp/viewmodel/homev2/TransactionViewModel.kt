@@ -544,9 +544,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             doneList.add(result)
                             Log.e("doneList", doneList.toString())
                             result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
-                        } else {
+                        } else if (result.channel == "GRAB") {
                             prosesList.add(result)
                             result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
+                        } else {
+                            Timber.tag(tag).d("Invalid transaction")
                         }
                     }
 
