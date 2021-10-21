@@ -10,6 +10,7 @@ import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.HomeReportFragmentBinding
 import com.tsab.pikapp.view.homev2.HomeActivity
@@ -33,6 +34,10 @@ class HomeReportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.buttonUploadReport.setOnClickListener {
+             Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_uploadReportFragment)
+        }
 
         dataBinding.backButton.setOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
