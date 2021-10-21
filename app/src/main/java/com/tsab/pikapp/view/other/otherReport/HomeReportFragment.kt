@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.HomeReportFragmentBinding
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.other.ReportViewModel
 import java.sql.Timestamp
@@ -22,6 +23,7 @@ import java.util.*
 class HomeReportFragment : Fragment() {
     private lateinit var dataBinding: HomeReportFragmentBinding
     private lateinit var viewModel: ReportViewModel
+    private val sessionManager = SessionManager()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +40,8 @@ class HomeReportFragment : Fragment() {
         dataBinding.buttonUploadReport.setOnClickListener {
              Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_uploadReportFragment)
         }
-
+        
+        sessionManager.setHomeNav(3)
         dataBinding.backButton.setOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
