@@ -10,6 +10,7 @@ import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.HomeReportFragmentBinding
@@ -22,7 +23,7 @@ import java.util.*
 
 class HomeReportFragment : Fragment() {
     private lateinit var dataBinding: HomeReportFragmentBinding
-    private lateinit var viewModel: ReportViewModel
+    private val viewModel: ReportViewModel by activityViewModels()
     private val sessionManager = SessionManager()
 
     override fun onCreateView(
@@ -65,18 +66,26 @@ class HomeReportFragment : Fragment() {
         dataBinding.downArrow.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_filterPageReport)
         }
-        dataBinding.dateChoice.text = "Hari ini"
 
-        //display the current date and time
-        val id = Locale("in", "ID")
-        val dateNow = SimpleDateFormat("EEEE, d MMMM yyyy", id).format(Date())
+        if (viewModel.dateSelection.value.isNullOrEmpty()) {
+            val id = Locale("in", "ID")
+            val dateNow = SimpleDateFormat("EEEE, d MMMM yyyy", id).format(Date())
+            dataBinding.dateChoice.text = "Hari ini"
+            dataBinding.dateSelection.text = dateNow
+        } else {
+            dataBinding.dateChoice.text = viewModel.dateSelection.value
+            if (viewModel.dateSelection.value == "Hari ini" || viewModel.dateSelection.value == "Kemarin") {
+                dataBinding.dateSelection.text = viewModel.endDate.value
+            } else {
+                dataBinding.dateSelection.text = "${viewModel.startDate.value} s/d ${viewModel.endDate.value}"
+            }
+        }
 
 //        val calendar = Calendar.getInstance()
 //        calendar.set(2021, 10, 15, 0, 0, 0)
 //        val timestamp = Timestamp(calendar.timeInMillis)
 //        val dateFormat = SimpleDateFormat("EEEE, d MMMM yyyy", id).format(timestamp)
 
-        dataBinding.dateSelection.text = dateNow
         val startDate = "M00000150"
         val endDate = "7"
 

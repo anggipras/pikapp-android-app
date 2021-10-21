@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentFilterPageReportBinding
 import com.tsab.pikapp.util.SessionManager
@@ -34,9 +35,9 @@ class FilterPageReport : Fragment() {
     private var edate = ""
     private var startDate = ""
     private var endDate = ""
-    private val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.UK)
+    private val id = Locale("in", "ID")
+    private val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", id)
     var cal = Calendar.getInstance()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -62,10 +63,12 @@ class FilterPageReport : Fragment() {
                     dataBinding.btnNext.isEnabled = false
                     Toast.makeText(context, "invalid start date and end date", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "$startDate - $endDate", Toast.LENGTH_SHORT).show()
+                    view?.let { Navigation.findNavController(it).popBackStack() }
+//                    Toast.makeText(context, "$startDate - $endDate", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(context, "filter : $date", Toast.LENGTH_SHORT).show()
+                view?.let { Navigation.findNavController(it).popBackStack() }
+//                Toast.makeText(context, "filter : $date", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -118,8 +121,14 @@ class FilterPageReport : Fragment() {
             clearSelection()
             cal = Calendar.getInstance()
             date = sdf.format(cal.time)
-            viewModel.getStartDate(date)
             viewModel.getEndDate(date)
+
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+            date = sdf.format(cal.time)
+            viewModel.getStartDate(date)
+            viewModel.getDateSelection("Hari ini")
             today.setBackgroundResource(R.drawable.button_green_square)
             today.setTextColor(Color.parseColor("#ffffff"))
         }
@@ -128,9 +137,18 @@ class FilterPageReport : Fragment() {
             clearSelection()
             cal = Calendar.getInstance()
             cal.add(Calendar.DATE, - 1)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.MILLISECOND, 59)
+            date = sdf.format(cal.time)
+            viewModel.getEndDate(date)
+
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             date = sdf.format(cal.time)
             viewModel.getStartDate(date)
-            viewModel.getEndDate(date)
+            viewModel.getDateSelection("Kemarin")
             yesterday.setBackgroundResource(R.drawable.button_green_square)
             yesterday.setTextColor(Color.parseColor("#ffffff"))
         }
@@ -138,10 +156,16 @@ class FilterPageReport : Fragment() {
         dataBinding.last2day.setOnClickListener {
             clearSelection()
             cal = Calendar.getInstance()
+            date = sdf.format(cal.time)
+            viewModel.getEndDate(date)
+
             cal.add(Calendar.DATE, - 2)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             date = sdf.format(cal.time)
             viewModel.getStartDate(date)
-            viewModel.getEndDate(date)
+            viewModel.getDateSelection("2 Hari yang lalu")
             last2day.setBackgroundResource(R.drawable.button_green_square)
             last2day.setTextColor(Color.parseColor("#ffffff"))
         }
@@ -150,11 +174,15 @@ class FilterPageReport : Fragment() {
             clearSelection()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_WEEK, 2)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             sdate = sdf.format(cal.time)
             viewModel.getStartDate(sdate)
             edate = sdf.format(Calendar.getInstance().time)
             viewModel.getEndDate(edate)
             date = "$sdate - $edate"
+            viewModel.getDateSelection("Minggu ini")
             thisWeek.setBackgroundResource(R.drawable.button_green_square)
             thisWeek.setTextColor(Color.parseColor("#ffffff"))
         }
@@ -163,14 +191,21 @@ class FilterPageReport : Fragment() {
             clearSelection()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_WEEK, 2)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             cal.add(Calendar.DATE, -7)
             sdate = sdf.format(cal.time)
             viewModel.getStartDate(sdate)
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_WEEK, 1)
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.MILLISECOND, 59)
             edate = sdf.format(cal.time)
             viewModel.getEndDate(edate)
             date = "$sdate - $edate"
+            viewModel.getDateSelection("Minggu lalu")
             lastWeek.setBackgroundResource(R.drawable.button_green_square)
             lastWeek.setTextColor(Color.parseColor("#ffffff"))
         }
@@ -179,11 +214,15 @@ class FilterPageReport : Fragment() {
             clearSelection()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_MONTH, 1)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             sdate = sdf.format(cal.time)
             viewModel.getStartDate(sdate)
             edate = sdf.format(Calendar.getInstance().time)
             viewModel.getEndDate(edate)
             date = "$sdate - $edate"
+            viewModel.getDateSelection("Bulan ini")
             thisMonth.setBackgroundResource(R.drawable.button_green_square)
             thisMonth.setTextColor(Color.parseColor("#ffffff"))
         }
@@ -192,15 +231,22 @@ class FilterPageReport : Fragment() {
             clearSelection()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_MONTH, 1)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.MILLISECOND, 0)
             cal.add(Calendar.DATE, -30)
             sdate = sdf.format(cal.time)
             viewModel.getStartDate(sdate)
             cal = Calendar.getInstance()
             cal.add(Calendar.MONTH, -1)
             cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+            cal.set(Calendar.HOUR_OF_DAY, 23)
+            cal.set(Calendar.MINUTE, 59)
+            cal.set(Calendar.MILLISECOND, 59)
             edate = sdf.format(cal.time)
             viewModel.getEndDate(edate)
             date = "$sdate - $edate"
+            viewModel.getDateSelection("Bulan lalu")
             lastMonth.setBackgroundResource(R.drawable.button_green_square)
             lastMonth.setTextColor(Color.parseColor("#ffffff"))
         }
