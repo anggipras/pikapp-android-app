@@ -1,8 +1,8 @@
 package com.tsab.pikapp.view.other
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 

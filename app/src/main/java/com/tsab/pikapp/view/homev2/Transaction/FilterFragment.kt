@@ -1,8 +1,6 @@
 package com.tsab.pikapp.view.homev2.Transaction
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +11,12 @@ import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
 
 class FilterFragment : RoundedBottomSheetDialogFragment() {
-
     private val viewModel: TransactionViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_filter, container, false)
     }
 
@@ -28,7 +26,7 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
         dialog!!.tokopedia.isChecked = viewModel.tokpedFilter.value!!
         dialog!!.grab.isChecked = viewModel.grabFilter.value!!
         dialog!!.shopee.isChecked = viewModel.shopeeFilter.value!!
-        dialog!!.btnNext.setText("Tampilkan " + viewModel.countTxn.value!!.toInt() + " Pesanan")
+        dialog!!.btnNext.text = "Tampilkan " + viewModel.countTxn.value!!.toInt() + " Pesanan"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,77 +43,77 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
 
         var size: Int = viewModel.countTxn.value!!.toInt()
 
-        btnNext.setText("Tampilkan " + size + " Pesanan")
+        btnNext.text = "Tampilkan " + size + " Pesanan"
 
-        if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked && !pikapp.isChecked){
+        if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked && !pikapp.isChecked) {
             size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-            btnNext.setText("Tampilkan " + size.toString() + " Pesanan")
+            btnNext.text = "Tampilkan " + size.toString() + " Pesanan"
         }
 
         pikapp.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(pikapp.isChecked){
+            if (pikapp.isChecked) {
                 if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked) {
 
                     size = viewModel.proses.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                     size = size + viewModel.proses.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 }
-            }else if(!pikapp.isChecked){
+            } else if (!pikapp.isChecked) {
                 if (!tokopedia.isChecked && !grab.isChecked && !shopee.isChecked) {
 
                     size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                     size = size - viewModel.proses.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 }
             }
         }
 
         tokopedia.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(tokopedia.isChecked){
+            if (tokopedia.isChecked) {
                 if (!pikapp.isChecked && !grab.isChecked && !shopee.isChecked) {
 
                     size = viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                     size = size + viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 }
-            }else if(!tokopedia.isChecked){
+            } else if (!tokopedia.isChecked) {
                 if (!pikapp.isChecked && !grab.isChecked && !shopee.isChecked) {
 
                     size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                     size = size - viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 }
             }
         }
 
         grab.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(grab.isChecked){
+            if (grab.isChecked) {
                 if (!tokopedia.isChecked && !pikapp.isChecked && !shopee.isChecked) {
 
                     size = 0
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                     size += 0
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 }
-            }else if(!grab.isChecked){
+            } else if (!grab.isChecked) {
                 if (!tokopedia.isChecked && !pikapp.isChecked && !shopee.isChecked) {
 
                     size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                 }
@@ -127,24 +125,30 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
                 if (!tokopedia.isChecked && !grab.isChecked && !pikapp.isChecked) {
 
                     size = 0
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                     size += 0
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 }
             } else if (!shopee.isChecked) {
                 if (!tokopedia.isChecked && !grab.isChecked && !pikapp.isChecked) {
 
                     size = viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                    btnNext.setText("Tampilkan " + size + " Pesanan")
+                    btnNext.text = "Tampilkan " + size + " Pesanan"
                 } else {
 
                 }
             }
         }
         btnNext.setOnClickListener {
-            viewModel.filterOn(pikapp.isChecked, tokopedia.isChecked, grab.isChecked, shopee.isChecked, size)
+            viewModel.filterOn(
+                pikapp.isChecked,
+                tokopedia.isChecked,
+                grab.isChecked,
+                shopee.isChecked,
+                size
+            )
             dismiss()
         }
     }

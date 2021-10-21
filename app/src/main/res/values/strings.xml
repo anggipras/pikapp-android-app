@@ -20,6 +20,7 @@
     <string name="cek_lagi">Cek Lagi</string>
     <string name="star">*</string>
     <string name="ok">OK</string>
+    <string name="konfirmasi">Konfirmasi</string>
 
     <string name="akan_datang">Akan Datang</string>
     <string name="pelajari_lebih_lanjut">Pelajari lebih lanjut</string>
@@ -229,6 +230,13 @@
     <string name="pajak">Pajak</string>
     <string name="total">Total</string>
 
+    <!-- Omnichannel transaction filter -->
+    <string name="filter">Filter</string>
+    <string name="pikapp">Pikapp</string>
+    <string name="tokopedia">Tokopedia</string>
+    <string name="grab">Grab</string>
+    <string name="shopee">Shopee</string>
+
     <!-- Omnichannel integration (oi) screens -->
     <string-array name="oi_status_array">
         <item>Semua</item>
@@ -288,6 +296,7 @@
     <!-- Tokopedia Order -->
     <string name="tokopedia_upload_resi_dialog">Mohon upload resi di aplikasi e-<br />commerce sesuai pesanan untuk<br />menyelesaikan order ini.</string>
     <string name="tokopedia_tolak_dialog">Tolak melalui aplikasi tokopedia</string>
+
     <string-array name="spinnerReason">
         <item>Silahkan Pilih</item>
         <item>Stok Produk Kosong</item>
@@ -330,5 +339,9 @@
     <string name="filter_start_date_header">Dari Tanggal :</string>
     <string name="filter_end_date_header">Sampai Tanggal :</string>
     <string name="filter_next_button">Terapkan</string>
+
+
+    <string name="tokopedia_add_resi">Mohon isi nomor resi sesuai dengan pesanan Anda</string>
+    <string name="tokopedia_nomor_resi">Nomor resi</string>
 
 </resources>
