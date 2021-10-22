@@ -31,12 +31,16 @@ class FilterPageReport : Fragment() {
     private val viewModel: ReportViewModel by activityViewModels()
     private val sessionManager = SessionManager()
     private var date = "today"
+    private var dateISO = "today"
     private var sdate = ""
     private var edate = ""
+    private var sdateISO = ""
+    private var edateISO = ""
     private var startDate = ""
     private var endDate = ""
     private val id = Locale("in", "ID")
     private val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", id)
+    private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
     var cal = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -119,15 +123,21 @@ class FilterPageReport : Fragment() {
     private fun dateSelection() {
         dataBinding.today.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             date = sdf.format(cal.time)
+            dateISO = dateFormatISO.format(cal.time)
             viewModel.getEndDate(date)
+            viewModel.getEndISO(dateISO)
 
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             date = sdf.format(cal.time)
+            dateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(date)
+            viewModel.getStartISO(dateISO)
             viewModel.getDateSelection("Hari ini")
             today.setBackgroundResource(R.drawable.button_green_square)
             today.setTextColor(Color.parseColor("#ffffff"))
@@ -135,19 +145,26 @@ class FilterPageReport : Fragment() {
 
         dataBinding.yesterday.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             cal.add(Calendar.DATE, - 1)
             cal.set(Calendar.HOUR_OF_DAY, 23)
             cal.set(Calendar.MINUTE, 59)
-            cal.set(Calendar.MILLISECOND, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
             date = sdf.format(cal.time)
+            dateISO = dateFormatISO.format(cal.time)
             viewModel.getEndDate(date)
+            viewModel.getEndISO(dateISO)
 
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             date = sdf.format(cal.time)
+            dateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(date)
+            viewModel.getStartISO(dateISO)
             viewModel.getDateSelection("Kemarin")
             yesterday.setBackgroundResource(R.drawable.button_green_square)
             yesterday.setTextColor(Color.parseColor("#ffffff"))
@@ -155,16 +172,22 @@ class FilterPageReport : Fragment() {
 
         dataBinding.last2day.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             date = sdf.format(cal.time)
+            dateISO = dateFormatISO.format(cal.time)
             viewModel.getEndDate(date)
+            viewModel.getEndISO(dateISO)
 
             cal.add(Calendar.DATE, - 2)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             date = sdf.format(cal.time)
+            dateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(date)
+            viewModel.getStartISO(dateISO)
             viewModel.getDateSelection("2 Hari yang lalu")
             last2day.setBackgroundResource(R.drawable.button_green_square)
             last2day.setTextColor(Color.parseColor("#ffffff"))
@@ -172,15 +195,21 @@ class FilterPageReport : Fragment() {
 
         dataBinding.thisWeek.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_WEEK, 2)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             sdate = sdf.format(cal.time)
+            sdateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(sdate)
+            viewModel.getStartISO(sdateISO)
             edate = sdf.format(Calendar.getInstance().time)
+            edateISO = dateFormatISO.format(Calendar.getInstance().time)
             viewModel.getEndDate(edate)
+            viewModel.getEndISO(edateISO)
             date = "$sdate - $edate"
             viewModel.getDateSelection("Minggu ini")
             thisWeek.setBackgroundResource(R.drawable.button_green_square)
@@ -189,21 +218,28 @@ class FilterPageReport : Fragment() {
 
         dataBinding.lastWeek.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_WEEK, 2)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             cal.add(Calendar.DATE, -7)
             sdate = sdf.format(cal.time)
+            sdateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(sdate)
+            viewModel.getStartISO(sdateISO)
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_WEEK, 1)
             cal.set(Calendar.HOUR_OF_DAY, 23)
             cal.set(Calendar.MINUTE, 59)
-            cal.set(Calendar.MILLISECOND, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
             edate = sdf.format(cal.time)
+            edateISO = dateFormatISO.format(cal.time)
             viewModel.getEndDate(edate)
+            viewModel.getEndISO(edateISO)
             date = "$sdate - $edate"
             viewModel.getDateSelection("Minggu lalu")
             lastWeek.setBackgroundResource(R.drawable.button_green_square)
@@ -212,15 +248,21 @@ class FilterPageReport : Fragment() {
 
         dataBinding.thisMonth.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_MONTH, 1)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             sdate = sdf.format(cal.time)
+            sdateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(sdate)
+            viewModel.getStartISO(sdateISO)
             edate = sdf.format(Calendar.getInstance().time)
+            edateISO = dateFormatISO.format(Calendar.getInstance().time)
             viewModel.getEndDate(edate)
+            viewModel.getEndISO(edateISO)
             date = "$sdate - $edate"
             viewModel.getDateSelection("Bulan ini")
             thisMonth.setBackgroundResource(R.drawable.button_green_square)
@@ -229,22 +271,29 @@ class FilterPageReport : Fragment() {
 
         dataBinding.lastMonth.setOnClickListener {
             clearSelection()
+            dateFormatISO.timeZone = TimeZone.getDefault()
             cal = Calendar.getInstance()
             cal.set(Calendar.DAY_OF_MONTH, 1)
             cal.set(Calendar.HOUR_OF_DAY, 0)
             cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
             cal.add(Calendar.DATE, -30)
             sdate = sdf.format(cal.time)
+            sdateISO = dateFormatISO.format(cal.time)
             viewModel.getStartDate(sdate)
+            viewModel.getStartISO(sdateISO)
             cal = Calendar.getInstance()
             cal.add(Calendar.MONTH, -1)
             cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
             cal.set(Calendar.HOUR_OF_DAY, 23)
             cal.set(Calendar.MINUTE, 59)
-            cal.set(Calendar.MILLISECOND, 59)
+            cal.set(Calendar.SECOND, 59)
+            cal.set(Calendar.MILLISECOND, 999)
             edate = sdf.format(cal.time)
+            edateISO = dateFormatISO.format(cal.time)
             viewModel.getEndDate(edate)
+            viewModel.getEndISO(edateISO)
             date = "$sdate - $edate"
             viewModel.getDateSelection("Bulan lalu")
             lastMonth.setBackgroundResource(R.drawable.button_green_square)
