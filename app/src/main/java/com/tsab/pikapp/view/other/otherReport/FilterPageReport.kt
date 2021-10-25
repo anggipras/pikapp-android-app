@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -61,6 +62,17 @@ class FilterPageReport : Fragment() {
     private fun attatchInputListener() {
         dateSelection()
 
+        dataBinding.backImage.setColorFilter(
+                ContextCompat.getColor(
+                        requireContext(),
+                        R.color.textSubtle
+                ), android.graphics.PorterDuff.Mode.SRC_IN
+        )
+
+        dataBinding.backButton.setOnClickListener{
+            view?.let { Navigation.findNavController(it).popBackStack() }
+        }
+
         dataBinding.btnNext.setOnClickListener {
             if (date == ""){
                 if (endDate < startDate || startDate == "" || endDate == ""){
@@ -68,11 +80,9 @@ class FilterPageReport : Fragment() {
                     Toast.makeText(context, "invalid start date and end date", Toast.LENGTH_SHORT).show()
                 } else {
                     view?.let { Navigation.findNavController(it).popBackStack() }
-//                    Toast.makeText(context, "$startDate - $endDate", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 view?.let { Navigation.findNavController(it).popBackStack() }
-//                Toast.makeText(context, "filter : $date", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -83,7 +93,6 @@ class FilterPageReport : Fragment() {
         dataBinding.endDate.setOnClickListener {
             dataBinding.endDate.transformIntoDatePicker(requireContext(), "MM/dd/yyyy", "end")
         }
-
     }
 
     fun EditText.transformIntoDatePicker(context: Context, format: String, status: String, maxDate: Date? = null) {
@@ -97,15 +106,29 @@ class FilterPageReport : Fragment() {
                     myCalendar.set(Calendar.YEAR, year)
                     myCalendar.set(Calendar.MONTH, monthOfYear)
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    myCalendar.set(Calendar.HOUR_OF_DAY, 0)
+                    myCalendar.set(Calendar.MINUTE, 0)
+                    myCalendar.set(Calendar.SECOND, 0)
+                    myCalendar.set(Calendar.MILLISECOND, 0)
                     setText(sdf.format(myCalendar.time))
+                    dateFormatISO.timeZone = TimeZone.getDefault()
                     dataBinding.btnNext.isEnabled = true
                     if (status == "start"){
                         startDate = sdf.format(myCalendar.time)
+                        dateISO = dateFormatISO.format(myCalendar.time)
                         viewModel.getStartDate(startDate)
+                        viewModel.getEndISO(dateISO)
                     } else if (status == "end"){
+                        myCalendar.set(Calendar.HOUR_OF_DAY, 23)
+                        myCalendar.set(Calendar.MINUTE, 59)
+                        myCalendar.set(Calendar.SECOND, 59)
+                        myCalendar.set(Calendar.MILLISECOND, 999)
+                        dateISO = dateFormatISO.format(myCalendar.time)
                         endDate = sdf.format(myCalendar.time)
                         viewModel.getEndDate(endDate)
+                        viewModel.getEndISO(dateISO)
                     }
+                    viewModel.getDateSelection("Rentang waktu")
                 }
 
         setOnClickListener {
@@ -309,6 +332,14 @@ class FilterPageReport : Fragment() {
             filterCustom.setBackgroundResource(R.drawable.icon_filter_custom_on)
         }
 
+        dataBinding.filterCustom.setOnClickListener {
+            clearSelection()
+            dataBinding.startDate.backgroundTintList = null
+            dataBinding.startDate.isEnabled = true
+            dataBinding.endDate.backgroundTintList = null
+            dataBinding.endDate.isEnabled = true
+            filterCustom.setBackgroundResource(R.drawable.icon_filter_custom_on)
+        }
     }
 
     private fun clearSelection(){
