@@ -22,9 +22,6 @@
         android:name="com.tsab.pikapp.view.other.otherReport.FilterPageReport"
         android:label="fragment_filter_page_report"
         tools:layout="@layout/fragment_filter_page_report" >
-        <action
-            android:id="@+id/action_filterPageReport_to_homeReportFragment"
-            app:popUpTo="@id/homeReportFragment" />
     </fragment>
 
     <fragment

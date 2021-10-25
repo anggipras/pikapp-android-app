@@ -8,58 +8,65 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/backImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_back_gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/backText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/montserrat"
-            android:text="@string/kembali"
-            android:textColor="@color/borderSubtle"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/backImage"
-            app:layout_constraintStart_toEndOf="@id/backImage"
-            app:layout_constraintTop_toTopOf="@id/backImage" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="backImage,backText" />
-
-        <TextView
-            android:id="@+id/filterReportTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_report_title"
-            android:textSize="23sp"
-            android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="25dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/backText"/>
-
-        <View
-            android:id="@+id/divider"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerReport"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="25dp"
-            android:background="@color/lightGrey"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filterReportTitle"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/backImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/backText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="@string/kembali"
+                    android:textColor="@color/textSubtle"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/backImage"
+                    app:layout_constraintStart_toEndOf="@id/backImage"
+                    app:layout_constraintTop_toTopOf="@id/backImage" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/filterReportTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter_report_title"
+                android:textSize="23sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="45dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/backButton"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/filterReportHeader"
@@ -72,7 +79,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"/>
+            app:layout_constraintTop_toBottomOf="@+id/headerReport"/>
 
         <Button
             android:id="@+id/today"
@@ -297,9 +304,8 @@
             android:id="@+id/btnNext"
             android:layout_width="0dp"
             android:layout_height="47dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="27dp"
             android:layout_marginBottom="36dp"
             android:background="@drawable/button_green_small"
             android:backgroundTint="@color/green"
@@ -311,8 +317,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/endDate" />
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
