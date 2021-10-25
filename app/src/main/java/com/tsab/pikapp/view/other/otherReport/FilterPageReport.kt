@@ -4,13 +4,10 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -22,7 +19,6 @@ import com.tsab.pikapp.databinding.FragmentFilterPageReportBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.other.ReportViewModel
 import kotlinx.android.synthetic.main.fragment_filter_page_report.*
-import kotlinx.android.synthetic.main.item_store_my_product_list.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +35,8 @@ class FilterPageReport : Fragment() {
     private var edateISO = ""
     private var startDate = ""
     private var endDate = ""
+    private var startDateTime: Long = 0
+    private var endDateTime: Long = 0
     private val id = Locale("in", "ID")
     private val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", id)
     private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
@@ -75,7 +73,7 @@ class FilterPageReport : Fragment() {
 
         dataBinding.btnNext.setOnClickListener {
             if (date == ""){
-                if (endDate < startDate || startDate == "" || endDate == ""){
+                if (endDateTime < startDateTime || startDate == "" || endDate == ""){
                     dataBinding.btnNext.isEnabled = false
                     Toast.makeText(context, "invalid start date and end date", Toast.LENGTH_SHORT).show()
                 } else {
@@ -100,47 +98,102 @@ class FilterPageReport : Fragment() {
         isClickable = true
         isFocusable = false
 
-        val myCalendar = Calendar.getInstance()
-        val datePickerOnDataSetListener =
-                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                    myCalendar.set(Calendar.YEAR, year)
-                    myCalendar.set(Calendar.MONTH, monthOfYear)
-                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    myCalendar.set(Calendar.HOUR_OF_DAY, 0)
-                    myCalendar.set(Calendar.MINUTE, 0)
-                    myCalendar.set(Calendar.SECOND, 0)
-                    myCalendar.set(Calendar.MILLISECOND, 0)
-                    setText(sdf.format(myCalendar.time))
-                    dateFormatISO.timeZone = TimeZone.getDefault()
-                    dataBinding.btnNext.isEnabled = true
-                    if (status == "start"){
-                        startDate = sdf.format(myCalendar.time)
-                        dateISO = dateFormatISO.format(myCalendar.time)
-                        viewModel.getStartDate(startDate)
-                        viewModel.getEndISO(dateISO)
-                    } else if (status == "end"){
-                        myCalendar.set(Calendar.HOUR_OF_DAY, 23)
-                        myCalendar.set(Calendar.MINUTE, 59)
-                        myCalendar.set(Calendar.SECOND, 59)
-                        myCalendar.set(Calendar.MILLISECOND, 999)
-                        dateISO = dateFormatISO.format(myCalendar.time)
-                        endDate = sdf.format(myCalendar.time)
-                        viewModel.getEndDate(endDate)
-                        viewModel.getEndISO(dateISO)
-                    }
-                    viewModel.getDateSelection("Rentang waktu")
+        var myCalendar = Calendar.getInstance()
+//        val datePickerOnDataSetListener =
+//                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+//                    myCalendar.set(Calendar.YEAR, year)
+//                    myCalendar.set(Calendar.MONTH, monthOfYear)
+//                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+//                    myCalendar.set(Calendar.HOUR_OF_DAY, 0)
+//                    myCalendar.set(Calendar.MINUTE, 0)
+//                    myCalendar.set(Calendar.SECOND, 0)
+//                    myCalendar.set(Calendar.MILLISECOND, 0)
+//                    setText(sdf.format(myCalendar.time))
+//                    dateFormatISO.timeZone = TimeZone.getDefault()
+//                    dataBinding.btnNext.isEnabled = true
+//                    if (status == "start"){
+//                        startDate = sdf.format(myCalendar.time)
+//                        dateISO = dateFormatISO.format(myCalendar.time)
+//                        viewModel.getStartDate(startDate)
+//                        viewModel.getEndISO(dateISO)
+//                    } else if (status == "end"){
+//                        myCalendar.set(Calendar.HOUR_OF_DAY, 23)
+//                        myCalendar.set(Calendar.MINUTE, 59)
+//                        myCalendar.set(Calendar.SECOND, 59)
+//                        myCalendar.set(Calendar.MILLISECOND, 999)
+//                        dateISO = dateFormatISO.format(myCalendar.time)
+//                        endDate = sdf.format(myCalendar.time)
+//                        viewModel.getEndDate(endDate)
+//                        viewModel.getEndISO(dateISO)
+//                    }
+//                    viewModel.getDateSelection("Rentang waktu")
+//                }
+
+//        setOnClickListener {
+//            DatePickerDialog(
+//                    context, datePickerOnDataSetListener, myCalendar
+//                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                    myCalendar.get(Calendar.DAY_OF_MONTH)
+//            ).run {
+//                maxDate?.time?.also { datePicker.maxDate = it }
+//                show()
+//            }
+//        }
+
+        val datePickerOnDataSetListener = DatePickerDialog(context, { _, year, monthOfYear, dayOfMonth ->
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, monthOfYear)
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            myCalendar.set(Calendar.HOUR_OF_DAY, 0)
+            myCalendar.set(Calendar.MINUTE, 0)
+            myCalendar.set(Calendar.SECOND, 0)
+            myCalendar.set(Calendar.MILLISECOND, 0)
+            setText(sdf.format(myCalendar.time))
+            dateFormatISO.timeZone = TimeZone.getDefault()
+            dataBinding.btnNext.isEnabled = true
+            if (status == "start"){
+                startDate = sdf.format(myCalendar.time)
+                startDateTime = myCalendar.timeInMillis
+                dateISO = dateFormatISO.format(myCalendar.time)
+                viewModel.getStartDate(startDate)
+                viewModel.getEndISO(dateISO)
+            } else if (status == "end"){
+                val nowCalendar = Calendar.getInstance()
+                val dateNow = sdf.format(nowCalendar.time)
+                val selectedEndDate = sdf.format(myCalendar.time)
+                if (dateNow == selectedEndDate) {
+                    myCalendar = Calendar.getInstance()
+                } else {
+                    myCalendar.set(Calendar.HOUR_OF_DAY, 23)
+                    myCalendar.set(Calendar.MINUTE, 59)
+                    myCalendar.set(Calendar.SECOND, 59)
+                    myCalendar.set(Calendar.MILLISECOND, 999)
                 }
 
-        setOnClickListener {
-            DatePickerDialog(
-                    context, datePickerOnDataSetListener, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                    myCalendar.get(Calendar.DAY_OF_MONTH)
-            ).run {
-                maxDate?.time?.also { datePicker.maxDate = it }
-                show()
+                dateISO = dateFormatISO.format(myCalendar.time)
+                endDate = sdf.format(myCalendar.time)
+                endDateTime = myCalendar.timeInMillis
+                viewModel.getEndDate(endDate)
+                viewModel.getEndISO(dateISO)
             }
-        }
+            viewModel.getDateSelection("Rentang waktu")
+        }, myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH], myCalendar[Calendar.DAY_OF_MONTH])
+
+        //set minimum of date picker
+        cal = Calendar.getInstance()
+        cal.add(Calendar.DATE, - 30)
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        datePickerOnDataSetListener.datePicker.minDate = cal.timeInMillis
+
+        //set maximum of date picker
+        cal = Calendar.getInstance()
+        datePickerOnDataSetListener.datePicker.maxDate = cal.timeInMillis
+
+        //showing calendar
+        datePickerOnDataSetListener.show()
     }
 
     private fun dateSelection() {

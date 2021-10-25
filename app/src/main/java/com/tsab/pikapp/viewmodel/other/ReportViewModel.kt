@@ -1,11 +1,8 @@
 package com.tsab.pikapp.viewmodel.other
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ReportViewModel : ViewModel() {
 
