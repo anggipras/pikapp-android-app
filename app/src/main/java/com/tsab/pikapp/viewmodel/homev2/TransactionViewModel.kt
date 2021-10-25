@@ -178,6 +178,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     var logisticList = ArrayList<LogisticsDetailOmni>()
     var logisticListDone = ArrayList<LogisticsDetailOmni>()
     var logisticListBatal = ArrayList<LogisticsDetailOmni>()
+    var arrayResultList = ArrayList<OrderDetailDetailOmni>()
 
     fun filterOn(
         pikappStatus: Boolean,
@@ -510,8 +511,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
             override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
                 val responseBody = response.body()
-                Log.e("result all", responseBody?.results.toString())
-
 
                 val resultList = responseBody?.results
                 val prosesList = ArrayList<OrderDetailOmni>()
@@ -530,23 +529,27 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             || result.status == "PAYMENT_VERIFIED"
                             || result.status == "SELLER_ACCEPT_ORDER"
                             || result.status == "WAITING_FOR_PICKUP"
+                            || result.status == "DRIVER_ALLOCATED"
+                            || result.status == "DRIVER_ARRIVED"
                         ) {
                             prosesList.add(result)
-                            Log.e("prosesList", prosesList.toString())
                             result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
                         } else if (result.status == "SELLER_CANCEL_ORDER"
                             || result.status == "ORDER_REJECTED_BY_SELLER"
+                            || result.status == "CANCELLED"
+                            || result.status == "FAILED"
                         ) {
                             batalList.add(result)
-                            Log.e("batalList", batalList.toString())
                             result.producDetails?.let { productList1.add(it as ArrayList<ProductDetailOmni>) }
-                        } else if (result.status == "ORDER_DELIVERED" || result.status == "ORDER_FINISHED" || result.status == "ORDER_SHIPMENT" || result.status == "DELIVERED_TO_PICKUP_POINT") {
+                        } else if (result.status == "ORDER_DELIVERED"
+                                || result.status == "ORDER_FINISHED"
+                                || result.status == "ORDER_SHIPMENT"
+                                || result.status == "DELIVERED_TO_PICKUP_POINT"
+                                || result.status == "DELIVERED"
+                                || result.status == "COLLECTED"
+                        ) {
                             doneList.add(result)
-                            Log.e("doneList", doneList.toString())
                             result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
-                        } else if (result.channel == "GRAB") {
-                            prosesList.add(result)
-                            result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
                         } else {
                             Timber.tag(tag).d("Invalid transaction")
                         }
@@ -568,7 +571,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
                                 prosesList as MutableList<OrderDetailOmni>,
-                                productList as MutableList<List<ProductDetailOmni>>,
+                                productList as MutableList<List<ProductDetailOmni>>, arrayResultList as MutableList<OrderDetailDetailOmni>,
                                 sessionManager,
                                 support,
                                 prefHelper,
@@ -586,7 +589,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
                                 batalList as MutableList<OrderDetailOmni>,
-                                productList1 as MutableList<List<ProductDetailOmni>>,
+                                productList1 as MutableList<List<ProductDetailOmni>>, arrayResultList as MutableList<OrderDetailDetailOmni>,
                                 sessionManager,
                                 support,
                                 prefHelper,
@@ -604,7 +607,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             omniAdapter = OmniTransactionListAdapter(
                                 baseContext,
                                 doneList as MutableList<OrderDetailOmni>,
-                                productList2 as MutableList<List<ProductDetailOmni>>,
+                                productList2 as MutableList<List<ProductDetailOmni>>, arrayResultList as MutableList<OrderDetailDetailOmni>,
                                 sessionManager,
                                 support,
                                 prefHelper,
@@ -642,7 +645,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             ) {
                 val orderResponse = response.body()
                 val resultList = orderResponse?.results
-                val arrayResultList = ArrayList<OrderDetailDetailOmni>()
+                logisticList.clear()
+                logisticListBatal.clear()
+                logisticListDone.clear()
 
                 if (resultList != null) {
                     arrayResultList.add(resultList)
@@ -652,15 +657,29 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 || result.status == "PAYMENT_VERIFIED"
                                 || result.status == "SELLER_ACCEPT_ORDER"
                                 || result.status == "WAITING_FOR_PICKUP"
+                                || result.status == "DRIVER_ALLOCATED"
+                                || result.status == "DRIVER_ARRIVED"
                             ) {
                                 logisticList.add(result.logistics)
                             } else if (result.status == "SELLER_CANCEL_ORDER"
                                 || result.status == "ORDER_REJECTED_BY_SELLER"
+                                || result.status == "CANCELLED"
+                                || result.status == "FAILED"
                             ) {
                                 logisticListBatal.add(result.logistics)
-                            } else {
+                            } else if (result.status == "ORDER_DELIVERED"
+                                    || result.status == "ORDER_FINISHED"
+                                    || result.status == "ORDER_SHIPMENT"
+                                    || result.status == "DELIVERED_TO_PICKUP_POINT"
+                                    || result.status == "DELIVERED"
+                                    || result.status == "COLLECTED"
+                            ){
                                 logisticListDone.add(result.logistics)
+                            } else {
+                                Timber.tag(tag).d("Invalid transaction")
                             }
+                        } else {
+                            Timber.tag(tag).d("Invalid transaction")
                         }
                     }
                 }
