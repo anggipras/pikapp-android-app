@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.other.otherReport
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.tsab.pikapp.databinding.HomeReportFragmentBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.other.ReportViewModel
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,11 +78,6 @@ class HomeReportFragment : Fragment() {
                 dataBinding.dateSelection.text = "${viewModel.startDate.value} s/d ${viewModel.endDate.value}"
             }
         }
-
-//        val calendar = Calendar.getInstance()
-//        calendar.set(2021, 10, 15, 0, 0, 0)
-//        val timestamp = Timestamp(calendar.timeInMillis)
-//        val dateFormat = SimpleDateFormat("EEEE, d MMMM yyyy", id).format(timestamp)
 
         val startDate = "M00000150"
         val endDate = "7"
