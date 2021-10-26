@@ -26,6 +26,7 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.Transaction.shipment.ResiTokopediaDialogFragment
+import com.tsab.pikapp.view.homev2.Transaction.shipment.ResiTokopediaDialogFragment.Companion.tag
 import com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileBirthdayFragment
 import com.tsab.pikapp.view.other.otherSettings.profileSetting.setFragmentResultListener
 import kotlinx.android.synthetic.main.omni_tokped_popup.view.*
@@ -48,6 +49,7 @@ import kotlinx.android.synthetic.main.transaction_list_items_omni.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -58,6 +60,7 @@ class OmniTransactionListAdapter(
     private val context: Context,
     private var omniList: MutableList<OrderDetailOmni>,
     private val omniDetailList: MutableList<List<ProductDetailOmni>>,
+    private val omniDetailDetailList: MutableList<OrderDetailDetailOmni>,
     private val sessionManager: SessionManager,
     private val supportFragmentManager: FragmentManager,
     private val prefHelper: SharedPreferencesUtil,
@@ -89,6 +92,7 @@ class OmniTransactionListAdapter(
     var deliveryStatus: String = ""
     val gson = Gson()
     val type = object : TypeToken<AcceptOrderTokopediaResponse>() {}.type
+    var arrayResultLit = ArrayList<OrderDetailDetailOmni>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -104,6 +108,8 @@ class OmniTransactionListAdapter(
         sessionManager.setHomeNav(0)
         if (omniList[position].channel == "TOKOPEDIA") {
             setTokopediaCardView(holder, position)
+        } else if (omniList[position].channel == "GRAB"){
+            setGrabCardView(holder, position)
         }
     }
 
@@ -124,6 +130,89 @@ class OmniTransactionListAdapter(
         var loadingOverlay: View = itemView.loadingOverlay
         var deliveryStatus: TextView = itemView.deliveryStatus
         var deliveryMethod: TextView = itemView.deliveryMethod
+        var omniLogo: ImageView = itemView.omniChannelIcon
+    }
+
+    private fun setGrabCardView(holder: ViewHolder, position: Int){
+        if (omniList[position].status == "DRIVER_ALLOCATED" || omniList[position].status == "DRIVER_ARRIVED") {
+            setDate(position)
+            holder.omniLogo.setImageResource(R.drawable.grabfood)
+            holder.paymentStatus.text = "Diproses"
+            holder.paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
+            holder.deliveryMethod.text = omniList[position].invoiceNo
+            holder.deliveryStatus.visibility = View.GONE
+            holder.orderDate.text = omniList[position].orderTime.toString().substringAfterLast("-")
+                    .substringBefore("T") + bulan + omniList[position].orderTime.toString()
+                    .substringAfter("T").substringBeforeLast(":")
+            formatNumber()
+            holder.price2.visibility = View.GONE
+            holder.price.text = "Rp. $str"
+            price = 0
+            holder.menuCount.text = "Total $jumlah items:"
+            jumlah = 0
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+            timeAgo(omniList[position].orderTime.toString(), holder.lastOrder)
+        } else if (omniList[position].status == "DELIVERED"){
+            setDate(position)
+            holder.omniLogo.setImageResource(R.drawable.grabfood)
+            holder.rView.visibility = View.GONE
+            holder.paymentStatus.text = "Selesai"
+            holder.paymentStatus.setBackgroundResource(R.drawable.button_green_square)
+            holder.deliveryMethod.text = omniList[position].invoiceNo
+            holder.deliveryStatus.visibility = View.GONE
+            holder.orderDate.visibility = View.GONE
+            holder.lastOrder.text = omniList[position].orderTime.toString().substringAfterLast("-")
+                    .substringBefore("T") + bulan + omniList[position].orderTime.toString()
+                    .substringAfter("T").substringBeforeLast(":")
+            formatNumber()
+            holder.price.visibility = View.GONE
+            holder.price2.text = "Rp. $str"
+            price = 0
+            holder.menuCount.text = "Total $jumlah items:"
+            jumlah = 0
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+        } else if (omniList[position].status == "COLLECTED"){
+            setDate(position)
+            holder.omniLogo.setImageResource(R.drawable.grabfood)
+            holder.rView.visibility = View.GONE
+            holder.paymentStatus.text = "Dikirim"
+            holder.paymentStatus.setBackgroundResource(R.drawable.button_green_square)
+            holder.deliveryMethod.text = omniList[position].invoiceNo
+            holder.deliveryStatus.visibility = View.GONE
+            holder.orderDate.visibility = View.GONE
+            holder.lastOrder.text = omniList[position].orderTime.toString().substringAfterLast("-")
+                    .substringBefore("T") + bulan + omniList[position].orderTime.toString()
+                    .substringAfter("T").substringBeforeLast(":")
+            formatNumber()
+            holder.price.visibility = View.GONE
+            holder.price2.text = "Rp. $str"
+            price = 0
+            holder.menuCount.text = "Total $jumlah items:"
+            jumlah = 0
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+        } else if (omniList[position].status == "CANCELLED" || omniList[position].status == "FAILED"){
+            setDate(position)
+            holder.omniLogo.setImageResource(R.drawable.grabfood)
+            holder.rView.visibility = View.GONE
+            holder.paymentStatus.text = "Gagal"
+            holder.deliveryMethod.text = omniList[position].invoiceNo
+            holder.deliveryStatus.visibility = View.GONE
+            holder.orderDate.visibility = View.GONE
+            holder.lastOrder.text = omniList[position].orderTime.toString().substringAfterLast("-")
+                    .substringBefore("T") + bulan + omniList[position].orderTime.toString()
+                    .substringAfter("T").substringBeforeLast(":")
+            formatNumber()
+            holder.price.visibility = View.GONE
+            holder.price2.text = "Rp. $str"
+            price = 0
+            holder.menuCount.text = "Total $jumlah items:"
+            jumlah = 0
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+        }
     }
 
     private fun setTokopediaCardView(holder: ViewHolder, position: Int) {
@@ -796,15 +885,30 @@ class OmniTransactionListAdapter(
                 if (resultList != null) {
                     for (result in resultList) {
                         getOrderDetailOmni(result.orderId.toString())
-                        if (result.status == "PAYMENT_CONFIRMATION" || result.status == "PAYMENT_VERIFIED" || result.status == "SELLER_ACCEPT_ORDER" || result.status == "WAITING_FOR_PICKUP") {
+                        if (result.status == "PAYMENT_CONFIRMATION"
+                                || result.status == "PAYMENT_VERIFIED"
+                                || result.status == "SELLER_ACCEPT_ORDER"
+                                || result.status == "WAITING_FOR_PICKUP"
+                                || result.status == "DRIVER_ALLOCATED"
+                                || result.status == "DRIVER_ARRIVED") {
                             prosesList.add(result)
                             result.producDetails.let { productList.add(it as ArrayList<ProductDetailOmni>) }
-                        } else if (result.status == "SELLER_CANCEL_ORDER" || result.status == "ORDER_REJECTED_BY_SELLER") {
+                        } else if (result.status == "SELLER_CANCEL_ORDER"
+                                || result.status == "ORDER_REJECTED_BY_SELLER"
+                                || result.status == "FAILED"
+                                || result.status == "CANCELLED") {
                             batalList.add(result)
                             result.producDetails?.let { producList1.add(it as ArrayList<ProductDetailOmni>) }
-                        } else {
+                        } else if (result.status == "ORDER_DELIVERED"
+                                || result.status == "ORDER_FINISHED"
+                                || result.status == "ORDER_SHIPMENT"
+                                || result.status == "DELIVERED_TO_PICKUP_POINT"
+                                || result.status == "DELIVERED"
+                                || result.status == "COLLECTED"){
                             doneList.add(result)
                             result.producDetails?.let { productList2.add(it as ArrayList<ProductDetailOmni>) }
+                        } else {
+                            Timber.tag(tag).d("Invalid transaction")
                         }
                     }
                 }
@@ -814,7 +918,7 @@ class OmniTransactionListAdapter(
                         omniAdapter = OmniTransactionListAdapter(
                             baseContext,
                             prosesList as MutableList<OrderDetailOmni>,
-                            productList as MutableList<List<ProductDetailOmni>>,
+                            productList as MutableList<List<ProductDetailOmni>>, arrayResultLit as MutableList<OrderDetailDetailOmni>,
                             sessionManager,
                             support,
                             prefHelper,
@@ -833,7 +937,7 @@ class OmniTransactionListAdapter(
                         omniAdapter = OmniTransactionListAdapter(
                             baseContext,
                             prosesList as MutableList<OrderDetailOmni>,
-                            producList1 as MutableList<List<ProductDetailOmni>>,
+                            producList1 as MutableList<List<ProductDetailOmni>>, arrayResultLit as MutableList<OrderDetailDetailOmni>,
                             sessionManager,
                             support,
                             prefHelper,
@@ -852,7 +956,7 @@ class OmniTransactionListAdapter(
                         omniAdapter = OmniTransactionListAdapter(
                             baseContext,
                             prosesList as MutableList<OrderDetailOmni>,
-                            productList2 as MutableList<List<ProductDetailOmni>>,
+                            productList2 as MutableList<List<ProductDetailOmni>>, arrayResultLit as MutableList<OrderDetailDetailOmni>,
                             sessionManager,
                             support,
                             prefHelper,
@@ -888,7 +992,6 @@ class OmniTransactionListAdapter(
             ) {
                 val orderResponse = response.body()
                 val resultList = orderResponse?.results
-                val arrayResultLit = ArrayList<OrderDetailDetailOmni>()
                 if (resultList != null) {
                     arrayResultLit.add(resultList)
                     for (result in arrayResultLit) {
