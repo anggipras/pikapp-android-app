@@ -11,9 +11,19 @@
         android:label="home_report_fragment"
         tools:layout="@layout/home_report_fragment" >
         <action
+            android:id="@+id/action_homeReportFragment_to_filterPageReport"
+            app:destination="@id/filterPageReport" />
+        <action
             android:id="@+id/action_homeReportFragment_to_uploadReportFragment"
-            app:destination="@id/uploadReportFragment" />
+            app:destination="@id/uploadReportFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/filterPageReport"
+        android:name="com.tsab.pikapp.view.other.otherReport.FilterPageReport"
+        android:label="fragment_filter_page_report"
+        tools:layout="@layout/fragment_filter_page_report" >
+    </fragment>
+
     <fragment
         android:id="@+id/uploadReportFragment"
         android:name="com.tsab.pikapp.view.other.otherReport.UploadReportFragment"

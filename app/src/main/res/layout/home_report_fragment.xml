@@ -92,6 +92,7 @@
                         android:fontFamily="@font/proximanova_regular"
                         android:textColor="@color/black"
                         android:textFontWeight="400"
+                        android:lineHeight="20dp"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dateChoice" />

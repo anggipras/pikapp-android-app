@@ -325,6 +325,22 @@
     <string name="add_menu_in_pikapp">Tambahkan Menu Ini Di PikApp</string>
     <string name="hapus_menu">Hapus Menu</string>
 
+    <!-- Filter Report Page -->
+    <string name="filter_report_title">Filter Laporan</string>
+    <string name="filter_report_header">Tampilkan data berdasarkan</string>
+    <string name="filter_today">Hari ini</string>
+    <string name="filter_yesterday">Kemarin</string>
+    <string name="filter_last2day">2 Hari yang lalu</string>
+    <string name="filter_this_week">Minggu ini</string>
+    <string name="filter_last_week">Minggu lalu</string>
+    <string name="filter_this_month">Bulan ini</string>
+    <string name="filter_last_month">Bulan lalu</string>
+    <string name="radio_text">Custom</string>
+    <string name="filter_start_date_header">Dari Tanggal :</string>
+    <string name="filter_end_date_header">Sampai Tanggal :</string>
+    <string name="filter_next_button">Terapkan</string>
+
+
     <string name="tokopedia_add_resi">Mohon isi nomor resi sesuai dengan pesanan Anda</string>
     <string name="tokopedia_nomor_resi">Nomor resi</string>
 
