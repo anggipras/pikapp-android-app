@@ -55,6 +55,53 @@ class FilterPageReport : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         attatchInputListener()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.dateSelection.observe(viewLifecycleOwner, androidx.lifecycle.Observer { date ->
+            clearSelection()
+            this.date = "available"
+            when(date) {
+                "Kemarin" -> {
+                    yesterday.setBackgroundResource(R.drawable.button_green_square)
+                    yesterday.setTextColor(Color.parseColor("#ffffff"))
+                }
+                "2 Hari yang lalu" -> {
+                    last2day.setBackgroundResource(R.drawable.button_green_square)
+                    last2day.setTextColor(Color.parseColor("#ffffff"))
+                }
+                "Minggu ini" -> {
+                    thisWeek.setBackgroundResource(R.drawable.button_green_square)
+                    thisWeek.setTextColor(Color.parseColor("#ffffff"))
+                }
+                "Minggu lalu" -> {
+                    lastWeek.setBackgroundResource(R.drawable.button_green_square)
+                    lastWeek.setTextColor(Color.parseColor("#ffffff"))
+                }
+                "Bulan ini" -> {
+                    thisMonth.setBackgroundResource(R.drawable.button_green_square)
+                    thisMonth.setTextColor(Color.parseColor("#ffffff"))
+                }
+                "Bulan lalu" -> {
+                    lastMonth.setBackgroundResource(R.drawable.button_green_square)
+                    lastMonth.setTextColor(Color.parseColor("#ffffff"))
+                }
+                "Rentang waktu" -> {
+                    dataBinding.startDate.backgroundTintList = null
+                    dataBinding.startDate.isEnabled = true
+                    dataBinding.startDate.setText(viewModel.startDate.value)
+                    dataBinding.endDate.backgroundTintList = null
+                    dataBinding.endDate.isEnabled = true
+                    dataBinding.endDate.setText(viewModel.endDate.value)
+                    filterCustom.setBackgroundResource(R.drawable.icon_filter_custom_on)
+                }
+                else -> {
+                    today.setBackgroundResource(R.drawable.button_green_square)
+                    today.setTextColor(Color.parseColor("#ffffff"))
+                }
+            }
+        })
     }
 
     private fun attatchInputListener() {
@@ -378,6 +425,7 @@ class FilterPageReport : Fragment() {
 
         dataBinding.tvFilterCustom.setOnClickListener {
             clearSelection()
+            viewModel.clearStartEndDate()
             dataBinding.startDate.backgroundTintList = null
             dataBinding.startDate.isEnabled = true
             dataBinding.endDate.backgroundTintList = null
@@ -387,6 +435,7 @@ class FilterPageReport : Fragment() {
 
         dataBinding.filterCustom.setOnClickListener {
             clearSelection()
+            viewModel.clearStartEndDate()
             dataBinding.startDate.backgroundTintList = null
             dataBinding.startDate.isEnabled = true
             dataBinding.endDate.backgroundTintList = null

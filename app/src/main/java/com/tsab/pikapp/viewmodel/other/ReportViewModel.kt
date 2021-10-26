@@ -42,4 +42,9 @@ class ReportViewModel : ViewModel() {
     fun getEndISO(endDate: String) {
         mutableEndISO.value = endDate
     }
+
+    fun clearStartEndDate() {
+        mutableStartDate.value = ""
+        mutableEndDate.value = ""
+    }
 }
