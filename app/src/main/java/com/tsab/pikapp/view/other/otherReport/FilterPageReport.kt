@@ -26,7 +26,6 @@ class FilterPageReport : Fragment() {
 
     private lateinit var dataBinding: FragmentFilterPageReportBinding
     private val viewModel: ReportViewModel by activityViewModels()
-    private val sessionManager = SessionManager()
     private var date = "today"
     private var dateISO = "today"
     private var sdate = ""
@@ -39,7 +38,7 @@ class FilterPageReport : Fragment() {
     private var endDateTime: Long = 0
     private val id = Locale("in", "ID")
     private val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", id)
-    private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
+    private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
     var cal = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -146,47 +145,6 @@ class FilterPageReport : Fragment() {
         isFocusable = false
 
         var myCalendar = Calendar.getInstance()
-//        val datePickerOnDataSetListener =
-//                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-//                    myCalendar.set(Calendar.YEAR, year)
-//                    myCalendar.set(Calendar.MONTH, monthOfYear)
-//                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-//                    myCalendar.set(Calendar.HOUR_OF_DAY, 0)
-//                    myCalendar.set(Calendar.MINUTE, 0)
-//                    myCalendar.set(Calendar.SECOND, 0)
-//                    myCalendar.set(Calendar.MILLISECOND, 0)
-//                    setText(sdf.format(myCalendar.time))
-//                    dateFormatISO.timeZone = TimeZone.getDefault()
-//                    dataBinding.btnNext.isEnabled = true
-//                    if (status == "start"){
-//                        startDate = sdf.format(myCalendar.time)
-//                        dateISO = dateFormatISO.format(myCalendar.time)
-//                        viewModel.getStartDate(startDate)
-//                        viewModel.getEndISO(dateISO)
-//                    } else if (status == "end"){
-//                        myCalendar.set(Calendar.HOUR_OF_DAY, 23)
-//                        myCalendar.set(Calendar.MINUTE, 59)
-//                        myCalendar.set(Calendar.SECOND, 59)
-//                        myCalendar.set(Calendar.MILLISECOND, 999)
-//                        dateISO = dateFormatISO.format(myCalendar.time)
-//                        endDate = sdf.format(myCalendar.time)
-//                        viewModel.getEndDate(endDate)
-//                        viewModel.getEndISO(dateISO)
-//                    }
-//                    viewModel.getDateSelection("Rentang waktu")
-//                }
-
-//        setOnClickListener {
-//            DatePickerDialog(
-//                    context, datePickerOnDataSetListener, myCalendar
-//                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-//                    myCalendar.get(Calendar.DAY_OF_MONTH)
-//            ).run {
-//                maxDate?.time?.also { datePicker.maxDate = it }
-//                show()
-//            }
-//        }
-
         val datePickerOnDataSetListener = DatePickerDialog(context, { _, year, monthOfYear, dayOfMonth ->
             myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, monthOfYear)
