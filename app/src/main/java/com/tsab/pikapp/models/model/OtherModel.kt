@@ -121,3 +121,17 @@ data class OtherBaseResponse(
         @SerializedName("err_message")
         val errMessage: String?
 )
+
+data class UploadReportResponse(
+        @SerializedName("err_code")
+        val err_code: String?,
+        @SerializedName("err_message")
+        val err_message: String?,
+        var results: UploadResult
+)
+
+data class UploadResult(
+        @SerializedName("Status")
+        val Status: String?,
+        var filename: List<String>
+)

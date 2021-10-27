@@ -669,4 +669,13 @@ interface PikappApi {
             @Header("x-client-id") clientID: String,
             @Body AcceptOrderTokopediaRequest: AcceptOrderTokopediaRequest
     ): Call<AcceptOrderTokopediaResponse>
+
+    //Report
+    @Multipart
+    @POST("merchant/api/upload-report/")
+    fun uploadReport(
+            @Part files: List<MultipartBody.Part>,
+            @Part("platform") platform: RequestBody,
+            @Part("mid") mid: RequestBody
+    ): Call<UploadReportResponse>
 }
