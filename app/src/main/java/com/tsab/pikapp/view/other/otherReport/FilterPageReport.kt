@@ -38,7 +38,7 @@ class FilterPageReport : Fragment() {
     private var endDateTime: Long = 0
     private val id = Locale("in", "ID")
     private val sdf = SimpleDateFormat("EEEE, d MMMM yyyy", id)
-    private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+    private val dateFormatISO = SimpleDateFormat("yyyy-dd-MM'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
     var cal = Calendar.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -161,7 +161,7 @@ class FilterPageReport : Fragment() {
                 startDateTime = myCalendar.timeInMillis
                 dateISO = dateFormatISO.format(myCalendar.time)
                 viewModel.getStartDate(startDate)
-                viewModel.getEndISO(dateISO)
+                viewModel.getStartISO(dateISO)
             } else if (status == "end"){
                 val nowCalendar = Calendar.getInstance()
                 val dateNow = sdf.format(nowCalendar.time)

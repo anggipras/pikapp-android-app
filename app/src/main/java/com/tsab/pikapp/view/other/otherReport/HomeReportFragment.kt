@@ -25,7 +25,7 @@ class HomeReportFragment : Fragment() {
     private val sessionManager = SessionManager()
     private var startDateISO = ""
     private var endDateISO = ""
-    private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+    private val dateFormatISO = SimpleDateFormat("yyyy-dd-MM'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -115,7 +115,7 @@ class HomeReportFragment : Fragment() {
         dataBinding.reportWebView.webViewClient = WebViewClient()
 
         dataBinding.reportWebView.apply {
-            loadUrl("https://dev-report.pikapp.id/report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}")
+            loadUrl("https://dev-report.pikapp.id/report/generate?startdate=${startDate}&enddate=${endDate}&mid=M00000016")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
         }
