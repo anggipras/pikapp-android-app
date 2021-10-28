@@ -563,6 +563,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
                     mutableBatalOmni.value = batalList.size
                     mutableDoneOmni.value = doneList.size
+                } else {
+                    Timber.tag(tag).d("Result is null")
                 }
 
                 Handler().postDelayed({
