@@ -115,7 +115,7 @@ class HomeReportFragment : Fragment() {
         dataBinding.reportWebView.webViewClient = WebViewClient()
 
         dataBinding.reportWebView.apply {
-            loadUrl("https://dev-report.pikapp.id/report/generate?startdate=${startDate}&enddate=${endDate}&mid=M00000016")
+            loadUrl("https://dev-report.pikapp.id/report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
         }
