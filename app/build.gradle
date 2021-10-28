@@ -36,6 +36,9 @@ android {
             buildConfigField("String", "CLIENT_ID", "\"abf0e2a9-e9ee-440f-8563-94481c64b797\"")
             buildConfigField("String", "CLIENT_SECRET", "\"21f6fc80-cfdb-11ea-87d0-0242ac130003\"")
             buildConfigField("String", "APP_VERSION", "\"1.2\"")
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
         }
         release {
             minifyEnabled false
