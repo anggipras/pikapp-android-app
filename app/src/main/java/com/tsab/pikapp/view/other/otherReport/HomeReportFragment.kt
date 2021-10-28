@@ -25,7 +25,7 @@ class HomeReportFragment : Fragment() {
     private val sessionManager = SessionManager()
     private var startDateISO = ""
     private var endDateISO = ""
-    private val dateFormatISO = SimpleDateFormat("yyyy-dd-MM'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+    private val dateFormatISO = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -86,7 +86,7 @@ class HomeReportFragment : Fragment() {
             webViewSetup(startDateISO, endDateISO, mid)
         } else {
             dataBinding.dateChoice.text = viewModel.dateSelection.value
-            if (viewModel.dateSelection.value == "Hari ini" || viewModel.dateSelection.value == "Kemarin") {
+            if (viewModel.dateSelection.value == "Hari ini" || viewModel.dateSelection.value == "Kemarin" || viewModel.dateSelection.value == "2 Hari yang lalu") {
                 dataBinding.dateSelection.text = viewModel.endDate.value
             } else {
                 dataBinding.dateSelection.text = "${viewModel.startDate.value} s/d ${viewModel.endDate.value}"

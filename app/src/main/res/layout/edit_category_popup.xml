@@ -53,6 +53,7 @@
             android:fontFamily="@font/montserrat_bold"
             android:text="Lanjutkan"
             android:textAllCaps="false"
+            style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/green" />
 
         <Button
