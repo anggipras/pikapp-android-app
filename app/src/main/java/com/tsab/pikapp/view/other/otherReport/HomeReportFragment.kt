@@ -86,7 +86,7 @@ class HomeReportFragment : Fragment() {
             webViewSetup(startDateISO, endDateISO, mid)
         } else {
             dataBinding.dateChoice.text = viewModel.dateSelection.value
-            if (viewModel.dateSelection.value == "Hari ini" || viewModel.dateSelection.value == "Kemarin") {
+            if (viewModel.dateSelection.value == "Hari ini" || viewModel.dateSelection.value == "Kemarin" || viewModel.dateSelection.value == "2 Hari yang lalu") {
                 dataBinding.dateSelection.text = viewModel.endDate.value
             } else {
                 dataBinding.dateSelection.text = "${viewModel.startDate.value} s/d ${viewModel.endDate.value}"

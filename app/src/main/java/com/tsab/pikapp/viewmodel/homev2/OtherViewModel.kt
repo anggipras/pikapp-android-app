@@ -33,8 +33,8 @@ class OtherViewModel : ViewModel() {
 
     fun getMerchantProfile(context: Context) {
         val timeStamp = getTimestamp()
-        val email = sessionManager.getUserData()!!.email!!
-        val mid = sessionManager.getUserData()!!.mid!!
+        val email = sessionManager.getUserData()?.email!!
+        val mid = sessionManager.getUserData()?.mid!!
         val signature = getSignature(email, timeStamp)
         val token = sessionManager.getUserToken()!!
         val uuid = getUUID()

@@ -275,6 +275,7 @@
             android:background="@color/white"
             android:fontFamily="@font/montserrat_bold"
             android:text="@string/kembali"
+            style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/green" />
 
         <Button

@@ -44,10 +44,10 @@ class OtherFragment : Fragment() {
 
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getMerchantProfile(requireActivity())
+            viewModel.getMerchantProfile(requireContext())
         }
 
-        viewModel.getMerchantProfile(requireActivity())
+        viewModel.getMerchantProfile(requireContext())
         viewModel.getMerchantShopStatus(requireActivity())
         dataBinding.merchantProfile = viewModel
 
