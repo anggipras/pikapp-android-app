@@ -2,9 +2,13 @@ package com.tsab.pikapp.view.other.otherReport
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.FileUtils
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +19,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.FileUtil
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.LayoutLoadingOverlayBinding
 import com.tsab.pikapp.models.model.LogisticsDetailOmni
 import com.tsab.pikapp.models.model.OrderDetailOmni
 import com.tsab.pikapp.models.model.ProductDetailOmni
+import com.tsab.pikapp.models.model.UploadReportResponse
+import com.tsab.pikapp.models.network.PikappApi
+import com.tsab.pikapp.util.getFileName
 import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
 import kotlinx.android.synthetic.main.delete_dialog.view.*
 import kotlinx.android.synthetic.main.tokped_reject_popup.view.*
@@ -30,6 +38,17 @@ import kotlinx.android.synthetic.main.upload_file_popup.view.*
 import kotlinx.android.synthetic.main.upload_file_popup.view.dialog_upload_back
 import kotlinx.android.synthetic.main.upload_file_popup.view.dialog_upload_ok
 import kotlinx.android.synthetic.main.upload_report_list.view.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class UploadReportAdapter(
         private var uploadFragment: Fragment,
@@ -38,7 +57,8 @@ class UploadReportAdapter(
         private var nextBtn: Button,
         private var viewLoading:LayoutLoadingOverlayBinding,
         private var addBtn: Button,
-        private var uploadActivity: Activity
+        private var uploadActivity: Activity,
+        private var mid: String
 ): RecyclerView.Adapter<UploadReportAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -90,6 +110,20 @@ class UploadReportAdapter(
         if(position == 0){
             holder.deleteImg.visibility = View.GONE
         }
+        
+        if(position != 0){
+            holder.merchant.visibility = View.INVISIBLE
+        }
+
+        holder.merchant.setOnCheckedChangeListener { group, checkedId ->
+            if(checkedId == R.id.shopee){
+                uploadTotal[position].shopee = true
+                uploadTotal[position].gofood = false
+            }else if (checkedId == R.id.gofood){
+                uploadTotal[position].shopee = false
+                uploadTotal[position].gofood = true
+            }
+        }
 
         holder.deleteImg.setOnClickListener {
             deleteDialog(position, holder.merchant)
@@ -108,14 +142,16 @@ class UploadReportAdapter(
 
         holder.uploadBtn.setText(uploadTotal[position].namaFile)
         holder.uploadBtn.setOnClickListener {
-            if(!holder.gofood.isChecked && !holder.shopee.isChecked){
+            var gofoodStat: Boolean = uploadTotal[0].gofood
+            var shopeeStat: Boolean = uploadTotal[0].shopee
+            if(!gofoodStat && !shopeeStat){
                 Toast.makeText(uploadContext, "Silahkan Pilih Tipe Report", Toast.LENGTH_SHORT).show()
-            }else if(holder.gofood.isChecked){
+            }else if(gofoodStat){
                 var intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 intent = Intent.createChooser(intent, "Report Upload")
                 uploadFragment.startActivityForResult(intent, position)
-            }else if(holder.shopee.isChecked) {
+            }else if(shopeeStat) {
                 var intent = Intent(Intent.ACTION_GET_CONTENT)
                 intent.setType("text/csv")
                 intent = Intent.createChooser(intent, "Report Upload")
@@ -162,8 +198,22 @@ class UploadReportAdapter(
         )
 
         mDialogView.dialog_upload_ok.setOnClickListener {
-            Toast.makeText(uploadContext, "File Sukses Di Upload", Toast.LENGTH_SHORT).show()
+            viewLoading.loadingView.visibility = View.VISIBLE
+            val lists: ArrayList<Uri> = ArrayList()
+            var vendor: String = ""
+            for (list in uploadTotal){
+                if(list.nfile != null){
+                    lists.add(list.nfile!!)
+                }
+            }
+            if(uploadTotal[0].gofood){
+                vendor = "GoFood"
+            }else if(uploadTotal[0].shopee){
+                vendor = "ShopeeFood"
+            }
+            uploadReport(lists, vendor, mid)
             mAlertDialog.dismiss()
+            viewLoading.loadingView.visibility = View.INVISIBLE
         }
 
         mDialogView.dialog_upload_back.setOnClickListener {
@@ -208,5 +258,57 @@ class UploadReportAdapter(
         mDialogView.dialog_delete_close.setOnClickListener {
             mAlertDialog.dismiss()
         }
+    }
+
+    private fun uploadReport(files: List<Uri>, platform: String, mid: String){
+        val lists: ArrayList<MultipartBody.Part> = ArrayList()
+        var i: Int = 0
+        for(uri in files){
+            var fileRequest: MultipartBody.Part = prepareFile("files[]", uri)
+            lists.add(fileRequest)
+        }
+
+        val apiUpload = Retrofit.Builder().baseUrl("http://dev-api.pikapp.id:9001/").addConverterFactory(GsonConverterFactory.create()).build().create(PikappApi::class.java)
+        apiUpload.uploadReport(lists, RequestBody.create(MediaType.parse("multipart/form-data"), platform),
+                RequestBody.create(MediaType.parse("multipart/form-data"), mid)).enqueue(object : Callback<UploadReportResponse>{
+            override fun onResponse(call: Call<UploadReportResponse>, response: Response<UploadReportResponse>) {
+                if(response.code() == 200){
+                    Toast.makeText(uploadContext, "Report Berhasil Di Upload", Toast.LENGTH_SHORT).show()
+                }else if(response.code() == 404){
+                    Toast.makeText(uploadContext, "Report Sudah Pernah Di Upload", Toast.LENGTH_SHORT).show()
+                    Log.e("Fail", response.code().toString())
+                    Log.e("Fail", platform)
+                }else if(response.code() == 500){
+                    Toast.makeText(uploadContext, "Report Gagal Di Upload", Toast.LENGTH_SHORT).show()
+                    Log.e("Fail", response.code().toString())
+                    Log.e("Fail", platform)
+                }
+            }
+
+            override fun onFailure(call: Call<UploadReportResponse>, t: Throwable) {
+                Log.e("ehgiwe", t.toString())
+            }
+
+        })
+
+    }
+
+    private fun prepareFile(s: String, uri: Uri): MultipartBody.Part {
+        val application = uploadActivity
+
+        val reportParcelFileDescriptor = application.contentResolver.openFileDescriptor(
+                uri,
+                "r", null
+        )
+        val reportInputStream = FileInputStream(reportParcelFileDescriptor?.fileDescriptor)
+        val reportFile = File(
+                application.cacheDir, application.contentResolver.getFileName(
+                uri
+        )
+        )
+        val ktpOutputStream = FileOutputStream(reportFile)
+        reportInputStream.copyTo(ktpOutputStream)
+        var file: RequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), reportFile)
+        return MultipartBody.Part.createFormData(s, reportFile.name, file)
     }
 }

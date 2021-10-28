@@ -1,10 +1,15 @@
 package com.tsab.pikapp.viewmodel.other
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.viewmodel.BaseViewModel
 
-class ReportViewModel : ViewModel() {
+class ReportViewModel (application: Application) : BaseViewModel(application) {
+
+    private var sessionManager = SessionManager(getApplication())
 
     //Showing Date on Mobile
     private val mutableDateSelection = MutableLiveData("")
@@ -46,5 +51,10 @@ class ReportViewModel : ViewModel() {
     fun clearStartEndDate() {
         mutableStartDate.value = ""
         mutableEndDate.value = ""
+    }
+
+    fun getMid(): String{
+        val mid = sessionManager.getUserData()?.mid
+        return mid.toString()
     }
 }

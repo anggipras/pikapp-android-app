@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +25,7 @@ import java.io.InputStream
 class UploadReportFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentUploadReportBinding
-    private lateinit var viewModel: ReportViewModel
+    private val viewModel: ReportViewModel by activityViewModels()
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var adapter: UploadReportAdapter
     private lateinit var navController: NavController
@@ -54,7 +55,7 @@ class UploadReportFragment : Fragment() {
             }
 
             validateGofood = getFileName(path, requireActivity().contentResolver).substringAfterLast(".") == "xlsx"
-            uploadCount[requestCode] = uploadData(getFileName(path, requireActivity().contentResolver), validateShopee, validateGofood)
+            uploadCount[requestCode] = uploadData(getFileName(path, requireActivity().contentResolver), validateShopee, validateGofood, path)
             adapter.notifyDataSetChanged()
         }
     }
@@ -84,12 +85,15 @@ class UploadReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        uploadCount.add(uploadData("", false, false))
+        if(uploadCount.isEmpty()){
+            uploadCount.add(uploadData("", false, false))
+        }
+
         navController = Navigation.findNavController(view)
 
         linearLayoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         dataBinding.uploadList.layoutManager = linearLayoutManager
-        adapter = UploadReportAdapter(this, uploadCount, requireContext(), dataBinding.btnNext,dataBinding.loadingOverlay, dataBinding.btnPlus, requireActivity())
+        adapter = UploadReportAdapter(this, uploadCount, requireContext(), dataBinding.btnNext,dataBinding.loadingOverlay, dataBinding.btnPlus, requireActivity(), viewModel.getMid())
         dataBinding.uploadList.adapter = adapter
 
         dataBinding.backButton.setOnClickListener {
@@ -120,5 +124,5 @@ class UploadReportFragment : Fragment() {
         }
     }
 
-    data class uploadData(var namaFile: String, var shopee: Boolean = false, var gofood: Boolean = false)
+    data class uploadData(var namaFile: String, var shopee: Boolean = false, var gofood: Boolean = false, var nfile: Uri? = null)
 }
