@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentUploadReportBinding
 import com.tsab.pikapp.databinding.FragmentUploadStatusBinding
@@ -19,6 +21,7 @@ class UploadStatusFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentUploadStatusBinding
     private lateinit var viewModel: ReportViewModel
+    private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -29,6 +32,13 @@ class UploadStatusFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpTabs()
+
+        navController = Navigation.findNavController(view)
+
+        dataBinding.backButton.setOnClickListener {
+            navController?.navigateUp()
+        }
+
     }
 
     private fun setUpTabs() {

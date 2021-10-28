@@ -85,7 +85,10 @@ class UploadReportFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        uploadCount.add(uploadData("", false, false))
+        if(uploadCount.isEmpty()){
+            uploadCount.add(uploadData("", false, false))
+        }
+
         navController = Navigation.findNavController(view)
 
         linearLayoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)

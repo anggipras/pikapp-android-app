@@ -198,6 +198,7 @@ class UploadReportAdapter(
         )
 
         mDialogView.dialog_upload_ok.setOnClickListener {
+            viewLoading.loadingView.visibility = View.VISIBLE
             val lists: ArrayList<Uri> = ArrayList()
             var vendor: String = ""
             for (list in uploadTotal){
@@ -212,6 +213,7 @@ class UploadReportAdapter(
             }
             uploadReport(lists, vendor, mid)
             mAlertDialog.dismiss()
+            viewLoading.loadingView.visibility = View.INVISIBLE
         }
 
         mDialogView.dialog_upload_back.setOnClickListener {
@@ -272,7 +274,11 @@ class UploadReportAdapter(
             override fun onResponse(call: Call<UploadReportResponse>, response: Response<UploadReportResponse>) {
                 if(response.code() == 200){
                     Toast.makeText(uploadContext, "Report Berhasil Di Upload", Toast.LENGTH_SHORT).show()
-                }else{
+                }else if(response.code() == 404){
+                    Toast.makeText(uploadContext, "Report Sudah Pernah Di Upload", Toast.LENGTH_SHORT).show()
+                    Log.e("Fail", response.code().toString())
+                    Log.e("Fail", platform)
+                }else if(response.code() == 500){
                     Toast.makeText(uploadContext, "Report Gagal Di Upload", Toast.LENGTH_SHORT).show()
                     Log.e("Fail", response.code().toString())
                     Log.e("Fail", platform)
