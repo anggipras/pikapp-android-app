@@ -23,6 +23,9 @@ class HomeReportFragment : Fragment() {
     private lateinit var dataBinding: HomeReportFragmentBinding
     private val viewModel: ReportViewModel by activityViewModels()
     private val sessionManager = SessionManager()
+    private var startDateISO = ""
+    private var endDateISO = ""
+    private val dateFormatISO = SimpleDateFormat("yyyy-dd-MM'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -65,11 +68,22 @@ class HomeReportFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_homeReportFragment_to_filterPageReport)
         }
 
+        dateFormatISO.timeZone = TimeZone.getDefault()
+        val mid = sessionManager.getUserData()!!.mid!!
         if (viewModel.dateSelection.value.isNullOrEmpty()) {
             val id = Locale("in", "ID")
             val dateNow = SimpleDateFormat("EEEE, d MMMM yyyy", id).format(Date())
             dataBinding.dateChoice.text = "Hari ini"
             dataBinding.dateSelection.text = dateNow
+            val cal = Calendar.getInstance()
+            endDateISO = dateFormatISO.format(cal.time)
+
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+            startDateISO = dateFormatISO.format(cal.time)
+            webViewSetup(startDateISO, endDateISO, mid)
         } else {
             dataBinding.dateChoice.text = viewModel.dateSelection.value
             if (viewModel.dateSelection.value == "Hari ini" || viewModel.dateSelection.value == "Kemarin") {
@@ -77,12 +91,9 @@ class HomeReportFragment : Fragment() {
             } else {
                 dataBinding.dateSelection.text = "${viewModel.startDate.value} s/d ${viewModel.endDate.value}"
             }
+            webViewSetup(viewModel.startISO.value!!, viewModel.endISO.value!!, mid)
         }
 
-        val startDate = "M00000150"
-        val endDate = "7"
-
-        webViewSetup(startDate, endDate)
         onBackPressed()
     }
 
@@ -100,11 +111,11 @@ class HomeReportFragment : Fragment() {
                 })
     }
 
-    private fun webViewSetup(startDate: Any, endDate: Any) {
+    private fun webViewSetup(startDate: Any, endDate: Any, mid: String) {
         dataBinding.reportWebView.webViewClient = WebViewClient()
 
         dataBinding.reportWebView.apply {
-            loadUrl("https://web-dev.pikapp.id/merchant/${startDate}/${endDate}")
+            loadUrl("https://dev-report.pikapp.id/report/generate?startdate=${startDate}&enddate=${endDate}&mid=M00000016")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
         }
