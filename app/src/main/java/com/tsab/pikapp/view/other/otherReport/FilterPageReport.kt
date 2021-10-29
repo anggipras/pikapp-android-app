@@ -87,6 +87,7 @@ class FilterPageReport : Fragment() {
                     lastMonth.setTextColor(Color.parseColor("#ffffff"))
                 }
                 "Rentang waktu" -> {
+                    this.date = ""
                     dataBinding.startDate.backgroundTintList = null
                     dataBinding.startDate.isEnabled = true
                     dataBinding.startDate.setText(viewModel.startDate.value)
