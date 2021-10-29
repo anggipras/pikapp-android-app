@@ -2,11 +2,9 @@ package com.tsab.pikapp.view.other.otherReport
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.FileUtils
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,27 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.util.FileUtil
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.LayoutLoadingOverlayBinding
-import com.tsab.pikapp.models.model.LogisticsDetailOmni
-import com.tsab.pikapp.models.model.OrderDetailOmni
-import com.tsab.pikapp.models.model.ProductDetailOmni
 import com.tsab.pikapp.models.model.UploadReportResponse
-import com.tsab.pikapp.models.network.PikappApi
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.getFileName
-import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
 import kotlinx.android.synthetic.main.delete_dialog.view.*
-import kotlinx.android.synthetic.main.tokped_reject_popup.view.*
-import kotlinx.android.synthetic.main.tokped_reject_popup.view.dialog_tokped_back
-import kotlinx.android.synthetic.main.tokped_reject_popup.view.dialog_tokped_close
-import kotlinx.android.synthetic.main.tokped_reject_popup.view.dialog_tokped_ok
 import kotlinx.android.synthetic.main.upload_file_popup.view.*
 import kotlinx.android.synthetic.main.upload_file_popup.view.dialog_upload_back
 import kotlinx.android.synthetic.main.upload_file_popup.view.dialog_upload_ok
@@ -45,8 +31,6 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -59,7 +43,8 @@ class UploadReportAdapter(
         private var viewLoading:LayoutLoadingOverlayBinding,
         private var addBtn: Button,
         private var uploadActivity: Activity,
-        private var mid: String
+        private var mid: String,
+        private var theView: View
 ): RecyclerView.Adapter<UploadReportAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -263,26 +248,21 @@ class UploadReportAdapter(
 
     private fun uploadReport(files: List<Uri>, platform: String, mid: String){
         val lists: ArrayList<MultipartBody.Part> = ArrayList()
-        var i: Int = 0
         for(uri in files){
             var fileRequest: MultipartBody.Part = prepareFile("files[]", uri)
             lists.add(fileRequest)
         }
 
-//        val apiUpload = Retrofit.Builder().baseUrl("https://dev-report-api.pikapp.id/").addConverterFactory(GsonConverterFactory.create()).build().create(PikappApi::class.java)
         PikappApiService().reportApi.uploadReport(lists, RequestBody.create(MediaType.parse("multipart/form-data"), platform),
                 RequestBody.create(MediaType.parse("multipart/form-data"), mid)).enqueue(object : Callback<UploadReportResponse>{
             override fun onResponse(call: Call<UploadReportResponse>, response: Response<UploadReportResponse>) {
                 if(response.code() == 200){
                     Toast.makeText(uploadContext, "Report Berhasil Di Upload", Toast.LENGTH_SHORT).show()
+                    Navigation.findNavController(theView).navigateUp()
                 }else if(response.code() == 404){
                     Toast.makeText(uploadContext, "Report Sudah Pernah Di Upload", Toast.LENGTH_SHORT).show()
-                    Log.e("Fail", response.code().toString())
-                    Log.e("Fail", platform)
                 }else if(response.code() == 500){
                     Toast.makeText(uploadContext, "Report Gagal Di Upload", Toast.LENGTH_SHORT).show()
-                    Log.e("Fail", response.code().toString())
-                    Log.e("Fail", platform)
                 }
             }
 

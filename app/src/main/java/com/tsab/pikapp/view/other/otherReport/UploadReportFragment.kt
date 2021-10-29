@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentUploadReportBinding
 import com.tsab.pikapp.viewmodel.other.ReportViewModel
-import id.rizmaulana.floatingslideupsheet.helper.toPx
 import java.io.InputStream
 
 class UploadReportFragment : Fragment() {
@@ -93,7 +91,7 @@ class UploadReportFragment : Fragment() {
 
         linearLayoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         dataBinding.uploadList.layoutManager = linearLayoutManager
-        adapter = UploadReportAdapter(this, uploadCount, requireContext(), dataBinding.btnNext,dataBinding.loadingOverlay, dataBinding.btnPlus, requireActivity(), viewModel.getMid())
+        adapter = UploadReportAdapter(this, uploadCount, requireContext(), dataBinding.btnNext,dataBinding.loadingOverlay, dataBinding.btnPlus, requireActivity(), viewModel.getMid(), view)
         dataBinding.uploadList.adapter = adapter
 
         dataBinding.backButton.setOnClickListener {
