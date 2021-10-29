@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.HomeReportFragmentBinding
+import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.other.ReportViewModel
@@ -114,8 +115,11 @@ class HomeReportFragment : Fragment() {
     private fun webViewSetup(startDate: Any, endDate: Any, mid: String) {
         dataBinding.reportWebView.webViewClient = WebViewClient()
 
+        val reportApi = PikappApiService().webReport()
+//        val urlReport = "${reportApi}report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}"
+
         dataBinding.reportWebView.apply {
-            loadUrl("https://dev-report.pikapp.id/report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}")
+            loadUrl("${reportApi}report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
         }

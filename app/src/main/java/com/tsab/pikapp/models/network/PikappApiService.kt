@@ -20,6 +20,28 @@ class PikappApiService {
         .build()
         .create(PikappApi::class.java)
 
+    private fun checkBuildConfig(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "https://dev-report-api.pikapp.id/"
+        } else {
+            "https://report-api.pikapp.id/"
+        }
+    }
+
+    fun webReport(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "https://dev-report.pikapp.id/"
+        } else {
+            "https://report.pikapp.id/"
+        }
+    }
+
+    val reportApi = Retrofit.Builder()
+        .baseUrl(checkBuildConfig())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(PikappApi::class.java)
+
     // Merchant LOGIN, LOGOUT, REGISTER
     // AUTH
     fun loginUser(email: String, password: String, fcmToken: String): Single<LoginResponse> {

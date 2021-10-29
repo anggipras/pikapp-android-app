@@ -27,6 +27,7 @@ import com.tsab.pikapp.models.model.OrderDetailOmni
 import com.tsab.pikapp.models.model.ProductDetailOmni
 import com.tsab.pikapp.models.model.UploadReportResponse
 import com.tsab.pikapp.models.network.PikappApi
+import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.getFileName
 import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
 import kotlinx.android.synthetic.main.delete_dialog.view.*
@@ -268,8 +269,8 @@ class UploadReportAdapter(
             lists.add(fileRequest)
         }
 
-        val apiUpload = Retrofit.Builder().baseUrl("https://dev-report-api.pikapp.id/").addConverterFactory(GsonConverterFactory.create()).build().create(PikappApi::class.java)
-        apiUpload.uploadReport(lists, RequestBody.create(MediaType.parse("multipart/form-data"), platform),
+//        val apiUpload = Retrofit.Builder().baseUrl("https://dev-report-api.pikapp.id/").addConverterFactory(GsonConverterFactory.create()).build().create(PikappApi::class.java)
+        PikappApiService().reportApi.uploadReport(lists, RequestBody.create(MediaType.parse("multipart/form-data"), platform),
                 RequestBody.create(MediaType.parse("multipart/form-data"), mid)).enqueue(object : Callback<UploadReportResponse>{
             override fun onResponse(call: Call<UploadReportResponse>, response: Response<UploadReportResponse>) {
                 if(response.code() == 200){
