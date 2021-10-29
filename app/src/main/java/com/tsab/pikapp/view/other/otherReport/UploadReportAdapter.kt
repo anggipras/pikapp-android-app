@@ -268,7 +268,7 @@ class UploadReportAdapter(
             lists.add(fileRequest)
         }
 
-        val apiUpload = Retrofit.Builder().baseUrl("http://dev-api.pikapp.id:9001/").addConverterFactory(GsonConverterFactory.create()).build().create(PikappApi::class.java)
+        val apiUpload = Retrofit.Builder().baseUrl("https://dev-report-api.pikapp.id/").addConverterFactory(GsonConverterFactory.create()).build().create(PikappApi::class.java)
         apiUpload.uploadReport(lists, RequestBody.create(MediaType.parse("multipart/form-data"), platform),
                 RequestBody.create(MediaType.parse("multipart/form-data"), mid)).enqueue(object : Callback<UploadReportResponse>{
             override fun onResponse(call: Call<UploadReportResponse>, response: Response<UploadReportResponse>) {
