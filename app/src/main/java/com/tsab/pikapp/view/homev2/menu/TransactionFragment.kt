@@ -45,15 +45,15 @@ class TransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (activity != null) {
+        if (activity != null && isAdded) {
             activity?.overridePendingTransition(0, 0)
             setUpTabs()
 
-            dataBinding.report.setOnClickListener {
-                val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
-                activity?.startActivityForResult(intent, 1)
-                activity?.overridePendingTransition(0, 0)
-            }
+//            dataBinding.report.setOnClickListener {
+//                val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
+//                activity?.startActivityForResult(intent, 1)
+//                activity?.overridePendingTransition(0, 0)
+//            }
             swipeRefreshLayout = swipeTransactionMenu
 
             swipeRefreshLayout = dataBinding.swipeTransactionMenu
