@@ -21,6 +21,7 @@ import com.tsab.pikapp.view.homev2.Transaction.CancelFragment
 import com.tsab.pikapp.view.homev2.Transaction.DoneFragment
 import com.tsab.pikapp.view.homev2.Transaction.ProcessFragment
 import com.tsab.pikapp.view.homev2.Transaction.TransactionAdapter
+import com.tsab.pikapp.view.homev2.Transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import timber.log.Timber
@@ -49,8 +50,8 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
             setUpTabs()
 
-            dataBinding.report.setOnClickListener {
-                val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
+            dataBinding.manualTxn.setOnClickListener {
+                val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
                 activity?.startActivityForResult(intent, 1)
                 activity?.overridePendingTransition(0, 0)
             }

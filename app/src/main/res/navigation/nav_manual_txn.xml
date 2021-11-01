@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_manual_txn"
+    app:startDestination="@id/homeViewManualTxn">
+
+    <fragment
+        android:id="@+id/homeViewManualTxn"
+        android:name="com.tsab.pikapp.view.homev2.Transaction.manualTxn.HomeViewManualTxn"
+        android:label="fragment_home_view_manual_txn"
+        tools:layout="@layout/fragment_home_view_manual_txn" />
+</navigation>
