@@ -1,15 +1,12 @@
-package com.tsab.pikapp.view.homev2.Transaction
+package com.tsab.pikapp.view.homev2.transaction
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import kotlinx.android.synthetic.main.list_report_items.view.*
-import kotlinx.android.synthetic.main.transaction_list_items.view.*
 
 class TxnReportAdapter(private val txnList: ArrayList<String>): RecyclerView.Adapter<TxnReportAdapter.ViewHolder>() {
 

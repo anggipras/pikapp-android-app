@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.Transaction
+package com.tsab.pikapp.view.homev2.transaction
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -25,8 +25,8 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.Transaction.shipment.ResiTokopediaDialogFragment
-import com.tsab.pikapp.view.homev2.Transaction.shipment.ResiTokopediaDialogFragment.Companion.tag
+import com.tsab.pikapp.view.homev2.transaction.shipment.ResiTokopediaDialogFragment
+import com.tsab.pikapp.view.homev2.transaction.shipment.ResiTokopediaDialogFragment.Companion.tag
 import com.tsab.pikapp.view.other.otherSettings.profileSetting.ProfileBirthdayFragment
 import com.tsab.pikapp.view.other.otherSettings.profileSetting.setFragmentResultListener
 import kotlinx.android.synthetic.main.omni_tokped_popup.view.*
