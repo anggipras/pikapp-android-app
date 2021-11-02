@@ -1,14 +1,19 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
+import com.tsab.pikapp.models.model.DummyAdvData
 import com.tsab.pikapp.models.model.SearchItem
 import com.tsab.pikapp.models.model.SearchRequest
 import com.tsab.pikapp.models.model.SearchResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAdvMenuAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +22,7 @@ import retrofit2.Response
 class ManualTxnViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
     private val sessionManager = SessionManager(getApplication())
+    lateinit var manualAdvMenuAdapter: ManualAdvMenuAdapter
 
     private val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
     val menuList: LiveData<List<SearchItem>> = mutableMenuList
@@ -87,5 +93,13 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 Log.e(tag, "Error: " + t.message.toString())
             }
         })
+    }
+
+    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>) {
+        //ADDING API TO GET ADVANCE MENU LIST
+
+        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice)
+        manualAdvMenuAdapter.notifyDataSetChanged()
+        recyclerview_category.adapter = manualAdvMenuAdapter
     }
 }
