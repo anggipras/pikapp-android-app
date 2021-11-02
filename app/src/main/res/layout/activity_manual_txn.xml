@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.homev2.Transaction.manualTxn.ManualTxnActivity">
+    tools:context=".view.homev2.transaction.manualTxn.ManualTxnActivity">
 
     <fragment
         android:id="@+id/fragment_container_other"

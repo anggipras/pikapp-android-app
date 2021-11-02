@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeViewManualTxn"
-        android:name="com.tsab.pikapp.view.homev2.Transaction.manualTxn.HomeViewManualTxn"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.HomeViewManualTxn"
         android:label="fragment_home_view_manual_txn"
         tools:layout="@layout/fragment_home_view_manual_txn" />
 </navigation>

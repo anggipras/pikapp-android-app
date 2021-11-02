@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.Transaction.manualTxn
+package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Context
 import android.content.Intent
@@ -15,23 +15,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentHomeViewManualTxnBinding
-import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
-import com.tsab.pikapp.view.homev2.SearchActivity
-import com.tsab.pikapp.view.homev2.menu.DynamicFragmentAdapter
-import com.tsab.pikapp.view.homev2.menu.MenuNavigation
-import com.tsab.pikapp.view.menuCategory.CategoryNavigation
-import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
+import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import java.io.File
 
 class HomeViewManualTxn : Fragment() {
 
     private val viewModel: MenuViewModel by activityViewModels()
-    private val viewModelDynamic: DynamicViewModel by activityViewModels()
+    private val viewModelDynamic: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentHomeViewManualTxnBinding
 
     private var categoryList: List<String> = listOf()
@@ -135,9 +130,8 @@ class HomeViewManualTxn : Fragment() {
             }
         }
 
-        val mDynamicFragmentAdapter =
-            DynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
-        dataBinding.viewpager.adapter = mDynamicFragmentAdapter
+        val dynamicFragmentAdapter = ManualTxnDynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
+        dataBinding.viewpager.adapter = dynamicFragmentAdapter
         dataBinding.viewpager.currentItem = 0
     }
 

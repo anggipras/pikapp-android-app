@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.Transaction
+package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

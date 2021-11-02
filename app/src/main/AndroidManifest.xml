@@ -18,8 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".view.homev2.Transaction.manualTxn.ManualTxnActivity"></activity>
-        <activity android:name=".view.homev2.Transaction.shipment.ScanResiActivity" />
+        <activity android:name=".view.homev2.transaction.manualTxn.ManualTxnActivity"></activity>
+        <activity android:name=".view.homev2.transaction.shipment.ScanResiActivity" />
         <activity android:name=".view.homev2.menu.tokopedia.EtalaseNavigation" />
         <activity android:name=".view.AddTokpedMenuActivity" />
         <activity android:name=".view.other.otherReport.ReportActivity" />

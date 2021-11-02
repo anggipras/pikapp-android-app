@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.Transaction
+package com.tsab.pikapp.view.homev2.transaction
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.Transaction.manualTxn
+package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
