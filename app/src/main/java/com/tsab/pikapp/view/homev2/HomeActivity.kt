@@ -9,10 +9,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
@@ -22,8 +26,11 @@ import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.menu.OtherFragment
 import com.tsab.pikapp.view.homev2.menu.PromoFragment
 import com.tsab.pikapp.view.homev2.menu.TransactionFragment
+import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
+import kotlinx.android.synthetic.main.layout_header_drawer.*
+import kotlinx.android.synthetic.main.layout_header_drawer.view.*
 import java.util.*
 
 class HomeActivity : AppCompatActivity() {
@@ -63,6 +70,21 @@ class HomeActivity : AppCompatActivity() {
                 replaceFragment(otherFragment)
                 bottom_navigation.selectedItemId = R.id.nav_other
             }
+        }
+
+        nav_view.getHeaderView(0).close_drawer.setOnClickListener { v ->
+            openCloseDrawer(v)
+        }
+
+        nav_view.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.search_menu -> startActivity(Intent(this, SearchActivity::class.java))
+                R.id.sort_menu-> Intent(this, SortActivity::class.java).apply {
+                    putExtra("SORT_NAV", 0)
+                    startActivity(this)}
+                R.id.share_link -> Log.e("fqiwf", "qefbjhwq")
+            }
+            true
         }
 
         bottom_navigation.setOnNavigationItemSelectedListener {
@@ -135,6 +157,14 @@ class HomeActivity : AppCompatActivity() {
         } else {
             bottom_navigation.selectedItemId = R.id.nav_transaction
             sessionManager.setHomeNav(0)
+        }
+    }
+
+    fun openCloseDrawer(view: View){
+        if(open_drawer.isDrawerOpen(GravityCompat.END)){
+            open_drawer.closeDrawer(GravityCompat.END)
+        }else{
+            open_drawer.openDrawer(GravityCompat.END)
         }
     }
 }

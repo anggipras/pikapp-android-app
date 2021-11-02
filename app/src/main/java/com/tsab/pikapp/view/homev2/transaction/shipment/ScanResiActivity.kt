@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.Transaction.shipment
+package com.tsab.pikapp.view.homev2.transaction.shipment
 
 import android.Manifest
 import android.app.Activity

@@ -1,18 +1,14 @@
-package com.tsab.pikapp.view.homev2.Transaction
+package com.tsab.pikapp.view.homev2.transaction
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.CategoryListResult
 import com.tsab.pikapp.models.model.OrderDetailDetail
-import com.tsab.pikapp.models.model.ShopSchedule
 import kotlinx.android.synthetic.main.item_transaction_menu.view.*
 
 class TransactionMenuAdapter(private val context: Context, private val transactionList1: MutableList<OrderDetailDetail>) : RecyclerView.Adapter<TransactionMenuAdapter.ViewHolder>() {

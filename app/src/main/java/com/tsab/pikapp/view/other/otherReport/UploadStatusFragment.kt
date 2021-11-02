@@ -7,13 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentUploadReportBinding
 import com.tsab.pikapp.databinding.FragmentUploadStatusBinding
-import com.tsab.pikapp.view.homev2.Transaction.CancelFragment
-import com.tsab.pikapp.view.homev2.Transaction.DoneFragment
-import com.tsab.pikapp.view.homev2.Transaction.ProcessFragment
-import com.tsab.pikapp.view.homev2.Transaction.TransactionAdapter
 import com.tsab.pikapp.viewmodel.other.ReportViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 

@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -25,8 +24,8 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.Transaction.OmniTransactionListAdapter
-import com.tsab.pikapp.view.homev2.Transaction.TransactionListAdapter
+import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
+import com.tsab.pikapp.view.homev2.transaction.TransactionListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

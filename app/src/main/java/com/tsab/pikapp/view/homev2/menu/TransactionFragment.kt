@@ -15,12 +15,12 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
-import com.tsab.pikapp.view.TransactionDetailActivity
 import com.tsab.pikapp.view.homev2.HomeActivity
-import com.tsab.pikapp.view.homev2.Transaction.CancelFragment
-import com.tsab.pikapp.view.homev2.Transaction.DoneFragment
-import com.tsab.pikapp.view.homev2.Transaction.ProcessFragment
-import com.tsab.pikapp.view.homev2.Transaction.TransactionAdapter
+import com.tsab.pikapp.view.homev2.transaction.CancelFragment
+import com.tsab.pikapp.view.homev2.transaction.DoneFragment
+import com.tsab.pikapp.view.homev2.transaction.ProcessFragment
+import com.tsab.pikapp.view.homev2.transaction.TransactionAdapter
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import timber.log.Timber
@@ -49,11 +49,12 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
             setUpTabs()
 
-//            dataBinding.report.setOnClickListener {
-//                val intent = Intent(activity?.baseContext, TransactionDetailActivity::class.java)
-//                activity?.startActivityForResult(intent, 1)
-//                activity?.overridePendingTransition(0, 0)
-//            }
+            dataBinding.manualTransaction.setOnClickListener {
+                val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
+                activity?.startActivityForResult(intent, 1)
+                activity?.overridePendingTransition(0, 0)
+            }
+
             swipeRefreshLayout = swipeTransactionMenu
 
             swipeRefreshLayout = dataBinding.swipeTransactionMenu

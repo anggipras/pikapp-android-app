@@ -1,36 +1,33 @@
-package com.tsab.pikapp.view.homev2.menu
+package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.MenuFragmentBinding
+import com.tsab.pikapp.databinding.FragmentHomeViewManualTxnBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
-import com.tsab.pikapp.view.homev2.SearchActivity
-import com.tsab.pikapp.view.menuCategory.CategoryNavigation
-import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
+import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.menu_fragment.*
 import java.io.File
 
-class MenuFragment : Fragment() {
+class HomeViewManualTxn : Fragment() {
+
     private val viewModel: MenuViewModel by activityViewModels()
-    private val viewModelDynamic: DynamicViewModel by activityViewModels()
-    private lateinit var dataBinding: MenuFragmentBinding
+    private val viewModelDynamic: ManualTxnViewModel by activityViewModels()
+    private lateinit var dataBinding: FragmentHomeViewManualTxnBinding
 
     private var categoryList: List<String> = listOf()
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -39,8 +36,8 @@ class MenuFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.menu_fragment, container, false)
+    ): View? {
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_view_manual_txn, container, false)
         return dataBinding.root
     }
 
@@ -48,14 +45,12 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
-        setMenuInvisible()
         observeViewModel()
     }
 
     override fun onResume() {
         super.onResume()
 
-        setMenuInvisible()
         observeViewModel()
         attachInputListeners()
     }
@@ -66,13 +61,20 @@ class MenuFragment : Fragment() {
         deleteCache(requireContext())
     }
 
+    private fun attachInputListeners() {
+        sessionManager.setHomeNav(0)
+        dataBinding.backButton.setOnClickListener {
+            Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                startActivity(this)
+                activity?.finish()
+            }
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.shimmerFrameLayoutCategory.visibility =
-                if (isLoading) View.VISIBLE else View.GONE
             if (!isLoading) {
                 initViews()
-                dataBinding.shimmerFrameLayoutMenu.visibility = View.GONE
             }
         })
 
@@ -88,24 +90,6 @@ class MenuFragment : Fragment() {
             }
         })
 
-        viewModel.size.observe(viewLifecycleOwner, Observer { size ->
-            if (size == 0 && viewModel.isLoading.value == false) {
-                invisibleMenu()
-                dataBinding.textview2.visibility = View.VISIBLE
-                dataBinding.imageView18.visibility = View.VISIBLE
-                dataBinding.addCategory.visibility = View.VISIBLE
-            } else {
-                invisibleMenuNull()
-                dataBinding.viewpager.visibility = View.VISIBLE
-            }
-
-            if (size != 0) {
-                dataBinding.tabs.visibility = View.VISIBLE
-                dataBinding.appbar.visibility = View.VISIBLE
-                dataBinding.plusBtn.visibility = View.VISIBLE
-            }
-        })
-
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
             Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
@@ -115,69 +99,6 @@ class MenuFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun attachInputListeners() {
-        dataBinding.addCategory.setOnClickListener {
-            if (viewModel.size.value == 0) {
-                Intent(activity?.baseContext, MenuNavigation::class.java).apply {
-                    activity?.startActivity(this)
-                }
-            }
-        }
-
-        dataBinding.plusBtn.setOnClickListener {
-            Intent(activity?.baseContext, CategoryNavigation::class.java).apply {
-                activity?.startActivity(this)
-            }
-        }
-
-        dataBinding.sortButton.setOnClickListener { v ->
-            (activity as HomeActivity).openCloseDrawer(v)
-            /*if (viewModel.size.value != null) {
-                sessionManager.setHomeNav(1)
-                Intent(activity?.baseContext, SortActivity::class.java).apply {
-                    putExtra("SORT_NAV", 0)
-                    activity?.startActivity(this)
-                }
-            } else if (viewModel.size.value == 0) {
-                dataBinding.textview3.visibility = View.VISIBLE
-            }*/
-        }
-
-        dataBinding.searchButton.setOnClickListener {
-            if (viewModel.size.value != null) {
-                Intent(activity?.baseContext, SearchActivity::class.java).apply {
-                    activity?.startActivity(this)
-                }
-            }
-        }
-    }
-
-    private fun invisibleMenuNull() {
-        dataBinding.textview2.visibility = View.GONE
-        dataBinding.imageView18.visibility = View.GONE
-        dataBinding.addCategory.visibility = View.GONE
-        dataBinding.textview3.visibility = View.GONE
-    }
-
-    private fun invisibleMenu() {
-        dataBinding.plusBtn.visibility = View.GONE
-        dataBinding.tabs.visibility = View.GONE
-        dataBinding.viewpager.visibility = View.GONE
-        dataBinding.appbar.visibility = View.GONE
-    }
-
-    private fun setMenuInvisible() {
-        dataBinding.tabs.visibility = View.GONE
-        dataBinding.viewpager.visibility = View.GONE
-        dataBinding.appbar.visibility = View.GONE
-        dataBinding.textview2.visibility = View.GONE
-        dataBinding.imageView18.visibility = View.GONE
-        dataBinding.addCategory.visibility = View.GONE
-        dataBinding.plusBtn.visibility = View.GONE
-        dataBinding.textview3.visibility = View.GONE
-        dataBinding.shimmerFrameLayoutMenu.visibility = View.VISIBLE
     }
 
     private fun initViews() {
@@ -209,9 +130,8 @@ class MenuFragment : Fragment() {
             }
         }
 
-        val mDynamicFragmentAdapter =
-            DynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
-        dataBinding.viewpager.adapter = mDynamicFragmentAdapter
+        val dynamicFragmentAdapter = ManualTxnDynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
+        dataBinding.viewpager.adapter = dynamicFragmentAdapter
         dataBinding.viewpager.currentItem = 0
     }
 
@@ -240,4 +160,5 @@ class MenuFragment : Fragment() {
             false
         }
     }
+
 }

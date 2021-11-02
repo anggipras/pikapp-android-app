@@ -1,34 +1,23 @@
-package com.tsab.pikapp.view.homev2.Transaction
+package com.tsab.pikapp.view.homev2.transaction
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.Color.green
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.util.SwipeUpUtil
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
-import id.rizmaulana.floatingslideupsheet.view.FloatingSlideUpBuilder
 import kotlinx.android.synthetic.main.expanded_txn_fragment.*
 import kotlinx.android.synthetic.main.expanded_txn_fragment.tabs
 import kotlinx.android.synthetic.main.fragment_proccess.*
-import kotlinx.android.synthetic.main.fragment_txn_cart.*
 import kotlinx.android.synthetic.main.fragment_txn_report.*
 import kotlinx.android.synthetic.main.fragment_txn_report.recyclerview_transaction
-import kotlinx.android.synthetic.main.list_report_items.*
-import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.util.*
 import kotlin.collections.ArrayList
 
