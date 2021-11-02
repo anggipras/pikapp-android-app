@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="122dp"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/notifheader"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="@string/pesanan_masuk"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/black"
                     android:textSize="25sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -40,21 +40,37 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.706" />
 
-                <ImageView
-                    android:id="@+id/manualTxn"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/manual_transaction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="28dp"
-                    android:paddingBottom="3dp"
-                    android:paddingTop="3dp"
-                    android:paddingEnd="3dp"
-                    android:paddingStart="3dp"
-                    android:src="@drawable/icon_plus"
-                    android:background="@drawable/circle_green"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    tools:ignore="ContentDescription" />
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <ImageView
+                        android:id="@+id/report"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/green_circle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="11dp"
+                        android:text="@string/plus_sign"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -80,7 +96,7 @@
                             android:layout_height="wrap_content"
                             android:theme="@style/Theme.MaterialComponents.Light"
                             app:tabGravity="fill"
-                            app:tabIndicatorColor="@color/colorPrimary"
+                            app:tabIndicatorColor="@color/colorGreen"
                             app:tabIndicatorHeight="4dp"
                             app:tabMode="fixed"
                             app:tabTextAppearance="@style/MenuTabLayout"
