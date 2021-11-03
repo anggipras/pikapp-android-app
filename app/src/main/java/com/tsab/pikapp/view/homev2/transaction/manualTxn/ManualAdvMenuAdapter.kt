@@ -8,11 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.DummyAdvData
+//import com.tsab.pikapp.models.model.DummyAdvData
+//import com.tsab.pikapp.models.model.DummyChoices
 
 class ManualAdvMenuAdapter(
     val context: Context,
-    val manualAdvMenuList: MutableList<DummyAdvData>
+    val manualAdvMenuList: MutableList<ManualAddAdvMenuFragment.DummyAdvData>
 ) : RecyclerView.Adapter<ManualAdvMenuAdapter.ViewHolder>() {
     lateinit var linearLayoutManager: LinearLayoutManager
 
@@ -28,7 +29,7 @@ class ManualAdvMenuAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.parentMenuChoice.text = manualAdvMenuList[position].parentMenuChoice
-        val childMenuChoice = manualAdvMenuList[position].childMenuChoice as MutableList<String>
+        val childMenuChoice = manualAdvMenuList[position].childMenuChoice as MutableList<ManualAddAdvMenuFragment.DummyChoices>
         setChildManualAdvMenu(holder.rView, childMenuChoice)
     }
 
@@ -36,7 +37,7 @@ class ManualAdvMenuAdapter(
         return manualAdvMenuList.size
     }
 
-    private fun setChildManualAdvMenu(rView: RecyclerView, childMenuChoice: MutableList<String>) {
+    private fun setChildManualAdvMenu(rView: RecyclerView, childMenuChoice: MutableList<ManualAddAdvMenuFragment.DummyChoices>) {
         linearLayoutManager = LinearLayoutManager(context)
         rView.layoutManager = linearLayoutManager
         rView.setHasFixedSize(false)
