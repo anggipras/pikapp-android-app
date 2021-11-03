@@ -160,3 +160,6 @@ data class AdvanceAdditionalMenuEdit(
         var ext_id: Long
 )
 /*EDIT ADVANCE MENU END*/
+
+/*DUMMY ADV DATA*/
+data class DummyAdvData(val parentMenuChoice: String, val childMenuChoice: List<String>)
