@@ -38,5 +38,10 @@ class ManualAddAdvMenuFragment : Fragment() {
         dummyAdvData.add(DummyAdvData("Tambah Mantap", listOf("Mantap1", "Mantap2", "Mantap3", "Mantap4")))
 
         activity?.let { viewModel.getManualAdvanceMenuList(it.baseContext, dataBinding.recyclerviewParentMenuChoice, dummyAdvData) }
+
+        dataBinding.btnNext.setOnClickListener {
+            viewModel.setManualQuantity(dataBinding.menuAmount.text.toString())
+            viewModel.setManualNote(dataBinding.manualNote.text.toString())
+        }
     }
 }
