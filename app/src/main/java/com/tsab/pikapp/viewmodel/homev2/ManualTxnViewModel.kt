@@ -36,6 +36,24 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableLoading.value = boolean
     }
 
+    private val mutableNote = MutableLiveData("")
+    val note: LiveData<String> get() = mutableNote
+    fun setManualNote(note: String) {
+        mutableNote.value = note
+    }
+
+    private val mutableQuantity = MutableLiveData(0)
+    val quantity: LiveData<Int> get() = mutableQuantity
+    fun setManualQuantity(quantity: String) {
+        mutableQuantity.value = quantity.toInt()
+    }
+
+    private val mutableTopping = MutableLiveData("")
+    val topping: LiveData<String> get() = mutableNote
+    fun setManualTopping(topping: String) {
+        mutableTopping.value = topping
+    }
+
     fun getMenuList() {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
