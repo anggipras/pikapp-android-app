@@ -36,7 +36,7 @@ class ManualTxnDynamicFragment : Fragment() {
     private lateinit var dataBinding: FragmentManualTxnDynamicBinding
 
     var menuList: MutableList<SearchItem> = mutableListOf()
-    lateinit var dynamicAdapter: DynamicListAdapter
+    lateinit var dynamicAdapter: ListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var categoryName: String
 
@@ -81,10 +81,10 @@ class ManualTxnDynamicFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        dynamicAdapter = DynamicListAdapter(
+        dynamicAdapter = ListAdapter(
             activity?.baseContext!!,
             menuList.toMutableList(),
-            object : DynamicListAdapter.OnItemClickListener {
+            object : ListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, menuList: SearchItem) {
                     Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                         putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_EDIT)
