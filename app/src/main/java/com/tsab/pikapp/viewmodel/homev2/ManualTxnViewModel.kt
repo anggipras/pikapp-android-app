@@ -18,11 +18,20 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     private val tag = javaClass.simpleName
     private val sessionManager = SessionManager(getApplication())
 
-    private val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
+    val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
     val menuList: LiveData<List<SearchItem>> = mutableMenuList
     fun setMenuList(menuList: List<SearchItem>) {
         mutableMenuList.value = menuList
     }
+
+    val mutableMenuListEmpty = MutableLiveData<List<SearchItem>>(listOf())
+    val menuListEmpty: LiveData<List<SearchItem>> = mutableMenuListEmpty
+
+    val mutableSearchEnter = MutableLiveData(false)
+    val isSearch: LiveData<Boolean> get() = mutableSearchEnter
+
+    val mutableSearchMenu = MutableLiveData("")
+    val MenuSubmit: LiveData<String> get() = mutableSearchMenu
 
     private var mutableLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = mutableLoading
@@ -38,7 +47,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val mid = sessionManager.getUserData()!!.mid!!
 
         PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
+                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, 7)
         ).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(
                     call: Call<SearchResponse>,
@@ -49,6 +58,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                     if (amountOfMenus != 0) {
                         getSearchList(amountOfMenus)
                     } else {
+                        mutableMenuList.value = mutableMenuListEmpty.value
                         Log.e("Zero_Product", "There is no product available")
                     }
                 } else {
@@ -63,7 +73,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun getSearchList(amountOfMenus: Int) {
-        if (menuList.value!!.isNotEmpty()) return
+        /*if (menuList.value!!.isNotEmpty()) return*/
 
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -73,7 +83,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
         PikappApiService().api.searchMenu(
                 getUUID(), timestamp, getClientID(), signature, token,
-                mid, SearchRequest("", 0, amountOfMenus)
+                mid, SearchRequest(mutableSearchMenu.value!!, 0, amountOfMenus)
         ).enqueue(object : Callback<SearchResponse> {
             override fun onResponse(
                     call: Call<SearchResponse>,
@@ -88,4 +98,10 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             }
         })
     }
+
+    fun searchMenu(name: String, status: Boolean){
+        mutableSearchMenu.value = name
+        mutableSearchEnter.value = status
+    }
+
 }
