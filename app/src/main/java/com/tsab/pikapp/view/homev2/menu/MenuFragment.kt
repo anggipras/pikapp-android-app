@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,11 +18,13 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.homev2.SearchActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
+import kotlinx.android.synthetic.main.menu_fragment.*
 import java.io.File
 
 class MenuFragment : Fragment() {
@@ -129,8 +132,9 @@ class MenuFragment : Fragment() {
             }
         }
 
-        dataBinding.sortButton.setOnClickListener {
-            if (viewModel.size.value != null) {
+        dataBinding.sortButton.setOnClickListener { v ->
+            (activity as HomeActivity).openCloseDrawer(v)
+            /*if (viewModel.size.value != null) {
                 sessionManager.setHomeNav(1)
                 Intent(activity?.baseContext, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
@@ -138,7 +142,7 @@ class MenuFragment : Fragment() {
                 }
             } else if (viewModel.size.value == 0) {
                 dataBinding.textview3.visibility = View.VISIBLE
-            }
+            }*/
         }
 
         dataBinding.searchButton.setOnClickListener {

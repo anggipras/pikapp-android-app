@@ -9,5 +9,14 @@
         android:id="@+id/homeViewManualTxn"
         android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.HomeViewManualTxn"
         android:label="fragment_home_view_manual_txn"
-        tools:layout="@layout/fragment_home_view_manual_txn" />
+        tools:layout="@layout/fragment_home_view_manual_txn" >
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualAddAdvMenuFragment"
+            app:destination="@id/manualAddAdvMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualAddAdvMenuFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment"
+        android:label="ManualAddAdvMenuFragment"
+        tools:layout="@layout/fragment_manual_add_adv_menu"/>
 </navigation>
