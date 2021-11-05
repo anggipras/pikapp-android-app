@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     tools:itemCount="1"
-                    tools:listitem="@layout/manual_advance_menu_radio_list"
+                    tools:listitem="@layout/manual_advance_menu_list"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

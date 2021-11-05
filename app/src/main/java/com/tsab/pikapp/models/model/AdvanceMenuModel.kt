@@ -163,9 +163,9 @@ data class AdvanceAdditionalMenuEdit(
 /*EDIT ADVANCE MENU END*/
 
 /*DUMMY ADV DATA*/
-data class DummyAddAdvData(val parentMenuChoice: String, val childMenuChoice: List<DummyAddChoices>)
+data class DummyAdvData(val parentMenuChoice: String, val choiceType: String, val childMenuChoice: List<DummyChoices>)
 
-data class DummyAddChoices(val menuName: String, val menuPrice: Int)
+data class DummyChoices(val menuName: String, val menuPrice: Int)
 
 /*ADD MANUAL TXN ADVANCE MENU START*/
 data class AddManualAdvMenu(

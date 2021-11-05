@@ -5,53 +5,66 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.RadioButton
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.DummyAddChoices
-
-//import com.tsab.pikapp.models.model.DummyChoices
+import com.tsab.pikapp.models.model.DummyChoices
 
 class ManualChildAdvMenuAdapter(
-    val context: Context,
-    private val menuChoiceList: MutableList<ManualAddAdvMenuFragment.DummyChoices>
+        val context: Context,
+        private val indexOfMenu: Int,
+        private val choiceType: String,
+        private val menuChoiceList: MutableList<DummyChoices>,
+        var dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>
 ) : RecyclerView.Adapter<ManualChildAdvMenuAdapter.ViewHolder>() {
     lateinit var linearLayoutManager: LinearLayoutManager
     private var lastChecked: RadioButton? = null
     private var lastCheckedPos = 0
-    var dummyAddChoices: MutableList<DummyAddChoices> = ArrayList()
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var menuChoice: RadioButton = itemView.findViewById(R.id.menuChoiceAdv)
+        var menuChoiceRadio: RadioButton = itemView.findViewById(R.id.menuChoiceAdv_radio)
+        var menuChoiceCheck: CheckBox = itemView.findViewById(R.id.menuChoiceAdv_checkbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.radiochild_adv_menu_choice_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.child_adv_menu_choice_list, parent, false)
         return ViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.menuChoice.text = menuChoiceList[position].menuName
-        holder.menuChoice.tag = position
+        if (choiceType == "radio") {
+            holder.menuChoiceRadio.isVisible = true
+            holder.menuChoiceCheck.isVisible = false
+            holder.menuChoiceRadio.text = menuChoiceList[position].menuName
+            holder.menuChoiceRadio.tag = position
 
-        //for default check in first item
-        if(position == 0 && holder.menuChoice.isChecked) {
-            lastChecked = holder.menuChoice;
-            lastCheckedPos = 0;
-        }
+            //for default check in first item
+            if(position == 0 && holder.menuChoiceRadio.isChecked) {
+                lastChecked = holder.menuChoiceRadio;
+                lastCheckedPos = 0;
+            }
 
-        holder.menuChoice.setOnClickListener { v ->
-            val cb = v as RadioButton
-            val clickedPos = (cb.tag as Int).toInt()
-            dummyAddChoices.add(DummyAddChoices(menuName = menuChoiceList[position].menuName, menuPrice = menuChoiceList[position].menuPrice))
-            Log.e("MENUCHOICE", dummyAddChoices.toString())
-            // TO BE CONTINUE - HOW TO GET VALUE FROM EACH RADIO / CHECKBOX - NEED TO FIGURE OUT!!
-            if (cb.isChecked) {
-                lastChecked?.isChecked = false
-                lastChecked = cb
-                lastCheckedPos = clickedPos
-            } else lastChecked = null
+            holder.menuChoiceRadio.setOnClickListener { v ->
+                val cb = v as RadioButton
+                val clickedPos = (cb.tag as Int).toInt()
+                val dummyEachData = ManualAddAdvMenuFragment.AddChoicesDummy(menuName = menuChoiceList[position].menuName, menuPrice = menuChoiceList[position].menuPrice)
+                dummyAddChoice[indexOfMenu].childMenuChoice = listOf(dummyEachData)
+                Log.e("MENUCHOICE", dummyAddChoice.toString())
+                if (cb.isChecked) {
+                    lastChecked?.isChecked = false
+                    lastChecked = cb
+                    lastCheckedPos = clickedPos
+                } else lastChecked = null
+            }
+        } else {
+            holder.menuChoiceRadio.isVisible = false
+            holder.menuChoiceCheck.isVisible = true
+            holder.menuChoiceCheck.text = menuChoiceList[position].menuName
+            Log.e("CHECKBUTTON", "ini check button")
+            // TO BE CONTINUE - HOW TO GET VALUE FROM EACH CHECKBOX - NEED TO FIGURE OUT!!
         }
     }
 

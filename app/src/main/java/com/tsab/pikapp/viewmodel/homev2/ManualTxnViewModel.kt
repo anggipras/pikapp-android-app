@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-//import com.tsab.pikapp.models.model.DummyAdvData
+import com.tsab.pikapp.models.model.DummyAdvData
 import com.tsab.pikapp.models.model.SearchItem
 import com.tsab.pikapp.models.model.SearchRequest
 import com.tsab.pikapp.models.model.SearchResponse
@@ -128,9 +128,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableSearchEnter.value = status
     }
 
-    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<ManualAddAdvMenuFragment.DummyAdvData>) {
+    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>) {
         //ADDING API TO GET ADVANCE MENU LIST
-        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice)
+        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice, dummyAddChoice)
         manualAdvMenuAdapter.notifyDataSetChanged()
         recyclerview_category.adapter = manualAdvMenuAdapter
     }
