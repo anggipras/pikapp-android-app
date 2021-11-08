@@ -9,84 +9,44 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="192dp"
-            android:background="@drawable/headermenu"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
-
-            <TextView
-                android:id="@+id/judul"
-                android:layout_width="wrap_content"
+       <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="29dp"
-                android:layout_marginTop="74dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="@string/menu"
-                android:textColor="#FFFFFF"
-                android:textSize="25sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="29dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="29dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/judul">
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <Spinner
-                    android:id="@+id/menuSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="14dp"
-                    android:background="@drawable/spinner"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/searchButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/topAppBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:title="Menu"
+                        app:titleTextColor="@color/black"
+                        app:titleTextAppearance="@style/titleToolbar"
+                        app:menu="@menu/menu_header"/>
 
-                <ImageView
-                    android:id="@+id/searchButton"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="14dp"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_baseline_search_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sortButton"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white"
-                    tools:ignore="ContentDescription" />
+                    <Spinner
+                        android:id="@+id/menuSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginStart="15dp"
+                        android:elevation="2dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/spinner"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"/>
 
-                <ImageView
-                    android:id="@+id/sortButton"
-                    android:layout_width="35dp"
-                    android:onClick="openCloseDrawer"
-                    android:layout_height="35dp"
-                    android:src="@drawable/icon_sort"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
+                </com.google.android.material.appbar.AppBarLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+       </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/categoryPanel"

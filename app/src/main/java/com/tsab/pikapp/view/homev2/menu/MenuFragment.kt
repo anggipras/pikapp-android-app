@@ -20,11 +20,14 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.homev2.SearchActivity
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
+import kotlinx.android.synthetic.main.menu_fragment.topAppBar
+import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.io.File
 
 class MenuFragment : Fragment() {
@@ -132,9 +135,19 @@ class MenuFragment : Fragment() {
             }
         }
 
-        dataBinding.sortButton.setOnClickListener { v ->
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navDraw -> {
+                    (activity as HomeActivity).openCloseDrawer(requireView())
+                    true
+                }
+                else -> false
+            }
+        }
+
+        /*dataBinding.sortButton.setOnClickListener { v ->
             (activity as HomeActivity).openCloseDrawer(v)
-            /*if (viewModel.size.value != null) {
+            *//*if (viewModel.size.value != null) {
                 sessionManager.setHomeNav(1)
                 Intent(activity?.baseContext, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
@@ -142,16 +155,9 @@ class MenuFragment : Fragment() {
                 }
             } else if (viewModel.size.value == 0) {
                 dataBinding.textview3.visibility = View.VISIBLE
-            }*/
-        }
+            }*//*
+        }*/
 
-        dataBinding.searchButton.setOnClickListener {
-            if (viewModel.size.value != null) {
-                Intent(activity?.baseContext, SearchActivity::class.java).apply {
-                    activity?.startActivity(this)
-                }
-            }
-        }
     }
 
     private fun invisibleMenuNull() {
