@@ -36,12 +36,19 @@ class ManualAddAdvMenuFragment : Fragment() {
         linearLayoutManager = LinearLayoutManager(requireView().context)
         dataBinding.recyclerviewParentMenuChoice.layoutManager = linearLayoutManager
 
-        dummyAdvData.add(DummyAdvData("Tambah Topping", "radio", listOf(DummyChoices("Cokelat", 1000), DummyChoices("Stroberi", 2000), DummyChoices("Pisang", 3000), DummyChoices("Keju", 4000))))
-        dummyAdvData.add(DummyAdvData("Tambah Bobba", "checkbox", listOf(DummyChoices("Jelly", 1000), DummyChoices("Potter", 2000), DummyChoices("Harry", 3000), DummyChoices("Pottur", 4000))))
-        dummyAdvData.add(DummyAdvData("Tambah Mantap", "radio", listOf(DummyChoices("Mantap1", 1000), DummyChoices("Mantap2", 2000), DummyChoices("Mantap3", 3000), DummyChoices("Mantap4", 4000))))
+        dummyAdvData.add(DummyAdvData("Tambah Topping", "radio", active = true, mandatory = true, max_choose = 2, ext_menus = listOf(DummyChoices("Cokelat", "1000"), DummyChoices("Stroberi", "2000"), DummyChoices("Pisang", "3000"), DummyChoices("Keju", "4000"))))
+        dummyAdvData.add(DummyAdvData("Tambah Bobba", "checkbox", active = true, mandatory = true, max_choose = 2, ext_menus = listOf(DummyChoices("Jelly", "1000"), DummyChoices("Potter", "2000"), DummyChoices("Harry", "3000"), DummyChoices("Pottur", "4000"))))
+        dummyAdvData.add(DummyAdvData("Tambah Mantap", "radio", active = true, mandatory = true, max_choose = 2, ext_menus = listOf(DummyChoices("Mantap1", "1000"), DummyChoices("Mantap2", "2000"), DummyChoices("Mantap3", "3000"), DummyChoices("Mantap4", "4000"))))
 
-        for (i in 0..2) {
-            dummyAddChoice.add(AddAdvDummy("", mutableListOf(AddChoicesDummy("", 0))))
+        for (i in dummyAdvData) {
+            dummyAddChoice.add(AddAdvDummy("", mutableListOf(AddChoicesDummy("", "0"))))
+            if (i.template_type == "checkbox") {
+                val indexOfAdvMenu = dummyAdvData.indexOf(i)
+                val sizeOfAdvMenu = dummyAdvData[indexOfAdvMenu].ext_menus.size-2
+                for (x in 0..sizeOfAdvMenu) {
+                    dummyAddChoice[indexOfAdvMenu].ext_menus.add(AddChoicesDummy("", "0"))
+                }
+            }
         }
 
         adapter = ManualAdvMenuAdapter(requireContext(), dummyAdvData, dummyAddChoice)
@@ -57,6 +64,6 @@ class ManualAddAdvMenuFragment : Fragment() {
     }
 
     /*DUMMY ADV DATA*/
-    data class AddAdvDummy(val parentMenuChoice: String?, var childMenuChoice: List<AddChoicesDummy?>)
-    data class AddChoicesDummy(val menuName: String?, val menuPrice: Int?)
+    data class AddAdvDummy(var template_name: String?, var ext_menus: MutableList<AddChoicesDummy?>)
+    data class AddChoicesDummy(val ext_menu_name: String?, val ext_menu_price: String?)
 }
