@@ -33,19 +33,19 @@ class ManualAdvMenuAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.parentMenuChoice.text = manualAdvMenuList[position].parentMenuChoice
-        val childMenuChoice = manualAdvMenuList[position].childMenuChoice as MutableList<DummyChoices>
+        holder.parentMenuChoice.text = manualAdvMenuList[position].template_name
+        val childMenuChoice = manualAdvMenuList[position].ext_menus as MutableList<DummyChoices>
 
-        if (manualAdvMenuList[position].choiceType == "radio") {
+        if (manualAdvMenuList[position].template_type == "radio") {
             holder.radioSelection.isVisible = true
             holder.rViewCheck.isVisible = false
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
-            setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].choiceType, childMenuChoice, dummyAddChoice)
+            setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, dummyAddChoice)
         } else {
             holder.radioSelection.isVisible = false
             holder.rViewCheck.isVisible = true
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
-            setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].choiceType, childMenuChoice, dummyAddChoice)
+            setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, dummyAddChoice)
         }
     }
 

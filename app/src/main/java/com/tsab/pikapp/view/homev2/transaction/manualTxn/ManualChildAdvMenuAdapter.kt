@@ -38,7 +38,7 @@ class ManualChildAdvMenuAdapter(
         if (choiceType == "radio") {
             holder.menuChoiceRadio.isVisible = true
             holder.menuChoiceCheck.isVisible = false
-            holder.menuChoiceRadio.text = menuChoiceList[position].menuName
+            holder.menuChoiceRadio.text = menuChoiceList[position].ext_menu_name
             holder.menuChoiceRadio.tag = position
 
             //for default check in first item
@@ -50,8 +50,8 @@ class ManualChildAdvMenuAdapter(
             holder.menuChoiceRadio.setOnClickListener { v ->
                 val cb = v as RadioButton
                 val clickedPos = (cb.tag as Int).toInt()
-                val dummyEachData = ManualAddAdvMenuFragment.AddChoicesDummy(menuName = menuChoiceList[position].menuName, menuPrice = menuChoiceList[position].menuPrice)
-                dummyAddChoice[indexOfMenu].childMenuChoice = listOf(dummyEachData)
+                val dummyEachData = ManualAddAdvMenuFragment.AddChoicesDummy(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
+                dummyAddChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
                 Log.e("MENUCHOICE", dummyAddChoice.toString())
                 if (cb.isChecked) {
                     lastChecked?.isChecked = false
@@ -62,9 +62,17 @@ class ManualChildAdvMenuAdapter(
         } else {
             holder.menuChoiceRadio.isVisible = false
             holder.menuChoiceCheck.isVisible = true
-            holder.menuChoiceCheck.text = menuChoiceList[position].menuName
-            Log.e("CHECKBUTTON", "ini check button")
-            // TO BE CONTINUE - HOW TO GET VALUE FROM EACH CHECKBOX - NEED TO FIGURE OUT!!
+            holder.menuChoiceCheck.text = menuChoiceList[position].ext_menu_name
+            val dummyEachDataCheck = ManualAddAdvMenuFragment.AddChoicesDummy(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
+            val dummyEachDataCheckRemoved = ManualAddAdvMenuFragment.AddChoicesDummy(ext_menu_name = "", ext_menu_price = "0")
+            holder.menuChoiceCheck.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    dummyAddChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheck
+                } else {
+                    dummyAddChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
+                }
+                Log.e("RESULT", dummyAddChoice[indexOfMenu].ext_menus.toString())
+            }
         }
     }
 
