@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
 import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import kotlinx.android.synthetic.main.fragment_manual_add_adv_menu.*
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,11 +47,12 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         adapter = ManualAdvMenuAdapter(requireContext(), advData, addAdvMenuChoiceTemplate, this)
         dataBinding.recyclerviewParentMenuChoice.adapter = adapter
 
+        dataBinding.advMenuName.text = viewModel.menuName.value
+
         var menuDetailPrice = "1000"
         this.menuPrice = menuDetailPrice.toLong()
         dataBinding.btnNext.text = getString(R.string.add_cart, menuDetailPrice)
         dataBinding.btnNext.setOnClickListener {
-            Log.e("ALLREQDATA", addAdvMenuChoiceTemplate.toString())
 //            viewModel.setManualQuantity(dataBinding.menuAmount.text.toString())
 //            viewModel.setManualNote(dataBinding.manualNote.text.toString())
         }
@@ -69,6 +72,16 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
             dataBinding.menuAmount.text = qty.toString()
             this.menuPrice *= qty
             dataBinding.btnNext.text = getString(R.string.add_cart, this.menuPrice.toString())
+        })
+
+        viewModel.menuImg.observe(viewLifecycleOwner, androidx.lifecycle.Observer { img ->
+            Picasso.get().load(img).into(menu_img)
+        })
+
+        viewModel.menuPrice.observe(viewLifecycleOwner, androidx.lifecycle.Observer { price ->
+            val thePrice: Long = price.toLong()
+            val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+            dataBinding.advMenuPrice.text = getString(R.string.adv_menu_price, numberFormat.toString())
         })
 
         viewModel.isAdvReceived.observe(viewLifecycleOwner, androidx.lifecycle.Observer { trigger ->
@@ -103,5 +116,11 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         totalPrice *= viewModel.quantity.value!!
         val numberFormat = NumberFormat.getInstance(localeID).format(totalPrice)
         dataBinding.btnNext.text = getString(R.string.add_cart, numberFormat.toString())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModel.setTrigger(false)
     }
 }

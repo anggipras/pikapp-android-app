@@ -2,7 +2,9 @@ package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -46,11 +48,31 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableAdvanceData = MutableLiveData<ArrayList<AdvanceMenu>>()
     val AdvanceData: LiveData<ArrayList<AdvanceMenu>> get() =mutableAdvanceData
 
+    /*SET MENU DETAIL START*/
     val mutablePID = MutableLiveData("")
     val PID: LiveData<String> get() = mutablePID
     fun setPID(pid: String){
         mutablePID.value = pid
     }
+
+    private val mutableMenuImg = MutableLiveData(Uri.EMPTY)
+    val menuImg: LiveData<Uri> get() = mutableMenuImg
+    fun setMenuImg(img: String){
+        mutableMenuImg.value = img.toUri()
+    }
+
+    private val mutableMenuName = MutableLiveData("")
+    val menuName: LiveData<String> get() = mutableMenuName
+    fun setMenuName(name: String){
+        mutableMenuName.value = name
+    }
+
+    private val mutableMenuPrice = MutableLiveData("")
+    val menuPrice: LiveData<String> get() = mutableMenuPrice
+    fun setMenuPrice(price: String){
+        mutableMenuPrice.value = price
+    }
+    /*SET MENU DETAIL END*/
 
     private var mutableLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = mutableLoading
