@@ -6,16 +6,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.tsab.pikapp.models.model.DummyAdvData
-import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.models.model.SearchRequest
-import com.tsab.pikapp.models.model.SearchResponse
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAdvMenuAdapter
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualChildAdvMenuAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +25,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     private val tag = javaClass.simpleName
     private val sessionManager = SessionManager(getApplication())
     lateinit var manualAdvMenuAdapter: ManualAdvMenuAdapter
+
+    private val apiService = PikappApiService()
+    private val disposable = CompositeDisposable()
 
     val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
     val menuList: LiveData<List<SearchItem>> = mutableMenuList
@@ -39,6 +43,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     val mutableSearchMenu = MutableLiveData("")
     val MenuSubmit: LiveData<String> get() = mutableSearchMenu
+
+    val mutableAdvanceData = MutableLiveData<ArrayList<AdvanceMenu>>()
+    val AdvanceData: LiveData<ArrayList<AdvanceMenu>> get() =mutableAdvanceData
 
     val mutablePID = MutableLiveData("")
     val PID: LiveData<String> get() = mutablePID
@@ -135,10 +142,47 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableSearchEnter.value = status
     }
 
-    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
+    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<AdvanceMenu>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
         //ADDING API TO GET ADVANCE MENU LIST
         manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice, dummyAddChoice, listener)
         manualAdvMenuAdapter.notifyDataSetChanged()
         recyclerview_category.adapter = manualAdvMenuAdapter
+    }
+
+    fun fetchAdvanceMenuData(menu: ArrayList<AdvanceMenu>, list: RecyclerView) {
+        if (mutablePID.value == null) {
+            return
+        }
+        val timeStamp = getTimestamp()
+
+        setLoading(true)
+        disposable.add(
+            apiService.listAdvanceMenu(
+                email = sessionManager.getUserData()?.email ?: "",
+                token = sessionManager.getUserToken() ?: "",
+                pid = mutablePID.value ?: "",
+                timeStamp = timeStamp
+            ).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<ListAdvanceMenuResponse>() {
+                    override fun onSuccess(response: ListAdvanceMenuResponse) {
+                        // TODO: Add is advance menu active.
+                        if (response.results.isNotEmpty()) {
+                            Log.e("kfnqi", response.results.toString())
+                            for (i in response.results){
+                                menu.add(i)
+                            }
+                            Log.e("fqiwhfo", mutableAdvanceData.toString())
+                            list.adapter?.notifyDataSetChanged()
+                        }
+                        setLoading(false)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.d("Fail", e.message.toString())
+                        setLoading(false)
+                    }
+                })
+        )
     }
 }
