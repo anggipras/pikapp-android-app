@@ -16,7 +16,8 @@ import com.tsab.pikapp.models.model.DummyChoices
 class ManualAdvMenuAdapter(
         val context: Context,
         private val manualAdvMenuList: MutableList<DummyAdvData>,
-        private val dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>
+        private val addAdvMenuTemplate: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
+        private val listener: ManualChildAdvMenuAdapter.OnItemClickListener
 ) : RecyclerView.Adapter<ManualAdvMenuAdapter.ViewHolder>() {
     lateinit var linearLayoutManager: LinearLayoutManager
 
@@ -40,12 +41,12 @@ class ManualAdvMenuAdapter(
             holder.radioSelection.isVisible = true
             holder.rViewCheck.isVisible = false
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
-            setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, dummyAddChoice)
+            setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, listener)
         } else {
             holder.radioSelection.isVisible = false
             holder.rViewCheck.isVisible = true
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
-            setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, dummyAddChoice)
+            setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, listener)
         }
     }
 
@@ -53,11 +54,11 @@ class ManualAdvMenuAdapter(
         return manualAdvMenuList.size
     }
 
-    private fun setChildManualAdvMenu(rView: RecyclerView, indexOfMenu: Int, choiceType: String, childMenuChoice: MutableList<DummyChoices>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>) {
+    private fun setChildManualAdvMenu(rView: RecyclerView, indexOfMenu: Int, choiceType: String, childMenuChoice: MutableList<DummyChoices>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
         linearLayoutManager = LinearLayoutManager(context)
         rView.layoutManager = linearLayoutManager
         rView.setHasFixedSize(false)
-        var childRecyclerView = ManualChildAdvMenuAdapter(context, indexOfMenu, choiceType, childMenuChoice, dummyAddChoice)
+        var childRecyclerView = ManualChildAdvMenuAdapter(context, indexOfMenu, choiceType, childMenuChoice, dummyAddChoice, listener)
         rView.adapter = childRecyclerView
     }
 }
