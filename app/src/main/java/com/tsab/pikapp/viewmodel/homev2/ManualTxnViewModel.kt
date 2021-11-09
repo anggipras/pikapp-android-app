@@ -24,7 +24,6 @@ import retrofit2.Response
 class ManualTxnViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
     private val sessionManager = SessionManager(getApplication())
-    lateinit var manualAdvMenuAdapter: ManualAdvMenuAdapter
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
@@ -57,6 +56,12 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val isLoading: LiveData<Boolean> get() = mutableLoading
     fun setLoading(boolean: Boolean) {
         mutableLoading.value = boolean
+    }
+
+    private var receivedAdv = MutableLiveData<Boolean>(false)
+    val isAdvReceived: LiveData<Boolean> get() = receivedAdv
+    fun setTrigger(boolean: Boolean) {
+        receivedAdv.value = boolean
     }
 
     private val mutableNote = MutableLiveData("")
@@ -150,13 +155,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableSearchEnter.value = status
     }
 
-    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<AdvanceMenu>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
-        //ADDING API TO GET ADVANCE MENU LIST
-        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice, dummyAddChoice, listener)
-        manualAdvMenuAdapter.notifyDataSetChanged()
-        recyclerview_category.adapter = manualAdvMenuAdapter
-    }
-
     fun fetchAdvanceMenuData(menu: ArrayList<AdvanceMenu>, list: RecyclerView) {
         if (mutablePID.value == null) {
             return
@@ -176,12 +174,11 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                     override fun onSuccess(response: ListAdvanceMenuResponse) {
                         // TODO: Add is advance menu active.
                         if (response.results.isNotEmpty()) {
-                            Log.e("kfnqi", response.results.toString())
                             for (i in response.results){
                                 menu.add(i)
                             }
-                            Log.e("fqiwhfo", mutableAdvanceData.toString())
                             list.adapter?.notifyDataSetChanged()
+                            setTrigger(true)
                         }
                         setLoading(false)
                     }
