@@ -117,4 +117,10 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         val numberFormat = NumberFormat.getInstance(localeID).format(totalPrice)
         dataBinding.btnNext.text = getString(R.string.add_cart, numberFormat.toString())
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModel.setTrigger(false)
+    }
 }
