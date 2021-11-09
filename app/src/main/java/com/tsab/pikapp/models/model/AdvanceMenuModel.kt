@@ -1,6 +1,7 @@
 package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
 
 enum class AdvanceMenuTemplateType {
     CHECKBOX, RADIO;
@@ -162,4 +163,66 @@ data class AdvanceAdditionalMenuEdit(
 /*EDIT ADVANCE MENU END*/
 
 /*DUMMY ADV DATA*/
-data class DummyAdvData(val parentMenuChoice: String, val childMenuChoice: List<String>)
+//data class DummyAdvData(val parentMenuChoice: String, val choiceType: String, val childMenuChoice: List<DummyChoices>)
+data class DummyAdvData(
+        @SerializedName("template_name")
+        var template_name: String,
+        @SerializedName("template_type")
+        var template_type: String,
+
+        @SerializedName("active")
+        var active: Boolean? = null,
+        @SerializedName("mandatory")
+        var mandatory: Boolean? = null,
+
+        @SerializedName("max_choose")
+        var max_choose: Int? = null,
+        @SerializedName("ext_menus")
+        var ext_menus: List<DummyChoices>
+)
+
+data class DummyChoices(
+        @SerializedName("ext_menu_name")
+        var ext_menu_name: String,
+        @SerializedName("ext_menu_price")
+        var ext_menu_price: String,
+        @SerializedName("active")
+        var active: Boolean? = null
+)
+
+/*ADD MANUAL TXN ADVANCE MENU START*/
+data class AddManualAdvMenu(
+        @SerializedName("product_Id")
+        var product_id: String,
+        @SerializedName("food_name")
+        var foodName: String,
+        @SerializedName("food_category")
+        var foodCategory: String,
+        @SerializedName("food_amount")
+        var foodAmount: Int,
+        @SerializedName("food_price")
+        var foodPrice: Int,
+        @SerializedName("foodList_Checkbox")
+        var foodListCheckbox: List<FoodListCheck?>,
+        @SerializedName("foodList_Radio")
+        var foodListRadio: List<FoodListRadio?>,
+        @SerializedName("food_note")
+        var foodNote: String?,
+        @SerializedName("foodTotalPrice")
+        var foodTotalPrice: String
+)
+
+data class FoodListCheck(
+        @SerializedName("name")
+        var name: String,
+        @SerializedName("price")
+        var price: Int
+)
+
+data class FoodListRadio(
+        @SerializedName("name")
+        var name: String,
+        @SerializedName("price")
+        var price: Int
+)
+/*ADD MANUAL TXN ADVANCE MENU END*/

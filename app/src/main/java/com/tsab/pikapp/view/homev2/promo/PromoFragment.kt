@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.menu
+package com.tsab.pikapp.view.homev2.promo
 
 import android.os.Bundle
 import android.view.LayoutInflater

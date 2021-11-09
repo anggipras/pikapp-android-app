@@ -39,6 +39,12 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableSearchMenu = MutableLiveData("")
     val MenuSubmit: LiveData<String> get() = mutableSearchMenu
 
+    val mutablePID = MutableLiveData("")
+    val PID: LiveData<String> get() = mutablePID
+    fun setPID(pid: String){
+        mutablePID.value = pid
+    }
+
     private var mutableLoading = MutableLiveData<Boolean>(true)
     val isLoading: LiveData<Boolean> get() = mutableLoading
     fun setLoading(boolean: Boolean) {
@@ -128,9 +134,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableSearchEnter.value = status
     }
 
-    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>) {
+    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>) {
         //ADDING API TO GET ADVANCE MENU LIST
-        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice)
+        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice, dummyAddChoice)
         manualAdvMenuAdapter.notifyDataSetChanged()
         recyclerview_category.adapter = manualAdvMenuAdapter
     }

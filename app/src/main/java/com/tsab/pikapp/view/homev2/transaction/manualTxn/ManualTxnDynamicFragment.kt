@@ -1,6 +1,5 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,17 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnDynamicBinding
 import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.view.AdvanceMenuActivity
-import com.tsab.pikapp.view.homev2.menu.DynamicListAdapter
-import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
-import java.io.Serializable
-
 
 class ManualTxnDynamicFragment : Fragment() {
     companion object {
@@ -86,12 +81,8 @@ class ManualTxnDynamicFragment : Fragment() {
             menuList.toMutableList(),
             object : ListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, menuList: SearchItem) {
-                    Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
-                        putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_EDIT)
-                        putExtra(AdvanceMenuActivity.MENU_LIST, menuList as Serializable)
-                        startActivity(this)
-                    }
-
+                    viewModel.setPID(menuList.product_id.toString())
+                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment) }
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter
