@@ -14,6 +14,9 @@ import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
 import com.tsab.pikapp.models.model.DummyAdvData
 import com.tsab.pikapp.models.model.DummyChoices
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemClickListener {
     val dummyAdvData = ArrayList<DummyAdvData>()
@@ -22,6 +25,8 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var adapter: ManualAdvMenuAdapter
     private val addAdvMenuChoiceTemplate: ArrayList<AddAdvMenuTemp> = ArrayList()
+    private val localeID =  Locale("in", "ID")
+    var menuPrice: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,13 +61,31 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
 
         activity?.let { viewModel.getManualAdvanceMenuList(it.baseContext, dataBinding.recyclerviewParentMenuChoice, dummyAdvData, addAdvMenuChoiceTemplate, this) }
 
-        var sumTotalMenu = "1000"
-        dataBinding.btnNext.text = getString(R.string.add_cart, sumTotalMenu)
+        var menuDetailPrice = "1000"
+        this.menuPrice = menuDetailPrice.toLong()
+        dataBinding.btnNext.text = getString(R.string.add_cart, menuDetailPrice)
         dataBinding.btnNext.setOnClickListener {
             Log.e("ALLREQDATA", addAdvMenuChoiceTemplate.toString())
 //            viewModel.setManualQuantity(dataBinding.menuAmount.text.toString())
 //            viewModel.setManualNote(dataBinding.manualNote.text.toString())
         }
+
+        dataBinding.plusButton.setOnClickListener {
+            viewModel.addQty()
+        }
+        dataBinding.minusButton.setOnClickListener {
+            viewModel.minusQty()
+        }
+
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.quantity.observe(viewLifecycleOwner, androidx.lifecycle.Observer { qty ->
+            dataBinding.menuAmount.text = qty.toString()
+            this.menuPrice *= qty
+            dataBinding.btnNext.text = getString(R.string.add_cart, this.menuPrice.toString())
+        })
     }
 
     /*DUMMY ADV DATA*/
@@ -70,6 +93,16 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
     data class AddMenuChoicesTemp(val ext_menu_name: String?, val ext_menu_price: String?)
 
     override fun onItemClick() {
-        Log.e("CLICKED", "testing click")
+        var totalPrice = this.menuPrice
+        addAdvMenuChoiceTemplate.forEach { menu ->
+            menu.ext_menus.forEach { extMenu ->
+                if (extMenu != null) {
+                    totalPrice += extMenu.ext_menu_price?.toInt()!!
+                }
+            }
+        }
+        totalPrice *= viewModel.quantity.value!!
+        val numberFormat = NumberFormat.getInstance(localeID).format(totalPrice)
+        dataBinding.btnNext.text = getString(R.string.add_cart, numberFormat.toString())
     }
 }

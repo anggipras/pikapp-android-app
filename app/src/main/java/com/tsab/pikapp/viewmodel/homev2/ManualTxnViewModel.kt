@@ -52,8 +52,16 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableNote.value = note
     }
 
-    private val mutableQuantity = MutableLiveData(0)
+    private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity
+    fun addQty() {
+        mutableQuantity.value = mutableQuantity.value?.plus(1)
+    }
+    fun minusQty() {
+        if (mutableQuantity.value!! > 1) {
+            mutableQuantity.value = mutableQuantity.value?.minus(1)
+        }
+    }
     fun setManualQuantity(quantity: String) {
         mutableQuantity.value = quantity.toInt()
     }
