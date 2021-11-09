@@ -81,6 +81,8 @@ class ManualTxnDynamicFragment : Fragment() {
             menuList.toMutableList(),
             object : ListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, menuList: SearchItem) {
+                    viewModel.setPID(menuList.product_id.toString())
+                    Log.e("pid", viewModel.mutablePID.value)
                     view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment) }
                 }
             })

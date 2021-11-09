@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
+import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.models.model.DummyAdvData
 import com.tsab.pikapp.models.model.DummyChoices
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
@@ -20,6 +21,7 @@ import kotlin.collections.ArrayList
 
 class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemClickListener {
     val dummyAdvData = ArrayList<DummyAdvData>()
+    val AdvData = ArrayList<AdvanceMenu>()
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualAddAdvMenuBinding
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -45,7 +47,20 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         dummyAdvData.add(DummyAdvData("Tambah Bobba", "checkbox", active = true, mandatory = true, max_choose = 2, ext_menus = listOf(DummyChoices("Jelly", "1000"), DummyChoices("Potter", "2000"), DummyChoices("Harry", "3000"), DummyChoices("Pottur", "4000"))))
         dummyAdvData.add(DummyAdvData("Tambah Mantap", "radio", active = true, mandatory = true, max_choose = 2, ext_menus = listOf(DummyChoices("Mantap1", "1000"), DummyChoices("Mantap2", "2000"), DummyChoices("Mantap3", "3000"), DummyChoices("Mantap4", "4000"))))
 
-        for (i in dummyAdvData) {
+        viewModel.fetchAdvanceMenuData(AdvData, dataBinding.recyclerviewParentMenuChoice)
+
+        for (i in AdvData) {
+            addAdvMenuChoiceTemplate.add(AddAdvMenuTemp("", mutableListOf(AddMenuChoicesTemp("", "0"))))
+            if (i.template_type == "checkbox") {
+                val indexOfAdvMenu = AdvData.indexOf(i)
+                val sizeOfAdvMenu = AdvData[indexOfAdvMenu].ext_menus.size-2
+                for (x in 0..sizeOfAdvMenu) {
+                    addAdvMenuChoiceTemplate[indexOfAdvMenu].ext_menus.add(AddMenuChoicesTemp("", "0"))
+                }
+            }
+        }
+
+       /* for (i in dummyAdvData) {
             addAdvMenuChoiceTemplate.add(AddAdvMenuTemp("", mutableListOf(AddMenuChoicesTemp("", "0"))))
             if (i.template_type == "checkbox") {
                 val indexOfAdvMenu = dummyAdvData.indexOf(i)
@@ -55,11 +70,11 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
                 }
             }
         }
-
-        adapter = ManualAdvMenuAdapter(requireContext(), dummyAdvData, addAdvMenuChoiceTemplate, this)
+*/
+        adapter = ManualAdvMenuAdapter(requireContext(), AdvData, addAdvMenuChoiceTemplate, this)
         dataBinding.recyclerviewParentMenuChoice.adapter = adapter
 
-        activity?.let { viewModel.getManualAdvanceMenuList(it.baseContext, dataBinding.recyclerviewParentMenuChoice, dummyAdvData, addAdvMenuChoiceTemplate, this) }
+        activity?.let { viewModel.getManualAdvanceMenuList(it.baseContext, dataBinding.recyclerviewParentMenuChoice, AdvData, addAdvMenuChoiceTemplate, this) }
 
         var menuDetailPrice = "1000"
         this.menuPrice = menuDetailPrice.toLong()

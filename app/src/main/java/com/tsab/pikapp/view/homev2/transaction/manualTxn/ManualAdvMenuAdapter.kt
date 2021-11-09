@@ -10,12 +10,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
+import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.models.model.DummyAdvData
 import com.tsab.pikapp.models.model.DummyChoices
 
 class ManualAdvMenuAdapter(
         val context: Context,
-        private val manualAdvMenuList: MutableList<DummyAdvData>,
+        private val manualAdvMenuList: MutableList<AdvanceMenu>,
         private val addAdvMenuTemplate: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
         private val listener: ManualChildAdvMenuAdapter.OnItemClickListener
 ) : RecyclerView.Adapter<ManualAdvMenuAdapter.ViewHolder>() {
@@ -35,7 +37,7 @@ class ManualAdvMenuAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.parentMenuChoice.text = manualAdvMenuList[position].template_name
-        val childMenuChoice = manualAdvMenuList[position].ext_menus as MutableList<DummyChoices>
+        val childMenuChoice = manualAdvMenuList[position].ext_menus as MutableList<AdvanceAdditionalMenu>
 
         if (manualAdvMenuList[position].template_type == "radio") {
             holder.radioSelection.isVisible = true
@@ -54,7 +56,7 @@ class ManualAdvMenuAdapter(
         return manualAdvMenuList.size
     }
 
-    private fun setChildManualAdvMenu(rView: RecyclerView, indexOfMenu: Int, choiceType: String, childMenuChoice: MutableList<DummyChoices>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
+    private fun setChildManualAdvMenu(rView: RecyclerView, indexOfMenu: Int, choiceType: String, childMenuChoice: MutableList<AdvanceAdditionalMenu>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
         linearLayoutManager = LinearLayoutManager(context)
         rView.layoutManager = linearLayoutManager
         rView.setHasFixedSize(false)
