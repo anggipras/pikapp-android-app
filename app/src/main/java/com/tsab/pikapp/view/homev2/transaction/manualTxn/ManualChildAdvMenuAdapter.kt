@@ -18,7 +18,8 @@ class ManualChildAdvMenuAdapter(
         private val indexOfMenu: Int,
         private val choiceType: String,
         private val menuChoiceList: MutableList<DummyChoices>,
-        var dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>
+        var addMenuChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
+        private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ManualChildAdvMenuAdapter.ViewHolder>() {
     lateinit var linearLayoutManager: LinearLayoutManager
     private var lastChecked: RadioButton? = null
@@ -50,9 +51,10 @@ class ManualChildAdvMenuAdapter(
             holder.menuChoiceRadio.setOnClickListener { v ->
                 val cb = v as RadioButton
                 val clickedPos = (cb.tag as Int).toInt()
-                val dummyEachData = ManualAddAdvMenuFragment.AddChoicesDummy(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
-                dummyAddChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
-                Log.e("MENUCHOICE", dummyAddChoice.toString())
+                val dummyEachData = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
+                addMenuChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
+                listener.onItemClick()
+                Log.e("MENUCHOICE", addMenuChoice.toString())
                 if (cb.isChecked) {
                     lastChecked?.isChecked = false
                     lastChecked = cb
@@ -63,20 +65,25 @@ class ManualChildAdvMenuAdapter(
             holder.menuChoiceRadio.isVisible = false
             holder.menuChoiceCheck.isVisible = true
             holder.menuChoiceCheck.text = menuChoiceList[position].ext_menu_name
-            val dummyEachDataCheck = ManualAddAdvMenuFragment.AddChoicesDummy(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
-            val dummyEachDataCheckRemoved = ManualAddAdvMenuFragment.AddChoicesDummy(ext_menu_name = "", ext_menu_price = "0")
+            val dummyEachDataCheck = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
+            val dummyEachDataCheckRemoved = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = "", ext_menu_price = "0")
             holder.menuChoiceCheck.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    dummyAddChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheck
+                    addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheck
                 } else {
-                    dummyAddChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
+                    addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
                 }
-                Log.e("RESULT", dummyAddChoice[indexOfMenu].ext_menus.toString())
+                listener.onItemClick()
+                Log.e("RESULT", addMenuChoice[indexOfMenu].ext_menus.toString())
             }
         }
     }
 
     override fun getItemCount(): Int {
         return menuChoiceList.size
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick()
     }
 }

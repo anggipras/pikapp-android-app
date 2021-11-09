@@ -15,13 +15,13 @@ import com.tsab.pikapp.models.model.DummyAdvData
 import com.tsab.pikapp.models.model.DummyChoices
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 
-class ManualAddAdvMenuFragment : Fragment() {
+class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemClickListener {
     val dummyAdvData = ArrayList<DummyAdvData>()
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualAddAdvMenuBinding
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var adapter: ManualAdvMenuAdapter
-    private val dummyAddChoice: ArrayList<AddAdvDummy> = ArrayList()
+    private val addAdvMenuChoiceTemplate: ArrayList<AddAdvMenuTemp> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,29 +41,35 @@ class ManualAddAdvMenuFragment : Fragment() {
         dummyAdvData.add(DummyAdvData("Tambah Mantap", "radio", active = true, mandatory = true, max_choose = 2, ext_menus = listOf(DummyChoices("Mantap1", "1000"), DummyChoices("Mantap2", "2000"), DummyChoices("Mantap3", "3000"), DummyChoices("Mantap4", "4000"))))
 
         for (i in dummyAdvData) {
-            dummyAddChoice.add(AddAdvDummy("", mutableListOf(AddChoicesDummy("", "0"))))
+            addAdvMenuChoiceTemplate.add(AddAdvMenuTemp("", mutableListOf(AddMenuChoicesTemp("", "0"))))
             if (i.template_type == "checkbox") {
                 val indexOfAdvMenu = dummyAdvData.indexOf(i)
                 val sizeOfAdvMenu = dummyAdvData[indexOfAdvMenu].ext_menus.size-2
                 for (x in 0..sizeOfAdvMenu) {
-                    dummyAddChoice[indexOfAdvMenu].ext_menus.add(AddChoicesDummy("", "0"))
+                    addAdvMenuChoiceTemplate[indexOfAdvMenu].ext_menus.add(AddMenuChoicesTemp("", "0"))
                 }
             }
         }
 
-        adapter = ManualAdvMenuAdapter(requireContext(), dummyAdvData, dummyAddChoice)
+        adapter = ManualAdvMenuAdapter(requireContext(), dummyAdvData, addAdvMenuChoiceTemplate, this)
         dataBinding.recyclerviewParentMenuChoice.adapter = adapter
 
-        activity?.let { viewModel.getManualAdvanceMenuList(it.baseContext, dataBinding.recyclerviewParentMenuChoice, dummyAdvData, dummyAddChoice) }
+        activity?.let { viewModel.getManualAdvanceMenuList(it.baseContext, dataBinding.recyclerviewParentMenuChoice, dummyAdvData, addAdvMenuChoiceTemplate, this) }
 
+        var sumTotalMenu = "1000"
+        dataBinding.btnNext.text = getString(R.string.add_cart, sumTotalMenu)
         dataBinding.btnNext.setOnClickListener {
-            Log.e("ALLREQDATA", dummyAddChoice.toString())
+            Log.e("ALLREQDATA", addAdvMenuChoiceTemplate.toString())
 //            viewModel.setManualQuantity(dataBinding.menuAmount.text.toString())
 //            viewModel.setManualNote(dataBinding.manualNote.text.toString())
         }
     }
 
     /*DUMMY ADV DATA*/
-    data class AddAdvDummy(var template_name: String?, var ext_menus: MutableList<AddChoicesDummy?>)
-    data class AddChoicesDummy(val ext_menu_name: String?, val ext_menu_price: String?)
+    data class AddAdvMenuTemp(var template_name: String?, var ext_menus: MutableList<AddMenuChoicesTemp?>)
+    data class AddMenuChoicesTemp(val ext_menu_name: String?, val ext_menu_price: String?)
+
+    override fun onItemClick() {
+        Log.e("CLICKED", "testing click")
+    }
 }
