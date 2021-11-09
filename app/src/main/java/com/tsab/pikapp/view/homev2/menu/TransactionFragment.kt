@@ -49,10 +49,22 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
             setUpTabs()
 
-            dataBinding.manualTransaction.setOnClickListener {
+           /* dataBinding.manualTransaction.setOnClickListener {
                 val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
                 activity?.startActivityForResult(intent, 1)
                 activity?.overridePendingTransition(0, 0)
+            }*/
+
+            topAppBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.manualTxn -> {
+                        val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
+                        activity?.startActivityForResult(intent, 1)
+                        activity?.overridePendingTransition(0, 0)
+                        true
+                    }
+                    else -> false
+                }
             }
 
             swipeRefreshLayout = swipeTransactionMenu

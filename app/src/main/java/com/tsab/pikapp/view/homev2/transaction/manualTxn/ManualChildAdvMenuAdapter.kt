@@ -11,13 +11,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
 import com.tsab.pikapp.models.model.DummyChoices
 
 class ManualChildAdvMenuAdapter(
         val context: Context,
         private val indexOfMenu: Int,
         private val choiceType: String,
-        private val menuChoiceList: MutableList<DummyChoices>,
+        private val menuChoiceList: MutableList<AdvanceAdditionalMenu>,
         var addMenuChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
         private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ManualChildAdvMenuAdapter.ViewHolder>() {
