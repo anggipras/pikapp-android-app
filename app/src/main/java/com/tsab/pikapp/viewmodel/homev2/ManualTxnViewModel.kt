@@ -14,6 +14,7 @@ import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAdvMenuAdapter
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualChildAdvMenuAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -134,9 +135,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableSearchEnter.value = status
     }
 
-    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvDummy>) {
+    fun getManualAdvanceMenuList(baseContext: Context, recyclerview_category: RecyclerView, advMenuChoice: ArrayList<DummyAdvData>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
         //ADDING API TO GET ADVANCE MENU LIST
-        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice, dummyAddChoice)
+        manualAdvMenuAdapter = ManualAdvMenuAdapter(baseContext, advMenuChoice, dummyAddChoice, listener)
         manualAdvMenuAdapter.notifyDataSetChanged()
         recyclerview_category.adapter = manualAdvMenuAdapter
     }
