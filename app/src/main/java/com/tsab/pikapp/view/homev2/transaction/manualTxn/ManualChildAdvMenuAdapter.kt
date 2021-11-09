@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
-import com.tsab.pikapp.models.model.DummyChoices
 
 class ManualChildAdvMenuAdapter(
         val context: Context,
@@ -37,7 +36,7 @@ class ManualChildAdvMenuAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (choiceType == "radio") {
+        if (choiceType == "RADIO") {
             holder.menuChoiceRadio.isVisible = true
             holder.menuChoiceCheck.isVisible = false
             holder.menuChoiceRadio.text = menuChoiceList[position].ext_menu_name
@@ -54,7 +53,7 @@ class ManualChildAdvMenuAdapter(
                 val clickedPos = (cb.tag as Int).toInt()
                 val dummyEachData = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
                 addMenuChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
-                listener.onItemClick()
+//                listener.onItemClick()
                 Log.e("MENUCHOICE", addMenuChoice.toString())
                 if (cb.isChecked) {
                     lastChecked?.isChecked = false
@@ -74,7 +73,7 @@ class ManualChildAdvMenuAdapter(
                 } else {
                     addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
                 }
-                listener.onItemClick()
+//                listener.onItemClick()
                 Log.e("RESULT", addMenuChoice[indexOfMenu].ext_menus.toString())
             }
         }

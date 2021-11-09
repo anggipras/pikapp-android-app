@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
 import com.tsab.pikapp.models.model.AdvanceMenu
-import com.tsab.pikapp.models.model.DummyAdvData
-import com.tsab.pikapp.models.model.DummyChoices
 
 class ManualAdvMenuAdapter(
         val context: Context,
@@ -39,7 +37,7 @@ class ManualAdvMenuAdapter(
         holder.parentMenuChoice.text = manualAdvMenuList[position].template_name
         val childMenuChoice = manualAdvMenuList[position].ext_menus as MutableList<AdvanceAdditionalMenu>
 
-        if (manualAdvMenuList[position].template_type == "radio") {
+        if (manualAdvMenuList[position].template_type == "RADIO") {
             holder.radioSelection.isVisible = true
             holder.rViewCheck.isVisible = false
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
