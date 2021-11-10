@@ -165,36 +165,52 @@ data class AdvanceAdditionalMenuEdit(
 /*ADD MANUAL TXN ADVANCE MENU START*/
 data class AddManualAdvMenu(
         @SerializedName("product_Id")
-        var product_id: String,
+        var product_id: String?,
         @SerializedName("food_name")
         var foodName: String,
-        @SerializedName("food_category")
-        var foodCategory: String,
+        @SerializedName("food_img")
+        var foodImg: String,
         @SerializedName("food_amount")
         var foodAmount: Int,
         @SerializedName("food_price")
-        var foodPrice: Int,
+        var foodPrice: String,
         @SerializedName("foodList_Checkbox")
-        var foodListCheckbox: List<FoodListCheck?>,
+        var foodListCheckbox: List<FoodListParentCheck?>,
         @SerializedName("foodList_Radio")
-        var foodListRadio: List<FoodListRadio?>,
+        var foodListRadio: List<FoodListParentRadio?>,
+        @SerializedName("food_extra")
+        var foodExtra: String?,
         @SerializedName("food_note")
         var foodNote: String?,
         @SerializedName("foodTotalPrice")
         var foodTotalPrice: String
 )
 
+data class FoodListParentCheck(
+        @SerializedName("menu_choice_name")
+        var menuChoiceName: String,
+        @SerializedName("foodList_Check")
+        var foodListChildCheck: List<FoodListCheck?>
+)
+
 data class FoodListCheck(
         @SerializedName("name")
         var name: String,
         @SerializedName("price")
-        var price: Int
+        var price: String
+)
+
+data class FoodListParentRadio(
+        @SerializedName("menu_choice_name")
+        var menuChoiceName: String,
+        @SerializedName("foodList_Radio")
+        var foodListChildRadio: FoodListRadio?
 )
 
 data class FoodListRadio(
         @SerializedName("name")
         var name: String,
         @SerializedName("price")
-        var price: Int
+        var price: String
 )
 /*ADD MANUAL TXN ADVANCE MENU END*/
