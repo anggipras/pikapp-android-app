@@ -1,7 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
@@ -12,8 +11,6 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAdvMenuAdapter
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualChildAdvMenuAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -29,6 +26,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
+
+    private val mutableSelectedMenuTemp = MutableLiveData<List<AddManualAdvMenu>>(listOf())
+    val selectedMenuTemp: LiveData<List<AddManualAdvMenu>> = mutableSelectedMenuTemp
 
     val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
     val menuList: LiveData<List<SearchItem>> = mutableMenuList
@@ -92,24 +92,70 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableNote.value = note
     }
 
+    private val mutableTotalPrice = MutableLiveData<Long>()
+    val totalPrice: LiveData<Long> get() = mutableTotalPrice
+
+    private val mutableExtraPrice = MutableLiveData(0)
+    val extraPrice: LiveData<Int> get() = mutableExtraPrice
+    fun setExtraPrice(extPrice: Int) {
+        mutableExtraPrice.value = extPrice
+        countTotalPrice()
+    }
+
+    private fun countTotalPrice(){
+        //count only all extra price with amount if available
+        val extraAmount = quantity.value?.times(extraPrice.value!!)
+
+        //count only menu with amount
+        val menuAmount: Long? = quantity.value?.times(menuPrice.value?.toLong()!!)
+
+        mutableTotalPrice.value = menuAmount!! + extraAmount!!
+    }
+
     private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity
     fun addQty() {
         mutableQuantity.value = mutableQuantity.value?.plus(1)
+        countTotalPrice()
     }
     fun minusQty() {
         if (mutableQuantity.value!! > 1) {
             mutableQuantity.value = mutableQuantity.value?.minus(1)
+            countTotalPrice()
         }
     }
-    fun setManualQuantity(quantity: String) {
-        mutableQuantity.value = quantity.toInt()
-    }
 
-    private val mutableTopping = MutableLiveData("")
-    val topping: LiveData<String> get() = mutableNote
-    fun setManualTopping(topping: String) {
-        mutableTopping.value = topping
+    fun addToCart(foodNote: String, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {
+        //mapping radio and or checkbox menu choice
+        var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
+        var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
+        foodExtraList.forEach {
+            if (it.template_type == "RADIO") {
+                it.ext_menus.forEach { extMenuRad ->
+                    foodExtraRadio.add(FoodListParentRadio(menuChoiceName = it?.template_name!!, foodListChildRadio = FoodListRadio(name = extMenuRad?.ext_menu_name!!, price = extMenuRad.ext_menu_price!!)))
+                }
+            } else {
+                val foodListCheck: MutableList<FoodListCheck> = ArrayList()
+                it.ext_menus.forEach { extMenuCheck ->
+                    foodListCheck.add(FoodListCheck(name = extMenuCheck?.ext_menu_name!!, price = extMenuCheck.ext_menu_price!!))
+                }
+                foodExtraCheck.add(FoodListParentCheck(menuChoiceName = it.template_name!!, foodListChildCheck = foodListCheck))
+            }
+        }
+
+        mutableSelectedMenuTemp.value = selectedMenuTemp.value?.toMutableList()?.apply {
+            add(AddManualAdvMenu(
+                product_id = PID.value,
+                foodName = menuName.value!!,
+                foodImg = menuImg.value.toString(),
+                foodAmount = quantity.value!!,
+                foodPrice = menuPrice.value!!,
+                foodListCheckbox = foodExtraCheck,
+                foodListRadio = foodExtraRadio,
+                foodExtra = "", //CREATE LOGIC FOR ADV MENU CHOICE
+                foodNote = foodNote,
+                foodTotalPrice = totalPrice.value.toString()
+        )) }
     }
 
     fun getMenuList() {

@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +26,6 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
     lateinit var adapter: ManualAdvMenuAdapter
     private val addAdvMenuChoiceTemplate: ArrayList<AddAdvMenuTemp> = ArrayList()
     private val localeID =  Locale("in", "ID")
-    var menuPrice: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,19 +47,15 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
 
         dataBinding.advMenuName.text = viewModel.menuName.value
 
-        var menuDetailPrice = "1000"
-        this.menuPrice = menuDetailPrice.toLong()
-        dataBinding.btnNext.text = getString(R.string.add_cart, menuDetailPrice)
-        dataBinding.btnNext.setOnClickListener {
-//            viewModel.setManualQuantity(dataBinding.menuAmount.text.toString())
-//            viewModel.setManualNote(dataBinding.manualNote.text.toString())
-        }
-
         dataBinding.plusButton.setOnClickListener {
             viewModel.addQty()
         }
         dataBinding.minusButton.setOnClickListener {
             viewModel.minusQty()
+        }
+
+        dataBinding.btnNext.setOnClickListener {
+            viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate)
         }
 
         observeViewModel()
@@ -70,8 +64,6 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
     private fun observeViewModel() {
         viewModel.quantity.observe(viewLifecycleOwner, androidx.lifecycle.Observer { qty ->
             dataBinding.menuAmount.text = qty.toString()
-            this.menuPrice *= qty
-            dataBinding.btnNext.text = getString(R.string.add_cart, this.menuPrice.toString())
         })
 
         viewModel.menuImg.observe(viewLifecycleOwner, androidx.lifecycle.Observer { img ->
@@ -82,12 +74,19 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.advMenuPrice.text = getString(R.string.adv_menu_price, numberFormat.toString())
+            dataBinding.btnNext.text = getString(R.string.add_cart, price.toString())
+        })
+
+        viewModel.totalPrice.observe(viewLifecycleOwner, androidx.lifecycle.Observer { totalPrice ->
+            val thePrice: Long = totalPrice
+            val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+            dataBinding.btnNext.text = getString(R.string.add_cart, numberFormat.toString())
         })
 
         viewModel.isAdvReceived.observe(viewLifecycleOwner, androidx.lifecycle.Observer { trigger ->
             if (trigger) {
                 for (i in advData) {
-                    addAdvMenuChoiceTemplate.add(AddAdvMenuTemp("", mutableListOf(AddMenuChoicesTemp("", "0"))))
+                    addAdvMenuChoiceTemplate.add(AddAdvMenuTemp(i.template_name, i.template_type, mutableListOf(AddMenuChoicesTemp("", "0"))))
                     if (i.template_type == "CHECKBOX") {
                         val indexOfAdvMenu = advData.indexOf(i)
                         val sizeOfAdvMenu = advData[indexOfAdvMenu].ext_menus.size-2
@@ -101,21 +100,22 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
     }
 
     /*DUMMY ADV DATA*/
-    data class AddAdvMenuTemp(var template_name: String?, var ext_menus: MutableList<AddMenuChoicesTemp?>)
+    data class AddAdvMenuTemp(var template_name: String?, var template_type: String?, var ext_menus: MutableList<AddMenuChoicesTemp?>)
     data class AddMenuChoicesTemp(val ext_menu_name: String?, val ext_menu_price: String?)
 
     override fun onItemClick() {
-        var totalPrice = this.menuPrice
+        var totalPrice = 0
         addAdvMenuChoiceTemplate.forEach { menu ->
             menu.ext_menus.forEach { extMenu ->
                 if (extMenu != null) {
-                    totalPrice += extMenu.ext_menu_price?.toInt()!!
+                    val convertedPrice = extMenu.ext_menu_price?.toDouble()
+                    val rounded = String.format("%.0f", convertedPrice)
+                    val roundedToInt = rounded.toInt()
+                    totalPrice += roundedToInt
                 }
             }
         }
-        totalPrice *= viewModel.quantity.value!!
-        val numberFormat = NumberFormat.getInstance(localeID).format(totalPrice)
-        dataBinding.btnNext.text = getString(R.string.add_cart, numberFormat.toString())
+        viewModel.setExtraPrice(totalPrice)
     }
 
     override fun onDestroy() {
