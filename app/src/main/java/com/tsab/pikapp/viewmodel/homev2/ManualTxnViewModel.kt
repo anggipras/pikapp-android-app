@@ -3,9 +3,11 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
@@ -151,7 +153,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
-    fun addToCart(foodNote: String, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {
+    fun addToCart(foodNote: String, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, view: View) {
         //mapping radio and or checkbox menu choice
         var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
         var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
@@ -190,7 +192,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         addTotalQty(quantity.value!!)
         addTotalItems(menuName.value.toString())
         cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
-        Log.e("cart list", mutableSelectedMenuTemp.value.toString())
+        Navigation.findNavController(view).popBackStack()
     }
 
     fun getMenuList() {
