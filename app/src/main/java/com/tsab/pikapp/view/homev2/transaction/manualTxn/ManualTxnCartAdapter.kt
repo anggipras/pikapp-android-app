@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,14 +57,22 @@ class ManualTxnCartAdapter (
         holder.menuNote.text = manualCartList[position].foodNote
         holder.amount.text = manualCartList[position].foodAmount.toString()
         holder.minusBtn.setOnClickListener {
-            if (holder.amount.text.toString().toInt() != 0) {
+            if (holder.amount.text.toString().toInt() != 1) {
+                var countAmount = manualCartList[position].foodAmount - 1
+                var countTotal = manualCartList[position].foodTotalPrice.toInt() - (manualCartList[position].foodTotalPrice.toInt() / manualCartList[position].foodAmount)
+                manualCartList[position].foodAmount = countAmount
                 holder.amount.text = (holder.amount.text.toString().toInt() - 1).toString()
-                Toast.makeText(context, "Jumlah Dikurangi", Toast.LENGTH_SHORT).show()
+                manualCartList[position].foodTotalPrice = countTotal.toString()
+                holder.menuPrice.text = countTotal.toString()
             }
         }
         holder.plusBtn.setOnClickListener {
+            var countAmount = manualCartList[position].foodAmount + 1
+            var countTotal = manualCartList[position].foodTotalPrice.toInt() + (manualCartList[position].foodTotalPrice.toInt() / manualCartList[position].foodAmount)
+            manualCartList[position].foodAmount = countAmount
             holder.amount.text = (holder.amount.text.toString().toInt() + 1).toString()
-            Toast.makeText(context, "Jumlah Ditambahkan", Toast.LENGTH_SHORT).show()
+            manualCartList[position].foodTotalPrice = countTotal.toString()
+            holder.menuPrice.text = countTotal.toString()
         }
         if (position == manualCartList.size - 1){
             holder.divider.visibility = View.GONE
