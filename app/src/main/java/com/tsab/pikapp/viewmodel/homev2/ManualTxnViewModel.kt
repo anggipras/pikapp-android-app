@@ -155,15 +155,20 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         //mapping radio and or checkbox menu choice
         var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
         var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
+        var foodExtraNotes: String = ""
         foodExtraList.forEach {
             if (it.template_type == "RADIO") {
                 it.ext_menus.forEach { extMenuRad ->
                     foodExtraRadio.add(FoodListParentRadio(menuChoiceName = it?.template_name!!, foodListChildRadio = FoodListRadio(name = extMenuRad?.ext_menu_name!!, price = extMenuRad.ext_menu_price!!)))
+                    foodExtraNotes.plus("${extMenuRad.ext_menu_name} ")
                 }
             } else {
                 val foodListCheck: MutableList<FoodListCheck> = ArrayList()
                 it.ext_menus.forEach { extMenuCheck ->
                     foodListCheck.add(FoodListCheck(name = extMenuCheck?.ext_menu_name!!, price = extMenuCheck.ext_menu_price!!))
+                    if (extMenuCheck.ext_menu_name.isNotEmpty()) {
+                        foodExtraNotes.plus("${extMenuCheck.ext_menu_name} ")
+                    }
                 }
                 foodExtraCheck.add(FoodListParentCheck(menuChoiceName = it.template_name!!, foodListChildCheck = foodListCheck))
             }
@@ -178,7 +183,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 foodPrice = menuPrice.value!!,
                 foodListCheckbox = foodExtraCheck,
                 foodListRadio = foodExtraRadio,
-                foodExtra = "", //CREATE LOGIC FOR ADV MENU CHOICE
+                foodExtra = foodExtraNotes,
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
         )) }
