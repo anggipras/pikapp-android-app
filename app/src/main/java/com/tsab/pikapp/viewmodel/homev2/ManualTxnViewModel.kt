@@ -3,9 +3,11 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.app.Application
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
@@ -151,19 +153,24 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
-    fun addToCart(foodNote: String, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {
+    fun addToCart(foodNote: String, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, view: View) {
         //mapping radio and or checkbox menu choice
         var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
         var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
+        var foodExtraNotes: String = ""
         foodExtraList.forEach {
             if (it.template_type == "RADIO") {
                 it.ext_menus.forEach { extMenuRad ->
                     foodExtraRadio.add(FoodListParentRadio(menuChoiceName = it?.template_name!!, foodListChildRadio = FoodListRadio(name = extMenuRad?.ext_menu_name!!, price = extMenuRad.ext_menu_price!!)))
+//                    foodExtraNotes.plus("${extMenuRad.ext_menu_name} ")
                 }
             } else {
                 val foodListCheck: MutableList<FoodListCheck> = ArrayList()
                 it.ext_menus.forEach { extMenuCheck ->
                     foodListCheck.add(FoodListCheck(name = extMenuCheck?.ext_menu_name!!, price = extMenuCheck.ext_menu_price!!))
+//                    if (extMenuCheck.ext_menu_name.isNotEmpty()) {
+//                        foodExtraNotes.plus("${extMenuCheck.ext_menu_name} ")
+//                    }
                 }
                 foodExtraCheck.add(FoodListParentCheck(menuChoiceName = it.template_name!!, foodListChildCheck = foodListCheck))
             }
@@ -178,14 +185,14 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 foodPrice = menuPrice.value!!,
                 foodListCheckbox = foodExtraCheck,
                 foodListRadio = foodExtraRadio,
-                foodExtra = "", //CREATE LOGIC FOR ADV MENU CHOICE
+                foodExtra = "",
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
         )) }
         addTotalQty(quantity.value!!)
         addTotalItems(menuName.value.toString())
         cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
-        Log.e("cart list", mutableSelectedMenuTemp.value.toString())
+        Navigation.findNavController(view).popBackStack()
     }
 
     fun getMenuList() {

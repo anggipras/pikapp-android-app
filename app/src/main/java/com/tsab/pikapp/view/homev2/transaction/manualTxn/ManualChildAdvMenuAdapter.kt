@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.RadioButton
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,8 +30,13 @@ class ManualChildAdvMenuAdapter(
     private var lastCheckedPos = 0
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var menuRadioConstraint: ConstraintLayout = itemView.findViewById(R.id.menuChoiceRadio_constraint)
         var menuChoiceRadio: RadioButton = itemView.findViewById(R.id.menuChoiceAdv_radio)
+        var menuPriceRadio: TextView = itemView.findViewById(R.id.menuChoiceAdv_radio_price)
+
+        var menuCheckConstraint: ConstraintLayout = itemView.findViewById(R.id.menuChoiceCheck_constraint)
         var menuChoiceCheck: CheckBox = itemView.findViewById(R.id.menuChoiceAdv_checkbox)
+        var menuPriceCheck: TextView = itemView.findViewById(R.id.menuChoiceAdv_check_price)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,9 +46,10 @@ class ManualChildAdvMenuAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (choiceType == "RADIO") {
-            holder.menuChoiceRadio.isVisible = true
-            holder.menuChoiceCheck.isVisible = false
+            holder.menuRadioConstraint.isVisible = true
+            holder.menuCheckConstraint.isVisible = false
             holder.menuChoiceRadio.text = menuChoiceList[position].ext_menu_name
+            holder.menuPriceRadio.text = "+${menuChoiceList[position].ext_menu_price}"
             holder.menuChoiceRadio.tag = position
 
             //for default check in first item
@@ -62,9 +72,10 @@ class ManualChildAdvMenuAdapter(
                 } else lastChecked = null
             }
         } else {
-            holder.menuChoiceRadio.isVisible = false
-            holder.menuChoiceCheck.isVisible = true
+            holder.menuRadioConstraint.isVisible = false
+            holder.menuCheckConstraint.isVisible = true
             holder.menuChoiceCheck.text = menuChoiceList[position].ext_menu_name
+            holder.menuPriceCheck.text = "+${menuChoiceList[position].ext_menu_price}"
             val dummyEachDataCheck = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
             val dummyEachDataCheckRemoved = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = "", ext_menu_price = "0")
             holder.menuChoiceCheck.setOnCheckedChangeListener { _, isChecked ->
