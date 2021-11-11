@@ -67,6 +67,20 @@ class ManualTxnDynamicFragment : Fragment() {
             dynamicAdapter.updateMenuList(this.menuList)
         })
 
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
+        })
+
+        viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
+            if (totalItems > 0){
+                dataBinding.btnNext.visibility = View.VISIBLE
+                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+            } else {
+                dataBinding.btnNext.visibility = View.GONE
+            }
+        })
+
         viewModel.isSearch.observe(viewLifecycleOwner, Observer { isSearch ->
             if(isSearch){
                 Log.e("ehfqh", viewModel.mutableSearchMenu.value.toString())

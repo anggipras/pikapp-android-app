@@ -89,8 +89,13 @@ class HomeViewManualTxn : Fragment() {
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+/*            dataBinding.loadingOverlay.loadingView.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE*/
             if (!isLoading) {
                 initViews()
+/*
+                dataBinding.loadingOverlay.loadingView.visibility = View.GONE
+*/
             }
         })
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,8 @@ import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import java.text.NumberFormat
+import java.util.*
 
 class ManualTxnCartPage : Fragment() {
 
@@ -23,7 +26,7 @@ class ManualTxnCartPage : Fragment() {
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCartAdapter: ManualTxnCartAdapter
-    val dummyAdvData = ArrayList<AddManualAdvMenu>()
+    private val localeID =  Locale("in", "ID")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,21 +44,25 @@ class ManualTxnCartPage : Fragment() {
         dataBinding.recyclerviewCart.layoutManager = linearLayoutManager
         dataBinding.recyclerviewCart.setHasFixedSize(false)
 
-        dummyAdvData.add(AddManualAdvMenu(
-                "123456",
-                "Croffle",
-                "", 1, "Rp. 3000",
-                listOf(),
-                listOf(),
-                "",
-                "crispy kang",
-                "Rp. 3000" ))
-
         manualTxnCartAdapter = ManualTxnCartAdapter(requireView().context, viewModel.selectedMenuTemp.value as MutableList<AddManualAdvMenu>)
         manualTxnCartAdapter.notifyDataSetChanged()
         dataBinding.recyclerviewCart.adapter = manualTxnCartAdapter
 
+        observeViewModel()
         attachInputListener()
+    }
+
+    private fun observeViewModel(){
+        viewModel.totalQuantity.observe(viewLifecycleOwner, Observer { totalQty ->
+            dataBinding.btnNext.visibility = View.VISIBLE
+            dataBinding.btnNext.text = "Check Out($totalQty)"
+        })
+
+        viewModel.totalCart.observe(viewLifecycleOwner, Observer { price ->
+            val thePrice: Long = price.toLong()
+            val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+            dataBinding.totalPrice.text = "Rp. $numberFormat"
+        })
     }
 
     private fun attachInputListener(){
