@@ -63,7 +63,7 @@ class HomeViewManualTxn : Fragment() {
 
     private fun attachInputListeners() {
         sessionManager.setHomeNav(0)
-        dataBinding.backButton.setOnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
                 activity?.finish()

@@ -42,9 +42,7 @@ class ListAdapter(
     override fun onBindViewHolder(holder: ListAdapter.ViewHolder, position: Int) {
         var screenDisplay = context.resources.displayMetrics
         var screenWidth = screenDisplay.widthPixels
-        Log.e("width", screenWidth.toString())
         var newWidth = screenWidth / 3.2
-        Log.e("new width", newWidth.toString())
 
         holder.cardView.layoutParams = FrameLayout.LayoutParams(newWidth.toInt(), newWidth.toInt()).apply {
             setMargins(10, 20, 10, 0)

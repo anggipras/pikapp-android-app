@@ -5,54 +5,58 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
+import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
+import com.tsab.pikapp.models.model.DummyAdvData
+import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ManualTxnCartPage.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ManualTxnCartPage : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val viewModel: ManualTxnViewModel by activityViewModels()
+    private lateinit var dataBinding: FragmentManualTxnCartPageBinding
+    lateinit var linearLayoutManager: LinearLayoutManager
+    private var navController: NavController? = null
+    lateinit var manualTxnCartAdapter: ManualTxnCartAdapter
+    val dummyAdvData = ArrayList<DummyAdvData>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_manual_txn_cart_page, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_manual_txn_cart_page, container, false)
+        return dataBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ManualTxnCartPage.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                ManualTxnCartPage().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+
+        linearLayoutManager = LinearLayoutManager(requireView().context)
+        dataBinding.recyclerviewCart.layoutManager = linearLayoutManager
+        dataBinding.recyclerviewCart.setHasFixedSize(false)
+
+        dummyAdvData.add(DummyAdvData("Tambah Topping", listOf("Cokelat", "Stroberi", "Oreo", "Green Tea")))
+        dummyAdvData.add(DummyAdvData("Tambah Bobba", listOf("Jelly", "Potter", "Harry", "Pottur")))
+        dummyAdvData.add(DummyAdvData("Tambah Mantap", listOf("Mantap1", "Mantap2", "Mantap3", "Mantap4")))
+
+        manualTxnCartAdapter = ManualTxnCartAdapter(requireView().context, dummyAdvData)
+        manualTxnCartAdapter.notifyDataSetChanged()
+        dataBinding.recyclerviewCart.adapter = manualTxnCartAdapter
+
+        attachInputListener()
     }
+
+    private fun attachInputListener(){
+        dataBinding.detailBtn.setOnClickListener {
+            navController?.navigate(R.id.action_manualTxnCartPage_to_manualTxnDetail)
+        }
+    }
+
 }

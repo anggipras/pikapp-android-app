@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
@@ -33,7 +35,7 @@ class ManualTxnDynamicFragment : Fragment() {
 
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualTxnDynamicBinding
-
+    private var navController: NavController? = null
     var menuList: MutableList<SearchItem> = mutableListOf()
     lateinit var dynamicAdapter: ListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -51,6 +53,7 @@ class ManualTxnDynamicFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view)
         categoryName = arguments?.getString(argumentCategoryName).toString()
         viewModel.getMenuList()
 
@@ -93,6 +96,7 @@ class ManualTxnDynamicFragment : Fragment() {
     private fun attachInputListeners() {
         dataBinding.continueButton.setOnClickListener {
             Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+            navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
         }
     }
 }
