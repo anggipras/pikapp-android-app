@@ -345,4 +345,6 @@
     <string name="tokopedia_nomor_resi">Nomor resi</string>
 
     <string name="plus_sign">+</string>
+    <string name="add_cart">Masukan Keranjang | Rp. %s</string>
+    <string name="adv_menu_price">Rp. %s</string>
 </resources>

@@ -10,7 +10,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -23,13 +22,12 @@ import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
 import com.tsab.pikapp.receiver.AlarmReceiver
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.menu.MenuFragment
-import com.tsab.pikapp.view.homev2.menu.OtherFragment
-import com.tsab.pikapp.view.homev2.menu.PromoFragment
+import com.tsab.pikapp.view.homev2.other.OtherFragment
+import com.tsab.pikapp.view.homev2.promo.PromoFragment
 import com.tsab.pikapp.view.homev2.menu.TransactionFragment
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
-import kotlinx.android.synthetic.main.layout_header_drawer.*
 import kotlinx.android.synthetic.main.layout_header_drawer.view.*
 import java.util.*
 

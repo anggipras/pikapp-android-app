@@ -45,6 +45,18 @@ class HomeViewManualTxn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+
+        dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModelDynamic.searchMenu(query!!, true)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
         observeViewModel()
     }
 
@@ -68,6 +80,10 @@ class HomeViewManualTxn : Fragment() {
                 startActivity(this)
                 activity?.finish()
             }
+        }
+
+        dataBinding.searchField.setOnClickListener {
+            dataBinding.searchField.onActionViewExpanded()
         }
     }
 

@@ -9,15 +9,29 @@
     android:orientation="vertical">
 
     <RadioButton
-        android:id="@+id/menuChoiceAdv"
+        android:id="@+id/menuChoiceAdv_radio"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cokelat"
+        android:text="Toyota"
         android:fontFamily="@font/proximanova_regular"
         android:textSize="15dp"
         android:layoutDirection="rtl"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="@color/black" />
+
+    <CheckBox
+        android:id="@+id/menuChoiceAdv_checkbox"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Honda"
+        android:fontFamily="@font/proximanova_regular"
+        android:textSize="15dp"
+        android:layoutDirection="rtl"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/black"/>
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnDynamicBinding
 import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.view.AdvanceMenuActivity
-import com.tsab.pikapp.view.homev2.menu.DynamicListAdapter
-import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
-import java.io.Serializable
-
 
 class ManualTxnDynamicFragment : Fragment() {
     companion object {
@@ -71,6 +66,15 @@ class ManualTxnDynamicFragment : Fragment() {
 
             dynamicAdapter.updateMenuList(this.menuList)
         })
+
+        viewModel.isSearch.observe(viewLifecycleOwner, Observer { isSearch ->
+            if(isSearch){
+                Log.e("ehfqh", viewModel.mutableSearchMenu.value.toString())
+                viewModel.getMenuList()
+                Log.e("ehfqh", viewModel.mutableMenuList.value.toString())
+                viewModel.mutableSearchEnter.value = false
+            }
+        })
     }
 
     private fun setupRecyclerView() {
@@ -79,12 +83,12 @@ class ManualTxnDynamicFragment : Fragment() {
             menuList.toMutableList(),
             object : ListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, menuList: SearchItem) {
-                    Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
-                        putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_EDIT)
-                        putExtra(AdvanceMenuActivity.MENU_LIST, menuList as Serializable)
-                        startActivity(this)
-                    }
-
+                    viewModel.setPID(menuList.product_id.toString())
+                    viewModel.setMenuImg(menuList.pict_01.toString())
+                    viewModel.setMenuName(menuList.product_name.toString())
+                    viewModel.setMenuPrice(menuList.price.toString())
+                    Log.e("pid", viewModel.mutablePID.value)
+                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment) }
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter

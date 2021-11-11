@@ -1,4 +1,4 @@
-package com.tsab.pikapp.view.homev2.menu
+package com.tsab.pikapp.view.homev2.other
 
 import android.content.Intent
 import android.graphics.Color

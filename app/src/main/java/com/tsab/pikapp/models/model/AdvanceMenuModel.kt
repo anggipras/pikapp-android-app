@@ -1,6 +1,7 @@
 package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
 
 enum class AdvanceMenuTemplateType {
     CHECKBOX, RADIO;
@@ -161,5 +162,55 @@ data class AdvanceAdditionalMenuEdit(
 )
 /*EDIT ADVANCE MENU END*/
 
-/*DUMMY ADV DATA*/
-data class DummyAdvData(val parentMenuChoice: String, val childMenuChoice: List<String>)
+/*ADD MANUAL TXN ADVANCE MENU START*/
+data class AddManualAdvMenu(
+        @SerializedName("product_Id")
+        var product_id: String?,
+        @SerializedName("food_name")
+        var foodName: String,
+        @SerializedName("food_img")
+        var foodImg: String,
+        @SerializedName("food_amount")
+        var foodAmount: Int,
+        @SerializedName("food_price")
+        var foodPrice: String,
+        @SerializedName("foodList_Checkbox")
+        var foodListCheckbox: List<FoodListParentCheck?>,
+        @SerializedName("foodList_Radio")
+        var foodListRadio: List<FoodListParentRadio?>,
+        @SerializedName("food_extra")
+        var foodExtra: String?,
+        @SerializedName("food_note")
+        var foodNote: String?,
+        @SerializedName("foodTotalPrice")
+        var foodTotalPrice: String
+)
+
+data class FoodListParentCheck(
+        @SerializedName("menu_choice_name")
+        var menuChoiceName: String,
+        @SerializedName("foodList_Check")
+        var foodListChildCheck: List<FoodListCheck?>
+)
+
+data class FoodListCheck(
+        @SerializedName("name")
+        var name: String,
+        @SerializedName("price")
+        var price: String
+)
+
+data class FoodListParentRadio(
+        @SerializedName("menu_choice_name")
+        var menuChoiceName: String,
+        @SerializedName("foodList_Radio")
+        var foodListChildRadio: FoodListRadio?
+)
+
+data class FoodListRadio(
+        @SerializedName("name")
+        var name: String,
+        @SerializedName("price")
+        var price: String
+)
+/*ADD MANUAL TXN ADVANCE MENU END*/
