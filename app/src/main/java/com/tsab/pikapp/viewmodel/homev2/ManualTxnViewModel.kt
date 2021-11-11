@@ -112,6 +112,32 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableTotalPrice.value = menuAmount!! + extraAmount!!
     }
 
+    private val mutableCartPrice = MutableLiveData(0)
+    val totalCart: LiveData<Int> get() = mutableCartPrice
+    fun cartTotalPrice(totPrice: String, price: String){
+        if (totPrice != "null"){
+            mutableCartPrice.value = mutableCartPrice.value?.plus(totPrice.toInt())
+        } else {
+            mutableCartPrice.value = mutableCartPrice.value?.plus(price.toInt())
+        }
+    }
+
+    private val mutableTotalQuantity = MutableLiveData(0)
+    val totalQuantity: LiveData<Int> get() = mutableTotalQuantity
+    fun addTotalQty(qty : Int){
+        mutableTotalQuantity.value = mutableTotalQuantity.value?.plus(qty)
+    }
+
+    private val mutableTotalItems = MutableLiveData(0)
+    val totalItems: LiveData<Int> get() = mutableTotalItems
+    private var x : String = ""
+    fun addTotalItems(name: String){
+        if (name != x) {
+            mutableTotalItems.value = mutableTotalItems.value?.plus(1)
+            x = name
+        }
+    }
+
     private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity
     fun addQty() {
@@ -156,7 +182,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
         )) }
-
+        addTotalQty(quantity.value!!)
+        addTotalItems(menuName.value.toString())
+        cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
         Log.e("cart list", mutableSelectedMenuTemp.value.toString())
     }
 
@@ -182,6 +210,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                         mutableMenuList.value = mutableMenuListEmpty.value
                         Log.e("Zero_Product", "There is no product available")
                     }
+                    setLoading(false)
                 } else {
                     Log.e("FAIL", "Failed get amount of menus")
                 }
