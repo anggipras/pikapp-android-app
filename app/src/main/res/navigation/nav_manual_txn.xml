@@ -13,10 +13,38 @@
         <action
             android:id="@+id/action_homeViewManualTxn_to_manualAddAdvMenuFragment"
             app:destination="@id/manualAddAdvMenuFragment" />
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualTxnDynamicFragment"
+            app:destination="@id/manualTxnDynamicFragment" />
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualTxnCartPage"
+            app:destination="@id/manualTxnCartPage" />
     </fragment>
     <fragment
         android:id="@+id/manualAddAdvMenuFragment"
         android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment"
         android:label="ManualAddAdvMenuFragment"
         tools:layout="@layout/fragment_manual_add_adv_menu"/>
+    <fragment
+        android:id="@+id/manualTxnDynamicFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDynamicFragment"
+        android:label="fragment_manual_txn_dynamic"
+        tools:layout="@layout/fragment_manual_txn_dynamic" >
+        <action
+            android:id="@+id/action_manualTxnDynamicFragment_to_manualTxnCartPage"
+            app:destination="@id/manualTxnCartPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualTxnCartPage"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCartPage"
+        android:label="fragment_manual_txn_cart_page"
+        tools:layout="@layout/fragment_manual_txn_cart_page" >
+        <action
+            android:id="@+id/action_manualTxnCartPage_to_manualTxnDetail"
+            app:destination="@id/manualTxnDetail" />
+    </fragment>
+    <dialog
+        android:id="@+id/manualTxnDetail"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDetail"
+        android:label="ManualTxnDetail" />
 </navigation>

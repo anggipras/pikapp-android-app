@@ -21,21 +21,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardImageMenu_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/foodimg"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@drawable/background"
-                    android:scaleType="centerCrop"/>
-
-            </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/foodimg"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/background"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout_shopmgmt"
@@ -43,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardImageMenu_view">
+                app:layout_constraintTop_toBottomOf="@+id/foodimg">
 
                 <TextView
                     android:id="@+id/namaMenu"
