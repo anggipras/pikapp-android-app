@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
-import com.tsab.pikapp.models.model.DummyAdvData
+import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 
 class ManualTxnCartPage : Fragment() {
@@ -23,8 +23,7 @@ class ManualTxnCartPage : Fragment() {
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCartAdapter: ManualTxnCartAdapter
-    val dummyAdvData = ArrayList<DummyAdvData>()
-
+    val dummyAdvData = ArrayList<AddManualAdvMenu>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,11 +41,17 @@ class ManualTxnCartPage : Fragment() {
         dataBinding.recyclerviewCart.layoutManager = linearLayoutManager
         dataBinding.recyclerviewCart.setHasFixedSize(false)
 
-        dummyAdvData.add(DummyAdvData("Tambah Topping", listOf("Cokelat", "Stroberi", "Oreo", "Green Tea")))
-        dummyAdvData.add(DummyAdvData("Tambah Bobba", listOf("Jelly", "Potter", "Harry", "Pottur")))
-        dummyAdvData.add(DummyAdvData("Tambah Mantap", listOf("Mantap1", "Mantap2", "Mantap3", "Mantap4")))
+        dummyAdvData.add(AddManualAdvMenu(
+                "123456",
+                "Croffle",
+                "", 1, "Rp. 3000",
+                listOf(),
+                listOf(),
+                "",
+                "crispy kang",
+                "Rp. 3000" ))
 
-        manualTxnCartAdapter = ManualTxnCartAdapter(requireView().context, dummyAdvData)
+        manualTxnCartAdapter = ManualTxnCartAdapter(requireView().context, viewModel.selectedMenuTemp.value as MutableList<AddManualAdvMenu>)
         manualTxnCartAdapter.notifyDataSetChanged()
         dataBinding.recyclerviewCart.adapter = manualTxnCartAdapter
 

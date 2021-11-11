@@ -156,6 +156,8 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
         )) }
+
+        Log.e("cart list", mutableSelectedMenuTemp.value.toString())
     }
 
     fun getMenuList() {

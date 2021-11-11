@@ -20,39 +20,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <!--<androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="22dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/backImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_back_black"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/backText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="@font/montserrat"
-                    android:text="Buat Pesanan Manual"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@id/backImage"
-                    app:layout_constraintStart_toEndOf="@id/backImage"
-                    app:layout_constraintTop_toTopOf="@id/backImage" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/headerAppbar"
                 android:layout_width="match_parent"
