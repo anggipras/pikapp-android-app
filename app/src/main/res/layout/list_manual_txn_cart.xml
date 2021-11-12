@@ -31,9 +31,9 @@
         android:id="@+id/linearLayout_shopmgmt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/cardImageMenu_view"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -56,15 +56,11 @@
             android:textColor="@color/black"
             android:layout_marginTop="5dp"/>
 
-        <TextView
-            android:id="@+id/menuTopping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/proximanova_regular"
-            android:text="Cokelat"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_marginTop="10dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_extra"
+            android:layout_width="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/menuNote"
