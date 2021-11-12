@@ -55,7 +55,7 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         }
 
         dataBinding.btnNext.setOnClickListener {
-            viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate)
+            viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate, view)
         }
 
         observeViewModel()
