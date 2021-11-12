@@ -1,16 +1,12 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.view.homev2.menu.MenuListAdapter
 
 class ExtraMenuAdapter (
     val context: Context,
@@ -27,7 +23,6 @@ class ExtraMenuAdapter (
     }
 
     override fun onBindViewHolder(holder: ExtraMenuAdapter.ViewHolder, position: Int) {
-        Log.e("List", extraList.toString())
         holder.itemText.text = extraList[position]
     }
 

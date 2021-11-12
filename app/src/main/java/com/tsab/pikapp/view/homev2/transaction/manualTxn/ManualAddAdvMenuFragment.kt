@@ -46,6 +46,8 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         dataBinding.recyclerviewParentMenuChoice.adapter = adapter
 
         dataBinding.advMenuName.text = viewModel.menuName.value
+        viewModel.setExtraPrice(0)
+        viewModel.countTotalPrice()
 
         dataBinding.plusButton.setOnClickListener {
             viewModel.addQty()
