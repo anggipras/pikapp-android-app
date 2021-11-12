@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -83,9 +82,7 @@ class ManualTxnDynamicFragment : Fragment() {
 
         viewModel.isSearch.observe(viewLifecycleOwner, Observer { isSearch ->
             if(isSearch){
-                Log.e("ehfqh", viewModel.mutableSearchMenu.value.toString())
                 viewModel.getMenuList()
-                Log.e("ehfqh", viewModel.mutableMenuList.value.toString())
                 viewModel.mutableSearchEnter.value = false
             }
         })
@@ -106,14 +103,11 @@ class ManualTxnDynamicFragment : Fragment() {
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter
-
-        //linearLayoutManager = LinearLayoutManager(requireView().context)
         dataBinding.listMenuDetail.layoutManager = GridLayoutManager(requireView().context, 3)
     }
 
     private fun attachInputListeners() {
         dataBinding.btnNext.setOnClickListener {
-            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
             navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
         }
     }

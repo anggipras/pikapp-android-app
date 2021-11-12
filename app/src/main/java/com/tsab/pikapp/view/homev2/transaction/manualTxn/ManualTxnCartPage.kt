@@ -12,14 +12,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import java.text.NumberFormat
 import java.util.*
 
-class ManualTxnCartPage : Fragment() {
+class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
 
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualTxnCartPageBinding
@@ -44,7 +43,7 @@ class ManualTxnCartPage : Fragment() {
         dataBinding.recyclerviewCart.layoutManager = linearLayoutManager
         dataBinding.recyclerviewCart.setHasFixedSize(false)
 
-        manualTxnCartAdapter = ManualTxnCartAdapter(requireView().context, viewModel.selectedMenuTemp.value as MutableList<AddManualAdvMenu>)
+        manualTxnCartAdapter = ManualTxnCartAdapter(requireView().context, viewModel.selectedMenuTemp.value as MutableList<AddManualAdvMenu>, this)
         manualTxnCartAdapter.notifyDataSetChanged()
         dataBinding.recyclerviewCart.adapter = manualTxnCartAdapter
 
@@ -69,6 +68,11 @@ class ManualTxnCartPage : Fragment() {
         dataBinding.detailBtn.setOnClickListener {
             navController?.navigate(R.id.action_manualTxnCartPage_to_manualTxnDetail)
         }
+    }
+
+    override fun onItemClick() {
+        viewModel.setTotalPrice()
+        viewModel.addTotalQty()
     }
 
 }
