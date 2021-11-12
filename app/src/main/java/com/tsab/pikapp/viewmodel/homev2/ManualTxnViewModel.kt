@@ -104,7 +104,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         countTotalPrice()
     }
 
-    private fun countTotalPrice(){
+    fun countTotalPrice(){
         //count only all extra price with amount if available
         val extraAmount = quantity.value?.times(extraPrice.value!!)
 
@@ -154,6 +154,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity
+    fun setDefQty() {
+        mutableQuantity.value = 1
+    }
     fun addQty() {
         mutableQuantity.value = mutableQuantity.value?.plus(1)
         countTotalPrice()

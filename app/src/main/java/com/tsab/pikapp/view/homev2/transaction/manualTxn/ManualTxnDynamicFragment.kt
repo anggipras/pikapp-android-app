@@ -98,7 +98,7 @@ class ManualTxnDynamicFragment : Fragment() {
                     viewModel.setMenuImg(menuList.pict_01.toString())
                     viewModel.setMenuName(menuList.product_name.toString())
                     viewModel.setMenuPrice(menuList.price.toString())
-                    Log.e("pid", viewModel.mutablePID.value)
+                    viewModel.setDefQty()
                     view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment) }
                 }
             })
@@ -108,6 +108,7 @@ class ManualTxnDynamicFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.btnNext.setOnClickListener {
+            viewModel.addTotalQty()
             navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
         }
     }

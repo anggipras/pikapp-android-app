@@ -55,7 +55,7 @@ class ManualTxnCartAdapter (
         for(i in manualCartList[position].foodListCheckbox){
             if (i != null) {
                for(m in i.foodListChildCheck){
-                   if (m != null) {
+                   if (m?.name?.isNotEmpty() == true) {
                        list.add(m.name)
                    }
                }
@@ -66,9 +66,6 @@ class ManualTxnCartAdapter (
                 i.foodListChildRadio?.let { list.add(it.name) }
             }
         }
-        Log.e("Checkbox", manualCartList[position].foodListCheckbox.toString())
-        Log.e("Checkbox", manualCartList[position].foodListRadio.toString())
-        Log.e("Checkbox", list.toString())
         setExtra(holder.menuTopping, list)
         Glide.with(context).load(img).transform(RoundedCorners(25), CenterCrop()).into(holder.img)
         holder.menuName.text = manualCartList[position].foodName
