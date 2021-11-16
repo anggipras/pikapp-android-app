@@ -9,20 +9,24 @@ import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.Constraints
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
+import com.tsab.pikapp.models.model.AdvanceMenu
 
 class ManualChildAdvMenuAdapter(
         val context: Context,
+        private val addManualAdvMenu: MutableList<AddManualAdvMenu>,
+        private val manualAdvMenuList: MutableList<AdvanceMenu>,
+        private val indexOfCart: Int,
         private val indexOfMenu: Int,
         private val choiceType: String,
         private val menuChoiceList: MutableList<AdvanceAdditionalMenu>,
         var addMenuChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
+        private val advMenuEdit: Boolean,
         private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ManualChildAdvMenuAdapter.ViewHolder>() {
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -71,11 +75,27 @@ class ManualChildAdvMenuAdapter(
                     lastCheckedPos = clickedPos
                 } else lastChecked = null
             }
+
+            if (advMenuEdit) {
+                val filteredRadio = addManualAdvMenu[indexOfCart].foodListRadio.filter { listRadio ->
+                    manualAdvMenuList[indexOfMenu].template_name == listRadio?.menuChoiceName
+                }
+                val selectedCheckChoice = filteredRadio[0]?.foodListChildRadio?.name
+
+                val dummyEachData = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
+                if (menuChoiceList[position].ext_menu_name == selectedCheckChoice) {
+                    holder.menuChoiceRadio.isChecked = true
+                    addMenuChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
+                } else {
+                    holder.menuChoiceRadio.isChecked = false
+                }
+            }
         } else {
             holder.menuRadioConstraint.isVisible = false
             holder.menuCheckConstraint.isVisible = true
             holder.menuChoiceCheck.text = menuChoiceList[position].ext_menu_name
             holder.menuPriceCheck.text = "+${menuChoiceList[position].ext_menu_price}"
+
             val dummyEachDataCheck = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
             val dummyEachDataCheckRemoved = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = "", ext_menu_price = "0")
             holder.menuChoiceCheck.setOnCheckedChangeListener { _, isChecked ->
@@ -86,6 +106,20 @@ class ManualChildAdvMenuAdapter(
                 }
                 listener.onItemClick()
                 Log.e("RESULT", addMenuChoice[indexOfMenu].ext_menus.toString())
+            }
+
+            if (advMenuEdit) {
+                val filteredCheckBox = addManualAdvMenu[indexOfCart].foodListCheckbox.filter { listCheck ->
+                    manualAdvMenuList[indexOfMenu].template_name == listCheck?.menuChoiceName
+                }
+                val selectedCheckChoice = filteredCheckBox[0]?.foodListChildCheck?.get(position)?.name
+                if (menuChoiceList[position].ext_menu_name == selectedCheckChoice) {
+                    holder.menuChoiceCheck.isChecked = true
+                    addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheck
+                } else {
+                    holder.menuChoiceCheck.isChecked = false
+                    addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -98,8 +99,8 @@ class ManualTxnDynamicFragment : Fragment() {
                     viewModel.setMenuImg(menuList.pict_01.toString())
                     viewModel.setMenuName(menuList.product_name.toString())
                     viewModel.setMenuPrice(menuList.price.toString())
-                    viewModel.setDefQty()
-                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment) }
+                    viewModel.setQty(1)
+                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to false, ManualAddAdvMenuFragment.CART_POSITION to 0)) }
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter

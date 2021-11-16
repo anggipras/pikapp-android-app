@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +37,7 @@ class ManualTxnCartAdapter (
         var amount: TextView = itemView.findViewById(R.id.menu_amount)
         var minusBtn: Button = itemView.findViewById(R.id.minus_button)
         var plusBtn: Button = itemView.findViewById(R.id.plus_button)
+        var menuEdit: TextView = itemView.findViewById(R.id.menuEdit)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManualTxnCartAdapter.ViewHolder {
@@ -90,7 +90,7 @@ class ManualTxnCartAdapter (
                 val thePrice: Long = countTotal.toLong()
                 val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
                 holder.menuPrice.text = "Rp. ${numberFormat}"
-                listener.onItemClick()
+                listener.onItemClick(false, 0)
             }
         }
         holder.plusBtn.setOnClickListener {
@@ -102,8 +102,13 @@ class ManualTxnCartAdapter (
             val thePrice: Long = countTotal.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             holder.menuPrice.text = "Rp. ${numberFormat}"
-            listener.onItemClick()
+            listener.onItemClick(false, 0)
         }
+
+        holder.menuEdit.setOnClickListener {
+            listener.onItemClick(true, position)
+        }
+
         if (position == manualCartList.size - 1){
             holder.divider.visibility = View.GONE
         }
@@ -118,6 +123,6 @@ class ManualTxnCartAdapter (
     }
 
     interface OnItemClickListener {
-        fun onItemClick()
+        fun onItemClick(b: Boolean, i: Int)
     }
 }

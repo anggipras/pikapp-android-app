@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_manualTxnCartPage_to_manualTxnDetail"
             app:destination="@id/manualTxnDetail" />
+        <action
+            android:id="@+id/action_manualTxnCartPage_to_manualAddAdvMenuFragment"
+            app:destination="@id/manualAddAdvMenuFragment" />
     </fragment>
     <dialog
         android:id="@+id/manualTxnDetail"
