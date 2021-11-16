@@ -10,14 +10,18 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.models.model.AdvanceAdditionalMenu
 import com.tsab.pikapp.models.model.AdvanceMenu
 
 class ManualAdvMenuAdapter(
-        val context: Context,
-        private val manualAdvMenuList: MutableList<AdvanceMenu>,
-        private val addAdvMenuTemplate: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
-        private val listener: ManualChildAdvMenuAdapter.OnItemClickListener
+    val context: Context,
+    private val indexOfCart: Int,
+    private val addManualAdvMenu: MutableList<AddManualAdvMenu>,
+    private val manualAdvMenuList: MutableList<AdvanceMenu>,
+    private val addAdvMenuTemplate: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>,
+    private val advMenuEdit: Boolean,
+    private val listener: ManualChildAdvMenuAdapter.OnItemClickListener
 ) : RecyclerView.Adapter<ManualAdvMenuAdapter.ViewHolder>() {
     lateinit var linearLayoutManager: LinearLayoutManager
 
@@ -41,12 +45,12 @@ class ManualAdvMenuAdapter(
             holder.radioSelection.isVisible = true
             holder.rViewCheck.isVisible = false
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
-            setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, listener)
+            setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, advMenuEdit, listener)
         } else {
             holder.radioSelection.isVisible = false
             holder.rViewCheck.isVisible = true
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
-            setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, listener)
+            setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, advMenuEdit, listener)
         }
     }
 
@@ -54,11 +58,11 @@ class ManualAdvMenuAdapter(
         return manualAdvMenuList.size
     }
 
-    private fun setChildManualAdvMenu(rView: RecyclerView, indexOfMenu: Int, choiceType: String, childMenuChoice: MutableList<AdvanceAdditionalMenu>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
+    private fun setChildManualAdvMenu(rView: RecyclerView, indexOfMenu: Int, choiceType: String, childMenuChoice: MutableList<AdvanceAdditionalMenu>, dummyAddChoice: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, isMenuEdit: Boolean, listener: ManualChildAdvMenuAdapter.OnItemClickListener) {
         linearLayoutManager = LinearLayoutManager(context)
         rView.layoutManager = linearLayoutManager
         rView.setHasFixedSize(false)
-        var childRecyclerView = ManualChildAdvMenuAdapter(context, indexOfMenu, choiceType, childMenuChoice, dummyAddChoice, listener)
+        var childRecyclerView = ManualChildAdvMenuAdapter(context, addManualAdvMenu, manualAdvMenuList, indexOfCart, indexOfMenu, choiceType, childMenuChoice, dummyAddChoice, isMenuEdit, listener)
         rView.adapter = childRecyclerView
     }
 }

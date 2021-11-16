@@ -154,8 +154,8 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity
-    fun setDefQty() {
-        mutableQuantity.value = 1
+    fun setQty(qty: Int) {
+        mutableQuantity.value = qty
     }
     fun addQty() {
         mutableQuantity.value = mutableQuantity.value?.plus(1)
@@ -203,6 +203,32 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         addTotalItems(menuName.value.toString())
         cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
         Navigation.findNavController(view).popBackStack()
+    }
+
+    fun editToCart(note: String, indexOfCart: Int, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {
+        var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
+        var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
+        foodExtraList.forEach {
+            if (it.template_type == "RADIO") {
+                it.ext_menus.forEach { extMenuRad ->
+                    foodExtraRadio.add(FoodListParentRadio(menuChoiceName = it?.template_name!!, foodListChildRadio = FoodListRadio(name = extMenuRad?.ext_menu_name!!, price = extMenuRad.ext_menu_price!!)))
+                }
+            } else {
+                val foodListCheck: MutableList<FoodListCheck> = ArrayList()
+                it.ext_menus.forEach { extMenuCheck ->
+                    foodListCheck.add(FoodListCheck(name = extMenuCheck?.ext_menu_name!!, price = extMenuCheck.ext_menu_price!!))
+                }
+                foodExtraCheck.add(FoodListParentCheck(menuChoiceName = it.template_name!!, foodListChildCheck = foodListCheck))
+            }
+        }
+
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodNote = note
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodAmount = quantity.value!!
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodTotalPrice = totalPrice.value.toString()
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodListCheckbox = foodExtraCheck
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodListRadio = foodExtraRadio
+        setTotalPrice()
+        addTotalQty()
     }
 
     fun getMenuList() {
