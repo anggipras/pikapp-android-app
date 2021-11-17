@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.play.core.internal.t
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
@@ -70,6 +69,10 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
         dataBinding.detailBtn.setOnClickListener {
             navController?.navigate(R.id.action_manualTxnCartPage_to_manualTxnDetail)
         }
+
+        dataBinding.header.setOnClickListener {
+            navController?.navigateUp()
+        }
     }
 
     override fun onItemClick(bool: Boolean, i: Int) {
@@ -102,6 +105,12 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
             }
             view?.let { Navigation.findNavController(it).navigate(R.id.action_manualTxnCartPage_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to true, ManualAddAdvMenuFragment.CART_POSITION to i)) }
         } else {
+            if (i == 0) {
+                viewModel.setCartItems(0)
+                navController?.navigateUp()
+            } else {
+                viewModel.selectedMenuTemp.value?.let { viewModel.setCartItems(it.size) }
+            }
             viewModel.setTotalPrice()
             viewModel.addTotalQty()
         }

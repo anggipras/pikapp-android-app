@@ -113,4 +113,17 @@ class ManualTxnDynamicFragment : Fragment() {
             navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
+            if (totalItems > 0){
+                dataBinding.btnNext.visibility = View.VISIBLE
+                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+            } else {
+                dataBinding.btnNext.visibility = View.GONE
+            }
+        })
+    }
 }
