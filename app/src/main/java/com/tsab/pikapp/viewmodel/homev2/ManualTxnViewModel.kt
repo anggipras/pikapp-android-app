@@ -151,6 +151,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             x = name
         }
     }
+    fun setCartItems(size: Int) {
+        mutableTotalItems.value = size
+    }
 
     private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity

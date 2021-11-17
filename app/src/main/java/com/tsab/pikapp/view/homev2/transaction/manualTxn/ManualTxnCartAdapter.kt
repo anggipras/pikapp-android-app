@@ -51,7 +51,7 @@ class ManualTxnCartAdapter (
 
     override fun onBindViewHolder(holder: ManualTxnCartAdapter.ViewHolder, position: Int) {
         val img = manualCartList[position].foodImg
-        var list: ArrayList<String> = ArrayList()
+        val list: ArrayList<String> = ArrayList()
         for(i in manualCartList[position].foodListCheckbox){
             if (i != null) {
                for(m in i.foodListChildCheck){
@@ -81,28 +81,37 @@ class ManualTxnCartAdapter (
         holder.menuNote.text = manualCartList[position].foodNote
         holder.amount.text = manualCartList[position].foodAmount.toString()
         holder.minusBtn.setOnClickListener {
+            if (holder.amount.text.toString().toInt() == 1) {
+                manualCartList.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, manualCartList.size)
+                listener.onItemClick(false, 1)
+                if (manualCartList.size == 0) {
+                    listener.onItemClick(false, 0)
+                }
+            }
             if (holder.amount.text.toString().toInt() != 1) {
-                var countAmount = manualCartList[position].foodAmount - 1
-                var countTotal = manualCartList[position].foodTotalPrice.toInt() - (manualCartList[position].foodTotalPrice.toInt() / manualCartList[position].foodAmount)
+                val countAmount = manualCartList[position].foodAmount - 1
+                val countTotal = manualCartList[position].foodTotalPrice.toInt() - (manualCartList[position].foodTotalPrice.toInt() / manualCartList[position].foodAmount)
                 manualCartList[position].foodAmount = countAmount
                 holder.amount.text = (holder.amount.text.toString().toInt() - 1).toString()
                 manualCartList[position].foodTotalPrice = countTotal.toString()
                 val thePrice: Long = countTotal.toLong()
                 val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
                 holder.menuPrice.text = "Rp. ${numberFormat}"
-                listener.onItemClick(false, 0)
+                listener.onItemClick(false, 1)
             }
         }
         holder.plusBtn.setOnClickListener {
-            var countAmount = manualCartList[position].foodAmount + 1
-            var countTotal = manualCartList[position].foodTotalPrice.toInt() + (manualCartList[position].foodTotalPrice.toInt() / manualCartList[position].foodAmount)
+            val countAmount = manualCartList[position].foodAmount + 1
+            val countTotal = manualCartList[position].foodTotalPrice.toInt() + (manualCartList[position].foodTotalPrice.toInt() / manualCartList[position].foodAmount)
             manualCartList[position].foodAmount = countAmount
             holder.amount.text = (holder.amount.text.toString().toInt() + 1).toString()
             manualCartList[position].foodTotalPrice = countTotal.toString()
             val thePrice: Long = countTotal.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             holder.menuPrice.text = "Rp. ${numberFormat}"
-            listener.onItemClick(false, 0)
+            listener.onItemClick(false, 1)
         }
 
         holder.menuEdit.setOnClickListener {
@@ -118,7 +127,7 @@ class ManualTxnCartAdapter (
         recycler.layoutManager = linearLayoutManager
         recycler.setHasFixedSize(true)
         recycler.isNestedScrollingEnabled = false
-        var menuList1 = ExtraMenuAdapter(context, list)
+        val menuList1 = ExtraMenuAdapter(context, list)
         recycler.adapter = menuList1
     }
 
