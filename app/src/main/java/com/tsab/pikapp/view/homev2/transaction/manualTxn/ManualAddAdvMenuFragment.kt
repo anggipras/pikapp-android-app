@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualAddAdvMenuBinding
+import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.models.model.AdvanceMenu
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import kotlinx.android.synthetic.main.fragment_manual_add_adv_menu.*
@@ -19,6 +22,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemClickListener {
+    companion object {
+        const val ADVANCE_MENU_EDIT = "isEditing"
+        const val CART_POSITION = "cartPosition"
+    }
+
     private val advData = ArrayList<AdvanceMenu>()
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualAddAdvMenuBinding
@@ -26,6 +34,7 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
     lateinit var adapter: ManualAdvMenuAdapter
     private val addAdvMenuChoiceTemplate: ArrayList<AddAdvMenuTemp> = ArrayList()
     private val localeID =  Locale("in", "ID")
+    private val defaultMenuTemp: MutableList<AddManualAdvMenu> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -42,10 +51,30 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
 
         viewModel.fetchAdvanceMenuData(advData, dataBinding.recyclerviewParentMenuChoice)
 
-        adapter = ManualAdvMenuAdapter(requireContext(), advData, addAdvMenuChoiceTemplate, this)
+        if (arguments?.getBoolean(ADVANCE_MENU_EDIT) == true) {
+            adapter = ManualAdvMenuAdapter(requireContext(), arguments?.getInt(CART_POSITION)!!, viewModel.selectedMenuTemp.value as MutableList<AddManualAdvMenu>, advData, addAdvMenuChoiceTemplate, true, this)
+        } else {
+            defaultMenuTemp.add(AddManualAdvMenu(
+                product_id = "0",
+                foodName = "defname",
+                foodImg = "defhttp",
+                foodAmount = 1,
+                foodPrice = "7000",
+                foodListCheckbox = listOf(),
+                foodListRadio = listOf(),
+                foodExtra = "",
+                foodNote = "",
+                foodTotalPrice = "7000"
+            ))
+            adapter = ManualAdvMenuAdapter(requireContext(), arguments?.getInt(CART_POSITION)!!, defaultMenuTemp, advData, addAdvMenuChoiceTemplate, false, this)
+        }
         dataBinding.recyclerviewParentMenuChoice.adapter = adapter
 
         dataBinding.advMenuName.text = viewModel.menuName.value
+        if (arguments?.getBoolean(ADVANCE_MENU_EDIT) == false) {
+            viewModel.setExtraPrice(0)
+            viewModel.countTotalPrice()
+        }
 
         dataBinding.plusButton.setOnClickListener {
             viewModel.addQty()
@@ -55,7 +84,14 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
         }
 
         dataBinding.btnNext.setOnClickListener {
-            viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate, view)
+            if (arguments?.getBoolean(ADVANCE_MENU_EDIT) == true) {
+                viewModel.editToCart(dataBinding.manualNote.text.toString(), arguments?.getInt(CART_POSITION)!!, addAdvMenuChoiceTemplate)
+                adapter.notifyDataSetChanged()
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate, view)
+                Toast.makeText(context, "${viewModel.menuName.value} berhasil masuk keranjang", Toast.LENGTH_SHORT).show()
+            }
         }
 
         observeViewModel()

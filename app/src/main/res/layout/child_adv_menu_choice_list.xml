@@ -29,7 +29,8 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:theme="@style/RadioButtonStyle"/>
 
         <TextView
             android:id="@+id/menuChoiceAdv_radio_price"
@@ -63,7 +64,8 @@
             android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:theme="@style/RadioButtonStyle"/>
 
         <TextView
             android:id="@+id/menuChoiceAdv_check_price"

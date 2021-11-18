@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -83,9 +83,7 @@ class ManualTxnDynamicFragment : Fragment() {
 
         viewModel.isSearch.observe(viewLifecycleOwner, Observer { isSearch ->
             if(isSearch){
-                Log.e("ehfqh", viewModel.mutableSearchMenu.value.toString())
                 viewModel.getMenuList()
-                Log.e("ehfqh", viewModel.mutableMenuList.value.toString())
                 viewModel.mutableSearchEnter.value = false
             }
         })
@@ -101,21 +99,31 @@ class ManualTxnDynamicFragment : Fragment() {
                     viewModel.setMenuImg(menuList.pict_01.toString())
                     viewModel.setMenuName(menuList.product_name.toString())
                     viewModel.setMenuPrice(menuList.price.toString())
-                    Log.e("pid", viewModel.mutablePID.value)
-                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment) }
+                    viewModel.setQty(1)
+                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to false, ManualAddAdvMenuFragment.CART_POSITION to 0)) }
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter
-
-        //linearLayoutManager = LinearLayoutManager(requireView().context)
         dataBinding.listMenuDetail.layoutManager = GridLayoutManager(requireView().context, 3)
     }
 
     private fun attachInputListeners() {
         dataBinding.btnNext.setOnClickListener {
-            //navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
-            navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCustomerPage)
-
+            viewModel.addTotalQty()
+            navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
+            if (totalItems > 0){
+                dataBinding.btnNext.visibility = View.VISIBLE
+                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+            } else {
+                dataBinding.btnNext.visibility = View.GONE
+            }
+        })
     }
 }

@@ -105,7 +105,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         countTotalPrice()
     }
 
-    private fun countTotalPrice(){
+    fun countTotalPrice(){
         //count only all extra price with amount if available
         val extraAmount = quantity.value?.times(extraPrice.value!!)
 
@@ -125,10 +125,22 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
+    fun setTotalPrice() {
+        var totalPrice = 0
+        selectedMenuTemp.value?.forEach { menu ->
+            totalPrice += menu.foodTotalPrice.toInt()
+        }
+        mutableCartPrice.value = totalPrice
+    }
+
     private val mutableTotalQuantity = MutableLiveData(0)
     val totalQuantity: LiveData<Int> get() = mutableTotalQuantity
-    fun addTotalQty(qty : Int){
-        mutableTotalQuantity.value = mutableTotalQuantity.value?.plus(qty)
+    fun addTotalQty(){
+        var totalAmount = 0
+        selectedMenuTemp.value?.forEach { amount ->
+            totalAmount += amount.foodAmount
+        }
+        mutableTotalQuantity.value = totalAmount
     }
 
     private val mutableTotalItems = MutableLiveData(0)
@@ -140,9 +152,15 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             x = name
         }
     }
+    fun setCartItems(size: Int) {
+        mutableTotalItems.value = size
+    }
 
     private val mutableQuantity = MutableLiveData(1)
     val quantity: LiveData<Int> get() = mutableQuantity
+    fun setQty(qty: Int) {
+        mutableQuantity.value = qty
+    }
     fun addQty() {
         mutableQuantity.value = mutableQuantity.value?.plus(1)
         countTotalPrice()
@@ -189,20 +207,15 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         //mapping radio and or checkbox menu choice
         var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
         var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
-        var foodExtraNotes: String = ""
         foodExtraList.forEach {
             if (it.template_type == "RADIO") {
                 it.ext_menus.forEach { extMenuRad ->
                     foodExtraRadio.add(FoodListParentRadio(menuChoiceName = it?.template_name!!, foodListChildRadio = FoodListRadio(name = extMenuRad?.ext_menu_name!!, price = extMenuRad.ext_menu_price!!)))
-//                    foodExtraNotes.plus("${extMenuRad.ext_menu_name} ")
                 }
             } else {
                 val foodListCheck: MutableList<FoodListCheck> = ArrayList()
                 it.ext_menus.forEach { extMenuCheck ->
                     foodListCheck.add(FoodListCheck(name = extMenuCheck?.ext_menu_name!!, price = extMenuCheck.ext_menu_price!!))
-//                    if (extMenuCheck.ext_menu_name.isNotEmpty()) {
-//                        foodExtraNotes.plus("${extMenuCheck.ext_menu_name} ")
-//                    }
                 }
                 foodExtraCheck.add(FoodListParentCheck(menuChoiceName = it.template_name!!, foodListChildCheck = foodListCheck))
             }
@@ -221,23 +234,50 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
         )) }
-        addTotalQty(quantity.value!!)
+//        addTotalQty(quantity.value!!)
         addTotalItems(menuName.value.toString())
         cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
         Navigation.findNavController(view).popBackStack()
     }
 
-    fun addCustomer(){
+    fun addCustomer() {
         mutableCustomerList.value = customerList.value?.toMutableList()?.apply {
             add(ManualTxnCustomerPage.dummyCustomer(
                     customerName = custName.value,
                     customerPhone = custPhone.value!!,
                     customerAddress = custAddress.value.toString(),
                     customerAddressDetail = custAddressDetail.value.toString()
-            )) }
+            ))
+        }
 
         mutableSizeCustomer.value = mutableCustomerList.value?.size
         Log.e("size", mutableSizeCustomer.value.toString())
+    }
+
+    fun editToCart(note: String, indexOfCart: Int, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {
+        var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
+        var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
+        foodExtraList.forEach {
+            if (it.template_type == "RADIO") {
+                it.ext_menus.forEach { extMenuRad ->
+                    foodExtraRadio.add(FoodListParentRadio(menuChoiceName = it?.template_name!!, foodListChildRadio = FoodListRadio(name = extMenuRad?.ext_menu_name!!, price = extMenuRad.ext_menu_price!!)))
+                }
+            } else {
+                val foodListCheck: MutableList<FoodListCheck> = ArrayList()
+                it.ext_menus.forEach { extMenuCheck ->
+                    foodListCheck.add(FoodListCheck(name = extMenuCheck?.ext_menu_name!!, price = extMenuCheck.ext_menu_price!!))
+                }
+                foodExtraCheck.add(FoodListParentCheck(menuChoiceName = it.template_name!!, foodListChildCheck = foodListCheck))
+            }
+        }
+
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodNote = note
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodAmount = quantity.value!!
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodTotalPrice = totalPrice.value.toString()
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodListCheckbox = foodExtraCheck
+        mutableSelectedMenuTemp.value?.get(indexOfCart)?.foodListRadio = foodExtraRadio
+        setTotalPrice()
+        addTotalQty()
     }
 
     fun getMenuList() {
