@@ -45,9 +45,16 @@
         <action
             android:id="@+id/action_manualTxnCartPage_to_manualAddAdvMenuFragment"
             app:destination="@id/manualAddAdvMenuFragment" />
+        <action
+            android:id="@+id/action_manualTxnCartPage_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
     </fragment>
     <dialog
         android:id="@+id/manualTxnDetail"
         android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDetail"
         android:label="ManualTxnDetail" />
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.CheckoutFragment"
+        android:label="CheckoutFragment" />
 </navigation>
