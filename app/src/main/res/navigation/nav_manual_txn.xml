@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeViewManualTxn_to_manualTxnCartPage"
             app:destination="@id/manualTxnCartPage" />
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualTxnCustomerPage"
+            app:destination="@id/manualTxnCustomerPage" />
     </fragment>
     <fragment
         android:id="@+id/manualAddAdvMenuFragment"
@@ -47,4 +50,18 @@
         android:id="@+id/manualTxnDetail"
         android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDetail"
         android:label="ManualTxnDetail" />
+    <fragment
+        android:id="@+id/manualTxnCustomerPage"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCustomerPage"
+        android:label="fragment_manual_txn_customer_page"
+        tools:layout="@layout/fragment_manual_txn_customer_page" >
+        <action
+            android:id="@+id/action_manualTxnCustomerPage_to_manualTxnAddCustomer"
+            app:destination="@id/manualTxnAddCustomer" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualTxnAddCustomer"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnAddCustomer"
+        android:label="fragment_manual_txn_add_customer"
+        tools:layout="@layout/fragment_manual_txn_add_customer" />
 </navigation>

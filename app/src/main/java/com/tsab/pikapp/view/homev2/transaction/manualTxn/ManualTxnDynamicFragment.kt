@@ -113,8 +113,9 @@ class ManualTxnDynamicFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.btnNext.setOnClickListener {
-            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
-            navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
+            //navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
+            navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCustomerPage)
+
         }
     }
 }
