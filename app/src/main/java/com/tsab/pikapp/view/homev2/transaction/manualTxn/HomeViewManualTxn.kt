@@ -58,12 +58,6 @@ class HomeViewManualTxn : Fragment() {
         })
 
         observeViewModel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        observeViewModel()
         attachInputListeners()
     }
 

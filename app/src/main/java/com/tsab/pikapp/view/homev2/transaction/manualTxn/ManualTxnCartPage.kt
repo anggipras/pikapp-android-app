@@ -70,7 +70,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
             navController?.navigate(R.id.action_manualTxnCartPage_to_manualTxnDetail)
         }
 
-        dataBinding.header.setOnClickListener {
+        dataBinding.topAppBar.setOnClickListener {
             navController?.navigateUp()
         }
     }

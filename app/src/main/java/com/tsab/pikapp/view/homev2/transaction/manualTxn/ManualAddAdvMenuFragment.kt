@@ -94,6 +94,10 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
             }
         }
 
+        dataBinding.backButton.setOnClickListener {
+            Navigation.findNavController(view).navigateUp()
+        }
+
         observeViewModel()
     }
 
