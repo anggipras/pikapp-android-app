@@ -19,6 +19,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
+    <TextView
+        android:id="@+id/advMenu_parentChoice_maxChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/montserrat"
+        android:textSize="11sp"
+        android:textColor="@color/textSubtle"
+        android:textFontWeight="400"
+        app:layout_constraintTop_toTopOf="@+id/advMenu_parentChoice"
+        app:layout_constraintStart_toEndOf="@+id/advMenu_parentChoice"
+        app:layout_constraintBottom_toBottomOf="@+id/advMenu_parentChoice"/>
+
     <RadioGroup
         android:id="@+id/radio_childMenuChoice"
         android:layout_width="match_parent"
