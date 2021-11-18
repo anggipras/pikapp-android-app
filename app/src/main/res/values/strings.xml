@@ -344,7 +344,9 @@
     <string name="tokopedia_add_resi">Mohon isi nomor resi sesuai dengan pesanan Anda</string>
     <string name="tokopedia_nomor_resi">Nomor resi</string>
 
+    <!-- Manual Transaction -->
     <string name="plus_sign">+</string>
     <string name="add_cart">Masukan Keranjang | Rp. %s</string>
     <string name="adv_menu_price">Rp. %s</string>
+    <string name="max_choose">%s</string>
 </resources>
