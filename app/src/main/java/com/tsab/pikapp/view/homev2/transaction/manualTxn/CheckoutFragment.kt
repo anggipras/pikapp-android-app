@@ -64,5 +64,8 @@ class CheckoutFragment : Fragment() {
         dataBinding.kirimBtn.setOnClickListener {
             DeliveryFragment().show(requireActivity().supportFragmentManager, "show")
         }
+        dataBinding.pelanggan.setOnClickListener {
+            navController?.navigate(R.id.action_checkoutFragment_to_manualTxnCustomerPage)
+        }
     }
 }

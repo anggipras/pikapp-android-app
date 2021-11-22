@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.homev2.transaction.manualTxn.ManualTxnAddCustomer">
+    tools:context=".view.homev2.transaction.manualTxn.ManualTxnEditCustomer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                         android:id="@+id/topAppBar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:title="Pelanggan Baru"
+                        app:title="Ubah Pelanggan"
                         app:navigationIcon="@drawable/ic_back_black"
                         app:titleTextColor="@color/black"
                         app:titleTextAppearance="@style/titleToolbar"
@@ -264,6 +264,19 @@
                 android:textSize="13sp"
                 app:layout_constraintTop_toBottomOf="@+id/addressDetailHeader"
                 app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/deleteBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hapus Pelanggan"
+                android:fontFamily="@font/proximanova_semibold"
+                android:textColor="@color/red"
+                android:textSize="15sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/custAddressDetail"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

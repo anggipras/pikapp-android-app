@@ -98,7 +98,7 @@ class ManualTxnCustomerPage : Fragment() {
         manualTxnCustomerAdapter.notifyDataSetChanged()
         dataBinding.recyclerviewCustomer.adapter = manualTxnCustomerAdapter
 
-        manualTxnCustomerAdapter.setOnItemClickListener(object : ManualTxnCustomerAdapter.onItemClickListener{
+/*        manualTxnCustomerAdapter.setOnItemClickListener(object : ManualTxnCustomerAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
                 Toast.makeText(context, "clicked $position", Toast.LENGTH_SHORT).show()
                 viewModel.setCustName(customerList[position].customerName.toString())
@@ -108,7 +108,7 @@ class ManualTxnCustomerPage : Fragment() {
                 dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
             }
 
-        })
+        })*/
     }
 
     data class dummyCustomer(

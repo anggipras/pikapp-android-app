@@ -13,19 +13,18 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnAddCustomerBinding
-import com.tsab.pikapp.databinding.FragmentManualTxnCustomerPageBinding
+import com.tsab.pikapp.databinding.FragmentManualTxnEditCustomerBinding
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 
-class ManualTxnAddCustomer : Fragment() {
-
+class ManualTxnEditCustomer : Fragment() {
     private var navController: NavController? = null
     private val viewModel: ManualTxnViewModel by activityViewModels()
-    private lateinit var dataBinding: FragmentManualTxnAddCustomerBinding
+    private lateinit var dataBinding: FragmentManualTxnEditCustomerBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_manual_txn_add_customer, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_manual_txn_edit_customer, container, false)
         return dataBinding.root
     }
 
@@ -36,8 +35,12 @@ class ManualTxnAddCustomer : Fragment() {
 
         attachInputListener()
     }
-    
+
     private fun attachInputListener(){
+        dataBinding.deleteBtn.setOnClickListener {
+            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+        }
+        
         dataBinding.btnNext.setOnClickListener {
             if (dataBinding.custName.text.length < 3){
                 dataBinding.nameError.visibility = View.VISIBLE
