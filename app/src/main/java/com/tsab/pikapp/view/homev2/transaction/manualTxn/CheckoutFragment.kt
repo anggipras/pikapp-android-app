@@ -17,6 +17,8 @@ import com.tsab.pikapp.databinding.FragmentCheckoutBinding
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
+import kotlinx.android.synthetic.main.fragment_checkout.*
+import kotlinx.android.synthetic.main.fragment_proccess.view.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -48,11 +50,57 @@ class CheckoutFragment : Fragment() {
             dataBinding.totalHargaTitle.text = "Total Harga ($totalQty Item(s))"
         })
 
+        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
+            if(nama != ""){
+                dataBinding.dataPengiriman.visibility = View.VISIBLE
+                dataBinding.namaKirim.text = nama
+            }
+        })
+
+        viewModel.AsalPesanan.observe(viewLifecycleOwner, Observer { nama ->
+            if(nama != ""){
+                dataBinding.asalPesanan.visibility = View.VISIBLE
+                dataBinding.asalPesan.text = nama
+            }
+        })
+
+        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
+            if(harga != ""){
+                dataBinding.dataPengiriman.visibility = View.VISIBLE
+                dataBinding.hargaKirim.visibility = View.VISIBLE
+                dataBinding.hargaKirim.text = "Rp. $harga"
+            }
+            if(harga == " "){
+                dataBinding.hargaKirim.visibility = View.GONE
+            }
+        })
+
+        viewModel.WaktuPesan.observe(viewLifecycleOwner, Observer { waktu ->
+            if(waktu != ""){
+                dataBinding.dataTanggal.visibility = View.VISIBLE
+                dataBinding.namaWaktu.text = waktu
+            }
+        })
+
+        viewModel.WaktuPesanCustom.observe(viewLifecycleOwner, Observer { custom ->
+            if(custom != ""){
+                dataBinding.dataTanggal.visibility = View.VISIBLE
+                dataBinding.customWaktu.text = custom
+            }
+        })
+
         viewModel.totalCart.observe(viewLifecycleOwner, Observer { price ->
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
             dataBinding.hargaBottom.text = "Rp. $numberFormat"
+        })
+
+        viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama->
+            if(nama != ""){
+                dataBinding.bayarPesanan.visibility = View.VISIBLE
+                dataBinding.bayarPesanDengan.text = nama
+            }
         })
     }
 
@@ -60,7 +108,19 @@ class CheckoutFragment : Fragment() {
         dataBinding.topAppBar.setNavigationOnClickListener {
             navController?.navigateUp()
         }
-        
+
+        dataBinding.bayarBtn.setOnClickListener {
+            navController?.navigate(R.id.action_checkoutFragment_to_paymentFragment)
+        }
+
+        dataBinding.asalBtn.setOnClickListener {
+            AsalFragment().show(requireActivity().supportFragmentManager, "show")
+        }
+
+        dataBinding.tanggalBtn.setOnClickListener {
+            DateFragment().show(requireActivity().supportFragmentManager, "show")
+        }
+
         dataBinding.kirimBtn.setOnClickListener {
             DeliveryFragment().show(requireActivity().supportFragmentManager, "show")
         }

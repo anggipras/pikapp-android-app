@@ -56,5 +56,14 @@
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.CheckoutFragment"
-        android:label="CheckoutFragment" />
+        android:label="CheckoutFragment" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" />
 </navigation>
