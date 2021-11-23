@@ -80,7 +80,24 @@ class HomeActivity : AppCompatActivity() {
                 R.id.sort_menu-> Intent(this, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
                     startActivity(this)}
-                R.id.share_link -> Log.e("fqiwf", "qefbjhwq")
+                R.id.share_link -> {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        var midStore: String? = ""
+                        var phStore: String? = ""
+                        if (sessionManager.getUserData()?.mid != null) {
+                             midStore = sessionManager.getUserData()!!.mid
+                             phStore = sessionManager.getUserData()!!.phoneNumber
+                        }
+                        val linkURL = "https://web-dev.pikapp.id/merchant/${midStore}"
+                        val linkText = "Klik disini untuk melihat menu toko kami : ${linkURL}\n\nUntuk info lebih lanjut, hubungi kami di ${phStore}"
+                        putExtra(Intent.EXTRA_TEXT, linkText)
+                        type = "text/plain"
+                    }
+
+                    val shareIntent = Intent.createChooser(sendIntent, null)
+                    startActivity(shareIntent)
+                }
             }
             true
         }
