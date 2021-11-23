@@ -48,6 +48,30 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableSearchMenu = MutableLiveData("")
     val MenuSubmit: LiveData<String> get() = mutableSearchMenu
 
+    val mutableNamaEkspedisi = MutableLiveData("")
+    val NamaEkspedisi: LiveData<String> get() = mutableNamaEkspedisi
+
+    val mutableHargaEkspedisi = MutableLiveData("")
+    val HargaEkspedisi: LiveData<String> get() = mutableHargaEkspedisi
+
+    val mutableAsal = MutableLiveData("")
+    val AsalPesanan: LiveData<String> get() = mutableAsal
+
+    val mutableBayar = MutableLiveData("")
+    val BayarPesanan: LiveData<String> get() = mutableBayar
+
+    val mutableDate = MutableLiveData("")
+    val DatePesanan: LiveData<String> get() = mutableDate
+
+    val mutableHour = MutableLiveData("")
+    val JamPesanan: LiveData<String> get() = mutableHour
+
+    val mutableWaktu = MutableLiveData("")
+    val WaktuPesan: LiveData<String> get() = mutableWaktu
+
+    val mutableCustomWaktu = MutableLiveData("")
+    val WaktuPesanCustom: LiveData<String> get() = mutableCustomWaktu
+
     val mutableAdvanceData = MutableLiveData<ArrayList<AdvanceMenu>>()
     val AdvanceData: LiveData<ArrayList<AdvanceMenu>> get() =mutableAdvanceData
 
@@ -132,6 +156,34 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
         mutableCartPrice.value = totalPrice
     }
+
+    fun setEkspedisi(nama: String, harga: String){
+        mutableNamaEkspedisi.value = nama
+        mutableHargaEkspedisi.value = harga
+    }
+
+    fun setAsal(nama: String){
+        mutableAsal.value = nama
+    }
+
+    fun setBayar(nama: String){
+        mutableBayar.value = nama
+    }
+
+    fun setWaktu(nama: String, custom:String){
+        mutableWaktu.value = nama
+        mutableCustomWaktu.value = custom
+        Log.e("custom", custom)
+    }
+
+    fun setDate(nama: String){
+        mutableDate.value = nama
+    }
+
+    fun setTime(nama: String){
+        mutableHour.value = nama
+    }
+
 
     private val mutableTotalQuantity = MutableLiveData(0)
     val totalQuantity: LiveData<Int> get() = mutableTotalQuantity
