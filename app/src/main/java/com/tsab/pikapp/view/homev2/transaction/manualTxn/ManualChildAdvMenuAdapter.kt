@@ -32,6 +32,7 @@ class ManualChildAdvMenuAdapter(
     lateinit var linearLayoutManager: LinearLayoutManager
     private var lastChecked: RadioButton? = null
     private var lastCheckedPos = 0
+    private var totalCheckSelected = 0
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var menuRadioConstraint: ConstraintLayout = itemView.findViewById(R.id.menuChoiceRadio_constraint)
@@ -68,7 +69,6 @@ class ManualChildAdvMenuAdapter(
                 val dummyEachData = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
                 addMenuChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
                 listener.onItemClick()
-                Log.e("MENUCHOICE", addMenuChoice.toString())
                 if (cb.isChecked) {
                     lastChecked?.isChecked = false
                     lastChecked = cb
@@ -85,6 +85,8 @@ class ManualChildAdvMenuAdapter(
                 val dummyEachData = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
                 if (menuChoiceList[position].ext_menu_name == selectedCheckChoice) {
                     holder.menuChoiceRadio.isChecked = true
+                    lastChecked = holder.menuChoiceRadio
+                    lastCheckedPos = menuChoiceList.indexOf(menuChoiceList[position])
                     addMenuChoice[indexOfMenu].ext_menus = listOf(dummyEachData).toMutableList()
                 } else {
                     holder.menuChoiceRadio.isChecked = false
@@ -99,13 +101,23 @@ class ManualChildAdvMenuAdapter(
             val dummyEachDataCheck = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = menuChoiceList[position].ext_menu_name, ext_menu_price = menuChoiceList[position].ext_menu_price)
             val dummyEachDataCheckRemoved = ManualAddAdvMenuFragment.AddMenuChoicesTemp(ext_menu_name = "", ext_menu_price = "0")
             holder.menuChoiceCheck.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheck
+                if (totalCheckSelected < manualAdvMenuList[indexOfMenu].max_choose) {
+                    if (isChecked) {
+                        addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheck
+                        totalCheckSelected++
+                    } else {
+                        addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
+                        totalCheckSelected--
+                    }
+                    listener.onItemClick()
                 } else {
-                    addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
+                    if (!isChecked) {
+                        totalCheckSelected--
+                        addMenuChoice[indexOfMenu].ext_menus[position] = dummyEachDataCheckRemoved
+                        listener.onItemClick()
+                    }
+                    holder.menuChoiceCheck.isChecked = false
                 }
-                listener.onItemClick()
-                Log.e("RESULT", addMenuChoice[indexOfMenu].ext_menus.toString())
             }
 
             if (advMenuEdit) {
