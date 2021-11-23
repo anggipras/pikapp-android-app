@@ -74,7 +74,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
             navController?.navigate(R.id.action_manualTxnCartPage_to_checkoutFragment)
         }
 
-        dataBinding.header.setOnClickListener {
+        dataBinding.topAppBar.setOnClickListener {
             navController?.navigateUp()
         }
     }

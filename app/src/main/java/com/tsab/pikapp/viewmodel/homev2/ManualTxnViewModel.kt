@@ -13,6 +13,7 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCustomerPage
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -223,6 +224,37 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
     }
 
+    //customer detail
+    private val mutableCustName = MutableLiveData("")
+    val custName: LiveData<String> get() = mutableCustName
+    fun setCustName(custName: String) {
+        mutableCustName.value = custName
+    }
+
+    private val mutableCustPhone = MutableLiveData("")
+    val custPhone: LiveData<String> get() = mutableCustPhone
+    fun setCustPhone(custPhone: String) {
+        mutableCustPhone.value = custPhone
+    }
+
+    private val mutableCustAddress = MutableLiveData("")
+    val custAddress: LiveData<String> get() = mutableCustAddress
+    fun setCustAddress(custAddress: String) {
+        mutableCustAddress.value = custAddress
+    }
+
+    private val mutableCustAddressDetail = MutableLiveData("")
+    val custAddressDetail: LiveData<String> get() = mutableCustAddressDetail
+    fun setCustAddressDetail(addressDetail: String) {
+        mutableCustAddressDetail.value = addressDetail
+    }
+
+    private val mutableCustomerList = MutableLiveData<List<ManualTxnCustomerPage.dummyCustomer>>(listOf())
+    val customerList: LiveData<List<ManualTxnCustomerPage.dummyCustomer>> = mutableCustomerList
+
+    private val mutableSizeCustomer = MutableLiveData(0)
+    val customerSize: LiveData<Int> get() = mutableSizeCustomer
+
     fun addToCart(foodNote: String, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>, view: View) {
         //mapping radio and or checkbox menu choice
         var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
@@ -258,6 +290,20 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         addTotalItems(menuName.value.toString())
         cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
         Navigation.findNavController(view).popBackStack()
+    }
+
+    fun addCustomer() {
+        mutableCustomerList.value = customerList.value?.toMutableList()?.apply {
+            add(ManualTxnCustomerPage.dummyCustomer(
+                    customerName = custName.value,
+                    customerPhone = custPhone.value!!,
+                    customerAddress = custAddress.value.toString(),
+                    customerAddressDetail = custAddressDetail.value.toString()
+            ))
+        }
+
+        mutableSizeCustomer.value = mutableCustomerList.value?.size
+        Log.e("size", mutableSizeCustomer.value.toString())
     }
 
     fun editToCart(note: String, indexOfCart: Int, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {

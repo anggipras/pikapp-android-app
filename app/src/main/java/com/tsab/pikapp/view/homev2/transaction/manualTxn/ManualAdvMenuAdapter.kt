@@ -27,6 +27,7 @@ class ManualAdvMenuAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var parentMenuChoice: TextView = itemView.findViewById(R.id.advMenu_parentChoice)
+        var parentMenuChoiceMaxChoose: TextView = itemView.findViewById(R.id.advMenu_parentChoice_maxChoose)
         var rViewRadio: RecyclerView = itemView.findViewById(R.id.recyclerview_childMenuChoice)
         var rViewCheck: RecyclerView = itemView.findViewById(R.id.recyclerview_childMenuChoice_check)
         var radioSelection: RadioGroup = itemView.findViewById(R.id.radio_childMenuChoice)
@@ -44,11 +45,23 @@ class ManualAdvMenuAdapter(
         if (manualAdvMenuList[position].template_type == "RADIO") {
             holder.radioSelection.isVisible = true
             holder.rViewCheck.isVisible = false
+            if (manualAdvMenuList[position].mandatory) {
+                holder.parentMenuChoiceMaxChoose.text = context.getString(R.string.max_choose, "Wajib, Pilih 1")
+            } else {
+                holder.parentMenuChoiceMaxChoose.text = context.getString(R.string.max_choose, "Optional, Pilih 1")
+            }
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
             setChildManualAdvMenu(holder.rViewRadio, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, advMenuEdit, listener)
         } else {
             holder.radioSelection.isVisible = false
             holder.rViewCheck.isVisible = true
+            if (manualAdvMenuList[position].mandatory) {
+                val maxChoose = "Wajib, Max ${manualAdvMenuList[position].max_choose} items"
+                holder.parentMenuChoiceMaxChoose.text = context.getString(R.string.max_choose, maxChoose)
+            } else {
+                val maxChoose = "Optional, Max ${manualAdvMenuList[position].max_choose} items"
+                holder.parentMenuChoiceMaxChoose.text = context.getString(R.string.max_choose, maxChoose)
+            }
             val indexOfMenu = manualAdvMenuList.indexOf(manualAdvMenuList[position])
             setChildManualAdvMenu(holder.rViewCheck, indexOfMenu, manualAdvMenuList[position].template_type, childMenuChoice, addAdvMenuTemplate, advMenuEdit, listener)
         }
