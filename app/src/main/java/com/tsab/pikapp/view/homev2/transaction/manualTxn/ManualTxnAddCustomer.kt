@@ -45,18 +45,13 @@ class ManualTxnAddCustomer : Fragment() {
                 dataBinding.nameHeaderText.setTextColor(context?.resources?.getColor(R.color.red)!!)
             } else {
                 viewModel.setCustName(dataBinding.custName.text.toString())
-                Log.e("cust name", viewModel.custName.value.toString())
                 var phone = dataBinding.custPhone.text.toString()
                 viewModel.setCustPhone("0$phone")
-                Log.e("phone", viewModel.custPhone.value)
                 viewModel.setCustAddress(dataBinding.custAddress.text.toString())
-                Log.e("address", viewModel.custAddress.value)
-                var addressDetail = dataBinding.custAddressDetail.text.toString()
-                viewModel.setCustAddressDetail("Catatan : $addressDetail")
-                Log.e("address detail", viewModel.custAddressDetail.value)
+                viewModel.setCustAddressDetail(dataBinding.custAddressDetail.text.toString())
                 viewModel.addCustomer()
-                Log.e("list", viewModel.customerList.value.toString())
-                Toast.makeText(context, "sabi ni bos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Pelanggan berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                navController?.navigate(R.id.action_manualTxnAddCustomer_to_manualTxnCustomerPage)
             }
         }
     }

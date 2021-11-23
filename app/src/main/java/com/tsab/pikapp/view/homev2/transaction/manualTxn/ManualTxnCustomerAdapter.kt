@@ -14,13 +14,13 @@ import com.tsab.pikapp.R
 
 class ManualTxnCustomerAdapter (
     val context: Context,
-    private val customerList: MutableList<ManualTxnCustomerPage.dummyCustomer>
+    private val customerList: MutableList<ManualTxnCustomerPage.dummyCustomer>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ManualTxnCustomerAdapter.ViewHolder>(){
 
     //private lateinit var mListener: onItemClickListener
     var clickedPosition = 0
     var clicked = false
-    private var navController: NavController? = null
 
 /*    interface onItemClickListener{
         fun onItemClick(position: Int)
@@ -38,6 +38,15 @@ class ManualTxnCustomerAdapter (
         var customerEdit: TextView = itemView.findViewById(R.id.customerEdit)
         var container: ConstraintLayout = itemView.findViewById(R.id.containerCustomer)
 
+        init {
+            itemView.setOnClickListener {
+                clickedPosition = position;
+                clicked = true;
+                listener.onItemClick(false, position)
+                notifyDataSetChanged();
+            }
+        }
+
 /*        init {
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
@@ -50,7 +59,6 @@ class ManualTxnCustomerAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManualTxnCustomerAdapter.ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.list_manual_txn_customer, parent, false)
-        navController = Navigation.findNavController(v)
         return ViewHolder(v)
     }
 
@@ -68,7 +76,7 @@ class ManualTxnCustomerAdapter (
             holder.addressDetail.text = customerList[position].customerAddressDetail
         }
         holder.customerEdit.setOnClickListener {
-            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+            listener.onItemClick(true, position)
         }
         if (clicked){
             if (position == clickedPosition)
@@ -76,5 +84,11 @@ class ManualTxnCustomerAdapter (
             else
                 holder.container.setBackgroundResource(R.drawable.cardview_white)
         }
+        holder.itemView
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(b: Boolean, i: Int)
+    }
+
 }

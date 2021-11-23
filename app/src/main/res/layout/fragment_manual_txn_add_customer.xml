@@ -164,6 +164,7 @@
                     android:fontFamily="@font/proximanova_regular"
                     android:text="@string/add_customer_country_code"
                     android:clickable="false"
+                    android:enabled="false"
                     android:drawableStart="@drawable/icon_indonesia_circle"
                     android:drawablePadding="5dp"
                     android:layout_marginStart="29dp"

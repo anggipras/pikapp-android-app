@@ -25,7 +25,7 @@ import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.util.*
 
-class ManualTxnCustomerPage : Fragment() {
+class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickListener {
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualTxnCustomerPageBinding
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -63,6 +63,7 @@ class ManualTxnCustomerPage : Fragment() {
                 dataBinding.buttonContinue.visibility = View.VISIBLE
                 dataBinding.btnSelect.visibility = View.GONE
                 dataBinding.recyclerviewCustomer.visibility = View.GONE
+                dataBinding.imageEmpty.visibility = View.VISIBLE
             } else {
                 setRecyclerView()
                 dataBinding.searchField.visibility = View.VISIBLE
@@ -71,6 +72,7 @@ class ManualTxnCustomerPage : Fragment() {
                 dataBinding.buttonContinue.visibility = View.GONE
                 dataBinding.btnSelect.visibility = View.VISIBLE
                 dataBinding.recyclerviewCustomer.visibility = View.VISIBLE
+                dataBinding.imageEmpty.visibility = View.GONE
             }
         })
     }
@@ -87,28 +89,26 @@ class ManualTxnCustomerPage : Fragment() {
             }
         }
 
+        topAppBar.setNavigationOnClickListener {
+            navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
+        }
+
         dataBinding.buttonContinue.setOnClickListener {
             Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_manualTxnAddCustomer)
         }
+
+        dataBinding.btnSelect.setOnClickListener {
+            Toast.makeText(context, "Pelanggan berhasil dipilih", Toast.LENGTH_SHORT).show()
+            navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
+        }
     }
 
     private fun setRecyclerView(){
-        manualTxnCustomerAdapter = ManualTxnCustomerAdapter(requireView().context, viewModel.customerList.value as MutableList<dummyCustomer>)
+        manualTxnCustomerAdapter = ManualTxnCustomerAdapter(requireView().context, viewModel.customerList.value as MutableList<dummyCustomer>, this)
         manualTxnCustomerAdapter.notifyDataSetChanged()
         dataBinding.recyclerviewCustomer.adapter = manualTxnCustomerAdapter
 
-/*        manualTxnCustomerAdapter.setOnItemClickListener(object : ManualTxnCustomerAdapter.onItemClickListener{
-            override fun onItemClick(position: Int) {
-                Toast.makeText(context, "clicked $position", Toast.LENGTH_SHORT).show()
-                viewModel.setCustName(customerList[position].customerName.toString())
-                viewModel.setCustPhone(customerList[position].customerPhone)
-                viewModel.setCustAddress(customerList[position].customerAddress)
-                viewModel.setCustAddressDetail(customerList[position].customerAddressDetail)
-                dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
-            }
-
-        })*/
     }
 
     data class dummyCustomer(
@@ -121,5 +121,25 @@ class ManualTxnCustomerPage : Fragment() {
         @SerializedName("customer_address_detail")
         var customerAddressDetail: String
     )
+
+    override fun onItemClick(b: Boolean, i: Int) {
+        if (b){
+            viewModel.customerList.value?.get(i)?.let {
+                it.customerName?.let { it1 -> viewModel.setCustName(it1) }
+                it.customerPhone?.let { it1 -> viewModel.setCustPhone(it1) }
+                it.customerAddress?.let { it1 -> viewModel.setCustAddress(it1) }
+                it.customerAddressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
+            }
+            view?.let { Navigation.findNavController(it).navigate(R.id.action_manualTxnCustomerPage_to_manualTxnEditCustomer) }
+        } else {
+            viewModel.customerList.value?.get(i)?.let {
+                it.customerName?.let { it1 -> viewModel.setCustName(it1) }
+                it.customerPhone?.let { it1 -> viewModel.setCustPhone(it1) }
+                it.customerAddress?.let { it1 -> viewModel.setCustAddress(it1) }
+                it.customerAddressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
+            }
+            dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
+        }
+    }
 
 }

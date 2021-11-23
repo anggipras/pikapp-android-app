@@ -54,6 +54,18 @@ class CheckoutFragment : Fragment() {
             dataBinding.totalHarga.text = "Rp. $numberFormat"
             dataBinding.hargaBottom.text = "Rp. $numberFormat"
         })
+
+        viewModel.custName.observe(viewLifecycleOwner, Observer { name ->
+            if (name != ""){
+                dataBinding.dataCust.visibility = View.VISIBLE
+                dataBinding.namaCust.text = viewModel.custName.value
+                dataBinding.noTelp.text = viewModel.custPhone.value
+                dataBinding.alamat.text = viewModel.custAddress.value
+                dataBinding.catatan.text = viewModel.custAddressDetail.value
+            } else {
+                dataBinding.dataCust.visibility = View.GONE
+            }
+        })
     }
 
     private fun attachInputListeners() {

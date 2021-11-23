@@ -356,7 +356,7 @@
     <string name="customer_name">Sukro</string>
     <string name="customer_phone">0812123123123</string>
     <string name="customer_address">Jl. Kuda kuda No 10</string>
-    <string name="customer_address_detail">Catatan : Samping sekolah SD</string>
+    <string name="customer_address_detail">Catatan : </string>
 
     <string name="add_customer_nama">Nama</string>
     <string name="add_customer_nama_error">Masukan Minimal 3 huruf</string>
