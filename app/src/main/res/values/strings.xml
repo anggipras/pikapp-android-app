@@ -349,4 +349,26 @@
     <string name="add_cart">Masukan Keranjang | Rp. %s</string>
     <string name="adv_menu_price">Rp. %s</string>
     <string name="max_choose">%s</string>
+
+    <!-- Manual Txn Customer Page -->
+    <string name="empty_customer">Anda belum memiliki pelanggan. <br />Tambahkan pelanggan Anda terlebih dahulu.</string>
+    <string name="add_customer">Tambah Pelanggan</string>
+    <string name="select_customer">Pilih Pelanggan</string>
+    <string name="search_customer_hint">Cari Pelanggan...</string>
+    <string name="customer_name">Sukro</string>
+    <string name="customer_phone">0812123123123</string>
+    <string name="customer_address">Jl. Kuda kuda No 10</string>
+    <string name="customer_address_detail">Catatan : </string>
+
+    <string name="add_customer_nama">Nama</string>
+    <string name="add_customer_nama_error">Masukan Minimal 3 huruf</string>
+    <string name="add_customer_phone">No. Telepon</string>
+    <string name="add_customer_alamat">Alamat</string>
+    <string name="add_customer_alamat_detail">Catatan</string>
+    <string name="add_customer_country_code">+62</string>
+    <string name="add_customer_nama_hint">e.g Tino Didodi</string>
+    <string name="add_customer_phone_hint">##########</string>
+    <string name="add_customer_alamat_hint">e.g Jl. Selasih No.18</string>
+    <string name="add_customer_catatan_hint">Tulis Catatan</string>
+
 </resources>
