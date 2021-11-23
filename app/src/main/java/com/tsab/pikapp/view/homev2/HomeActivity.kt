@@ -25,6 +25,7 @@ import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.other.OtherFragment
 import com.tsab.pikapp.view.homev2.promo.PromoFragment
 import com.tsab.pikapp.view.homev2.menu.TransactionFragment
+import com.tsab.pikapp.view.homev2.menu.WebMenuActivity
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
@@ -80,16 +81,22 @@ class HomeActivity : AppCompatActivity() {
                 R.id.sort_menu-> Intent(this, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
                     startActivity(this)}
+                R.id.see_menu -> Intent(this, WebMenuActivity::class.java).apply {
+                    if (sessionManager.getUserData()?.mid != null) {
+                        putExtra("MID", sessionManager.getUserData()?.mid)
+                    }
+                    startActivity(this)
+                }
                 R.id.share_link -> {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         var midStore: String? = ""
                         var phStore: String? = ""
                         if (sessionManager.getUserData()?.mid != null) {
-                             midStore = sessionManager.getUserData()!!.mid
-                             phStore = sessionManager.getUserData()!!.phoneNumber
+                             midStore = sessionManager.getUserData()?.mid
+                             phStore = sessionManager.getUserData()?.phoneNumber
                         }
-                        val linkURL = "https://web-dev.pikapp.id/merchant/${midStore}"
+                        val linkURL = "https://web-dev.pikapp.id/store?mid=${midStore}"
                         val linkText = "Klik disini untuk melihat menu toko kami : ${linkURL}\n\nUntuk info lebih lanjut, hubungi kami di ${phStore}"
                         putExtra(Intent.EXTRA_TEXT, linkText)
                         type = "text/plain"

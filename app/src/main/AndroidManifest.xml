@@ -18,66 +18,81 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-
-        <activity android:name=".view.homev2.transaction.manualTxn.ManualTxnActivity"
+        <activity android:name=".view.homev2.menu.WebMenuActivity"></activity>
+        <activity
+            android:name=".view.homev2.transaction.manualTxn.ManualTxnActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".view.homev2.transaction.shipment.ScanResiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.transaction.shipment.ScanResiActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.homev2.menu.tokopedia.EtalaseNavigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.menu.tokopedia.EtalaseNavigation"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.AddTokpedMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.AddTokpedMenuActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.other.otherReport.ReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.other.otherReport.ReportActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true" />
 
-        <activity android:name=".view.omni.integration.IntegrationActivity"
+        <activity
+            android:name=".view.omni.integration.IntegrationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.TransactionDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.TransactionDetailActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.homev2.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.SearchActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.homev2.HomeActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_bottom_navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.menu.MenuNavigation"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.homev2.menu.MenuNavigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.menuCategory.SortActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.menuCategory.SortActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.menuCategory.CategoryNavigation"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.menuCategory.CategoryNavigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.loginv2.LoginRegisterActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.loginv2.LoginRegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.other.OtherSettingsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.other.OtherSettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.RegisterV2Activity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.RegisterV2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.LoginV2Activity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.LoginV2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.CarouselActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.CarouselActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.AdvanceMenuActivity"
             android:screenOrientation="portrait"
