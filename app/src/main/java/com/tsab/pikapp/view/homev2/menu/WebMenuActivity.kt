@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.webkit.WebViewClient
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.network.PikappApiService
 import kotlinx.android.synthetic.main.activity_web_menu.*
 
 class WebMenuActivity : AppCompatActivity() {
@@ -22,7 +23,8 @@ class WebMenuActivity : AppCompatActivity() {
     private fun webViewSetup(mid: String) {
         menuWebView.webViewClient = WebViewClient()
         menuWebView.apply {
-            loadUrl("https://web-dev.pikapp.id/store?mid=${mid}")
+            val menuWebApi = PikappApiService().menuWeb()
+            loadUrl("${menuWebApi}store?mid=${mid}")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
         }
