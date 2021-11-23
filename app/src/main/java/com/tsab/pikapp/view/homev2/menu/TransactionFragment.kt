@@ -49,12 +49,6 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
             setUpTabs()
 
-           /* dataBinding.manualTransaction.setOnClickListener {
-                val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
-                activity?.startActivityForResult(intent, 1)
-                activity?.overridePendingTransition(0, 0)
-            }*/
-
             topAppBar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.manualTxn -> {
@@ -121,16 +115,6 @@ class TransactionFragment : Fragment() {
         })
     }
 
-    fun closeKeyboard() {
-        val activity = activity as HomeActivity
-
-        val view = activity.currentFocus
-        if (view != null) {
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
     private fun setUpTabs() {
         val adapter = activity?.let { TransactionAdapter(childFragmentManager) }
         if (adapter != null) {
@@ -163,6 +147,5 @@ class TransactionFragment : Fragment() {
         super.onDestroy()
         viewModel.setAmountOfTrans(0)
         viewModel.setProcessBadges(null)
-//        viewModel.setDecreaseBadge(null)
     }
 }
