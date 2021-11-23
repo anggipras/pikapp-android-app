@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/search_menu"
-        android:title="Cari Menu" />
-
-    <item
-        android:id="@+id/sort_menu"
-        android:title="Urutkan Menu" />
-
-    <item
-        android:id="@+id/share_link"
-        android:title="Bagikan Menu" />
+    <group android:id="@+id/group1" android:checkableBehavior="single">
+        <item
+            android:id="@+id/search_menu"
+            android:title="Cari Menu" />
+    </group>
+    <group android:id="@+id/group2" android:checkableBehavior="single">
+        <item
+            android:id="@+id/sort_menu"
+            android:title="Urutkan Menu" />
+    </group>
+    <group android:id="@+id/group3" android:checkableBehavior="single">
+        <item
+            android:id="@+id/share_link"
+            android:title="Bagikan Menu" />
+    </group>
 
 </menu>
