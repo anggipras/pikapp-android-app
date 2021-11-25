@@ -136,7 +136,7 @@ fun setTokenPublic(): String {
     return token
 }
 
-fun getSignature(email: String, timestamp: String): String {
+fun getSignature(email: String?, timestamp: String): String {
 
     val byte: ByteArray = getClientSecret().toByteArray(charset("UTF-8"))
     val sk: Key = SecretKeySpec(byte, "HmacSHA256")
