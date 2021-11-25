@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -68,20 +69,15 @@ class HomeActivity : AppCompatActivity() {
                     putExtra("SORT_NAV", 0)
                     startActivity(this)}
                 R.id.see_menu -> Intent(this, WebMenuActivity::class.java).apply {
-                    if (sessionManager.getUserData()?.mid != null) {
-                        putExtra("MID", sessionManager.getUserData()?.mid)
-                    }
+                    val midStore: String? = sessionManager.getUserData()?.mid
+                    putExtra("MID", midStore)
                     startActivity(this)
                 }
                 R.id.share_link -> {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        var midStore: String? = ""
-                        var phStore: String? = ""
-                        if (sessionManager.getUserData()?.mid != null) {
-                             midStore = sessionManager.getUserData()?.mid
-                             phStore = sessionManager.getUserData()?.phoneNumber
-                        }
+                        var midStore: String? = sessionManager.getUserData()?.mid
+                        var phStore: String? = sessionManager.getUserData()?.phoneNumber
                         val menuWebApi = PikappApiService().menuWeb()
                         val linkURL = "${menuWebApi}store?mid=${midStore}"
                         val linkText = "Klik disini untuk melihat menu toko kami : ${linkURL}\n\nUntuk info lebih lanjut, hubungi kami di ${phStore}"

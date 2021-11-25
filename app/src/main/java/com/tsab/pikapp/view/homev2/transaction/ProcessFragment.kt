@@ -106,8 +106,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
         buttonFilterPikapp.setOnClickListener {
             if (!viewModel.mutablePikappFilter.value!!) {
-                viewModel.mutableCountTxn.value =
-                    viewModel.mutableCountTxn.value!! + viewModel.proses.value!!.toInt()
+                viewModel.mutableCountTxn.value = viewModel.proses.value!!.toInt()
 
                 if (viewModel.mutableCountTxn.value == 0) {
                     icon.visibility = View.VISIBLE
@@ -156,8 +155,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
         buttonFilterTokped.setOnClickListener {
             if (!viewModel.mutableTokpedFilter.value!!) {
-                viewModel.mutableCountTxn.value =
-                    viewModel.mutableCountTxn.value!! + viewModel.prosesOmni.value!!.toInt()
+                viewModel.mutableCountTxn.value = viewModel.prosesOmni.value!!.toInt()
 
                 if (viewModel.mutableCountTxn.value == 0) {
                     icon.visibility = View.VISIBLE
