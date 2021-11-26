@@ -691,4 +691,28 @@ interface PikappApi {
             @Part("platform") platform: RequestBody,
             @Part("mid") mid: RequestBody
     ): Call<UploadReportResponse>
+
+    //Customer Manual TXN
+    @GET("pos/v1/customerlist/{mid}")
+    fun getListCustomer(
+        @Header("page") page: String,
+        @Header("size") size: String,
+        @Path("mid") mid: String
+    ): Call<CustomerResponse>
+
+    @POST("pos/v1/customerlist/add/")
+    fun addCustomer(
+        @Body addCustomerRequest: addCustomerRequest
+    ): Call<CustomerResponse>
+
+    @POST("pos/v1/customerlist/add/")
+    fun editCustomer(
+        @Body editCustomerRequest: EditCustomerRequest
+    ): Call<CustomerResponse>
+
+    @DELETE("pos/v1/customer/delete/{customerId}")
+    fun deleteCustomer(
+        @Path("customerId") customerId: Long
+    ): Call<DeleteCustomerResponse>
 }
+

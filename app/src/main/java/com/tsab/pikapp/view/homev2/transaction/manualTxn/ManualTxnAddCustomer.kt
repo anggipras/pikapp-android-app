@@ -15,6 +15,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnAddCustomerBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCustomerPageBinding
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import kotlinx.android.synthetic.main.transaction_fragment.*
 
 class ManualTxnAddCustomer : Fragment() {
 
@@ -53,6 +54,10 @@ class ManualTxnAddCustomer : Fragment() {
                 Toast.makeText(context, "Pelanggan berhasil ditambahkan", Toast.LENGTH_SHORT).show()
                 navController?.navigate(R.id.action_manualTxnAddCustomer_to_manualTxnCustomerPage)
             }
+        }
+
+        topAppBar.setNavigationOnClickListener {
+            navController?.navigate(R.id.action_manualTxnAddCustomer_to_manualTxnCustomerPage)
         }
     }
 
