@@ -692,6 +692,11 @@ interface PikappApi {
             @Part("mid") mid: RequestBody
     ): Call<UploadReportResponse>
 
+    @POST("pos/v1/transaction/add/")
+    fun uploadManualTxn(
+        @Body ManualTxnRequest: ManualTxnRequest
+    ) : Call<ManualTxnResponse>
+
     //Customer Manual TXN
     @GET("pos/v1/customerlist/{mid}")
     fun getListCustomer(
@@ -714,5 +719,6 @@ interface PikappApi {
     fun deleteCustomer(
         @Path("customerId") customerId: Long
     ): Call<DeleteCustomerResponse>
+
 }
 

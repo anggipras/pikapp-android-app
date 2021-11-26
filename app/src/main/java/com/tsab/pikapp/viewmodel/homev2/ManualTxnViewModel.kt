@@ -46,6 +46,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableSearchEnter = MutableLiveData(false)
     val isSearch: LiveData<Boolean> get() = mutableSearchEnter
 
+    val mutablePayStat = MutableLiveData(false)
+    val payStatus: LiveData<Boolean> get() = mutablePayStat
+
     val mutableSearchMenu = MutableLiveData("")
     val MenuSubmit: LiveData<String> get() = mutableSearchMenu
 
@@ -60,6 +63,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     val mutableBayar = MutableLiveData("")
     val BayarPesanan: LiveData<String> get() = mutableBayar
+
+    val mutablePostWaktu = MutableLiveData("")
+    val postWaktu: LiveData<String> get() = mutablePostWaktu
 
     val mutableDate = MutableLiveData("")
     val DatePesanan: LiveData<String> get() = mutableDate
@@ -140,7 +146,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableTotalPrice.value = menuAmount!! + extraAmount!!
     }
 
-    private val mutableCartPrice = MutableLiveData(0)
+    val mutableCartPrice = MutableLiveData(0)
     val totalCart: LiveData<Int> get() = mutableCartPrice
     fun cartTotalPrice(totPrice: String, price: String){
         if (totPrice != "null"){
@@ -226,25 +232,25 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     //customer detail
-    private val mutableCustName = MutableLiveData("")
+    val mutableCustName = MutableLiveData("")
     val custName: LiveData<String> get() = mutableCustName
     fun setCustName(custName: String) {
         mutableCustName.value = custName
     }
 
-    private val mutableCustPhone = MutableLiveData("")
+    val mutableCustPhone = MutableLiveData("")
     val custPhone: LiveData<String> get() = mutableCustPhone
     fun setCustPhone(custPhone: String) {
         mutableCustPhone.value = custPhone
     }
 
-    private val mutableCustAddress = MutableLiveData("")
+    val mutableCustAddress = MutableLiveData("")
     val custAddress: LiveData<String> get() = mutableCustAddress
     fun setCustAddress(custAddress: String) {
         mutableCustAddress.value = custAddress
     }
 
-    private val mutableCustAddressDetail = MutableLiveData("")
+    val mutableCustAddressDetail = MutableLiveData("")
     val custAddressDetail: LiveData<String> get() = mutableCustAddressDetail
     fun setCustAddressDetail(addressDetail: String) {
         mutableCustAddressDetail.value = addressDetail
@@ -550,5 +556,58 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                     }
                 })
         )
+    }
+
+    fun postOrder(paymentStatus: Boolean){
+        mutablePayStat.value = paymentStatus
+        var hargaEkspedisi: String = ""
+        var orderType: String = ""
+        var payStatus: String = ""
+        var menuList: ArrayList<MenuList> = ArrayList()
+        var mid: String? = sessionManager.getUserData()?.mid
+
+        if(paymentStatus){
+            payStatus = "PAID"
+        }else{
+            payStatus = "UNPAID"
+        }
+
+        Log.e("fnqn", mutableSelectedMenuTemp.value.toString())
+
+        if(mutableHargaEkspedisi.value == " "){
+            hargaEkspedisi = "0"
+        }else{
+            hargaEkspedisi = mutableHargaEkspedisi.value.toString()
+        }
+
+        for(q in mutableSelectedMenuTemp.value!!){
+            menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0"))
+        }
+
+        Log.e("fnqn", menuList.toString())
+
+        if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
+            orderType = "PICKUP"
+        }else{
+            orderType = "DELIVERY"
+        }
+
+        var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
+        var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi, mutablePostWaktu.value.toString())
+        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType, mutableAsal.value.toString(), mutableCartPrice.value.toString(), payStatus, mutableBayar.value!!.toString(), "OPEN", 0, (mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt()).toString())).
+        enqueue(object : Callback<ManualTxnResponse>{
+            override fun onResponse(
+                call: Call<ManualTxnResponse>,
+                response: Response<ManualTxnResponse>
+            ) {
+                Log.e("success", response.body().toString())
+                Log.e("success", response.code().toString())
+            }
+
+            override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
+               Log.e("Fail", t.toString())
+            }
+
+        })
     }
 }

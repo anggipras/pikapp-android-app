@@ -87,6 +87,9 @@
         <action
             android:id="@+id/action_checkoutFragment_to_manualTxnCustomerPage"
             app:destination="@id/manualTxnCustomerPage" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_invoiceFragment"
+            app:destination="@id/invoiceFragment" />
     </fragment>
     <fragment
         android:id="@+id/paymentFragment"
@@ -102,4 +105,9 @@
             android:id="@+id/action_manualTxnEditCustomer_to_manualTxnCustomerPage"
             app:destination="@id/manualTxnCustomerPage" />
     </fragment>
+    <fragment
+        android:id="@+id/invoiceFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.InvoiceFragment"
+        android:label="fragment_invoice"
+        tools:layout="@layout/fragment_invoice" />
 </navigation>

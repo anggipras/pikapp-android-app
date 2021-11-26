@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -26,7 +27,11 @@ class CheckoutFragment : Fragment() {
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentCheckoutBinding
     private var navController: NavController? = null
-    private var bool: Boolean = true
+    private var custStat: Boolean = false
+    private var kurirStat: Boolean = false
+    private var dateStat: Boolean = false
+    private var asalStat: Boolean = false
+    private var paymentStat: Boolean = false
     private val localeID =  Locale("in", "ID")
 
     override fun onCreateView(
@@ -52,6 +57,10 @@ class CheckoutFragment : Fragment() {
 
         viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
             if(nama != ""){
+                kurirStat = true
+                if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                    dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
+                }
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.namaKirim.text = nama
             }
@@ -59,6 +68,10 @@ class CheckoutFragment : Fragment() {
 
         viewModel.AsalPesanan.observe(viewLifecycleOwner, Observer { nama ->
             if(nama != ""){
+                asalStat = true
+                if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                    dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
+                }
                 dataBinding.asalPesanan.visibility = View.VISIBLE
                 dataBinding.asalPesan.text = nama
             }
@@ -77,6 +90,10 @@ class CheckoutFragment : Fragment() {
 
         viewModel.WaktuPesan.observe(viewLifecycleOwner, Observer { waktu ->
             if(waktu != ""){
+                dateStat = true
+                if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                    dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
+                }
                 dataBinding.dataTanggal.visibility = View.VISIBLE
                 dataBinding.namaWaktu.text = waktu
             }
@@ -95,9 +112,13 @@ class CheckoutFragment : Fragment() {
             dataBinding.totalHarga.text = "Rp. $numberFormat"
             dataBinding.hargaBottom.text = "Rp. $numberFormat"
         })
-        
+
         viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
             if (nama != "") {
+                paymentStat = true
+                if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                    dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
+                }
                 dataBinding.bayarPesanan.visibility = View.VISIBLE
                 dataBinding.bayarPesanDengan.text = nama
             }
@@ -105,6 +126,10 @@ class CheckoutFragment : Fragment() {
 
         viewModel.custName.observe(viewLifecycleOwner, Observer { name ->
             if (name != ""){
+                custStat = true
+                if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                    dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
+                }
                 dataBinding.dataCust.visibility = View.VISIBLE
                 dataBinding.namaCust.text = viewModel.custName.value
                 dataBinding.noTelp.text = viewModel.custPhone.value
@@ -119,6 +144,16 @@ class CheckoutFragment : Fragment() {
     private fun attachInputListeners() {
         dataBinding.topAppBar.setNavigationOnClickListener {
             navController?.navigateUp()
+        }
+
+        dataBinding.btnNext.setOnClickListener {
+            if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
+                viewModel.postOrder(dataBinding.payStat.isChecked)
+                navController?.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+            }else{
+                Log.e("Fail", "Data Kosong")
+            }
         }
 
         dataBinding.bayarBtn.setOnClickListener {

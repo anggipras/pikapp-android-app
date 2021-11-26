@@ -605,7 +605,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:fontFamily="@font/proximanova_semibold"
-                            android:text="Pilih Pengiriman"
+                            android:text="Metode Pembayaran"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_10sdp"
                             app:layout_constraintBottom_toTopOf="@id/divider4"
@@ -662,6 +662,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <CheckBox
+                                android:id="@+id/payStat"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
