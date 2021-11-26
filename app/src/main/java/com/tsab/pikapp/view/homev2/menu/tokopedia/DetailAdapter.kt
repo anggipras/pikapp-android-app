@@ -44,7 +44,6 @@ class DetailAdapter(val context: Context, val list: List<String>, val button: Bu
                     mutableNama.value = list[position]
                 }
             }
-            Log.e("uwqfh", mutableNama.value)
             isChoose.text = list[position]
             notifyDataSetChanged()
             button.setBackgroundResource(R.drawable.button_green_small)

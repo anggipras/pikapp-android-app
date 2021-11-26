@@ -16,13 +16,13 @@ android {
             keyPassword 'mantapmantap9'
         }
     }
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.tsab.pikapp"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 10
         versionName "1.2.002"
 

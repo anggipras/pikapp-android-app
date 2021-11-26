@@ -361,10 +361,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                         setLoading(false)
                         var errorResponse: BaseResponse? =
                                 gson.fromJson(response.errorBody()!!.charStream(), type)
-                        Log.e(
-                                "Result",
-                                generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
-                        )
                     }
                 }
 
@@ -420,10 +416,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                         setLoading(false)
                         var errorResponse: BaseResponse? =
                                 gson.fromJson(response.errorBody()!!.charStream(), type)
-                        Log.e(
-                                "Result",
-                                generateResponseMessage(errorResponse?.errCode, errorResponse?.errMessage)
-                        )
                     }
                 }
 

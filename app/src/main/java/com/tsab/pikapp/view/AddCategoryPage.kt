@@ -59,7 +59,7 @@ class AddCategoryPage : AppCompatActivity() {
             if (namecheck == true) {
 
                 val size = intent.getStringExtra("category_size")
-                val catSize = size.toInt()
+                val catSize = size?.toInt()
 
                 var sessionManager = SessionManager(application)
                 val email = sessionManager.getUserData()!!.email!!
@@ -69,7 +69,9 @@ class AddCategoryPage : AppCompatActivity() {
                 val mid = sessionManager.getUserData()!!.mid!!
                 var categoryReq = MenuCategoryRequest()
                 categoryReq.category_name = categoryName.text.toString()
-                categoryReq.category_order = catSize + 1
+                if (catSize != null) {
+                    categoryReq.category_order = catSize + 1
+                }
                 categoryReq.activation = activation
 
                 PikappApiService().api.menuCategory(
