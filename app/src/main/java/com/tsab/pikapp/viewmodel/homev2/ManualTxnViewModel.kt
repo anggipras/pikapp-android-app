@@ -22,6 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 class ManualTxnViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
@@ -197,8 +198,38 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableCustAddressDetail.value = addressDetail
     }
 
-    private val mutableCustomerList = MutableLiveData<List<ManualTxnCustomerPage.dummyCustomer>>(listOf())
-    val customerList: LiveData<List<ManualTxnCustomerPage.dummyCustomer>> = mutableCustomerList
+    private val mutableCustId = MutableLiveData(0L)
+    val custId: LiveData<Long> get() = mutableCustId
+    fun setCustId(id: Long) {
+        mutableCustId.value = id
+    }
+
+    private val mutableEditCustName = MutableLiveData("")
+    val editCustName: LiveData<String> get() = mutableEditCustName
+    fun editCustName(custName: String) {
+        mutableEditCustName.value = custName
+    }
+
+    private val mutableEditCustPhone = MutableLiveData("")
+    val editCustPhone: LiveData<String> get() = mutableEditCustPhone
+    fun editCustPhone(custPhone: String) {
+        mutableEditCustPhone.value = custPhone
+    }
+
+    private val mutableEditCustAddress = MutableLiveData("")
+    val editCustAddress: LiveData<String> get() = mutableEditCustAddress
+    fun editCustAddress(custAddress: String) {
+        mutableEditCustAddress.value = custAddress
+    }
+
+    private val mutableEditCustAddressDetail = MutableLiveData("")
+    val editCustAddressDetail: LiveData<String> get() = mutableEditCustAddressDetail
+    fun editCustAddressDetail(addressDetail: String) {
+        mutableEditCustAddressDetail.value = addressDetail
+    }
+
+    private val mutableCustomerList = MutableLiveData<List<CustomerResponseDetail>>(listOf())
+    val customerList: LiveData<List<CustomerResponseDetail>> = mutableCustomerList
 
     private val mutableSizeCustomer = MutableLiveData(0)
     val customerSize: LiveData<Int> get() = mutableSizeCustomer
@@ -241,17 +272,104 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun addCustomer() {
-        mutableCustomerList.value = customerList.value?.toMutableList()?.apply {
-            add(ManualTxnCustomerPage.dummyCustomer(
-                    customerName = custName.value,
-                    customerPhone = custPhone.value!!,
-                    customerAddress = custAddress.value.toString(),
-                    customerAddressDetail = custAddressDetail.value.toString()
-            ))
-        }
+        val mid = sessionManager.getUserData()!!.mid!!
+        val addReq = addCustomerRequest(
+            name = custName.value,
+            mid = mid,
+            address = custAddress.value,
+            addressDetail = custAddressDetail.value,
+            phoneNumber = custPhone.value
+        )
 
-        mutableSizeCustomer.value = mutableCustomerList.value?.size
-        Log.e("size", mutableSizeCustomer.value.toString())
+        PikappApiService().api.addCustomer(addReq).enqueue(object : Callback<CustomerResponse>{
+            override fun onResponse(
+                call: Call<CustomerResponse>,
+                response: Response<CustomerResponse>
+            ) {
+                Log.e("response body", response.body().toString())
+                Log.e("response result", response.body()?.results.toString())
+            }
+
+            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
+                Timber.tag(tag).d("Failed to add customer list: ${t.message.toString()}")
+            }
+
+        })
+    }
+
+    fun editCustomer(){
+        val mid = sessionManager.getUserData()!!.mid!!
+        val editReq = EditCustomerRequest(
+            customerId = custId.value,
+            mid = mid,
+            name = editCustName.value,
+            address = editCustAddress.value,
+            addressDetail = editCustAddressDetail.value,
+            phoneNumber = editCustPhone.value
+        )
+
+        PikappApiService().api.editCustomer(editReq).enqueue(object : Callback<CustomerResponse>{
+            override fun onResponse(
+                call: Call<CustomerResponse>,
+                response: Response<CustomerResponse>
+            ) {
+                Log.e("response body", response.body().toString())
+                Log.e("response result", response.body()?.results.toString())
+            }
+
+            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
+                Timber.tag(tag).d("Failed to edit customer : ${t.message.toString()}")
+            }
+
+        })
+    }
+
+    fun deleteCustomer(){
+        custId.value?.let { PikappApiService().api.deleteCustomer(it).enqueue(object : Callback<DeleteCustomerResponse>{
+            override fun onResponse(
+                call: Call<DeleteCustomerResponse>,
+                response: Response<DeleteCustomerResponse>
+            ) {
+                Log.e("response body", response.body().toString())
+                Log.e("response result", response.body()?.results.toString())
+            }
+
+            override fun onFailure(call: Call<DeleteCustomerResponse>, t: Throwable) {
+                Timber.tag(tag).d("Failed to delete customer : ${t.message.toString()}")
+            }
+
+        }) }
+    }
+
+    fun getCustomer(){
+        val mid = sessionManager.getUserData()!!.mid!!
+        val page = "0"
+        val size = "50"
+        setLoading(true)
+
+        PikappApiService().api.getListCustomer(page, size, mid).enqueue(object : Callback<CustomerResponse>{
+            override fun onResponse(
+                call: Call<CustomerResponse>,
+                response: Response<CustomerResponse>
+            ) {
+                val orderResponse = response.body()
+                val resultList = orderResponse?.results
+                Log.e("customer", resultList.toString() )
+                Log.e("response body", orderResponse.toString())
+                if (resultList != null){
+                    mutableCustomerList.value = resultList!!
+                    mutableSizeCustomer.value = mutableCustomerList.value?.size
+                    setLoading(false)
+                }
+
+
+            }
+
+            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
+                Timber.tag(tag).d("Failed to get customer list: ${t.message.toString()}")
+            }
+
+        })
     }
 
     fun editToCart(note: String, indexOfCart: Int, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {

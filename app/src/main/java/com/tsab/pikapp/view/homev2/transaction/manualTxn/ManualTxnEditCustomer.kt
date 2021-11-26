@@ -17,6 +17,7 @@ import com.tsab.pikapp.databinding.FragmentManualTxnAddCustomerBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnEditCustomerBinding
 import com.tsab.pikapp.util.substringPhone
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import kotlinx.android.synthetic.main.transaction_fragment.*
 
 class ManualTxnEditCustomer : Fragment() {
     private var navController: NavController? = null
@@ -51,8 +52,14 @@ class ManualTxnEditCustomer : Fragment() {
     }
 
     private fun attachInputListener(){
+        topAppBar.setNavigationOnClickListener {
+            navController?.navigate(R.id.action_manualTxnEditCustomer_to_manualTxnCustomerPage)
+        }
+
         dataBinding.deleteBtn.setOnClickListener {
-            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
+            viewModel.deleteCustomer()
+            Toast.makeText(context, "Pelanggan berhasil dihapus", Toast.LENGTH_SHORT).show()
+            navController?.navigate(R.id.action_manualTxnEditCustomer_to_manualTxnCustomerPage)
         }
         
         dataBinding.btnNext.setOnClickListener {
@@ -61,18 +68,24 @@ class ManualTxnEditCustomer : Fragment() {
                 dataBinding.custName.backgroundTintList = context?.resources?.getColorStateList(R.color.red)
                 dataBinding.nameHeaderText.setTextColor(context?.resources?.getColor(R.color.red)!!)
             } else {
-                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
-/*                viewModel.setCustName(dataBinding.custName.text.toString())
+                viewModel.editCustName(dataBinding.custName.text.toString())
                 var phone = dataBinding.custPhone.text.toString()
-                viewModel.setCustPhone("0$phone")
-                viewModel.setCustAddress(dataBinding.custAddress.text.toString())
-                var addressDetail = dataBinding.custAddressDetail.text.toString()
-                viewModel.setCustAddressDetail("Catatan : $addressDetail")*/
-/*                viewModel.addCustomer()
-                Log.e("list", viewModel.customerList.value.toString())
-                Toast.makeText(context, "sabi ni bos", Toast.LENGTH_SHORT).show()*/
+                viewModel.editCustPhone("0$phone")
+                viewModel.editCustAddress(dataBinding.custAddress.text.toString())
+                viewModel.editCustAddressDetail(dataBinding.custAddressDetail.text.toString())
+                viewModel.editCustomer()
+                Toast.makeText(context, "Pelanggan berhasil diubah", Toast.LENGTH_SHORT).show()
+                navController?.navigate(R.id.action_manualTxnEditCustomer_to_manualTxnCustomerPage)
             }
         }
+    }
+
+    fun clearCustInfo(){
+        viewModel.setCustName("")
+        viewModel.setCustPhone("")
+        viewModel.setCustAddress("")
+        viewModel.setCustAddressDetail("")
+        viewModel.setCustId(0L)
     }
 
 }
