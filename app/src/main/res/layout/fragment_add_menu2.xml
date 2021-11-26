@@ -13,7 +13,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="25dp">
 
             <!-- Header layout -->
@@ -30,7 +30,7 @@
                 android:layout_marginStart="28dp"
                 android:layout_marginBottom="24dp"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Tambah Menu"
+                android:text="@string/om_tambah_menu"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="@id/header"
@@ -53,18 +53,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat"
-                    android:text="Gambar Menu"
+                    android:text="@string/gambar_menu"
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/montserrat"
-                    android:text="*"
+                    android:text="@string/star"
                     android:textColor="#DC6A84"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -74,9 +74,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/proximanova_regular"
-                android:text="(Format .png, .jpg, max. 1MB)"
+                android:text="@string/registrasi_latar_hint"
                 android:textColor="#767676"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@id/menuImg"
                 app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -130,17 +130,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="Nama Menu"
+                    android:text="@string/nama_menu"
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="*"
+                    android:text="@string/star"
                     android:textColor="#DC6A84"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -152,10 +152,10 @@
                 android:layout_marginEnd="23dp"
                 android:backgroundTint="#aaaaaa"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="Masukkan Nama Menu"
+                android:hint="@string/nama_menu_hint"
                 android:inputType="text"
                 android:textColorHint="#aaaaaa"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@id/namaErrorText"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -181,9 +181,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
                 android:fontFamily="@font/montserrat"
-                android:text="Kategori"
+                android:text="@string/category_header"
                 android:textColor="#000000"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toTopOf="@id/kategori"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -199,9 +199,9 @@
                 android:backgroundTint="#aaaaaa"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="Pilih Kategori"
+                android:hint="@string/pilih_kategori"
                 android:textColorHint="#aaaaaa"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@id/etalaseTxt"
                 app:layout_constraintHorizontal_bias="0.15"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -215,9 +215,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
                 android:fontFamily="@font/montserrat"
-                android:text="Etalase"
+                android:text="@string/etalase_header"
                 android:textColor="#000000"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toTopOf="@id/etalase"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -233,9 +233,9 @@
                 android:backgroundTint="#aaaaaa"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="Pilih Etalase"
+                android:hint="@string/pilih_etalase_hint"
                 android:textColorHint="#aaaaaa"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@id/descMenuTxt"
                 app:layout_constraintHorizontal_bias="0.15"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -259,17 +259,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="Deskripsi"
+                    android:text="@string/deskripsi_header"
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="*"
+                    android:text="@string/star"
                     android:textColor="#DC6A84"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -281,10 +281,10 @@
                 android:layout_marginEnd="23dp"
                 android:backgroundTint="#aaaaaa"
                 android:fontFamily="@font/proximanova_regular"
-                android:hint="Masukkan Deskripsi Menu"
+                android:hint="@string/deskripsi_hint"
                 android:inputType="text"
                 android:textColorHint="#aaaaaa"
-                android:textSize="13dp"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@id/descErrorText"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -321,17 +321,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
-                    android:text="Harga"
+                    android:text="@string/am_additional_harga_header"
                     android:textColor="#000000"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
-                    android:text="*"
+                    android:text="@string/star"
                     android:textColor="#DC6A84"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -351,10 +351,10 @@
                     android:layout_marginEnd="23dp"
                     android:backgroundTint="#aaaaaa"
                     android:fontFamily="@font/proximanova_regular"
-                    android:hint="Contoh: Rp10.000"
+                    android:hint="@string/harga_hint"
                     android:inputType="number"
                     android:textColorHint="#aaaaaa"
-                    android:textSize="13dp"
+                    android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -365,7 +365,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="376dp"
+                    android:layout_marginStart="376dp"
                     android:layout_marginEnd="30dp"
                     android:layout_marginBottom="16dp"
                     android:src="@drawable/infobtn"
@@ -396,7 +396,7 @@
                 android:layout_marginStart="25dp"
                 android:fontFamily="@font/proximanova_regular"
                 android:textColor="@color/black"
-                android:text="Tambahkan Menu Ini Di PikApp"
+                android:text="@string/add_menu_in_pikapp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/hargaErrorText"
                 app:layout_constraintBottom_toTopOf="@id/btnNext"
@@ -412,7 +412,7 @@
                 android:background="@drawable/button_green_small"
                 android:backgroundTint="@color/green"
                 android:fontFamily="@font/montserrat"
-                android:text="Simpan"
+                android:text="@string/simpan"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp"

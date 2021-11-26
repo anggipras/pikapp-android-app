@@ -130,7 +130,7 @@
                     android:id="@+id/toggleButton"
                     android:layout_width="53dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/switch_on"
+                    android:background="@drawable/toggle_selector"
                     android:checked="true"
                     android:textOff=""
                     android:textOn=""

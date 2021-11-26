@@ -119,7 +119,18 @@ data class ProductDetailOmni(
     @SerializedName("total_price")
     val totalPrice: Long?,
     @SerializedName("currency")
-    val currency: String?
+    val currency: String?,
+    @SerializedName("product_variant")
+    val productVariant: ProductVariantOmni?
+)
+
+data class ProductVariantOmni(
+    @SerializedName("variant_name")
+    val variantName: String?,
+    @SerializedName("variant_price")
+    val variantPrice: Long?,
+    @SerializedName("quantity")
+    val quantity: Int?
 )
 
 data class ListOrderDetailOmni(
@@ -214,3 +225,4 @@ data class AcceptOrderTokopediaResult(
     @SerializedName("error_code")
     val errorCode: String?
 )
+

@@ -33,8 +33,8 @@ class OtherViewModel : ViewModel() {
 
     fun getMerchantProfile(context: Context) {
         val timeStamp = getTimestamp()
-        val email = sessionManager.getUserData()!!.email!!
-        val mid = sessionManager.getUserData()!!.mid!!
+        val email = sessionManager.getUserData()?.email
+        val mid = sessionManager.getUserData()?.mid
         val signature = getSignature(email, timeStamp)
         val token = sessionManager.getUserToken()!!
         val uuid = getUUID()
@@ -72,10 +72,10 @@ class OtherViewModel : ViewModel() {
         val uuid = getUUID()
         val timestamp = getTimestamp()
         val clientId = getClientID()
-        val email = sessionManager.getUserData()!!.email!!
+        val email = sessionManager.getUserData()?.email
         val signature = getSignature(email, timestamp)
         val token = sessionManager.getUserToken()!!
-        val mid = sessionManager.getUserData()!!.mid!!
+        val mid = sessionManager.getUserData()?.mid
 
         PikappApiService().api.getMerchantShopManagement(
             uuid, timestamp, clientId, signature, token, mid

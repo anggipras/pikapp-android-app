@@ -50,25 +50,19 @@ class SignupV2ThirdFragment : Fragment() {
     private var fcm: String? = null
 
     private val pickerKTP =
-        registerForActivityResult(ActivityResultContracts.GetContent(),
-            ActivityResultCallback { uri: Uri ->
-                viewModel.validateKtp(uri)
-            }
-        )
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            viewModel.setKtp(uri)
+        }
 
     private val logoPicker =
-        registerForActivityResult(ActivityResultContracts.GetContent(),
-            ActivityResultCallback { uri: Uri ->
-                viewModel.validateLogo(uri)
-            }
-        )
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            viewModel.setLogo(uri)
+        }
 
     private val latarPicker =
-        registerForActivityResult(ActivityResultContracts.GetContent(),
-            ActivityResultCallback { uri: Uri ->
-                viewModel.validateLatar(uri)
-            }
-        )
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            viewModel.setLatar(uri)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

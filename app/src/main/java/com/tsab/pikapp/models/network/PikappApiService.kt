@@ -20,19 +20,47 @@ class PikappApiService {
         .build()
         .create(PikappApi::class.java)
 
+    private fun checkBuildConfig(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "https://dev-report-api.pikapp.id/"
+        } else {
+            "https://report-api.pikapp.id/"
+        }
+    }
+
+    fun webReport(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "https://dev-report.pikapp.id/"
+        } else {
+            "https://report.pikapp.id/"
+        }
+    }
+
+    fun menuWeb(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "https://web-dev.pikapp.id/"
+        } else {
+            "https://order.pikapp.id/"
+        }
+    }
+
+    val reportApi = Retrofit.Builder()
+        .baseUrl(checkBuildConfig())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(PikappApi::class.java)
+
     // Merchant LOGIN, LOGOUT, REGISTER
     // AUTH
     fun loginUser(email: String, password: String, fcmToken: String): Single<LoginResponse> {
         val uuid = getUUID()
         val loginData = LoginRequest(email, password, fcmToken)
-        Log.d("Debug", "fcm token : $fcmToken")
         return api.loginUser(uuid, getTimestamp(), getClientID(), loginData)
     }
 
     fun loginMerchant(username: String, pin: String, token: String): Single<LoginResponseV2> {
         val uuid = getUUID()
         val loginData = LoginRequestV2(username, pin, token)
-        Log.d("Debug", "fcm token : $token")
         return api.loginMerchant(uuid, getTimestamp(), getClientID(), loginData)
     }
 

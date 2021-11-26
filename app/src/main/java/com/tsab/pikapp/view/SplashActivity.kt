@@ -103,23 +103,6 @@ class SplashActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        appUpdateManager.appUpdateInfo
-            .addOnSuccessListener { appUpdateInfo ->
-                if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    // If an in-app update is already running, resume the update.
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
-                        this,
-                        myRequestCode
-                    )
-                }
-            }
-    }
-
     private fun showUpdateDialog() {
         AlertDialog.Builder(this).apply {
             setTitle("Perbarui Aplikasi")

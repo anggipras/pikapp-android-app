@@ -88,3 +88,68 @@ data class TransactionResponseDetail(
     @SerializedName("checkout_url")
     val checkoutUrl: String?
 )
+
+data class CustomerResponse(
+    @SerializedName("err_code")
+    override val errCode: String?,
+    @SerializedName("err_message")
+    override val errMessage: String?,
+    @SerializedName("results")
+    val results: List<CustomerResponseDetail>?
+) : Response
+
+data class CustomerResponseDetail(
+    @SerializedName("customer_id")
+    val customerId: Long?,
+    @SerializedName("mid")
+    val mid: String?,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("address")
+    val address: String?,
+    @SerializedName("address_detail")
+    val addressDetail: String?,
+    @SerializedName("phone_number")
+    val phone: String?,
+    @SerializedName("created_at")
+    val createdAt: String?,
+    @SerializedName("updated_at")
+    val updatedAt: String?
+)
+
+data class addCustomerRequest(
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("mid")
+    val mid: String?,
+    @SerializedName("address")
+    val address: String?,
+    @SerializedName("address_detail")
+    val addressDetail: String?,
+    @SerializedName("phone_number")
+    val phoneNumber: String?
+)
+
+data class EditCustomerRequest(
+    @SerializedName("customer_id")
+    val customerId: Long?,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("mid")
+    val mid: String?,
+    @SerializedName("address")
+    val address: String?,
+    @SerializedName("address_detail")
+    val addressDetail: String?,
+    @SerializedName("phone_number")
+    val phoneNumber: String?
+)
+
+data class DeleteCustomerResponse(
+    @SerializedName("err_code")
+    val errCode: String?,
+    @SerializedName("err_message")
+    val errMessage: String?,
+    @SerializedName("results")
+    val results: String?
+)
