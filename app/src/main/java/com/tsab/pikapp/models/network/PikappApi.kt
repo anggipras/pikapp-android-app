@@ -385,6 +385,19 @@ interface PikappApi {
         @Path("tableNo") tableNo: String
     ): Single<GetStoreOrderDetailResponse>
 
+    @GET("pos/v1/transaction/list/{mid}/{status}")
+    fun getManualTransactionList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("size") size: Int,
+        @Header("page") page: Int?,
+        @Path("mid") midStore: String?,
+        @Path("status") statusTrans: String
+    ): Call<GetManualTransactionResp>
+
     // Update status
     @Multipart
     @POST("txn/v1/txn-update/")
@@ -683,4 +696,29 @@ interface PikappApi {
     fun uploadManualTxn(
         @Body ManualTxnRequest: ManualTxnRequest
     ) : Call<ManualTxnResponse>
+
+    //Customer Manual TXN
+    @GET("pos/v1/customerlist/{mid}")
+    fun getListCustomer(
+        @Header("page") page: String,
+        @Header("size") size: String,
+        @Path("mid") mid: String
+    ): Call<CustomerResponse>
+
+    @POST("pos/v1/customerlist/add/")
+    fun addCustomer(
+        @Body addCustomerRequest: addCustomerRequest
+    ): Call<CustomerResponse>
+
+    @POST("pos/v1/customerlist/add/")
+    fun editCustomer(
+        @Body editCustomerRequest: EditCustomerRequest
+    ): Call<CustomerResponse>
+
+    @DELETE("pos/v1/customer/delete/{customerId}")
+    fun deleteCustomer(
+        @Path("customerId") customerId: Long
+    ): Call<DeleteCustomerResponse>
+
 }
+

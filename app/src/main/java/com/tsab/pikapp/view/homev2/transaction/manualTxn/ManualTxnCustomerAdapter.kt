@@ -11,10 +11,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.CustomerResponseDetail
 
 class ManualTxnCustomerAdapter (
     val context: Context,
-    private val customerList: MutableList<ManualTxnCustomerPage.dummyCustomer>,
+    private val customerList: MutableList<CustomerResponseDetail>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ManualTxnCustomerAdapter.ViewHolder>(){
 
@@ -67,13 +68,13 @@ class ManualTxnCustomerAdapter (
     }
 
     override fun onBindViewHolder(holder: ManualTxnCustomerAdapter.ViewHolder, position: Int) {
-        holder.name.text = customerList[position].customerName
-        holder.phone.text = customerList[position].customerPhone
-        holder.address.text = customerList[position].customerAddress
-        if (customerList[position].customerAddressDetail == ""){
+        holder.name.text = customerList[position].name
+        holder.phone.text = customerList[position].phone
+        holder.address.text = customerList[position].address
+        if (customerList[position].addressDetail == ""){
             holder.addressDetail.visibility = View.GONE
         } else {
-            holder.addressDetail.text = customerList[position].customerAddressDetail
+            holder.addressDetail.text = customerList[position].addressDetail
         }
         holder.customerEdit.setOnClickListener {
             listener.onItemClick(true, position)

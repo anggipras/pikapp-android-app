@@ -49,6 +49,11 @@ class InvoiceFragment : Fragment() {
         invoiceAdapter.notifyDataSetChanged()
         dataBinding.menuList.adapter = invoiceAdapter
 
+        dataBinding.namaPelanggan.text = viewModel.mutableCustName.value
+        dataBinding.noTelpPelanggan.text = viewModel.mutableCustPhone.value
+        dataBinding.alamatPelanggan.text = viewModel.mutableCustAddress.value
+        dataBinding.catatanPelanggan.text = viewModel.mutableCustAddressDetail.value
+
         observeViewModel()
     }
 

@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -54,6 +55,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableSize = MutableLiveData(0)
     val size: LiveData<Int> get() = mutableSize
+
+    private val mutableManualTrans = MutableLiveData<List<ManualTransactionResult>>()
+    val manualTransList: LiveData<List<ManualTransactionResult>> get() = mutableManualTrans
+
+    private val mutableManualPage = MutableLiveData(0)
+    val manualPage: LiveData<Int> get() = mutableManualPage
 
     private val mutableProsesOmni = MutableLiveData(0)
     val prosesOmni: LiveData<Int> get() = mutableProsesOmni
@@ -498,7 +505,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
         val mid = sessionManager.getUserData()!!.mid!!
         val page = "0"
-        val size = "50"
+        val size = "100"
 
         PikappApiService().api.getListOrderOmni(
             getUUID(), getTimestamp(), getClientID(), mid, page, size

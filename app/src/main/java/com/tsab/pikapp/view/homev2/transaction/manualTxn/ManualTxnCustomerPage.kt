@@ -17,10 +17,7 @@ import com.google.gson.annotations.SerializedName
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCustomerPageBinding
-import com.tsab.pikapp.models.model.AddManualAdvMenu
-import com.tsab.pikapp.models.model.FoodListParentCheck
-import com.tsab.pikapp.models.model.FoodListParentRadio
-import com.tsab.pikapp.models.model.StoreOrderList
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.util.*
@@ -31,7 +28,6 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCustomerAdapter: ManualTxnCustomerAdapter
-    val customerList = ArrayList<dummyCustomer>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,11 +45,17 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         dataBinding.recyclerviewCustomer.layoutManager = linearLayoutManager
         dataBinding.recyclerviewCustomer.setHasFixedSize(false)
 
+        viewModel.getCustomer()
+
         observeViewModel()
         attatchInputListeners()
     }
 
     private fun observeViewModel(){
+        viewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer { isLoading ->
+            dataBinding.loadingOverlay.loadingView.visibility =
+                    if (isLoading) View.VISIBLE else View.GONE
+        })
 
         viewModel.customerSize.observe(viewLifecycleOwner, androidx.lifecycle.Observer { size->
             if(size == 0){
@@ -105,40 +107,32 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
     }
 
     private fun setRecyclerView(){
-        manualTxnCustomerAdapter = ManualTxnCustomerAdapter(requireView().context, viewModel.customerList.value as MutableList<dummyCustomer>, this)
+        manualTxnCustomerAdapter = ManualTxnCustomerAdapter(requireView().context, viewModel.customerList.value as MutableList<CustomerResponseDetail>, this)
         manualTxnCustomerAdapter.notifyDataSetChanged()
         dataBinding.recyclerviewCustomer.adapter = manualTxnCustomerAdapter
 
     }
 
-    data class dummyCustomer(
-        @SerializedName("customer_name")
-        var customerName: String?,
-        @SerializedName("customer_phone")
-        var customerPhone: String,
-        @SerializedName("customer_address")
-        var customerAddress: String,
-        @SerializedName("customer_address_detail")
-        var customerAddressDetail: String
-    )
-
     override fun onItemClick(b: Boolean, i: Int) {
         if (b){
             viewModel.customerList.value?.get(i)?.let {
-                it.customerName?.let { it1 -> viewModel.setCustName(it1) }
-                it.customerPhone?.let { it1 -> viewModel.setCustPhone(it1) }
-                it.customerAddress?.let { it1 -> viewModel.setCustAddress(it1) }
-                it.customerAddressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
+                it.name?.let { it1 -> viewModel.setCustName(it1) }
+                it.phone?.let { it1 -> viewModel.setCustPhone(it1) }
+                it.address?.let { it1 -> viewModel.setCustAddress(it1) }
+                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
+                it.customerId?.let { it1 -> viewModel.setCustId(it1) }
             }
             view?.let { Navigation.findNavController(it).navigate(R.id.action_manualTxnCustomerPage_to_manualTxnEditCustomer) }
         } else {
             viewModel.customerList.value?.get(i)?.let {
-                it.customerName?.let { it1 -> viewModel.setCustName(it1) }
-                it.customerPhone?.let { it1 -> viewModel.setCustPhone(it1) }
-                it.customerAddress?.let { it1 -> viewModel.setCustAddress(it1) }
-                it.customerAddressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
+                it.name?.let { it1 -> viewModel.setCustName(it1) }
+                it.phone?.let { it1 -> viewModel.setCustPhone(it1) }
+                it.address?.let { it1 -> viewModel.setCustAddress(it1) }
+                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
+                it.customerId?.let { it1 -> viewModel.setCustId(it1) }
             }
             dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
+            dataBinding.btnSelect.isEnabled = true
         }
     }
 
