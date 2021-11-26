@@ -180,7 +180,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun setWaktu(nama: String, custom:String){
         mutableWaktu.value = nama
         mutableCustomWaktu.value = custom
-        Log.e("custom", custom)
     }
 
     fun setDate(nama: String){
@@ -344,8 +343,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<CustomerResponse>,
                 response: Response<CustomerResponse>
             ) {
-                Log.e("response body", response.body().toString())
-                Log.e("response result", response.body()?.results.toString())
+                Log.e("response body", "succeed")
             }
 
             override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
@@ -371,8 +369,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<CustomerResponse>,
                 response: Response<CustomerResponse>
             ) {
-                Log.e("response body", response.body().toString())
-                Log.e("response result", response.body()?.results.toString())
+                Log.e("response body", "succeed")
             }
 
             override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
@@ -388,8 +385,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<DeleteCustomerResponse>,
                 response: Response<DeleteCustomerResponse>
             ) {
-                Log.e("response body", response.body().toString())
-                Log.e("response result", response.body()?.results.toString())
+                Log.e("response body", "succeed")
             }
 
             override fun onFailure(call: Call<DeleteCustomerResponse>, t: Throwable) {
@@ -412,15 +408,11 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             ) {
                 val orderResponse = response.body()
                 val resultList = orderResponse?.results
-                Log.e("customer", resultList.toString() )
-                Log.e("response body", orderResponse.toString())
                 if (resultList != null){
                     mutableCustomerList.value = resultList!!
                     mutableSizeCustomer.value = mutableCustomerList.value?.size
                     setLoading(false)
                 }
-
-
             }
 
             override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
@@ -572,8 +564,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             payStatus = "UNPAID"
         }
 
-        Log.e("fnqn", mutableSelectedMenuTemp.value.toString())
-
         if(mutableHargaEkspedisi.value == " "){
             hargaEkspedisi = "0"
         }else{
@@ -583,8 +573,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         for(q in mutableSelectedMenuTemp.value!!){
             menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0"))
         }
-
-        Log.e("fnqn", menuList.toString())
 
         if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
             orderType = "PICKUP"
@@ -600,8 +588,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<ManualTxnResponse>,
                 response: Response<ManualTxnResponse>
             ) {
-                Log.e("success", response.body().toString())
-                Log.e("success", response.code().toString())
+                Log.e("success", "succeed")
             }
 
             override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
