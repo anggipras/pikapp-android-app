@@ -33,9 +33,7 @@
                         android:layout_height="?attr/actionBarSize"
                         app:title="Pesanan Masuk"
                         app:titleTextColor="@color/black"
-                        app:titleTextAppearance="@style/titleToolbar"
-                        app:menu="@menu/txn_menu"
-                        />
+                        app:titleTextAppearance="@style/titleToolbar" />
 
                 </com.google.android.material.appbar.AppBarLayout>
 
