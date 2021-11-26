@@ -225,3 +225,4 @@ data class AcceptOrderTokopediaResult(
     @SerializedName("error_code")
     val errorCode: String?
 )
+
