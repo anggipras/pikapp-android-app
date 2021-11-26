@@ -45,6 +45,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableSearchEnter = MutableLiveData(false)
     val isSearch: LiveData<Boolean> get() = mutableSearchEnter
 
+    val mutablePayStat = MutableLiveData(false)
+    val payStatus: LiveData<Boolean> get() = mutablePayStat
+
     val mutableSearchMenu = MutableLiveData("")
     val MenuSubmit: LiveData<String> get() = mutableSearchMenu
 
@@ -142,7 +145,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableTotalPrice.value = menuAmount!! + extraAmount!!
     }
 
-    private val mutableCartPrice = MutableLiveData(0)
+    val mutableCartPrice = MutableLiveData(0)
     val totalCart: LiveData<Int> get() = mutableCartPrice
     fun cartTotalPrice(totPrice: String, price: String){
         if (totPrice != "null"){
@@ -438,6 +441,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun postOrder(paymentStatus: Boolean){
+        mutablePayStat.value = paymentStatus
         var hargaEkspedisi: String = ""
         var orderType: String = ""
         var payStatus: String = ""

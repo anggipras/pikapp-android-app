@@ -61,7 +61,7 @@ data class ManualTxnResponse(
 data class ManualTxnResult(
     var shipping: ShippingData,
     var customer: CustomerData,
-    var products: List<MenuListResponse>,
+    var productList: List<MenuListResponse>,
     var transaction_id: String,
     var transaction_time: String,
     var order_id: String,

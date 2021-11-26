@@ -342,7 +342,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/proximanova_regular"
                         android:text="Total Harga (6Item(s))"
                         android:textColor="@color/black"

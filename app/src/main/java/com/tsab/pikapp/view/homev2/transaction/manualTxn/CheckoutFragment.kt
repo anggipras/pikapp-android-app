@@ -148,6 +148,7 @@ class CheckoutFragment : Fragment() {
 
         dataBinding.btnNext.setOnClickListener {
             if (custStat && kurirStat && dateStat && asalStat && paymentStat){
+                viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
                 viewModel.postOrder(dataBinding.payStat.isChecked)
                 navController?.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
             }else{
