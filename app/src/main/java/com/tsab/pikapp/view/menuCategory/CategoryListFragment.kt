@@ -111,7 +111,6 @@ class CategoryListFragment : Fragment() {
                     viewModel.getCategoryId(category.id.toString())
                     viewModel.getCategoryMenuSize(category.productSize.toString())
                     Log.e("activation rv", category.isActive.toString())
-                    Log.e("vm", viewModel.activationToggle.value)
 
                     navController.navigate(R.id.action_categoryListPage_to_editCategoryPage)
                 }

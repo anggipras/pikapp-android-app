@@ -64,7 +64,6 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                 }  else {
                     var errorResponse: MerchantListCategoryResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Log.e("err code", errorResponse?.errCode)
                     Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
                     Log.e("error", "logged out")
                     mutableErrCode.value = errorResponse?.errCode

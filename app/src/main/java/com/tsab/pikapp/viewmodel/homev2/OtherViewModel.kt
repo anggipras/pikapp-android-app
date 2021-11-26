@@ -99,7 +99,6 @@ class OtherViewModel : ViewModel() {
                 }  else {
                     var errorResponse: MerchantTimeManagement? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Log.e("err code", errorResponse?.errCode)
                     Toast.makeText(context, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
                     Log.e("error", "logged out")
                     mutableErrCode.value = errorResponse?.errCode
