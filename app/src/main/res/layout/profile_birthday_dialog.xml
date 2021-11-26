@@ -51,6 +51,7 @@
             android:background="@color/white"
             android:fontFamily="@font/montserrat_bold"
             android:text="Ya"
+            style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/green" />
 
         <Button

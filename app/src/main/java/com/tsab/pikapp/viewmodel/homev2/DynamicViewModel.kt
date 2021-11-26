@@ -31,11 +31,11 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getMenuList() {
-        val email = sessionManager.getUserData()!!.email!!
+        val email = sessionManager.getUserData()?.email
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
-        val mid = sessionManager.getUserData()!!.mid!!
+        val mid = sessionManager.getUserData()?.mid
 
         PikappApiService().api.searchMenu(
             getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
@@ -46,7 +46,11 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
             ) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val amountOfMenus = response.body()!!.total_items
-                    getSearchList(amountOfMenus)
+                    if (amountOfMenus != 0) {
+                        getSearchList(amountOfMenus)
+                    } else {
+                        Log.e("Zero_Product", "There is no product available")
+                    }
                 } else {
                     Log.e("FAIL", "Failed get amount of menus")
                 }
@@ -61,11 +65,11 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
     fun getSearchList(amountOfMenus: Int) {
         if (menuList.value!!.isNotEmpty()) return
 
-        val email = sessionManager.getUserData()!!.email!!
+        val email = sessionManager.getUserData()?.email
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
-        val mid = sessionManager.getUserData()!!.mid!!
+        val mid = sessionManager.getUserData()?.mid
 
         PikappApiService().api.searchMenu(
             getUUID(), timestamp, getClientID(), signature, token,

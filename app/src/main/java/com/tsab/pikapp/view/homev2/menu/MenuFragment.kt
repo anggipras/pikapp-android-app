@@ -1,11 +1,13 @@
 package com.tsab.pikapp.view.homev2.menu
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,12 +18,17 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.homev2.SearchActivity
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_proccess.*
+import kotlinx.android.synthetic.main.menu_fragment.*
+import kotlinx.android.synthetic.main.menu_fragment.topAppBar
+import kotlinx.android.synthetic.main.transaction_fragment.*
+import java.io.File
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -59,11 +66,13 @@ class MenuFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.restartFragment()
+        deleteCache(requireContext())
     }
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.shimmerFrameLayoutCategory.visibility = if (isLoading) View.VISIBLE else View.GONE
+            dataBinding.shimmerFrameLayoutCategory.visibility =
+                if (isLoading) View.VISIBLE else View.GONE
             if (!isLoading) {
                 initViews()
                 dataBinding.shimmerFrameLayoutMenu.visibility = View.GONE
@@ -102,7 +111,7 @@ class MenuFragment : Fragment() {
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
             Log.e("errcode", errCode)
-            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017"){
+            if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
@@ -126,9 +135,19 @@ class MenuFragment : Fragment() {
             }
         }
 
-        dataBinding.sortButton.setOnClickListener {
-            if (viewModel.size.value != null) {
-//                sessionManager.setSortNav(0)
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navDraw -> {
+                    (activity as HomeActivity).openCloseDrawer(requireView())
+                    true
+                }
+                else -> false
+            }
+        }
+
+        /*dataBinding.sortButton.setOnClickListener { v ->
+            (activity as HomeActivity).openCloseDrawer(v)
+            *//*if (viewModel.size.value != null) {
                 sessionManager.setHomeNav(1)
                 Intent(activity?.baseContext, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
@@ -136,16 +155,9 @@ class MenuFragment : Fragment() {
                 }
             } else if (viewModel.size.value == 0) {
                 dataBinding.textview3.visibility = View.VISIBLE
-            }
-        }
+            }*//*
+        }*/
 
-        dataBinding.searchButton.setOnClickListener {
-            if (viewModel.size.value != null) {
-                Intent(activity?.baseContext, SearchActivity::class.java).apply {
-                    activity?.startActivity(this)
-                }
-            }
-        }
     }
 
     private fun invisibleMenuNull() {
@@ -204,8 +216,34 @@ class MenuFragment : Fragment() {
         }
 
         val mDynamicFragmentAdapter =
-            DynamicFragmentAdapter(fragmentManager, categoryList.size, categoryList)
+            DynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
         dataBinding.viewpager.adapter = mDynamicFragmentAdapter
         dataBinding.viewpager.currentItem = 0
+    }
+
+    fun deleteCache(context: Context) {
+        try {
+            val dir: File = context.cacheDir
+            deleteDir(dir)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun deleteDir(dir: File?): Boolean {
+        return if (dir != null && dir.isDirectory) {
+            val children: Array<String> = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+            dir.delete()
+        } else if (dir != null && dir.isFile) {
+            dir.delete()
+        } else {
+            false
+        }
     }
 }

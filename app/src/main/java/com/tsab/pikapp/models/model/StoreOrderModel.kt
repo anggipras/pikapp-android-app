@@ -60,6 +60,88 @@ data class GetStoreOrderDetailResponse(
     val results: StoreOrderList?
 ) : Response
 
+data class GetManualTransactionResp(
+    @SerializedName("err_code")
+    val errCode: String?,
+    @SerializedName("err_message")
+    val errMessage: String?,
+    val results: List<ManualTransactionResult>?
+)
+
+data class ManualTransactionResult(
+    @SerializedName("shipping")
+    val shipping: ManualShippingResponse?,
+    @SerializedName("customer")
+    val customer: ManualCustomerResponse?,
+    @SerializedName("productList")
+    val productList: List<ManualProductListResponse>?,
+    @SerializedName("transaction_id")
+    val transaction_id: String?,
+    @SerializedName("transaction_time")
+    val transaction_time: String?,
+    @SerializedName("order_id")
+    val order_id: Int?,
+    @SerializedName("mid")
+    val mid: String?,
+    @SerializedName("order_type")
+    val order_type: String?,
+    @SerializedName("order_status")
+    val order_status: String?,
+    @SerializedName("payment_status")
+    val payment_status: String?,
+    @SerializedName("order_platform")
+    val order_platform: String?,
+    @SerializedName("total_product_price")
+    val total_product_price: Int?,
+    @SerializedName("total_discount")
+    val total_discount: Int?,
+    @SerializedName("total_payment")
+    val total_payment: Int?,
+    @SerializedName("created_at")
+    val created_at: String?,
+    @SerializedName("updated_at")
+    val updated_at: String?
+)
+
+data class ManualShippingResponse(
+    @SerializedName("shipping_method")
+    val shipping_method: String?,
+    @SerializedName("shipping_cost")
+    val shipping_cost: Int?,
+    @SerializedName("shipping_time")
+    val shipping_time: String?
+)
+
+data class ManualCustomerResponse(
+    @SerializedName("address")
+    val shipping_method: String?,
+    @SerializedName("customer_id")
+    val shipping_cost: Int?,
+    @SerializedName("customer_name")
+    val customer_name: String?,
+    @SerializedName("phone_number")
+    val phone_number: String?,
+    @SerializedName("address_detail")
+    val address_detail: String?
+)
+
+data class ManualProductListResponse(
+    @SerializedName("quantity")
+    val quantity: Int?,
+    @SerializedName("price")
+    val price: Int?,
+    @SerializedName("discount")
+    val discount: Int?,
+    @SerializedName("notes")
+    val notes: String?,
+    @SerializedName("extraPrice")
+    val extraPrice: Int?,
+    @SerializedName("product_id")
+    val product_id: String?,
+    @SerializedName("product_name")
+    val product_name: String?
+)
+
 data class UpdateOrderStatusModel(
     @SerializedName("transaction_id")
     val transactionID: String?,

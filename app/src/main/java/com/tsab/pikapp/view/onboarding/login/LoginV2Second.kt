@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.onboarding.login
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,9 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentLoginV2SecondBinding
-import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.onboarding.login.LoginOnboardingViewModelV2
+import kotlinx.android.synthetic.main.fragment_login_v2_second.*
 
 class LoginV2Second : Fragment() {
 
@@ -49,6 +49,10 @@ class LoginV2Second : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(LoginOnboardingViewModelV2::class.java)
+
+        dataBinding.logPin.requestFocus()
+        val imgr = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imgr.showSoftInput(logPin, InputMethodManager.SHOW_IMPLICIT)
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

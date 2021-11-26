@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -27,6 +28,11 @@ class SearchFragment : Fragment() {
     private lateinit var dataBinding: FragmentSearchBinding
     private val sessionManager = SessionManager()
     lateinit var linearLayoutManager: LinearLayoutManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sessionManager.setHomeNav(1)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +67,17 @@ class SearchFragment : Fragment() {
             }
         })
         attachInputListeners()
+        onBackPressed()
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+                activity?.startActivity(intent)
+                activity?.finish()
+            }
+        })
     }
 
     fun View.hideKeyboard() {
@@ -79,6 +96,7 @@ class SearchFragment : Fragment() {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
+                    activity?.finish()
                 }
             }
         })
@@ -86,9 +104,9 @@ class SearchFragment : Fragment() {
 
     private fun attachInputListeners(){
         dataBinding.back.setOnClickListener {
-            val intent =
-                Intent(activity?.baseContext, HomeActivity::class.java)
+            val intent = Intent(activity?.baseContext, HomeActivity::class.java)
             activity?.startActivity(intent)
+            activity?.finish()
         }
 
         dataBinding.searchView.setOnClickListener {

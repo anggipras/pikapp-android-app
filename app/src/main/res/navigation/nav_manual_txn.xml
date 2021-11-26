@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_manual_txn"
+    app:startDestination="@id/homeViewManualTxn">
+
+    <fragment
+        android:id="@+id/homeViewManualTxn"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.HomeViewManualTxn"
+        android:label="fragment_home_view_manual_txn"
+        tools:layout="@layout/fragment_home_view_manual_txn" >
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualAddAdvMenuFragment"
+            app:destination="@id/manualAddAdvMenuFragment" />
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualTxnDynamicFragment"
+            app:destination="@id/manualTxnDynamicFragment" />
+        <action
+            android:id="@+id/action_homeViewManualTxn_to_manualTxnCartPage"
+            app:destination="@id/manualTxnCartPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualAddAdvMenuFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment"
+        android:label="ManualAddAdvMenuFragment"
+        tools:layout="@layout/fragment_manual_add_adv_menu"/>
+    <fragment
+        android:id="@+id/manualTxnDynamicFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDynamicFragment"
+        android:label="fragment_manual_txn_dynamic"
+        tools:layout="@layout/fragment_manual_txn_dynamic" >
+        <action
+            android:id="@+id/action_manualTxnDynamicFragment_to_manualTxnCartPage"
+            app:destination="@id/manualTxnCartPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualTxnCartPage"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCartPage"
+        android:label="fragment_manual_txn_cart_page"
+        tools:layout="@layout/fragment_manual_txn_cart_page" >
+        <action
+            android:id="@+id/action_manualTxnCartPage_to_manualTxnDetail"
+            app:destination="@id/manualTxnDetail" />
+        <action
+            android:id="@+id/action_manualTxnCartPage_to_manualAddAdvMenuFragment"
+            app:destination="@id/manualAddAdvMenuFragment" />
+        <action
+            android:id="@+id/action_manualTxnCartPage_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/manualTxnDetail"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDetail"
+        android:label="ManualTxnDetail" />
+    <fragment
+        android:id="@+id/manualTxnCustomerPage"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCustomerPage"
+        android:label="fragment_manual_txn_customer_page"
+        tools:layout="@layout/fragment_manual_txn_customer_page" >
+        <action
+            android:id="@+id/action_manualTxnCustomerPage_to_manualTxnAddCustomer"
+            app:destination="@id/manualTxnAddCustomer" />
+        <action
+            android:id="@+id/action_manualTxnCustomerPage_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+        <action
+            android:id="@+id/action_manualTxnCustomerPage_to_manualTxnEditCustomer"
+            app:destination="@id/manualTxnEditCustomer" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualTxnAddCustomer"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnAddCustomer"
+        android:label="fragment_manual_txn_add_customer"
+        tools:layout="@layout/fragment_manual_txn_add_customer" >
+        <action
+            android:id="@+id/action_manualTxnAddCustomer_to_manualTxnCustomerPage"
+            app:destination="@id/manualTxnCustomerPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.CheckoutFragment"
+        android:label="CheckoutFragment" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_manualTxnCustomerPage"
+            app:destination="@id/manualTxnCustomerPage" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_invoiceFragment"
+            app:destination="@id/invoiceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" />
+    <fragment
+        android:id="@+id/manualTxnEditCustomer"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnEditCustomer"
+        android:label="fragment_manual_txn_edit_customer"
+        tools:layout="@layout/fragment_manual_txn_edit_customer" >
+        <action
+            android:id="@+id/action_manualTxnEditCustomer_to_manualTxnCustomerPage"
+            app:destination="@id/manualTxnCustomerPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/invoiceFragment"
+        android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.InvoiceFragment"
+        android:label="fragment_invoice"
+        tools:layout="@layout/fragment_invoice" />
+</navigation>

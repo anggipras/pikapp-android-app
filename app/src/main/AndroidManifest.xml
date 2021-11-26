@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tsab.pikapp">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,36 +18,81 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".view.homev2.menu.tokopedia.EtalaseNavigation"></activity>
-        <activity android:name=".view.AddTokpedMenuActivity"></activity>
+        <activity android:name=".view.homev2.menu.WebMenuActivity"></activity>
+        <activity
+            android:name=".view.homev2.transaction.manualTxn.ManualTxnActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.transaction.shipment.ScanResiActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.menu.tokopedia.EtalaseNavigation"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.AddTokpedMenuActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.other.otherReport.ReportActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true" />
 
-        <activity android:name=".view.omni.integration.IntegrationActivity" />
-        <activity android:name=".view.TransactionDetailActivity" />
-        <activity android:name=".view.homev2.SearchActivity" />
-
+        <activity
+            android:name=".view.omni.integration.IntegrationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.TransactionDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.SearchActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.homev2.HomeActivity"
-            android:label="@string/title_activity_bottom_navigation" />
-        <activity android:name=".view.homev2.SearchActivity"></activity>
-        <activity android:name=".view.homev2.menu.MenuNavigation" />
-
-        <activity android:name=".view.menu.UpdateMenuActivity" />
-
-        <activity android:name=".view.menuCategory.SortActivity" />
-        <activity android:name=".view.menuCategory.CategoryNavigation" />
-
-        <activity android:name=".view.loginv2.LoginRegisterActivity" />
-
-        <activity android:name=".view.other.OtherSettingsActivity" />
-
-        <activity android:name=".view.RegisterV2Activity" />
-        <activity android:name=".view.LoginV2Activity" />
-        <activity android:name=".view.CarouselActivity" />
-
+            android:configChanges="orientation"
+            android:label="@string/title_activity_bottom_navigation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.homev2.menu.MenuNavigation"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.menuCategory.SortActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.menuCategory.CategoryNavigation"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.loginv2.LoginRegisterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.other.OtherSettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.RegisterV2Activity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.LoginV2Activity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.CarouselActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.AdvanceMenuActivity"
             android:screenOrientation="portrait"
@@ -57,58 +103,52 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="StoreOrderListActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.OrderListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="OrderListActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.TransactionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.StoreActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.UserExclusiveActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.HomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.OnboardingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".view.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -119,7 +159,6 @@
                     android:host="pikapp.id"
                     android:scheme="https" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -142,4 +181,5 @@
             </intent-filter>
         </service>
     </application>
+
 </manifest>

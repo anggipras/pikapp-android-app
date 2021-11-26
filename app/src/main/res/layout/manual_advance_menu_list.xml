@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/advMenu_parentChoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Tambah Topping"
+        android:fontFamily="@font/montserrat"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:textFontWeight="700"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/advMenu_parentChoice_maxChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/montserrat"
+        android:textSize="11sp"
+        android:textColor="@color/textSubtle"
+        android:textFontWeight="400"
+        app:layout_constraintTop_toTopOf="@+id/advMenu_parentChoice"
+        app:layout_constraintStart_toEndOf="@+id/advMenu_parentChoice"
+        app:layout_constraintBottom_toBottomOf="@+id/advMenu_parentChoice"/>
+
+    <RadioGroup
+        android:id="@+id/radio_childMenuChoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/advMenu_parentChoice">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_childMenuChoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            tools:itemCount="4"
+            tools:listitem="@layout/child_adv_menu_choice_list" />
+
+    </RadioGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_childMenuChoice_check"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+        tools:itemCount="4"
+        tools:listitem="@layout/child_adv_menu_choice_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/advMenu_parentChoice" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

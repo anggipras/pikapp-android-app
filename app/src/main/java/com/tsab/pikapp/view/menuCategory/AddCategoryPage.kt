@@ -14,8 +14,8 @@ import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddCategoryPageBinding
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_add_category_page.*
 
@@ -82,7 +82,11 @@ class AddCategoryPage : Fragment() {
         }, view)
 
         dataBinding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.activation = isChecked
+            if (isChecked) {
+                viewModel.activation = isChecked
+            } else {
+                viewModel.activation = false
+            }
         }
     }
 }
