@@ -9,7 +9,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.OnSuccessListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.tsab.pikapp.BuildConfig
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.SplashViewModel
@@ -29,31 +34,30 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
-        runSplash()
-//        Firebase.messaging.isAutoInitEnabled = true
-//
-//        appUpdateListener = OnSuccessListener { appUpdateInfo ->
-//            this.appUpdateInfo = appUpdateInfo
-//
-//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-//            ) {
-//                appUpdateManager.startUpdateFlowForResult(
-//                    appUpdateInfo,
-//                    AppUpdateType.IMMEDIATE,
-//                    this,
-//                    myRequestCode
-//                )
-//            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-//                Timber.d("Update on progress...")
-//            } else if(appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
-//                runSplash()
-//            } else {
-//                Timber.d("Update went wrong!")
-//            }
-//        }
-//        appUpdateManager = AppUpdateManagerFactory.create(this)
-//        appUpdateManager.appUpdateInfo.addOnSuccessListener(appUpdateListener)
+        Firebase.messaging.isAutoInitEnabled = true
+
+        appUpdateListener = OnSuccessListener { appUpdateInfo ->
+            this.appUpdateInfo = appUpdateInfo
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    myRequestCode
+                )
+            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                Timber.d("Update on progress...")
+            } else if(appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
+                runSplash()
+            } else {
+                Timber.d("Update went wrong!")
+            }
+        }
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.appUpdateInfo.addOnSuccessListener(appUpdateListener)
     }
 
     private fun runSplash() {

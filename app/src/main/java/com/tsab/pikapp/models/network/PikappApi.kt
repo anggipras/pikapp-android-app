@@ -370,7 +370,7 @@ interface PikappApi {
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
-        @Header("mid") merchantID: String,
+        @Header("mid") merchantID: String?,
         @Body transactionList: TransactionListRequest
     ): Call<GetStoreOrderListV2Response>
 
@@ -465,7 +465,7 @@ interface PikappApi {
             @Header("x-client-id") clientID: String,
             @Header("x-signature") signature: String,
             @Header("token") token: String,
-            @Path("mid") mid: String
+            @Path("mid") mid: String?
     ): Single<MerchantProfileResponse>
 
     // Advanced Menu
@@ -552,7 +552,7 @@ interface PikappApi {
             @Header("x-client-id") clientID: String,
             @Header("x-signature") signature: String,
             @Header("token") token: String,
-            @Header("mid") mid: String
+            @Header("mid") mid: String?
     ): Call<MerchantTimeManagement>
 
     @Multipart
@@ -615,7 +615,7 @@ interface PikappApi {
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
-        @Header("mid") mid: String,
+        @Header("mid") mid: String?,
         @Body search: SearchRequest
     ): Call<SearchResponse>
 

@@ -1,48 +1,36 @@
 package com.tsab.pikapp.view.homev2
 
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
-import com.tsab.pikapp.receiver.AlarmReceiver
+import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.other.OtherFragment
 import com.tsab.pikapp.view.homev2.promo.PromoFragment
 import com.tsab.pikapp.view.homev2.menu.TransactionFragment
+import com.tsab.pikapp.view.homev2.menu.WebMenuActivity
 import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.layout_header_drawer.view.*
-import java.util.*
 
 class HomeActivity : AppCompatActivity() {
     val model: CategoryViewModel by viewModels()
-
     private val transactionFragment = TransactionFragment()
     private val menuFragment = MenuFragment()
     private val promoFragment = PromoFragment()
     private val otherFragment = OtherFragment()
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: ActivityHomeNavigationBinding
-
-    private var alarmMgr: AlarmManager? = null
-    private lateinit var alarmIntent: PendingIntent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,16 +68,18 @@ class HomeActivity : AppCompatActivity() {
                 R.id.sort_menu-> Intent(this, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
                     startActivity(this)}
+                R.id.see_menu -> Intent(this, WebMenuActivity::class.java).apply {
+                    val midStore: String? = sessionManager.getUserData()?.mid
+                    putExtra("MID", midStore)
+                    startActivity(this)
+                }
                 R.id.share_link -> {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        var midStore: String? = ""
-                        var phStore: String? = ""
-                        if (sessionManager.getUserData()?.mid != null) {
-                             midStore = sessionManager.getUserData()!!.mid
-                             phStore = sessionManager.getUserData()!!.phoneNumber
-                        }
-                        val linkURL = "https://web-dev.pikapp.id/merchant/${midStore}"
+                        var midStore: String? = sessionManager.getUserData()?.mid
+                        var phStore: String? = sessionManager.getUserData()?.phoneNumber
+                        val menuWebApi = PikappApiService().menuWeb()
+                        val linkURL = "${menuWebApi}store?mid=${midStore}"
                         val linkText = "Klik disini untuk melihat menu toko kami : ${linkURL}\n\nUntuk info lebih lanjut, hubungi kami di ${phStore}"
                         putExtra(Intent.EXTRA_TEXT, linkText)
                         type = "text/plain"
@@ -113,56 +103,10 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAlarm() {
-        alarmMgr = getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmIntent = Intent(this, AlarmReceiver::class.java).let { intent ->
-            PendingIntent.getBroadcast(this, 0, intent, 0)
-        }
-
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 9)
-            set(Calendar.AM_PM, Calendar.AM)
-        }
-
-        alarmMgr!!.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            alarmIntent
-        )
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = getString(R.string.general_notif_id)
-            val channelName: CharSequence = getString(R.string.notification_channel_name)
-            val description = getString(R.string.notification_channel_description)
-            val notificationChannel =
-                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.YELLOW
-            notificationChannel.enableVibration(true)
-            notificationChannel.description = description
-
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-    }
-
     private fun replaceFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment)
         transaction.commit()
-    }
-
-    private fun hideKeyboard() {
-        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        if (inputManager.isAcceptingText) {
-            inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-        }
     }
 
     override fun onBackPressed() {

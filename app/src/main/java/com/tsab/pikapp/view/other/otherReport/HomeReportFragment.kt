@@ -116,8 +116,6 @@ class HomeReportFragment : Fragment() {
         dataBinding.reportWebView.webViewClient = WebViewClient()
 
         val reportApi = PikappApiService().webReport()
-//        val urlReport = "${reportApi}report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}"
-
         dataBinding.reportWebView.apply {
             loadUrl("${reportApi}report/generate?startdate=${startDate}&enddate=${endDate}&mid=${mid}")
             settings.javaScriptEnabled = true

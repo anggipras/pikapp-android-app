@@ -13,6 +13,11 @@
     </group>
     <group android:id="@+id/group3" android:checkableBehavior="single">
         <item
+            android:id="@+id/see_menu"
+            android:title="Lihat Menu di Web" />
+    </group>
+    <group android:id="@+id/group4" android:checkableBehavior="single">
+        <item
             android:id="@+id/share_link"
             android:title="Bagikan Menu" />
     </group>
