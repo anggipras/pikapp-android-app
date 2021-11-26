@@ -60,6 +60,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableBayar = MutableLiveData("")
     val BayarPesanan: LiveData<String> get() = mutableBayar
 
+    val mutablePostWaktu = MutableLiveData("")
+    val postWaktu: LiveData<String> get() = mutablePostWaktu
+
     val mutableDate = MutableLiveData("")
     val DatePesanan: LiveData<String> get() = mutableDate
 
@@ -432,5 +435,57 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                     }
                 })
         )
+    }
+
+    fun postOrder(paymentStatus: Boolean){
+        var hargaEkspedisi: String = ""
+        var orderType: String = ""
+        var payStatus: String = ""
+        var menuList: ArrayList<MenuList> = ArrayList()
+        var mid: String? = sessionManager.getUserData()?.mid
+
+        if(paymentStatus){
+            payStatus = "PAID"
+        }else{
+            payStatus = "UNPAID"
+        }
+
+        Log.e("fnqn", mutableSelectedMenuTemp.value.toString())
+
+        if(mutableHargaEkspedisi.value == " "){
+            hargaEkspedisi = "0"
+        }else{
+            hargaEkspedisi = mutableHargaEkspedisi.value.toString()
+        }
+
+        for(q in mutableSelectedMenuTemp.value!!){
+            menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0"))
+        }
+
+        Log.e("fnqn", menuList.toString())
+
+        if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
+            orderType = "PICKUP"
+        }else{
+            orderType = "DELIVERY"
+        }
+
+        var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
+        var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi, mutablePostWaktu.value.toString())
+        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, "7", mid.toString(), orderType, mutableAsal.value.toString(), mutableCartPrice.value.toString(), payStatus, mutableBayar.value!!.toString(), "OPEN", 0, (mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt()).toString())).
+        enqueue(object : Callback<ManualTxnResponse>{
+            override fun onResponse(
+                call: Call<ManualTxnResponse>,
+                response: Response<ManualTxnResponse>
+            ) {
+                Log.e("success", response.body().toString())
+                Log.e("success", response.code().toString())
+            }
+
+            override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
+               Log.e("Fail", t.toString())
+            }
+
+        })
     }
 }

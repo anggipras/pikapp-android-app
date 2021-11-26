@@ -678,4 +678,9 @@ interface PikappApi {
             @Part("platform") platform: RequestBody,
             @Part("mid") mid: RequestBody
     ): Call<UploadReportResponse>
+
+    @POST("pos/v1/transaction/add/")
+    fun uploadManualTxn(
+        @Body ManualTxnRequest: ManualTxnRequest
+    ) : Call<ManualTxnResponse>
 }
