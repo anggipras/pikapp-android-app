@@ -344,9 +344,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         totalItems: Int?,
         listener: TransactionListAdapter.OnItemClickListener
     ) {
-        val email = sessionManager.getUserData()!!.email!!
+        val email = sessionManager.getUserData()?.email
         val token = sessionManager.getUserToken()!!
-        val mid = sessionManager.getUserData()!!.mid!!
+        val mid = sessionManager.getUserData()?.mid
         val timestamp = getTimestamp()
 
         val transReq = TransactionListRequest(

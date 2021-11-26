@@ -36,6 +36,14 @@ class PikappApiService {
         }
     }
 
+    fun menuWeb(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "https://web-dev.pikapp.id/"
+        } else {
+            "https://order.pikapp.id/"
+        }
+    }
+
     val reportApi = Retrofit.Builder()
         .baseUrl(checkBuildConfig())
         .addConverterFactory(GsonConverterFactory.create())
