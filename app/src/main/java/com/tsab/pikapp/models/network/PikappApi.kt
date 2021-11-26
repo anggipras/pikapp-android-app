@@ -385,6 +385,19 @@ interface PikappApi {
         @Path("tableNo") tableNo: String
     ): Single<GetStoreOrderDetailResponse>
 
+    @GET("pos/v1/transaction/list/{mid}/{status}")
+    fun getManualTransactionList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("size") size: Int,
+        @Header("page") page: Int?,
+        @Path("mid") midStore: String?,
+        @Path("status") statusTrans: String
+    ): Call<GetManualTransactionResp>
+
     // Update status
     @Multipart
     @POST("txn/v1/txn-update/")

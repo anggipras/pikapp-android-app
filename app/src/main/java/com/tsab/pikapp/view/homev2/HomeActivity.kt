@@ -68,11 +68,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.sort_menu-> Intent(this, SortActivity::class.java).apply {
                     putExtra("SORT_NAV", 0)
                     startActivity(this)}
-                R.id.see_menu -> Intent(this, WebMenuActivity::class.java).apply {
-                    val midStore: String? = sessionManager.getUserData()?.mid
-                    putExtra("MID", midStore)
-                    startActivity(this)
-                }
+                R.id.see_menu -> startActivity(Intent(this, WebMenuActivity::class.java))
                 R.id.share_link -> {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
