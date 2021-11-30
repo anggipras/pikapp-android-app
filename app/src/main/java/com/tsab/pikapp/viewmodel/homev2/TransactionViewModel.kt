@@ -80,6 +80,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val mutableGrabFilter = MutableLiveData<Boolean>(false)
     val grabFilter: LiveData<Boolean> get() = mutableGrabFilter
 
+    val mutableWhatsappFilter = MutableLiveData<Boolean>(false)
+    val whatsappFilter: LiveData<Boolean> get() = mutableWhatsappFilter
+
+    val mutableTelpFilter = MutableLiveData<Boolean>(false)
+    val telpFilter: LiveData<Boolean> get() = mutableTelpFilter
+
     val mutableTokpedFilter = MutableLiveData<Boolean>(false)
     val tokpedFilter: LiveData<Boolean> get() = mutableTokpedFilter
 

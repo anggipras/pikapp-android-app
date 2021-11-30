@@ -126,7 +126,31 @@
                         android:background="@drawable/gray_square_btn"
                         android:minWidth="0dp"
                         android:paddingHorizontal="8dp"
-                        android:text="@string/shopee"
+                        android:text="Instagram"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
+
+                    <Button
+                        android:id="@+id/buttonFilterWhatsapp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:background="@drawable/gray_square_btn"
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="Whatsapp"
+                        android:textColor="@color/borderSubtle"
+                        tools:ignore="ButtonStyle" />
+
+                    <Button
+                        android:id="@+id/buttonFilterTelp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:background="@drawable/gray_square_btn"
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="Telepom"
                         android:textColor="@color/borderSubtle"
                         tools:ignore="ButtonStyle" />
 

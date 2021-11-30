@@ -93,6 +93,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                         yearNow = year
                         Log.e("Month", monthOfYear.toString())
                         date = "$dayOfMonth" + month + "$year"
+                        customDate.text = date
                     })
                 datePicker.minDate = System.currentTimeMillis() - 1000
                 btnSaveDate.visibility = View.GONE
