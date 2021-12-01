@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
+import com.tsab.pikapp.models.model.ExtraList
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import java.text.NumberFormat
 import java.util.*
@@ -26,6 +27,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCartAdapter: ManualTxnCartAdapter
+    private var extraList: ArrayList<ExtraList> = ArrayList()
     private val localeID =  Locale("in", "ID")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

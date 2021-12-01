@@ -1,6 +1,7 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -8,12 +9,15 @@ import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCustomerPage
+import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,6 +34,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
+
+    lateinit var manualTxnAdapter: ManualTxnListAdapter
+    lateinit var linearLayoutManager: LinearLayoutManager
 
     private val mutableSelectedMenuTemp = MutableLiveData<List<AddManualAdvMenu>>(listOf())
     val selectedMenuTemp: LiveData<List<AddManualAdvMenu>> = mutableSelectedMenuTemp
@@ -448,6 +455,50 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         addTotalQty()
     }
 
+    fun getManualTxnList(status: String, baseContext: Context, recyclerview_transaction: RecyclerView){
+        val mid = sessionManager.getUserData()!!.mid!!
+        val status = status
+
+        PikappApiService().api.getManualTransactionList(
+            size = 100,
+            page = 0,
+            mid,
+            status
+        ).enqueue(object : Callback<GetManualTransactionResp>{
+            override fun onResponse(
+                call: Call<GetManualTransactionResp>,
+                response: Response<GetManualTransactionResp>
+            ) {
+                val response = response.body()
+                val result = response?.results
+                Log.e("response", response.toString())
+                Log.e("result", result.toString())
+                val productList = ArrayList<ArrayList<ManualProductListResponse>>()
+
+                if(result != null){
+                    for (r in result){
+                        r.productList.let { productList.add(it as ArrayList<ManualProductListResponse>) }
+                    }
+                } else {
+                    Timber.tag(tag).d("Result is null")
+                }
+
+                manualTxnAdapter = ManualTxnListAdapter(
+                    baseContext,
+                    result as MutableList<ManualTransactionResult>,
+                    productList as MutableList<List<ManualProductListResponse>>, mid
+                )
+                manualTxnAdapter.notifyDataSetChanged()
+                recyclerview_transaction.adapter = manualTxnAdapter
+            }
+
+            override fun onFailure(call: Call<GetManualTransactionResp>, t: Throwable) {
+                Timber.tag(tag).d("Failed to show transaction : ${t.message.toString()}")
+            }
+
+        })
+    }
+
     fun getMenuList() {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
@@ -571,7 +622,24 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
 
         for(q in mutableSelectedMenuTemp.value!!){
-            menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0"))
+            var extraList: ArrayList<ExtraList> = ArrayList()
+            for (q in q.foodListRadio){
+                if (q != null) {
+                    var price: Int = q.foodListChildRadio!!.price.substringBefore(".").toInt()
+                    extraList.add(ExtraList(q.foodListChildRadio!!.name, price))
+                }
+            }
+            for (q in q.foodListCheckbox){
+                if (q != null) {
+                    for(m in q.foodListChildCheck){
+                        if (m != null) {
+                            var price: Int = m.price.substringBefore(".").toInt()
+                            extraList.add(ExtraList(m.name, price))
+                        }
+                    }
+                }
+            }
+            menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0", extraList))
         }
 
         if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
@@ -588,7 +656,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<ManualTxnResponse>,
                 response: Response<ManualTxnResponse>
             ) {
-                Log.e("success", "succeed")
+                Log.e("success", response.body().toString())
             }
 
             override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {

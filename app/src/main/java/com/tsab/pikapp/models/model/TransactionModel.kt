@@ -49,7 +49,13 @@ data class MenuList(
     var notes: String,
     var quantity: Int,
     var discount: Int,
-    var extra_price: String
+    var extra_price: String,
+    var extra_menus: List<ExtraList>
+)
+
+data class ExtraList(
+    var extra_menu_name: String,
+    var extra_menu_price: Int
 )
 
 data class ManualTxnResponse(
@@ -82,9 +88,10 @@ data class MenuListResponse(
     var price: Int,
     var discount: Int,
     var notes: String,
-    var extra_price: Int,
+    var extraPrice: Int,
     var product_id: String,
-    var product_name: String
+    var product_name: String,
+    var extra_menus: String
 )
 
 data class CustomerData(

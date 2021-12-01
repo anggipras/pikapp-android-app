@@ -114,7 +114,7 @@ data class ManualShippingResponse(
 
 data class ManualCustomerResponse(
     @SerializedName("address")
-    val shipping_method: String?,
+    val address: String?,
     @SerializedName("customer_id")
     val shipping_cost: Int?,
     @SerializedName("customer_name")
@@ -141,6 +141,26 @@ data class ManualProductListResponse(
     @SerializedName("product_name")
     val product_name: String?
 )
+
+data class UpdateStatusManualTxnRequest(
+    @SerializedName("customer_id")
+    val customerId: String?,
+    @SerializedName("mid")
+    val mid: String?,
+    @SerializedName("order_id")
+    val orderId: Int?,
+    @SerializedName("order_status")
+    val orderStatus: String?,
+    @SerializedName("payment_status")
+    val paymentStatus: String?,
+)
+
+data class UpdateStatusManualResponse(
+    @SerializedName("err_code")
+    override val errCode: String?,
+    @SerializedName("err_message")
+    override val errMessage: String?
+): Response
 
 data class UpdateOrderStatusModel(
     @SerializedName("transaction_id")
