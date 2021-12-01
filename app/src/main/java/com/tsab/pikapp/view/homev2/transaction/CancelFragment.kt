@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCancelBinding
+import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
@@ -19,9 +20,11 @@ import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     private val viewModel: TransactionViewModel by activityViewModels()
+    private val manualViewModel: ManualTxnViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var linearLayoutManager1: LinearLayoutManager
+    private lateinit var layoutManagerManualTxn: LinearLayoutManager
     private lateinit var dataBinding: FragmentCancelBinding
 
 
@@ -46,6 +49,12 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
+
+        layoutManagerManualTxn =
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
+        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
+
         activity?.let {
             viewModel.getStoreOrderList(
                 it.baseContext,

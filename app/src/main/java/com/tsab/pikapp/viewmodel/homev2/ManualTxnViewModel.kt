@@ -458,9 +458,10 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun getManualTxnList(status: String, baseContext: Context, recyclerview_transaction: RecyclerView){
         val mid = sessionManager.getUserData()!!.mid!!
         val status = status
+        Log.e("mid", mid)
 
         PikappApiService().api.getManualTransactionList(
-            size = 100,
+            size = 1000,
             page = 0,
             mid,
             status
@@ -478,18 +479,18 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 if(result != null){
                     for (r in result){
                         r.productList.let { productList.add(it as ArrayList<ManualProductListResponse>) }
+                        manualTxnAdapter = ManualTxnListAdapter(
+                            baseContext,
+                            result as MutableList<ManualTransactionResult>,
+                            productList as MutableList<List<ManualProductListResponse>>
+                        )
+                        manualTxnAdapter.notifyDataSetChanged()
+                        recyclerview_transaction.adapter = manualTxnAdapter
                     }
                 } else {
                     Timber.tag(tag).d("Result is null")
                 }
 
-                manualTxnAdapter = ManualTxnListAdapter(
-                    baseContext,
-                    result as MutableList<ManualTransactionResult>,
-                    productList as MutableList<List<ManualProductListResponse>>
-                )
-                manualTxnAdapter.notifyDataSetChanged()
-                recyclerview_transaction.adapter = manualTxnAdapter
             }
 
             override fun onFailure(call: Call<GetManualTransactionResp>, t: Throwable) {

@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDoneBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
+import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
+import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 
 class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
@@ -22,8 +25,10 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     lateinit var transactionListAdapter: TransactionListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var linearLayoutManager1: LinearLayoutManager
+    private lateinit var layoutManagerManualTxn: LinearLayoutManager
     private lateinit var dataBinding: FragmentDoneBinding
     private val sessionManager = SessionManager()
+    private val manualViewModel: ManualTxnViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -48,6 +53,11 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         recyclerview_transaction.layoutManager = linearLayoutManager
         recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
 
+        layoutManagerManualTxn =
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
+        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
+
         activity?.let {
             viewModel.getStoreOrderList(
                 it.baseContext,
@@ -69,6 +79,8 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 requireParentFragment()
             )
         }
+
+        activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn) }
 
         observeViewModel()
     }

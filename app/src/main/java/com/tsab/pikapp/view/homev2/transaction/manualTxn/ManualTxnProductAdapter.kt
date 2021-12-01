@@ -11,6 +11,7 @@ import com.tsab.pikapp.models.model.ManualProductListResponse
 import com.tsab.pikapp.models.model.ProductDetailOmni
 import com.tsab.pikapp.view.homev2.transaction.OmniTransactionProductAdapter
 import kotlinx.android.synthetic.main.item_transaction_menu.view.*
+import org.w3c.dom.Text
 
 class ManualTxnProductAdapter(
     private val context: Context,
@@ -28,6 +29,14 @@ class ManualTxnProductAdapter(
 
         holder.menuName.text = productList[position].product_name
         holder.itemNumber.text = productList[position].quantity.toString() + "x"
+        if (productList[position].extraMenu == ""){
+            holder.stripMenu.visibility = View.GONE
+            holder.extraMenu.visibility = View.GONE
+        } else {
+            holder.stripMenu.visibility = View.VISIBLE
+            holder.extraMenu.visibility = View.VISIBLE
+            holder.extraMenu.text = productList[position].extraMenu
+        }
         if(productList[position].notes == ""){
             holder.orderNote.visibility = View.GONE
         } else {
@@ -47,5 +56,7 @@ class ManualTxnProductAdapter(
         var itemNumber: TextView = itemView.itemCount
         var menuName: TextView = itemView.menuName
         var orderNote: TextView = itemView.orderNote
+        var stripMenu: TextView = itemView.stripMenu
+        var extraMenu: TextView = itemView.extraMenu
     }
 }
