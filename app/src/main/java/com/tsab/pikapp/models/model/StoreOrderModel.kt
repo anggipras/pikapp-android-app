@@ -146,15 +146,15 @@ data class ManualProductListResponse(
 
 data class UpdateStatusManualTxnRequest(
     @SerializedName("customer_id")
-    val customerId: Long?,
+    val customerId: String?,
     @SerializedName("mid")
     val mid: String?,
     @SerializedName("order_id")
-    val orderId: Long?,
+    val orderId: Int?,
     @SerializedName("order_status")
-    val orderStatus: Long?,
+    val orderStatus: String?,
     @SerializedName("payment_status")
-    val paymentStatus: Long?,
+    val paymentStatus: String?,
 )
 
 data class UpdateStatusManualResponse(

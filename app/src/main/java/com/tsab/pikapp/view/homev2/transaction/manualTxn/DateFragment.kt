@@ -93,6 +93,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                         yearNow = year
                         Log.e("Month", monthOfYear.toString())
                         date = "$dayOfMonth" + month + "$year"
+                        customDate.text = date
                     })
                 datePicker.minDate = System.currentTimeMillis() - 1000
                 btnSaveDate.visibility = View.GONE
@@ -227,7 +228,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
         btnSaveDate.setOnClickListener {
             if(sekarangStatus){
                 viewModel.setWaktu("Sekarang", " ")
-                viewModel.mutablePostWaktu.value = Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + "-" + (bulan - 1).toString() + "-" + Calendar.getInstance().get(Calendar.YEAR).toString() + " " +
+                viewModel.mutablePostWaktu.value = Calendar.getInstance().get(Calendar.YEAR).toString() + "-" + (bulan - 1).toString() + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + " " +
                         Calendar.getInstance().get(Calendar.HOUR_OF_DAY).toString() + ":" + Calendar.getInstance().get(Calendar.MINUTE).toString() + ":" + Calendar.getInstance().get(Calendar.SECOND).toString()
                 dismiss()
             }else if(customDateStatus && nowTime1){
@@ -236,7 +237,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 viewModel.setTime(nowTime.text.toString())
                 var hourPost = nowTime.text.toString().substringBefore(".")
                 var minutePost = nowTime.text.toString().substringAfter(".")
-                viewModel.mutablePostWaktu.value = day.toString() + "-" + (monthNow + 1).toString() + "-" + yearNow.toString() + " " +
+                viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
                 dismiss()
             }else if(customDateStatus && nowTime2){
@@ -245,7 +246,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 viewModel.setTime(nowTimeSecond.text.toString())
                 var hourPost = nowTimeSecond.text.toString().substringBefore(".")
                 var minutePost = nowTimeSecond.text.toString().substringAfter(".")
-                viewModel.mutablePostWaktu.value = day.toString() + "-" + (monthNow + 1).toString() + "-" + yearNow.toString() + " " +
+                viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
                 dismiss()
             }else if(customDateStatus && nowTime3){
@@ -254,13 +255,17 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 viewModel.setTime(nowTimeThird.text.toString())
                 var hourPost = nowTimeThird.text.toString().substringBefore(".")
                 var minutePost = nowTimeThird.text.toString().substringAfter(".")
-                viewModel.mutablePostWaktu.value = day.toString() + "-" + (monthNow + 1).toString() + "-" + yearNow.toString() + " " +
+                viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
                 dismiss()
             }else if(customDateStatus && customTimeStatus){
                 viewModel.setWaktu("Custom", customDate.text.toString() + " " + customTime.text)
                 viewModel.setDate(customDate.text.toString())
                 viewModel.setTime(customTime.text.toString())
+                var hourPost = customTime.text.toString().substringBefore(".")
+                var minutePost = customTime.text.toString().substringAfter(".")
+                viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
+                        hourPost + ":" + minutePost + ":" + "00"
                 dismiss()
             }
         }

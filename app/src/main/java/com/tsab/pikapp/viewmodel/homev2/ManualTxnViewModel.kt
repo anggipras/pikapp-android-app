@@ -490,7 +490,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 } else {
                     Timber.tag(tag).d("Result is null")
                 }
-
             }
 
             override fun onFailure(call: Call<GetManualTransactionResp>, t: Throwable) {
@@ -623,7 +622,24 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
 
         for(q in mutableSelectedMenuTemp.value!!){
-            menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0"))
+            var extraList: ArrayList<ExtraList> = ArrayList()
+            for (q in q.foodListRadio){
+                if (q != null) {
+                    var price: Int = q.foodListChildRadio!!.price.substringBefore(".").toInt()
+                    extraList.add(ExtraList(q.foodListChildRadio!!.name, price))
+                }
+            }
+            for (q in q.foodListCheckbox){
+                if (q != null) {
+                    for(m in q.foodListChildCheck){
+                        if (m != null) {
+                            var price: Int = m.price.substringBefore(".").toInt()
+                            extraList.add(ExtraList(m.name, price))
+                        }
+                    }
+                }
+            }
+            menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice, q.foodNote.toString(), q.foodAmount, 0, "0", extraList))
         }
 
         if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
@@ -640,7 +656,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<ManualTxnResponse>,
                 response: Response<ManualTxnResponse>
             ) {
-                Log.e("success", "succeed")
+                Log.e("success", response.body().toString())
             }
 
             override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {

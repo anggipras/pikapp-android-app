@@ -105,7 +105,14 @@ class ManualTxnListAdapter(
             holder.orderStatus.setBackgroundResource(R.drawable.button_green_square)
             holder.rejectBtn.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
-        } else {
+        } else if (transactionList[position].order_status == "CANCELLED"){
+            setDate(position)
+            setUpCard(holder, position)
+            holder.orderStatus.text = "Batal"
+            holder.orderStatus.setBackgroundResource(R.drawable.button_red_transparent)
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+        }else {
             Toast.makeText(context, "Invalid Status Order", Toast.LENGTH_SHORT).show()
         }
     }
