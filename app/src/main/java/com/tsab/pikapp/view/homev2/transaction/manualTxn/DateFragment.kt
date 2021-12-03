@@ -79,8 +79,8 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 customDate.setTextColor(Color.parseColor("#ffffff"))
                 nowDate.setBackgroundResource(R.drawable.btn_date_disable)
                 nowDate.setTextColor(Color.parseColor("#aaaaaa"))
-                jamTitle.visibility = View.VISIBLE
-                chooseTime.visibility = View.VISIBLE
+                jamTitle.visibility = View.GONE
+                chooseTime.visibility = View.GONE
                 timePick.visibility = View.GONE
                 datePicker.visibility = View.VISIBLE
                 val today = Calendar.getInstance()
@@ -114,6 +114,9 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                     datePicker.visibility = View.GONE
                     btnSaveDate.visibility = View.VISIBLE
                     saveStateBtn.visibility = View.GONE
+                    jamTitle.visibility = View.VISIBLE
+                    chooseTime.visibility = View.VISIBLE
+                    timePick.visibility = View.GONE
                 }
                 cancel.setOnClickListener {
                     datePicker.visibility = View.GONE
@@ -212,6 +215,9 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 if(am_pm == "AM" && hourNow == 12){
                     getHourAM(hourNow)
                 }
+                if(minuteNow < 10){
+                    minuteNow = ("0$minuteNow").toInt()
+                }
                 customTime.text = "$hourNow.$minuteNow "
                 timePick.visibility = View.GONE
                 btnSaveDate.visibility = View.VISIBLE
@@ -228,7 +234,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
         btnSaveDate.setOnClickListener {
             if(sekarangStatus){
                 viewModel.setWaktu("Sekarang", " ")
-                viewModel.mutablePostWaktu.value = Calendar.getInstance().get(Calendar.YEAR).toString() + "-" + (bulan - 1).toString() + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + " " +
+                viewModel.mutablePostWaktu.value = (Calendar.getInstance().get(Calendar.YEAR) + 1).toString() + "-" + bulan.toString() + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + " " +
                         Calendar.getInstance().get(Calendar.HOUR_OF_DAY).toString() + ":" + Calendar.getInstance().get(Calendar.MINUTE).toString() + ":" + Calendar.getInstance().get(Calendar.SECOND).toString()
                 dismiss()
             }else if(customDateStatus && nowTime1){

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:src="@drawable/info" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apakah anda yakin ingin menyelesaikan pembayaran untuk pesanan ini?"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/proximanova_semibold"
+        android:textSize="@dimen/_14sdp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nama"
+        android:text="Pesanan atas nama Sukro melalui Whatsapp tanggal 4 Juni 2021, 10:09 dan dikirim melalui JNE"
+        android:textColor="#8C151920"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/proximanova_regular"
+        android:textSize="@dimen/_12sdp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="19dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/dialog_back"
+            android:layout_width="163dp"
+            android:layout_height="38dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button_red_transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Batal"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="#DC6A84" />
+
+        <Button
+            android:id="@+id/dialog_update"
+            android:layout_width="163dp"
+            android:layout_height="38dp"
+            android:background="@drawable/button_green_small"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Ya"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

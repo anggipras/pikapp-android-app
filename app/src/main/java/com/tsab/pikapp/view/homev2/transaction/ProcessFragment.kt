@@ -63,6 +63,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.mutableCountTxn.value = 0
+        dataBinding.recyclerviewManualTxn.visibility = View.VISIBLE
 
         layoutManagerTransaction =
             LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
@@ -101,7 +102,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             )
         }
 
-        activity?.let { manualViewModel.getManualTxnList("ON_PROCESS", it.baseContext, recyclerview_manualTxn) }
+        activity?.let { manualViewModel.getManualTxnList("ON_PROCESS", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
         viewModel.editList(
             recyclerview_transaction,

@@ -149,26 +149,28 @@ class CheckoutFragment : Fragment() {
         dataBinding.btnNext.setOnClickListener {
             if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                 viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
-                viewModel.postOrder(dataBinding.payStat.isChecked)
-                navController?.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+                var status: Int = viewModel.postOrder(dataBinding.payStat.isChecked)
+                if (status == 200){
+                    navController?.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+                }
             }else{
                 Log.e("Fail", "Data Kosong")
             }
         }
 
-        dataBinding.bayarBtn.setOnClickListener {
+        dataBinding.pembayaran.setOnClickListener {
             navController?.navigate(R.id.action_checkoutFragment_to_paymentFragment)
         }
 
-        dataBinding.asalBtn.setOnClickListener {
+        dataBinding.asal.setOnClickListener {
             AsalFragment().show(requireActivity().supportFragmentManager, "show")
         }
 
-        dataBinding.tanggalBtn.setOnClickListener {
+        dataBinding.tanggal.setOnClickListener {
             DateFragment().show(requireActivity().supportFragmentManager, "show")
         }
 
-        dataBinding.kirimBtn.setOnClickListener {
+        dataBinding.pengiriman.setOnClickListener {
             DeliveryFragment().show(requireActivity().supportFragmentManager, "show")
         }
         dataBinding.pelanggan.setOnClickListener {

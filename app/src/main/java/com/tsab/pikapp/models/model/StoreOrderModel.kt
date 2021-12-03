@@ -145,12 +145,8 @@ data class ManualProductListResponse(
 )
 
 data class UpdateStatusManualTxnRequest(
-    @SerializedName("customer_id")
-    val customerId: String?,
-    @SerializedName("mid")
-    val mid: String?,
-    @SerializedName("order_id")
-    val orderId: Int?,
+    @SerializedName("transaction_id")
+    val txnId: String?,
     @SerializedName("order_status")
     val orderStatus: String?,
     @SerializedName("payment_status")

@@ -1,6 +1,9 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,27 +12,40 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.ManualProductListResponse
-import com.tsab.pikapp.models.model.ManualTransactionResult
-import com.tsab.pikapp.models.model.ProductDetailOmni
+import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.network.PikappApiService
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.OmniTransactionProductAdapter
 import com.tsab.pikapp.view.homev2.transaction.shipment.ResiTokopediaDialogFragment.Companion.tag
+import kotlinx.android.synthetic.main.cancel_dialog.view.*
+import kotlinx.android.synthetic.main.cancel_dialog.view.dialog_back
+import kotlinx.android.synthetic.main.payment_dialog.view.*
+import kotlinx.android.synthetic.main.payment_dialog.view.nama
 import kotlinx.android.synthetic.main.transaction_list_items.view.*
 import kotlinx.android.synthetic.main.transaction_list_items_manual.view.*
+import kotlinx.android.synthetic.main.update_payment_done.view.*
 import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import java.text.NumberFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.transaction_list_items.view.totalPrice as totalPrice1
 
 class ManualTxnListAdapter(
     private val context: Context,
     private val transactionList: MutableList<ManualTransactionResult>,
-    private val productList: MutableList<List<ManualProductListResponse>>
+    private val productList: MutableList<List<ManualProductListResponse>>,
+    private val mid: String,
+    private val reycler: RecyclerView,
+    private val activity: Activity
 ): RecyclerView.Adapter<ManualTxnListAdapter.ViewHolder>() {
 
     var bulan: String = " Jun "
@@ -73,6 +89,12 @@ class ManualTxnListAdapter(
             setDate(position)
             setUpCard(holder, position)
             holder.orderStatus.text = "Diproses"
+            holder.acceptBtn.setOnClickListener {
+                updateStatus(
+                    UpdateStatusManualTxnRequest(transactionList[position].transaction_id, "DELIVER", transactionList[position].payment_status),
+                "ON_PROCESS", mid, position, reycler, context
+                )
+            }
             holder.orderStatus.setBackgroundResource(R.drawable.button_orange_square)
             holder.rejectBtn.visibility = View.GONE
         } else if (transactionList[position].order_status == "DELIVER") {
@@ -81,6 +103,12 @@ class ManualTxnListAdapter(
             holder.orderStatus.text = "Dikirim"
             holder.orderStatus.setBackgroundResource(R.drawable.button_green_square)
             holder.rejectBtn.visibility = View.GONE
+            holder.acceptBtn.setOnClickListener {
+                updateStatus(
+                    UpdateStatusManualTxnRequest(transactionList[position].transaction_id, "FINALIZE", transactionList[position].payment_status),
+                    "CLOSE", mid, position, reycler, context
+                )
+            }
             holder.acceptBtn.text = "Pesanan Tiba"
         } else if (transactionList[position].order_status == "FINALIZE"){
             setDate(position)
@@ -92,6 +120,12 @@ class ManualTxnListAdapter(
             if (transactionList[position].payment_status == "PAID"){
                 holder.acceptBtn.isEnabled = true
                 holder.acceptBtn.setTextColor(context.resources.getColor(R.color.green))
+                holder.acceptBtn.setOnClickListener {
+                    updateStatus(
+                        UpdateStatusManualTxnRequest(transactionList[position].transaction_id, "CLOSE", transactionList[position].payment_status),
+                        "CLOSE", mid, position, reycler, context
+                    )
+                }
                 holder.acceptBtn.setBackgroundResource(R.drawable.button_green_transparent)
             } else {
                 holder.acceptBtn.isEnabled = false
@@ -122,6 +156,7 @@ class ManualTxnListAdapter(
     }
 
     private fun setUpCard(holder: ViewHolder, position: Int){
+
         setUpLogo(holder, position)
         holder.transactionId.text = "ID Transaksi: " + transactionList[position].transaction_id.toString().substring(0, 10)
         holder.orderDate.text = transactionList[position].transaction_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
@@ -144,6 +179,19 @@ class ManualTxnListAdapter(
         } else {
             holder.statusPayment.text = "Belum Bayar"
             holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
+            holder.updatePaymentBtn.setOnClickListener {
+                var tabStatus = ""
+                if(transactionList[position].order_status == "ON_PROCESS"){
+                    tabStatus = "ON_PROCESS"
+                }else{
+                    tabStatus = "CLOSE"
+                }
+                openCancelDialog(transactionList[position].customer?.customer_name.toString(), transactionList[position].order_platform.toString(),
+                    transactionList[position].transaction_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
+                            transactionList[position].transaction_time.toString().substringBefore("-") +", "+ transactionList[position].transaction_time.toString().substringAfter(" ").substringBeforeLast(":"),
+                transactionList[position].shipping?.shipping_method.toString(),
+                transactionList[position].transaction_id.toString(), transactionList[position].order_status.toString(), tabStatus, position)
+            }
         }
     }
 
@@ -214,5 +262,138 @@ class ManualTxnListAdapter(
     private fun formatNumber() {
         str = NumberFormat.getNumberInstance(Locale.US).format(price)
     }
+
+    private fun updateStatus(status: UpdateStatusManualTxnRequest, tabStatus: String, mid: String, position: Int,recycler: RecyclerView, basecontext: Context){
+        PikappApiService().api.postUpdateManualTransaction(status).enqueue(object : Callback<UpdateStatusManualResponse>{
+            override fun onResponse(
+                call: Call<UpdateStatusManualResponse>,
+                response: Response<UpdateStatusManualResponse>
+            ) {
+                if (response.code() == 200){
+                    callApi(tabStatus, mid, position, recycler, basecontext)
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateStatusManualResponse>, t: Throwable) {
+                Log.e("Fail", t.message.toString())
+            }
+        })
+    }
+
+    private fun callApi(status: String, mid: String, position: Int, recycler: RecyclerView, base: Context){
+        lateinit var manualTxnAdapter: ManualTxnListAdapter
+        PikappApiService().api.getManualTransactionList(
+            size = 1000,
+            page = 0,
+            mid,
+            status
+        ).enqueue(object : Callback<GetManualTransactionResp>{
+            override fun onResponse(
+                call: Call<GetManualTransactionResp>,
+                response: Response<GetManualTransactionResp>
+            ) {
+                val response = response.body()
+                val result = response?.results
+                Log.e("response", response.toString())
+                Log.e("result", result.toString())
+                val productList = ArrayList<ArrayList<ManualProductListResponse>>()
+                if(result != null){
+                    if(response.results.isEmpty()){
+                        recycler.visibility = View.GONE
+                        val productList1 = ArrayList<ArrayList<ManualProductListResponse>>()
+                        manualTxnAdapter = ManualTxnListAdapter(
+                            base,
+                            ArrayList(),
+                            ArrayList(),
+                            mid,
+                            reycler,
+                            activity
+                        )
+                        recycler.adapter = manualTxnAdapter
+                        manualTxnAdapter.notifyItemRemoved(position)
+                    }
+                    recycler.visibility = View.VISIBLE
+                    for (r in result){
+                        r.productList.let { productList.add(it as ArrayList<ManualProductListResponse>) }
+                        manualTxnAdapter = ManualTxnListAdapter(
+                            base,
+                            result as MutableList<ManualTransactionResult>,
+                            productList as MutableList<List<ManualProductListResponse>>,
+                            mid,
+                            reycler,
+                            activity
+                        )
+                        recycler.adapter = manualTxnAdapter
+                        manualTxnAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    recycler.visibility = View.GONE
+                    val productList1 = ArrayList<ArrayList<ManualProductListResponse>>()
+                    manualTxnAdapter = ManualTxnListAdapter(
+                        base,
+                        ArrayList(),
+                        ArrayList(),
+                        mid,
+                        reycler,
+                        activity
+                    )
+                    recycler.adapter = manualTxnAdapter
+                    manualTxnAdapter.notifyItemRemoved(position)
+                    Timber.tag(tag).d("Result is null")
+                }
+            }
+
+            override fun onFailure(call: Call<GetManualTransactionResp>, t: Throwable) {
+                Timber.tag(tag).d("Failed to show transaction : ${t.message.toString()}")
+            }
+
+        })
+    }
+
+    private fun openCancelDialog(nama: String, platform: String, tanggal: String, ekspedisi: String, id: String, txnStatus: String, tabStatus: String, position: Int) {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.payment_dialog, null)
+        val mBuilder = AlertDialog.Builder(activity)
+            .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
+        )
+
+        mDialogView.nama.text = "Pesanan atas nama $nama melalui $platform tanggal $tanggal dan dikirim melalui $ekspedisi"
+        mDialogView.dialog_back.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+
+        mDialogView.dialog_update.setOnClickListener {
+            updateStatus(
+                UpdateStatusManualTxnRequest(transactionList[position].transaction_id, txnStatus, "PAID"),
+                tabStatus, mid, position, reycler, context
+            )
+            openDoneDialog(nama)
+            mAlertDialog.dismiss()
+        }
+    }
+
+    private fun openDoneDialog(nama: String) {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.update_payment_done, null)
+        val mBuilder = AlertDialog.Builder(activity)
+            .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
+        )
+
+        mDialogView.nama.text = "Status pembayaran untuk pesanan atas nama $nama berubah menjadi sudah dibayar"
+        mDialogView.btnDone.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+    }
+
 
 }

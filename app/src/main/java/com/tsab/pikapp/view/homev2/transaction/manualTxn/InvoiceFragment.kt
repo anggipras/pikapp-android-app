@@ -1,11 +1,15 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
+import android.content.ContentValues.TAG
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -16,6 +20,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCheckoutBinding
 import com.tsab.pikapp.databinding.FragmentInvoiceBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import java.text.NumberFormat
 import java.util.*
@@ -53,6 +58,24 @@ class InvoiceFragment : Fragment() {
         dataBinding.noTelpPelanggan.text = viewModel.mutableCustPhone.value
         dataBinding.alamatPelanggan.text = viewModel.mutableCustAddress.value
         dataBinding.catatanPelanggan.text = viewModel.mutableCustAddressDetail.value
+
+        dataBinding.topAppBar.setNavigationOnClickListener {
+            val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+            activity?.startActivityForResult(intent, 1)
+            activity?.overridePendingTransition(0, 0)
+        }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Log.d(TAG, "Fragment back pressed invoked")
+                    val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+                    activity?.startActivityForResult(intent, 1)
+                    activity?.overridePendingTransition(0, 0)
+                }
+            }
+            )
 
         observeViewModel()
     }
