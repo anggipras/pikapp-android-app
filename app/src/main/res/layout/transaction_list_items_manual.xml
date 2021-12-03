@@ -321,7 +321,6 @@
             android:layout_marginEnd="12dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/proximanova_semibold"
-            android:text="Rp. 70.000"
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"

@@ -80,7 +80,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             )
         }
 
-        activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn) }
+        activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
         observeViewModel()
     }

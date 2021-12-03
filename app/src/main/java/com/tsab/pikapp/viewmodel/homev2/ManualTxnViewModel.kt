@@ -1,5 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.net.Uri
@@ -485,7 +486,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         addTotalQty()
     }
 
-    fun getManualTxnList(status: String, baseContext: Context, recyclerview_transaction: RecyclerView){
+    fun getManualTxnList(status: String, baseContext: Context, recyclerview_transaction: RecyclerView, activity: Activity){
         val mid = sessionManager.getUserData()!!.mid!!
         val status = status
         Log.e("mid", mid)
@@ -507,12 +508,14 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 val productList = ArrayList<ArrayList<ManualProductListResponse>>()
 
                 if(result != null){
+                    recyclerview_transaction.visibility = View.VISIBLE
                     for (r in result){
                         r.productList.let { productList.add(it as ArrayList<ManualProductListResponse>) }
                         manualTxnAdapter = ManualTxnListAdapter(
                             baseContext,
                             result as MutableList<ManualTransactionResult>,
-                            productList as MutableList<List<ManualProductListResponse>>
+                            productList as MutableList<List<ManualProductListResponse>>,
+                            mid, recyclerview_transaction, activity
                         )
                         manualTxnAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = manualTxnAdapter
@@ -631,11 +634,12 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         )
     }
 
-    fun postOrder(paymentStatus: Boolean){
+    fun postOrder(paymentStatus: Boolean): Int{
         mutablePayStat.value = paymentStatus
         var hargaEkspedisi: String = ""
         var orderType: String = ""
         var payStatus: String = ""
+        var status = 0
         var menuList: ArrayList<MenuList> = ArrayList()
         var mid: String? = sessionManager.getUserData()?.mid
 
@@ -687,6 +691,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 response: Response<ManualTxnResponse>
             ) {
                 Log.e("success", response.body().toString())
+                status = response.code()
             }
 
             override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
@@ -694,5 +699,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             }
 
         })
+        return status
     }
 }
