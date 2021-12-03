@@ -268,6 +268,36 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableCustId.value = id
     }
 
+    val mutableCustNameTemp = MutableLiveData("")
+    val custNameTemp: LiveData<String> get() = mutableCustNameTemp
+    fun setCustNameTemp(custName: String) {
+        mutableCustNameTemp.value = custName
+    }
+
+    val mutableCustPhoneTemp = MutableLiveData("")
+    val custPhoneTemp: LiveData<String> get() = mutableCustPhoneTemp
+    fun setCustPhoneTemp(custPhone: String) {
+        mutableCustPhoneTemp.value = custPhone
+    }
+
+    val mutableCustAddressTemp = MutableLiveData("")
+    val custAddressTemp: LiveData<String> get() = mutableCustAddressTemp
+    fun setCustAddressTemp(custAddress: String) {
+        mutableCustAddressTemp.value = custAddress
+    }
+
+    val mutableCustAddressDetailTemp = MutableLiveData("")
+    val custAddressDetailTemp: LiveData<String> get() = mutableCustAddressDetailTemp
+    fun setCustAddressDetailTemp(addressDetail: String) {
+        mutableCustAddressDetailTemp.value = addressDetail
+    }
+
+    private val mutableCustIdTemp = MutableLiveData(0L)
+    val custIdTemp: LiveData<Long> get() = mutableCustIdTemp
+    fun setCustIdTemp(id: Long) {
+        mutableCustIdTemp.value = id
+    }
+
     private val mutableEditCustName = MutableLiveData("")
     val editCustName: LiveData<String> get() = mutableEditCustName
     fun editCustName(custName: String) {

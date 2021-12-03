@@ -102,6 +102,10 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
 
         dataBinding.btnSelect.setOnClickListener {
             Toast.makeText(context, "Pelanggan berhasil dipilih", Toast.LENGTH_SHORT).show()
+            viewModel.setCustName(viewModel.custNameTemp.value.toString())
+            viewModel.setCustPhone(viewModel.custPhoneTemp.value.toString())
+            viewModel.setCustAddress(viewModel.custAddressTemp.value.toString())
+            viewModel.setCustAddressDetail(viewModel.custAddressTemp.value.toString())
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
         }
     }
@@ -116,20 +120,20 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
     override fun onItemClick(b: Boolean, i: Int) {
         if (b){
             viewModel.customerList.value?.get(i)?.let {
-                it.name?.let { it1 -> viewModel.setCustName(it1) }
-                it.phone?.let { it1 -> viewModel.setCustPhone(it1) }
-                it.address?.let { it1 -> viewModel.setCustAddress(it1) }
-                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
-                it.customerId?.let { it1 -> viewModel.setCustId(it1) }
+                it.name?.let { it1 -> viewModel.setCustNameTemp(it1) }
+                it.phone?.let { it1 -> viewModel.setCustPhoneTemp(it1) }
+                it.address?.let { it1 -> viewModel.setCustAddressTemp(it1) }
+                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetailTemp(it1) }
+                it.customerId?.let { it1 -> viewModel.setCustIdTemp(it1) }
             }
             view?.let { Navigation.findNavController(it).navigate(R.id.action_manualTxnCustomerPage_to_manualTxnEditCustomer) }
         } else {
             viewModel.customerList.value?.get(i)?.let {
-                it.name?.let { it1 -> viewModel.setCustName(it1) }
-                it.phone?.let { it1 -> viewModel.setCustPhone(it1) }
-                it.address?.let { it1 -> viewModel.setCustAddress(it1) }
-                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
-                it.customerId?.let { it1 -> viewModel.setCustId(it1) }
+                it.name?.let { it1 -> viewModel.setCustNameTemp(it1) }
+                it.phone?.let { it1 -> viewModel.setCustPhoneTemp(it1) }
+                it.address?.let { it1 -> viewModel.setCustAddressTemp(it1) }
+                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetailTemp(it1) }
+                it.customerId?.let { it1 -> viewModel.setCustIdTemp(it1) }
             }
             dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
             dataBinding.btnSelect.isEnabled = true

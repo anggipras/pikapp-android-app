@@ -84,7 +84,7 @@
 
     <style name="titleToolbar">
         <item name="fontFamily">@font/montserrat_bold</item>
-        <item name="textSize">18sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="NoMarginsDialog" parent="Theme.AppCompat.Light.Dialog">

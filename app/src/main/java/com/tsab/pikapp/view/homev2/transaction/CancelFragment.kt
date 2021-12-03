@@ -15,6 +15,8 @@ import com.tsab.pikapp.databinding.FragmentCancelBinding
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
+import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
+import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 
 class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
@@ -76,6 +78,9 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 requireParentFragment()
             )
         }
+
+        activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn) }
+
 
         observeViewModel()
     }
