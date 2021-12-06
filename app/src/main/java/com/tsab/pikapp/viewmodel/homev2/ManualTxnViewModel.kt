@@ -32,6 +32,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ManualTxnViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
@@ -685,7 +687,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
         var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
         var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi.toInt(), mutablePostWaktu.value.toString())
-        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType, mutableAsal.value.toString(), mutableCartPrice.value!!.toInt(), payStatus, mutableBayar.value!!.toString(), "OPEN", 0, mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt())).
+        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType,
+            mutableAsal.value.toString().uppercase(Locale.getDefault()), mutableCartPrice.value!!.toInt(), payStatus,
+            mutableBayar.value!!.toString().uppercase(Locale.getDefault()), "OPEN", 0, mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt())).
         enqueue(object : Callback<ManualTxnResponse>{
             override fun onResponse(
                 call: Call<ManualTxnResponse>,
