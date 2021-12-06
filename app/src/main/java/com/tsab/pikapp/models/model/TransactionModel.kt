@@ -27,17 +27,17 @@ data class ManualTxnRequest(
     var mid: String,
     var order_type: String,
     var order_platform: String,
-    var total_product_price: String,
+    var total_product_price: Int,
     var payment_status: String,
     var payment_method: String,
     var order_status: String,
     var total_discount: Int,
-    var total_payment: String
+    var total_payment: Int
 )
 
 data class ShippingData(
     var shipping_method: String,
-    var shipping_cost: String,
+    var shipping_cost: Int,
     var shipping_time: String
 )
 
@@ -45,11 +45,17 @@ data class MenuList(
     var product_id: String,
     var product_name: String,
     var product_category: String,
-    var product_price: String,
+    var product_price: Int,
     var notes: String,
     var quantity: Int,
     var discount: Int,
-    var extra_price: String
+    var extra_price: String,
+    var extra_menus: List<ExtraList>
+)
+
+data class ExtraList(
+    var extra_menu_name: String,
+    var extra_menu_price: Int
 )
 
 data class ManualTxnResponse(
@@ -82,9 +88,10 @@ data class MenuListResponse(
     var price: Int,
     var discount: Int,
     var notes: String,
-    var extra_price: Int,
+    var extraPrice: Int,
     var product_id: String,
-    var product_name: String
+    var product_name: String,
+    var extra_menus: String
 )
 
 data class CustomerData(

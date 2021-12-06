@@ -490,20 +490,33 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/bank">
 
-                    <Button
-                        android:id="@+id/btnSaveBayar"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/button_dark_gray"
-                        android:text="Pilih Metode Pembayaran"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:textAllCaps="false"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:fontFamily="@font/proximanova_semibold"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <Button
+                            android:id="@+id/btnSaveBayar"
+                            android:layout_width="0dp"
+                            android:layout_height="47dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="23dp"
+                            android:background="@drawable/button_dark_gray"
+                            android:text="Pilih Metode Pembayaran"
+                            android:textAllCaps="false"
+                            android:fontFamily="@font/proximanova_semibold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>
 

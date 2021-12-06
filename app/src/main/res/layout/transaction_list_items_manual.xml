@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    android:layout_marginBottom="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/omniChannelIcon"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/logo_wa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginTop="5dp" />
+
+        <TextView
+            android:id="@+id/transactionIdManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test"
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="12sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/omniChannelIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/orderDateManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/proximanova_regular"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="10 juni"
+            android:textColor="@color/borderSubtle"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transactionIdManual" />
+
+        <TextView
+            android:id="@+id/paymentStatusManual"
+            android:layout_width="81dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/button_red_square"
+            android:fontFamily="@font/proximanova_semibold"
+            android:gravity="center"
+            android:text="NEW"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/acceptButtonManual"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/button_green_transparent"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Pesanan Siap"
+            android:textAllCaps="false"
+            android:textColor="@color/green"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <Button
+            android:id="@+id/rejectButtonManual"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/button_red_transparent"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Batalkan"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/acceptButtonManual"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <View
+            android:id="@+id/dividerPlatform"
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderDateManual" />
+
+        <TextView
+            android:id="@+id/shippingMethod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test"
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="12sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/dividerPlatform"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/callBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_phone_call"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/dividerPlatform"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <LinearLayout
+            android:id="@+id/containerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/shippingMethod"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/custName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test"
+                android:textColor="@color/borderSubtle"
+                android:fontFamily="@font/montserrat"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/custPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/borderSubtle"
+                android:fontFamily="@font/montserrat"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/custAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test"
+            android:textColor="@color/borderSubtle"
+            android:fontFamily="@font/montserrat"
+            android:textSize="12sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintTop_toBottomOf="@+id/containerName"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <LinearLayout
+            android:id="@+id/containerShipping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/custAddress"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Pengiriman : "
+                android:textColor="@color/green"
+                android:fontFamily="@font/montserrat"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/shippingDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/test"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/dividerShipping"
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerShipping" />
+
+        <TextView
+            android:id="@+id/statusPaymentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status Pembayaran"
+            android:textColor="@color/borderSubtle"
+            android:fontFamily="@font/montserrat"
+            android:textSize="12sp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/dividerShipping"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/statusPayment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test"
+            android:textColor="@color/red"
+            android:fontFamily="@font/montserrat"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/dividerShipping"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/updateStatus"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Perbarui Status Pembayaran"
+            android:textAllCaps="false"
+            android:fontFamily="@font/montserrat"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/button_blue_transparent"
+            app:layout_constraintTop_toBottomOf="@id/statusPayment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <View
+            android:id="@+id/dividerStatus"
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/updateStatus" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_menu_omni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.033"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dividerStatus"
+            android:layout_marginTop="8dp"
+            tools:itemCount="2"
+            tools:layout_editor_absoluteY="75dp"
+            tools:listitem="@layout/item_transaction_menu" />
+
+        <TextView
+            android:id="@+id/itemCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Total 3 items:"
+            android:textColor="@color/borderSubtle"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <TextView
+            android:id="@+id/totalPriceManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:text="Rp. 70.000"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemCount" />
+
+        <TextView
+            android:id="@+id/totalPriceOmni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/proximanova_semibold"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalPriceManual"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="337dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="330dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu_omni" />
+
+        <include
+            android:id="@+id/loadingOverlay"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

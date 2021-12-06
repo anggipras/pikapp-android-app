@@ -41,12 +41,12 @@ class ManualTxnEditCustomer : Fragment() {
     }
 
     private fun observeViewModel(){
-        viewModel.custName.observe(viewLifecycleOwner, Observer { custName ->
+        viewModel.custNameTemp.observe(viewLifecycleOwner, Observer { custName ->
             if (custName != ""){
-                dataBinding.custName.append(viewModel.custName.value)
-                dataBinding.custPhone.append(viewModel.custPhone.value?.substringAfter("0"))
-                dataBinding.custAddress.append(viewModel.custAddress.value)
-                dataBinding.custAddressDetail.append(viewModel.custAddressDetail.value)
+                dataBinding.custName.append(viewModel.custNameTemp.value)
+                dataBinding.custPhone.append(viewModel.custPhoneTemp.value?.substringAfter("0"))
+                dataBinding.custAddress.append(viewModel.custAddressTemp.value)
+                dataBinding.custAddressDetail.append(viewModel.custAddressDetailTemp.value)
             }
         })
     }

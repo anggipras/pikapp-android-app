@@ -38,7 +38,7 @@
                         android:id="@+id/topAppBar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:title="Buat Pesanan Manual"
+                        app:title="Buat Transaksi Manual"
                         app:navigationIcon="@drawable/ic_back_black"
                         app:titleTextColor="@color/black"
                         app:titleTextAppearance="@style/titleToolbar"

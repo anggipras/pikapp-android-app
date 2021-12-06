@@ -75,7 +75,7 @@ class ManualTxnDynamicFragment : Fragment() {
         viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
             if (totalItems > 0){
                 dataBinding.btnNext.visibility = View.VISIBLE
-                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+                dataBinding.btnNext.text = getString(R.string.cart, totalItems.toString())
             } else {
                 dataBinding.btnNext.visibility = View.GONE
             }
@@ -120,7 +120,7 @@ class ManualTxnDynamicFragment : Fragment() {
         viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
             if (totalItems > 0){
                 dataBinding.btnNext.visibility = View.VISIBLE
-                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+                dataBinding.btnNext.text = getString(R.string.cart, totalItems.toString())
             } else {
                 dataBinding.btnNext.visibility = View.GONE
             }

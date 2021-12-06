@@ -81,7 +81,13 @@ class CheckoutFragment : Fragment() {
             if(harga != ""){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
-                dataBinding.hargaKirim.text = "Rp. $harga"
+                val thePrice: Long = harga.toLong()
+                val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+                val thePrice1: Long = (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
+                dataBinding.hargaKirim.text = "Rp. $numberFormat"
+                dataBinding.ongkirHarga.text = "Rp. $numberFormat"
+                dataBinding.hargaBottom.text = "Rp. $numberFormat1"
             }
             if(harga == " "){
                 dataBinding.hargaKirim.visibility = View.GONE
@@ -149,26 +155,29 @@ class CheckoutFragment : Fragment() {
         dataBinding.btnNext.setOnClickListener {
             if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                 viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
-                viewModel.postOrder(dataBinding.payStat.isChecked)
-                navController?.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+                var status = navController?.let { it1 ->
+                    viewModel.postOrder(dataBinding.payStat.isChecked,
+                        it1, requireActivity()
+                    )
+                }
             }else{
                 Log.e("Fail", "Data Kosong")
             }
         }
 
-        dataBinding.bayarBtn.setOnClickListener {
+        dataBinding.pembayaran.setOnClickListener {
             navController?.navigate(R.id.action_checkoutFragment_to_paymentFragment)
         }
 
-        dataBinding.asalBtn.setOnClickListener {
+        dataBinding.asal.setOnClickListener {
             AsalFragment().show(requireActivity().supportFragmentManager, "show")
         }
 
-        dataBinding.tanggalBtn.setOnClickListener {
+        dataBinding.tanggal.setOnClickListener {
             DateFragment().show(requireActivity().supportFragmentManager, "show")
         }
 
-        dataBinding.kirimBtn.setOnClickListener {
+        dataBinding.pengiriman.setOnClickListener {
             DeliveryFragment().show(requireActivity().supportFragmentManager, "show")
         }
         dataBinding.pelanggan.setOnClickListener {
