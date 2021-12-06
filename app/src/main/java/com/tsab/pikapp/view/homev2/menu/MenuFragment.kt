@@ -58,8 +58,8 @@ class MenuFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        setMenuInvisible()
-        observeViewModel()
+//        setMenuInvisible()
+//        observeViewModel()
         attachInputListeners()
     }
 
