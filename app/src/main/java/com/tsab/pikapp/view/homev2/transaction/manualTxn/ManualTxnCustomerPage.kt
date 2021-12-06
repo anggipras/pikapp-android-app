@@ -103,9 +103,10 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         dataBinding.btnSelect.setOnClickListener {
             Toast.makeText(context, "Pelanggan berhasil dipilih", Toast.LENGTH_SHORT).show()
             viewModel.setCustName(viewModel.custNameTemp.value.toString())
+            viewModel.custIdTemp.value?.let { it1 -> viewModel.setCustId(it1.toLong()) }
             viewModel.setCustPhone(viewModel.custPhoneTemp.value.toString())
             viewModel.setCustAddress(viewModel.custAddressTemp.value.toString())
-            viewModel.setCustAddressDetail(viewModel.custAddressTemp.value.toString())
+            viewModel.setCustAddressDetail(viewModel.custAddressDetailTemp.value.toString())
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
         }
     }

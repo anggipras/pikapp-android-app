@@ -38,6 +38,7 @@ class InvoiceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_invoice, container, false)
         return dataBinding.root
     }

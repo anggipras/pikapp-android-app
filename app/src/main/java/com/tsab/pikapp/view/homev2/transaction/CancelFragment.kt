@@ -79,7 +79,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             )
         }
 
-        activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn) }
+        activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
 
         observeViewModel()

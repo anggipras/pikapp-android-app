@@ -215,10 +215,13 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 if(am_pm == "AM" && hourNow == 12){
                     getHourAM(hourNow)
                 }
+                var minute = ""
                 if(minuteNow < 10){
-                    minuteNow = ("0$minuteNow").toInt()
+                    minute= "0$minuteNow"
+                }else{
+                    minute = "$minuteNow"
                 }
-                customTime.text = "$hourNow.$minuteNow "
+                customTime.text = "$hourNow.$minute"
                 timePick.visibility = View.GONE
                 btnSaveDate.visibility = View.VISIBLE
                 saveStateBtn.visibility = View.GONE
@@ -234,7 +237,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
         btnSaveDate.setOnClickListener {
             if(sekarangStatus){
                 viewModel.setWaktu("Sekarang", " ")
-                viewModel.mutablePostWaktu.value = (Calendar.getInstance().get(Calendar.YEAR) + 1).toString() + "-" + bulan.toString() + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + " " +
+                viewModel.mutablePostWaktu.value = Calendar.getInstance().get(Calendar.YEAR).toString() + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1).toString() + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + " " +
                         Calendar.getInstance().get(Calendar.HOUR_OF_DAY).toString() + ":" + Calendar.getInstance().get(Calendar.MINUTE).toString() + ":" + Calendar.getInstance().get(Calendar.SECOND).toString()
                 dismiss()
             }else if(customDateStatus && nowTime1){
