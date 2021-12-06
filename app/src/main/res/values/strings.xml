@@ -370,6 +370,6 @@
     <string name="add_customer_phone_hint">##########</string>
     <string name="add_customer_alamat_hint">e.g Jl. Selasih No.18</string>
     <string name="add_customer_catatan_hint">Tulis Catatan</string>
-    <string name="cart">\t\t\t\t\tLihat Keranjang\t\t\t\t\t|\t\t\t\t\t\t\t %s item(s)</string>
+    <string name="cart">Lihat Keranjang\t\t\t|\t\t\t%s item(s)</string>
 
 </resources>
