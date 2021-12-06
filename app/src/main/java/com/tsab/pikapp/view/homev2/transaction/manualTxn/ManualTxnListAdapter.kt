@@ -207,7 +207,7 @@ class ManualTxnListAdapter(
             holder.logo.setImageResource(R.drawable.logo_wa)
         } else if (
             transactionList[position].order_platform == "Telepon" ||
-            transactionList[position].order_platform == "TELEPON"
+            transactionList[position].order_platform == "PHONE_CALL"
         ){
             holder.logo.setImageResource(R.drawable.logo_phone)
         } else if (transactionList[position].order_platform == "PIKAPP"){
