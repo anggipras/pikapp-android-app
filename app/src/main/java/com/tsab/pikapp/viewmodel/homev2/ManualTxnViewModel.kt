@@ -397,7 +397,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun editCustomer(){
         val mid = sessionManager.getUserData()!!.mid!!
         val editReq = EditCustomerRequest(
-            customerId = custId.value,
+            customerId = custIdTemp.value,
             mid = mid,
             name = editCustName.value,
             address = editCustAddress.value,
@@ -410,7 +410,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<CustomerResponse>,
                 response: Response<CustomerResponse>
             ) {
-                Log.e("response body", "succeed")
+                Log.e("edit customer: ", "succeed")
             }
 
             override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
@@ -421,12 +421,12 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun deleteCustomer(){
-        custId.value?.let { PikappApiService().api.deleteCustomer(it).enqueue(object : Callback<DeleteCustomerResponse>{
+        custIdTemp.value?.let { PikappApiService().api.deleteCustomer(it).enqueue(object : Callback<DeleteCustomerResponse>{
             override fun onResponse(
                 call: Call<DeleteCustomerResponse>,
                 response: Response<DeleteCustomerResponse>
             ) {
-                Log.e("response body", "succeed")
+                Log.e("delete customer: ", "succeed")
             }
 
             override fun onFailure(call: Call<DeleteCustomerResponse>, t: Throwable) {

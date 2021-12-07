@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -148,8 +149,16 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navController?.navigate(R.id.action_checkoutFragment_to_manualTxnCartPage)
+                }
+            })
+
         dataBinding.topAppBar.setNavigationOnClickListener {
-            navController?.navigateUp()
+            navController?.navigate(R.id.action_checkoutFragment_to_manualTxnCartPage)
         }
 
         dataBinding.btnNext.setOnClickListener {
