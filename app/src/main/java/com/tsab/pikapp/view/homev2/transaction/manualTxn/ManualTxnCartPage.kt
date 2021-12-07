@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -68,6 +69,14 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
     }
 
     private fun attachInputListener(){
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navController?.navigate(R.id.action_manualTxnCartPage_to_homeViewManualTxn)
+                }
+            })
+
         dataBinding.detailBtn.setOnClickListener {
             navController?.navigate(R.id.action_manualTxnCartPage_to_manualTxnDetail)
         }

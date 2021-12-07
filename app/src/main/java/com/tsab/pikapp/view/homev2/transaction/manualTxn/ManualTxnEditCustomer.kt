@@ -79,13 +79,4 @@ class ManualTxnEditCustomer : Fragment() {
             }
         }
     }
-
-    fun clearCustInfo(){
-        viewModel.setCustName("")
-        viewModel.setCustPhone("")
-        viewModel.setCustAddress("")
-        viewModel.setCustAddressDetail("")
-        viewModel.setCustId(0L)
-    }
-
 }

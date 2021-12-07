@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -75,6 +76,17 @@ class HomeViewManualTxn : Fragment() {
                 activity?.finish()
             }
         }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                        startActivity(this)
+                        activity?.finish()
+                    }
+                }
+            })
 
         dataBinding.searchField.setOnClickListener {
             dataBinding.searchField.onActionViewExpanded()
