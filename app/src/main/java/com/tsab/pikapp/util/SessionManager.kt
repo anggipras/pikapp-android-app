@@ -25,6 +25,8 @@ class SessionManager {
         private var PREF_HOME_NAV = "home nav"
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
+        private const val PREF_MENU_TABS = "menu tabs"
+        private const val PREF_MENU_INIT = "menu tabs"
 
         private var prefs: SharedPreferences? = null
 
@@ -168,4 +170,21 @@ class SessionManager {
 
     fun getBannerUri() = prefs?.getString(PREF_MERCHANT_BANNER, null)
     fun getLogoUri() = prefs?.getString(PREF_MERCHANT_LOGO, null)
+
+    //MENU PAGE TABS POSITION AND ACTION
+    fun setMenuPageTab(intData: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_MENU_TABS, intData)
+        }
+    }
+
+    fun getMenuPageTab() = prefs?.getInt(PREF_MENU_TABS, 0)
+
+    fun setMenuDefInit(intData: Int) {
+        prefs?.edit(commit = true) {
+            putInt(PREF_MENU_INIT, intData)
+        }
+    }
+
+    fun getMenuDefInit() = prefs?.getInt(PREF_MENU_INIT, 0)
 }

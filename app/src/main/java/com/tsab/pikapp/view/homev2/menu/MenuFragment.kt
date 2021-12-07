@@ -32,7 +32,6 @@ import java.io.File
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
-    private val viewModelDynamic: DynamicViewModel by activityViewModels()
     private lateinit var dataBinding: MenuFragmentBinding
 
     private var categoryList: List<String> = listOf()
@@ -58,9 +57,10 @@ class MenuFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-//        setMenuInvisible()
-//        observeViewModel()
         attachInputListeners()
+//        dataBinding.tabs.getTabAt(sessionManager.getMenuPageTab()!!)?.select()
+//        dataBinding.viewpager.currentItem = sessionManager.getMenuPageTab()!!
+//        sessionManager.setMenuDefInit(0)
     }
 
     override fun onDestroy() {
@@ -110,7 +110,6 @@ class MenuFragment : Fragment() {
         })
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
-            Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
@@ -144,20 +143,6 @@ class MenuFragment : Fragment() {
                 else -> false
             }
         }
-
-        /*dataBinding.sortButton.setOnClickListener { v ->
-            (activity as HomeActivity).openCloseDrawer(v)
-            *//*if (viewModel.size.value != null) {
-                sessionManager.setHomeNav(1)
-                Intent(activity?.baseContext, SortActivity::class.java).apply {
-                    putExtra("SORT_NAV", 0)
-                    activity?.startActivity(this)
-                }
-            } else if (viewModel.size.value == 0) {
-                dataBinding.textview3.visibility = View.VISIBLE
-            }*//*
-        }*/
-
     }
 
     private fun invisibleMenuNull() {
@@ -197,6 +182,11 @@ class MenuFragment : Fragment() {
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 dataBinding.viewpager.currentItem = tab.position
+
+//                if (sessionManager.getMenuDefInit() == 0) {
+//                    dataBinding.viewpager.currentItem = tab.position
+//                    sessionManager.setMenuPageTab(tab.position)
+//                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
