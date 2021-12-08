@@ -45,7 +45,9 @@ class HomeViewManualTxn : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+        if (viewModel.manualTransAct.value == 0) {
+            activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+        }
 
         dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -95,13 +97,8 @@ class HomeViewManualTxn : Fragment() {
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-/*            dataBinding.loadingOverlay.loadingView.visibility =
-                    if (isLoading) View.VISIBLE else View.GONE*/
             if (!isLoading) {
                 initViews()
-/*
-                dataBinding.loadingOverlay.loadingView.visibility = View.GONE
-*/
             }
         })
 
@@ -118,7 +115,6 @@ class HomeViewManualTxn : Fragment() {
         })
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
-            Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
@@ -126,6 +122,14 @@ class HomeViewManualTxn : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        dataBinding.tabs.getTabAt(viewModel.menuTabs.value!!)?.select()
+        dataBinding.viewpager.currentItem = viewModel.menuTabs.value!!
+        viewModel.mutableManualTransAct.value = 0
     }
 
     private fun initViews() {
@@ -138,7 +142,10 @@ class HomeViewManualTxn : Fragment() {
 
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                dataBinding.viewpager.currentItem = tab.position
+                if (viewModel.manualTransAct.value == 0) {
+                    dataBinding.viewpager.currentItem = tab.position
+                    viewModel.mutableMenuTabs.value = tab.position
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}

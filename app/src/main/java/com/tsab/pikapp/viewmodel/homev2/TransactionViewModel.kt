@@ -316,7 +316,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val totalItemsTrans = response.body()!!.total_items
-                    Log.e("data", response.body().toString())
                     if (totalItemsTrans != 0) {
                         getStoreOrderAllList(
                             baseContext,
@@ -385,7 +384,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         ).enqueue(object : Callback<GetStoreOrderListV2Response> {
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
                 Timber.tag(tag).d("Failed to get list transaction: ${t.message.toString()}")
-                Log.e("data1", t.message.toString())
                 setLoading(false)
             }
 
@@ -399,8 +397,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val result = response.body()
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val transactionList = result?.results
-
-                    Log.e("data1", response.body().toString())
 
                     val prosesList = ArrayList<StoreOrderList>()
                     val batalList = ArrayList<StoreOrderList>()
@@ -538,7 +534,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val token = sessionManager.getUserToken()!!
                 var clientId = getClientID()
                 var signature = getSignature(email, timestamp)
-                Log.e("data2", uuid + " " + timestamp + " " + clientId + " " + signature + " " + mid + " " + token)
 
                 val resultList = responseBody?.results
                 val prosesList = ArrayList<OrderDetailOmni>()
