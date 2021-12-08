@@ -3,11 +3,9 @@ package com.tsab.pikapp.view.homev2.menu
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,15 +17,9 @@ import com.tsab.pikapp.databinding.MenuFragmentBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
-import com.tsab.pikapp.view.homev2.SearchActivity
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
-import com.tsab.pikapp.view.menuCategory.SortActivity
-import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.menu_fragment.*
 import kotlinx.android.synthetic.main.menu_fragment.topAppBar
-import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.io.File
 
 class MenuFragment : Fragment() {
@@ -58,9 +50,6 @@ class MenuFragment : Fragment() {
         super.onResume()
 
         attachInputListeners()
-//        dataBinding.tabs.getTabAt(sessionManager.getMenuPageTab()!!)?.select()
-//        dataBinding.viewpager.currentItem = sessionManager.getMenuPageTab()!!
-//        sessionManager.setMenuDefInit(0)
     }
 
     override fun onDestroy() {
@@ -181,12 +170,10 @@ class MenuFragment : Fragment() {
 
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                dataBinding.viewpager.currentItem = tab.position
-
-//                if (sessionManager.getMenuDefInit() == 0) {
-//                    dataBinding.viewpager.currentItem = tab.position
-//                    sessionManager.setMenuPageTab(tab.position)
-//                }
+                if (sessionManager.getMenuDefInit() == 0) {
+                    dataBinding.viewpager.currentItem = tab.position
+                    sessionManager.setMenuPageTab(tab.position)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -208,7 +195,13 @@ class MenuFragment : Fragment() {
         val mDynamicFragmentAdapter =
             DynamicFragmentAdapter(childFragmentManager, categoryList.size, categoryList)
         dataBinding.viewpager.adapter = mDynamicFragmentAdapter
-        dataBinding.viewpager.currentItem = 0
+        if (sessionManager.getMenuDefInit() != 0) {
+            dataBinding.tabs.getTabAt(sessionManager.getMenuPageTab()!!)?.select()
+            dataBinding.viewpager.currentItem = sessionManager.getMenuPageTab()!!
+            sessionManager.setMenuDefInit(0)
+        } else {
+            dataBinding.viewpager.currentItem = 0
+        }
     }
 
     fun deleteCache(context: Context) {

@@ -26,7 +26,7 @@ class SessionManager {
         private const val PREF_MERCHANT_BANNER = "merchant banner"
         private const val PREF_MERCHANT_LOGO = "merchant logo"
         private const val PREF_MENU_TABS = "menu tabs"
-        private const val PREF_MENU_INIT = "menu tabs"
+        private const val PREF_MENU_INIT = "menu init"
 
         private var prefs: SharedPreferences? = null
 

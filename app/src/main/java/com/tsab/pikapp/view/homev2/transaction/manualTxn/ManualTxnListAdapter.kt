@@ -304,8 +304,6 @@ class ManualTxnListAdapter(
             ) {
                 val response = response.body()
                 val result = response?.results
-                Log.e("response", response.toString())
-                Log.e("result", result.toString())
                 val productList = ArrayList<ArrayList<ManualProductListResponse>>()
                 if(result != null){
                     if(response.results.isEmpty()){

@@ -80,6 +80,7 @@ class DynamicFragment : Fragment() {
                     Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                         putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_EDIT)
                         putExtra(AdvanceMenuActivity.MENU_LIST, menuList as Serializable)
+                        sessionManager.setMenuDefInit(1)
                         startActivity(this)
                     }
 
@@ -95,7 +96,7 @@ class DynamicFragment : Fragment() {
         dataBinding.tambahMenuEmptyButton.setOnClickListener {
             Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                 putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
-//                sessionManager.setMenuDefInit(1)
+                sessionManager.setMenuDefInit(1)
                 startActivity(this)
             }
         }
@@ -103,7 +104,7 @@ class DynamicFragment : Fragment() {
         dataBinding.tambahMenuButton.setOnClickListener {
             Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                 putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
-//                sessionManager.setMenuDefInit(1)
+                sessionManager.setMenuDefInit(1)
                 startActivity(this)
             }
         }

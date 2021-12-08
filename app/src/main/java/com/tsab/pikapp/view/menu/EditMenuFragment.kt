@@ -70,6 +70,7 @@ class EditMenuFragment : Fragment() {
     private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                sessionManager.setMenuDefInit(0)
                 activity?.finish()
             }
         })
@@ -77,6 +78,7 @@ class EditMenuFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.header.backButton.setAllOnClickListener(View.OnClickListener {
+            sessionManager.setMenuDefInit(0)
             activity?.finish()
         }, view)
 
