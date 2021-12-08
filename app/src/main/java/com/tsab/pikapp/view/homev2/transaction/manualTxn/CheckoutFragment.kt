@@ -79,7 +79,7 @@ class CheckoutFragment : Fragment() {
         })
 
         viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
-            if(harga != ""){
+            if(harga != "" && harga != " "){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
                 val thePrice: Long = harga.toLong()
@@ -91,6 +91,8 @@ class CheckoutFragment : Fragment() {
                 dataBinding.hargaBottom.text = "Rp. $numberFormat1"
             }
             if(harga == " "){
+                dataBinding.ongkirHarga.text = "Rp. 0"
+                dataBinding.hargaBottom.text = "Rp. ${viewModel.mutableCartPrice.value}"
                 dataBinding.hargaKirim.visibility = View.GONE
             }
         })
@@ -117,7 +119,13 @@ class CheckoutFragment : Fragment() {
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
-            dataBinding.hargaBottom.text = "Rp. $numberFormat"
+            if(viewModel.mutableHargaEkspedisi.value != "" && viewModel.mutableHargaEkspedisi.value != " "){
+                val thePrice1: Long = (price + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
+                dataBinding.hargaBottom.text = "Rp. $numberFormat1"
+            }else{
+                dataBinding.hargaBottom.text = "Rp. $numberFormat"
+            }
         })
 
         viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
