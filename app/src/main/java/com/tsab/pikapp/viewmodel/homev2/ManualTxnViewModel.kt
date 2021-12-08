@@ -272,6 +272,37 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableCustId.value = id
     }
 
+    val mutableAddCustName = MutableLiveData("")
+    val addCustName: LiveData<String> get() = mutableAddCustName
+    fun addCustName(custName: String) {
+        mutableAddCustName.value = custName
+    }
+
+    val mutableAddCustPhone = MutableLiveData("")
+    val addCustPhone: LiveData<String> get() = mutableAddCustPhone
+    fun addCustPhone(custPhone: String) {
+        mutableAddCustPhone.value = custPhone
+    }
+
+    val mutableAddCustAddress = MutableLiveData("")
+    val addCustAddress: LiveData<String> get() = mutableAddCustAddress
+    fun addCustAddress(custAddress: String) {
+        mutableAddCustAddress.value = custAddress
+    }
+
+    val mutableAddCustAddressDetail = MutableLiveData("")
+    val addCustAddressDetail: LiveData<String> get() = mutableAddCustAddressDetail
+    fun addCustAddressDetail(addressDetail: String) {
+        mutableAddCustAddressDetail.value = addressDetail
+    }
+
+    private val mutableAddCustId = MutableLiveData(0L)
+    val addCustId: LiveData<Long> get() = mutableAddCustId
+    fun addCustId(id: Long) {
+        mutableAddCustId.value = id
+    }
+
+
     val mutableCustNameTemp = MutableLiveData("")
     val custNameTemp: LiveData<String> get() = mutableCustNameTemp
     fun setCustNameTemp(custName: String) {
@@ -372,11 +403,11 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun addCustomer() {
         val mid = sessionManager.getUserData()!!.mid!!
         val addReq = addCustomerRequest(
-            name = custName.value,
+            name = addCustName.value,
             mid = mid,
-            address = custAddress.value,
-            addressDetail = custAddressDetail.value,
-            phoneNumber = custPhone.value
+            address = addCustAddress.value,
+            addressDetail = addCustAddressDetail.value,
+            phoneNumber = addCustPhone.value
         )
 
         PikappApiService().api.addCustomer(addReq).enqueue(object : Callback<CustomerResponse>{
@@ -397,7 +428,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun editCustomer(){
         val mid = sessionManager.getUserData()!!.mid!!
         val editReq = EditCustomerRequest(
-            customerId = custId.value,
+            customerId = custIdTemp.value,
             mid = mid,
             name = editCustName.value,
             address = editCustAddress.value,
@@ -410,7 +441,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 call: Call<CustomerResponse>,
                 response: Response<CustomerResponse>
             ) {
-                Log.e("response body", "succeed")
+                Log.e("edit customer: ", "succeed")
             }
 
             override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
@@ -421,12 +452,12 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun deleteCustomer(){
-        custId.value?.let { PikappApiService().api.deleteCustomer(it).enqueue(object : Callback<DeleteCustomerResponse>{
+        custIdTemp.value?.let { PikappApiService().api.deleteCustomer(it).enqueue(object : Callback<DeleteCustomerResponse>{
             override fun onResponse(
                 call: Call<DeleteCustomerResponse>,
                 response: Response<DeleteCustomerResponse>
             ) {
-                Log.e("response body", "succeed")
+                Log.e("delete customer: ", "succeed")
             }
 
             override fun onFailure(call: Call<DeleteCustomerResponse>, t: Throwable) {

@@ -196,12 +196,22 @@ class ManualTxnListAdapter(
     }
 
     private fun setUpLogo(holder: ViewHolder, position: Int){
-        if (transactionList[position].order_platform == "Instagram"){
+        if (transactionList[position].order_platform == "Instagram" ||
+            transactionList[position].order_platform == "INSTAGRAM"
+        ){
             holder.logo.setImageResource(R.drawable.logo_ig)
-        } else if (transactionList[position].order_platform == "Whatsapp"){
+        } else if (
+            transactionList[position].order_platform == "Whatsapp" ||
+            transactionList[position].order_platform == "WHATSAPP"
+        ){
             holder.logo.setImageResource(R.drawable.logo_wa)
-        } else if (transactionList[position].order_platform == "Telepon"){
+        } else if (
+            transactionList[position].order_platform == "Telepon" ||
+            transactionList[position].order_platform == "PHONE_CALL"
+        ){
             holder.logo.setImageResource(R.drawable.logo_phone)
+        } else if (transactionList[position].order_platform == "PIKAPP"){
+            holder.logo.setImageResource(R.drawable.logo_pikapp_square)
         } else {
             Timber.tag(tag).d("Invalid Order Platform")
         }
