@@ -272,6 +272,37 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableCustId.value = id
     }
 
+    val mutableAddCustName = MutableLiveData("")
+    val addCustName: LiveData<String> get() = mutableAddCustName
+    fun addCustName(custName: String) {
+        mutableAddCustName.value = custName
+    }
+
+    val mutableAddCustPhone = MutableLiveData("")
+    val addCustPhone: LiveData<String> get() = mutableAddCustPhone
+    fun addCustPhone(custPhone: String) {
+        mutableAddCustPhone.value = custPhone
+    }
+
+    val mutableAddCustAddress = MutableLiveData("")
+    val addCustAddress: LiveData<String> get() = mutableAddCustAddress
+    fun addCustAddress(custAddress: String) {
+        mutableAddCustAddress.value = custAddress
+    }
+
+    val mutableAddCustAddressDetail = MutableLiveData("")
+    val addCustAddressDetail: LiveData<String> get() = mutableAddCustAddressDetail
+    fun addCustAddressDetail(addressDetail: String) {
+        mutableAddCustAddressDetail.value = addressDetail
+    }
+
+    private val mutableAddCustId = MutableLiveData(0L)
+    val addCustId: LiveData<Long> get() = mutableAddCustId
+    fun addCustId(id: Long) {
+        mutableAddCustId.value = id
+    }
+
+
     val mutableCustNameTemp = MutableLiveData("")
     val custNameTemp: LiveData<String> get() = mutableCustNameTemp
     fun setCustNameTemp(custName: String) {
@@ -372,11 +403,11 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun addCustomer() {
         val mid = sessionManager.getUserData()!!.mid!!
         val addReq = addCustomerRequest(
-            name = custName.value,
+            name = addCustName.value,
             mid = mid,
-            address = custAddress.value,
-            addressDetail = custAddressDetail.value,
-            phoneNumber = custPhone.value
+            address = addCustAddress.value,
+            addressDetail = addCustAddressDetail.value,
+            phoneNumber = addCustPhone.value
         )
 
         PikappApiService().api.addCustomer(addReq).enqueue(object : Callback<CustomerResponse>{
