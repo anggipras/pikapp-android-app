@@ -38,7 +38,8 @@ data class ManualTxnRequest(
 data class ShippingData(
     var shipping_method: String,
     var shipping_cost: Int,
-    var shipping_time: String
+    var shipping_time: String,
+    var shipping_time_type: String
 )
 
 data class MenuList(
