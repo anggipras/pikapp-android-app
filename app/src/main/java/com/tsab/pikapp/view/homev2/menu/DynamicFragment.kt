@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDynamicBinding
 import com.tsab.pikapp.models.model.SearchItem
+import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.AdvanceMenuActivity
 import com.tsab.pikapp.viewmodel.homev2.DynamicViewModel
 import java.io.Serializable
@@ -28,7 +29,7 @@ class DynamicFragment : Fragment() {
 
     private val viewModel: DynamicViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentDynamicBinding
-
+    private val sessionManager = SessionManager()
     var menuList: MutableList<SearchItem> = mutableListOf()
     lateinit var dynamicAdapter: DynamicListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
@@ -79,6 +80,7 @@ class DynamicFragment : Fragment() {
                     Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                         putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_EDIT)
                         putExtra(AdvanceMenuActivity.MENU_LIST, menuList as Serializable)
+                        sessionManager.setMenuDefInit(1)
                         startActivity(this)
                     }
 
@@ -94,6 +96,7 @@ class DynamicFragment : Fragment() {
         dataBinding.tambahMenuEmptyButton.setOnClickListener {
             Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                 putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
+                sessionManager.setMenuDefInit(1)
                 startActivity(this)
             }
         }
@@ -101,6 +104,7 @@ class DynamicFragment : Fragment() {
         dataBinding.tambahMenuButton.setOnClickListener {
             Intent(activity?.baseContext, AdvanceMenuActivity::class.java).apply {
                 putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
+                sessionManager.setMenuDefInit(1)
                 startActivity(this)
             }
         }

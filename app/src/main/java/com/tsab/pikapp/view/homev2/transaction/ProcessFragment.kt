@@ -20,14 +20,17 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
+import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import timber.log.Timber
 
 class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     private val viewModel: TransactionViewModel by activityViewModels()
+    private val manualViewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var layoutManagerTransaction: LinearLayoutManager
     private lateinit var layoutManagerTokopedia: LinearLayoutManager
+    private lateinit var layoutManagerManualTxn: LinearLayoutManager
 
     private lateinit var dataBinding: FragmentProccessBinding
     private val sessionManager = SessionManager()
@@ -60,6 +63,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.mutableCountTxn.value = 0
+        dataBinding.recyclerviewManualTxn.visibility = View.VISIBLE
 
         layoutManagerTransaction =
             LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
@@ -69,6 +73,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         layoutManagerTokopedia =
             LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         dataBinding.recyclerviewTokopedia.layoutManager = layoutManagerTokopedia
+
+        layoutManagerManualTxn =
+            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
+        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
         activity?.let {
             viewModel.getStoreOrderList(
@@ -92,6 +101,8 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 requireParentFragment()
             )
         }
+
+        activity?.let { manualViewModel.getManualTxnList("ON_PROCESS", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
         viewModel.editList(
             recyclerview_transaction,

@@ -75,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
                         var midStore: String? = sessionManager.getUserData()?.mid
                         var phStore: String? = sessionManager.getUserData()?.phoneNumber
                         val menuWebApi = PikappApiService().menuWeb()
-                        val linkURL = "${menuWebApi}store?mid=${midStore}"
+                        val linkURL = "${menuWebApi}${midStore}"
                         val linkText = "Klik disini untuk melihat menu toko kami : ${linkURL}\n\nUntuk info lebih lanjut, hubungi kami di ${phStore}"
                         putExtra(Intent.EXTRA_TEXT, linkText)
                         type = "text/plain"

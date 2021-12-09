@@ -18,6 +18,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnDynamicBinding
 import com.tsab.pikapp.models.model.SearchItem
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 
 class ManualTxnDynamicFragment : Fragment() {
     companion object {
@@ -29,6 +30,7 @@ class ManualTxnDynamicFragment : Fragment() {
     }
 
     private val viewModel: ManualTxnViewModel by activityViewModels()
+    private val viewModelMenu: MenuViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualTxnDynamicBinding
     private var navController: NavController? = null
     var menuList: MutableList<SearchItem> = mutableListOf()
@@ -75,7 +77,7 @@ class ManualTxnDynamicFragment : Fragment() {
         viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
             if (totalItems > 0){
                 dataBinding.btnNext.visibility = View.VISIBLE
-                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+                dataBinding.btnNext.text = getString(R.string.cart, totalItems.toString())
             } else {
                 dataBinding.btnNext.visibility = View.GONE
             }
@@ -100,6 +102,7 @@ class ManualTxnDynamicFragment : Fragment() {
                     viewModel.setMenuName(menuList.product_name.toString())
                     viewModel.setMenuPrice(menuList.price.toString())
                     viewModel.setQty(1)
+                    viewModelMenu.mutableManualTransAct.value = 1
                     view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to false, ManualAddAdvMenuFragment.CART_POSITION to 0)) }
                 }
             })
@@ -120,7 +123,7 @@ class ManualTxnDynamicFragment : Fragment() {
         viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
             if (totalItems > 0){
                 dataBinding.btnNext.visibility = View.VISIBLE
-                dataBinding.btnNext.text = "Lihat Keranjang  |  $totalItems Item"
+                dataBinding.btnNext.text = getString(R.string.cart, totalItems.toString())
             } else {
                 dataBinding.btnNext.visibility = View.GONE
             }

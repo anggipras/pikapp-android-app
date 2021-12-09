@@ -106,8 +106,38 @@
                 android:fontFamily="@font/proximanova_bold"
                 android:layoutDirection="rtl"
                 android:paddingLeft="30dp"
-                android:paddingRight="207.7dp"
-                android:text="Shopee"
+                android:paddingRight="192dp"
+                android:text="Instagram"
+                android:textAlignment="textStart"
+                android:textColor="#767676"
+                android:textSize="15dp" />
+
+            <CheckBox
+                android:id="@+id/whatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/proximanova_bold"
+                android:layoutDirection="rtl"
+                android:paddingLeft="30dp"
+                android:paddingRight="192dp"
+                android:text="Whatsapp"
+                android:textAlignment="textStart"
+                android:textColor="#767676"
+                android:textSize="15dp" />
+
+            <CheckBox
+                android:id="@+id/telepon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/proximanova_bold"
+                android:layoutDirection="rtl"
+                android:paddingLeft="30dp"
+                android:paddingRight="206dp"
+                android:text="Telepon"
                 android:textAlignment="textStart"
                 android:textColor="#767676"
                 android:textSize="15dp" />

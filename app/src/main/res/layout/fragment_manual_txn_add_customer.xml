@@ -130,6 +130,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
+                    android:id="@+id/phoneHeaderText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
@@ -165,6 +166,7 @@
                     android:text="@string/add_customer_country_code"
                     android:clickable="false"
                     android:enabled="false"
+                    android:textColor="@color/black"
                     android:drawableStart="@drawable/icon_indonesia_circle"
                     android:drawablePadding="5dp"
                     android:layout_marginStart="29dp"
@@ -202,6 +204,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
+                    android:id="@+id/addressHeaderText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
@@ -272,9 +275,10 @@
             android:id="@+id/btnNext"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="@drawable/button_green_square"
+            android:background="@drawable/button_gray_square"
             android:text="@string/simpan"
             android:textAllCaps="false"
+            android:enabled="false"
             android:fontFamily="@font/proximanova_semibold"
             android:textColor="@color/white"
             android:layout_marginLeft="32dp"

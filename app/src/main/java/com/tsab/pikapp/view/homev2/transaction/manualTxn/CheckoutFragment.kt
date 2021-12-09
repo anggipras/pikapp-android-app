@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -78,12 +79,20 @@ class CheckoutFragment : Fragment() {
         })
 
         viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
-            if(harga != ""){
+            if(harga != "" && harga != " "){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
-                dataBinding.hargaKirim.text = "Rp. $harga"
+                val thePrice: Long = harga.toLong()
+                val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+                val thePrice1: Long = (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
+                dataBinding.hargaKirim.text = "Rp. $numberFormat"
+                dataBinding.ongkirHarga.text = "Rp. $numberFormat"
+                dataBinding.hargaBottom.text = "Rp. $numberFormat1"
             }
             if(harga == " "){
+                dataBinding.ongkirHarga.text = "Rp. 0"
+                dataBinding.hargaBottom.text = "Rp. ${viewModel.mutableCartPrice.value}"
                 dataBinding.hargaKirim.visibility = View.GONE
             }
         })
@@ -110,7 +119,13 @@ class CheckoutFragment : Fragment() {
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
-            dataBinding.hargaBottom.text = "Rp. $numberFormat"
+            if(viewModel.mutableHargaEkspedisi.value != "" && viewModel.mutableHargaEkspedisi.value != " "){
+                val thePrice1: Long = (price + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
+                dataBinding.hargaBottom.text = "Rp. $numberFormat1"
+            }else{
+                dataBinding.hargaBottom.text = "Rp. $numberFormat"
+            }
         })
 
         viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
@@ -142,33 +157,44 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navController?.navigate(R.id.action_checkoutFragment_to_manualTxnCartPage)
+                }
+            })
+
         dataBinding.topAppBar.setNavigationOnClickListener {
-            navController?.navigateUp()
+            navController?.navigate(R.id.action_checkoutFragment_to_manualTxnCartPage)
         }
 
         dataBinding.btnNext.setOnClickListener {
             if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                 viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
-                viewModel.postOrder(dataBinding.payStat.isChecked)
-                navController?.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+                var status = navController?.let { it1 ->
+                    viewModel.postOrder(dataBinding.payStat.isChecked,
+                        it1, requireActivity()
+                    )
+                }
             }else{
                 Log.e("Fail", "Data Kosong")
             }
         }
 
-        dataBinding.bayarBtn.setOnClickListener {
+        dataBinding.pembayaran.setOnClickListener {
             navController?.navigate(R.id.action_checkoutFragment_to_paymentFragment)
         }
 
-        dataBinding.asalBtn.setOnClickListener {
+        dataBinding.asal.setOnClickListener {
             AsalFragment().show(requireActivity().supportFragmentManager, "show")
         }
 
-        dataBinding.tanggalBtn.setOnClickListener {
+        dataBinding.tanggal.setOnClickListener {
             DateFragment().show(requireActivity().supportFragmentManager, "show")
         }
 
-        dataBinding.kirimBtn.setOnClickListener {
+        dataBinding.pengiriman.setOnClickListener {
             DeliveryFragment().show(requireActivity().supportFragmentManager, "show")
         }
         dataBinding.pelanggan.setOnClickListener {

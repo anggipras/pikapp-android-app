@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
+import com.tsab.pikapp.models.model.ExtraList
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import java.text.NumberFormat
 import java.util.*
@@ -26,6 +28,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCartAdapter: ManualTxnCartAdapter
+    private var extraList: ArrayList<ExtraList> = ArrayList()
     private val localeID =  Locale("in", "ID")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +69,14 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
     }
 
     private fun attachInputListener(){
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navController?.navigate(R.id.action_manualTxnCartPage_to_homeViewManualTxn)
+                }
+            })
+
         dataBinding.detailBtn.setOnClickListener {
             navController?.navigate(R.id.action_manualTxnCartPage_to_manualTxnDetail)
         }

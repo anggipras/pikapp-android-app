@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,17 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.annotations.SerializedName
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCustomerPageBinding
 import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import kotlinx.android.synthetic.main.other_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import java.util.*
 
@@ -28,6 +33,7 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCustomerAdapter: ManualTxnCustomerAdapter
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,6 +46,12 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         super.onViewCreated(view, savedInstanceState)
 
         navController = Navigation.findNavController(view)
+
+        swipeRefreshLayout = dataBinding.swipeCustomerList
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getCustomer()
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         linearLayoutManager = LinearLayoutManager(requireView().context)
         dataBinding.recyclerviewCustomer.layoutManager = linearLayoutManager
@@ -80,6 +92,14 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
     }
 
     private fun attatchInputListeners(){
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
+                }
+            })
+
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.manualTxn -> {
@@ -102,6 +122,11 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
 
         dataBinding.btnSelect.setOnClickListener {
             Toast.makeText(context, "Pelanggan berhasil dipilih", Toast.LENGTH_SHORT).show()
+            viewModel.setCustName(viewModel.custNameTemp.value.toString())
+            viewModel.custIdTemp.value?.let { it1 -> viewModel.setCustId(it1.toLong()) }
+            viewModel.setCustPhone(viewModel.custPhoneTemp.value.toString())
+            viewModel.setCustAddress(viewModel.custAddressTemp.value.toString())
+            viewModel.setCustAddressDetail(viewModel.custAddressDetailTemp.value.toString())
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
         }
     }
@@ -116,20 +141,20 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
     override fun onItemClick(b: Boolean, i: Int) {
         if (b){
             viewModel.customerList.value?.get(i)?.let {
-                it.name?.let { it1 -> viewModel.setCustName(it1) }
-                it.phone?.let { it1 -> viewModel.setCustPhone(it1) }
-                it.address?.let { it1 -> viewModel.setCustAddress(it1) }
-                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
-                it.customerId?.let { it1 -> viewModel.setCustId(it1) }
+                it.name?.let { it1 -> viewModel.setCustNameTemp(it1) }
+                it.phone?.let { it1 -> viewModel.setCustPhoneTemp(it1) }
+                it.address?.let { it1 -> viewModel.setCustAddressTemp(it1) }
+                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetailTemp(it1) }
+                it.customerId?.let { it1 -> viewModel.setCustIdTemp(it1) }
             }
             view?.let { Navigation.findNavController(it).navigate(R.id.action_manualTxnCustomerPage_to_manualTxnEditCustomer) }
         } else {
             viewModel.customerList.value?.get(i)?.let {
-                it.name?.let { it1 -> viewModel.setCustName(it1) }
-                it.phone?.let { it1 -> viewModel.setCustPhone(it1) }
-                it.address?.let { it1 -> viewModel.setCustAddress(it1) }
-                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetail(it1) }
-                it.customerId?.let { it1 -> viewModel.setCustId(it1) }
+                it.name?.let { it1 -> viewModel.setCustNameTemp(it1) }
+                it.phone?.let { it1 -> viewModel.setCustPhoneTemp(it1) }
+                it.address?.let { it1 -> viewModel.setCustAddressTemp(it1) }
+                it.addressDetail?.let { it1 -> viewModel.setCustAddressDetailTemp(it1) }
+                it.customerId?.let { it1 -> viewModel.setCustIdTemp(it1) }
             }
             dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
             dataBinding.btnSelect.isEnabled = true
