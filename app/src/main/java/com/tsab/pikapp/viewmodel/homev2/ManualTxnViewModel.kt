@@ -69,6 +69,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableNamaEkspedisi = MutableLiveData("")
     val NamaEkspedisi: LiveData<String> get() = mutableNamaEkspedisi
 
+    val mutableStatusTime = MutableLiveData("")
+    val StatusTime: LiveData<String> get() = mutableStatusTime
+
     val mutableHargaEkspedisi = MutableLiveData("")
     val HargaEkspedisi: LiveData<String> get() = mutableHargaEkspedisi
 
@@ -722,7 +725,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
 
         var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
-        var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi.toInt(), mutablePostWaktu.value.toString())
+        var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi.toInt(), mutablePostWaktu.value.toString(), mutableStatusTime.value.toString())
         PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType,
             ekspedisi, mutableCartPrice.value!!.toInt(), payStatus,
             mutableBayar.value!!.toString().uppercase(Locale.getDefault()), "OPEN", 0, mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt())).
