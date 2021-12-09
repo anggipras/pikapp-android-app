@@ -21,6 +21,7 @@ import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -47,7 +48,7 @@ class TransactionFragment : Fragment() {
 
         if (activity != null && isAdded) {
             activity?.overridePendingTransition(0, 0)
-            CoroutineScope(IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 setUpTabs()
             }
 

@@ -526,7 +526,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun getManualTxnList(status: String, baseContext: Context, recyclerview_transaction: RecyclerView, activity: Activity){
         val mid = sessionManager.getUserData()!!.mid!!
         val status = status
-        Log.e("mid", mid)
 
         PikappApiService().api.getManualTransactionList(
             size = 1000,
@@ -540,8 +539,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             ) {
                 val response1 = response.body()
                 val result = response1?.results
-                Log.e("response", response.code().toString())
-                Log.e("result", result.toString())
                 val productList = ArrayList<ArrayList<ManualProductListResponse>>()
 
                 if(result != null){

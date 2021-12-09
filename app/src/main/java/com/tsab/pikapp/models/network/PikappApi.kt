@@ -479,7 +479,7 @@ interface PikappApi {
             @Header("x-client-id") clientID: String,
             @Header("x-signature") signature: String,
             @Header("token") token: String,
-            @Path("mid") mid: String?
+            @Path("mid") mid: String? = null
     ): Single<MerchantProfileResponse>
 
     // Advanced Menu
