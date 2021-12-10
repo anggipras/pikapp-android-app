@@ -65,8 +65,7 @@ class AddMenuFragment : Fragment() {
     private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                activity?.startActivity(intent)
+                sessionManager.setMenuDefInit(0)
                 activity?.finish()
             }
         })
@@ -74,8 +73,7 @@ class AddMenuFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.header.backButton.setAllOnClickListener(View.OnClickListener {
-            val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-            activity?.startActivity(intent)
+            sessionManager.setMenuDefInit(0)
             activity?.finish()
         }, view)
 

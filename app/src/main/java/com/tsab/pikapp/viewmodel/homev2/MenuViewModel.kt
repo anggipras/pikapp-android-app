@@ -21,11 +21,17 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
     val sessionManager = SessionManager(getApplication())
 
-    private val mutableIsLoading = MutableLiveData(true)
+    val mutableIsLoading = MutableLiveData(true)
     val isLoading: LiveData<Boolean> get() = mutableIsLoading
 
     private val mutableSize = MutableLiveData(0)
     val size: LiveData<Int> get() = mutableSize
+
+    val mutableMenuTabs = MutableLiveData(0)
+    val menuTabs: LiveData<Int> get() = mutableMenuTabs
+
+    val mutableManualTransAct = MutableLiveData(0)
+    val manualTransAct: LiveData<Int> get() = mutableManualTransAct
 
     private val mutableCategoryList = MutableLiveData<List<CategoryListResult>>(listOf())
     val categoryListResult: LiveData<List<CategoryListResult>> = mutableCategoryList

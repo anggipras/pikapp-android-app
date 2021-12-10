@@ -5,6 +5,7 @@ import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.*
 
 interface PikappApi {
@@ -387,16 +388,16 @@ interface PikappApi {
 
     @GET("pos/v1/transaction/list/{mid}/{status}")
     fun getManualTransactionList(
-        @Header("x-request-id") uuid: String,
-        @Header("x-request-timestamp") time: String,
-        @Header("x-client-id") clientID: String,
-        @Header("x-signature") signature: String,
-        @Header("token") token: String,
         @Header("size") size: Int,
         @Header("page") page: Int?,
         @Path("mid") midStore: String?,
         @Path("status") statusTrans: String
     ): Call<GetManualTransactionResp>
+
+    @POST("pos/v1/transaction/status/")
+    fun postUpdateManualTransaction(
+        @Body UpdateStatusManualTxnRequest: UpdateStatusManualTxnRequest
+    ): Call<UpdateStatusManualResponse>
 
     // Update status
     @Multipart
@@ -478,7 +479,7 @@ interface PikappApi {
             @Header("x-client-id") clientID: String,
             @Header("x-signature") signature: String,
             @Header("token") token: String,
-            @Path("mid") mid: String?
+            @Path("mid") mid: String? = null
     ): Single<MerchantProfileResponse>
 
     // Advanced Menu

@@ -21,6 +21,7 @@ import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -47,22 +48,22 @@ class TransactionFragment : Fragment() {
 
         if (activity != null && isAdded) {
             activity?.overridePendingTransition(0, 0)
-            CoroutineScope(IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 setUpTabs()
             }
 
             /* Hide manual transaction for next sprint */
-//            topAppBar.setOnMenuItemClickListener { menuItem ->
-//                when (menuItem.itemId) {
-//                    R.id.manualTxn -> {
-//                        val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
-//                        activity?.startActivityForResult(intent, 1)
-//                        activity?.overridePendingTransition(0, 0)
-//                        true
-//                    }
-//                    else -> false
-//                }
-//            }
+           topAppBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                   R.id.manualTxn -> {
+                     val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
+                      activity?.startActivityForResult(intent, 1)
+                       activity?.overridePendingTransition(0, 0)
+                      true
+                  }
+                  else -> false
+               }
+          }
 
             swipeRefreshLayout = swipeTransactionMenu
 

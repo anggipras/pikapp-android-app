@@ -80,6 +80,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val mutableGrabFilter = MutableLiveData<Boolean>(false)
     val grabFilter: LiveData<Boolean> get() = mutableGrabFilter
 
+    val mutableWhatsappFilter = MutableLiveData<Boolean>(false)
+    val whatsappFilter: LiveData<Boolean> get() = mutableWhatsappFilter
+
+    val mutableTelpFilter = MutableLiveData<Boolean>(false)
+    val telpFilter: LiveData<Boolean> get() = mutableTelpFilter
+
     val mutableTokpedFilter = MutableLiveData<Boolean>(false)
     val tokpedFilter: LiveData<Boolean> get() = mutableTokpedFilter
 
@@ -309,7 +315,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val gson = Gson()
                 val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    val totalItemsTrans = response.body()?.total_items
+                    val totalItemsTrans = response.body()!!.total_items
                     if (totalItemsTrans != 0) {
                         getStoreOrderAllList(
                             baseContext,
@@ -353,22 +359,25 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     ) {
         val email = sessionManager.getUserData()?.email
         val token = sessionManager.getUserToken()!!
-        val mid = sessionManager.getUserData()?.mid
-        val timestamp = getTimestamp()
+        var mid = sessionManager.getUserData()?.mid
+        var timestamp = getTimestamp()
+        var uuid = getUUID()
+        var clientId = getClientID()
+        var signature = getSignature(email, timestamp)
 
         val transReq = TransactionListRequest(
             page = 0,
-            size = totalItems,
+            size = 18,
             transaction_id = "",
             status = listOf()
         )
         setProcessBadges(0)
 
         PikappApiService().api.getTransactionListV2Merchant(
-            getUUID(),
+            uuid,
             timestamp,
-            getClientID(),
-            getSignature(email, timestamp),
+            clientId,
+            signature,
             token,
             mid,
             transReq
@@ -475,6 +484,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         setAmountOfTrans(countTrans)
                     }
                 } else {
+                    Log.e("data1", "Fail")
                     val errorResponse: GetStoreOrderListV2Response? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)
                     Timber.tag(tag).d("Error code: ${errorResponse?.errCode}")
@@ -517,6 +527,13 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
             override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
                 val responseBody = response.body()
+                var mid = sessionManager.getUserData()?.mid
+                var timestamp = getTimestamp()
+                val email = sessionManager.getUserData()?.email
+                var uuid = getUUID()
+                val token = sessionManager.getUserToken()!!
+                var clientId = getClientID()
+                var signature = getSignature(email, timestamp)
 
                 val resultList = responseBody?.results
                 val prosesList = ArrayList<OrderDetailOmni>()
