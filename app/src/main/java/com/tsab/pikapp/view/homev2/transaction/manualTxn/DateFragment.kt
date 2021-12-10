@@ -239,6 +239,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 viewModel.setWaktu("Sekarang", " ")
                 viewModel.mutablePostWaktu.value = Calendar.getInstance().get(Calendar.YEAR).toString() + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1).toString() + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString() + " " +
                         Calendar.getInstance().get(Calendar.HOUR_OF_DAY).toString() + ":" + Calendar.getInstance().get(Calendar.MINUTE).toString() + ":" + Calendar.getInstance().get(Calendar.SECOND).toString()
+                viewModel.mutableStatusTime.value = "NOW"
                 dismiss()
             }else if(customDateStatus && nowTime1){
                 viewModel.setWaktu("Custom", customDate.text.toString() + " " + nowTime.text)
@@ -248,6 +249,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 var minutePost = nowTime.text.toString().substringAfter(".")
                 viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
+                viewModel.mutableStatusTime.value = "CUSTOM"
                 dismiss()
             }else if(customDateStatus && nowTime2){
                 viewModel.setWaktu("Custom", customDate.text.toString() + " " + nowTimeSecond.text)
@@ -257,6 +259,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 var minutePost = nowTimeSecond.text.toString().substringAfter(".")
                 viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
+                viewModel.mutableStatusTime.value = "CUSTOM"
                 dismiss()
             }else if(customDateStatus && nowTime3){
                 viewModel.setWaktu("Custom", customDate.text.toString() + " " + nowTimeThird.text)
@@ -266,6 +269,7 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 var minutePost = nowTimeThird.text.toString().substringAfter(".")
                 viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
+                viewModel.mutableStatusTime.value = "CUSTOM"
                 dismiss()
             }else if(customDateStatus && customTimeStatus){
                 viewModel.setWaktu("Custom", customDate.text.toString() + " " + customTime.text)
@@ -275,6 +279,8 @@ class DateFragment : RoundedBottomSheetDialogFragment(){
                 var minutePost = customTime.text.toString().substringAfter(".")
                 viewModel.mutablePostWaktu.value = yearNow.toString() + "-" + (monthNow + 1).toString() + "-" + day.toString() + " " +
                         hourPost + ":" + minutePost + ":" + "00"
+                Log.e("Status", viewModel.mutablePostWaktu.value.toString())
+                viewModel.mutableStatusTime.value = "CUSTOM"
                 dismiss()
             }
         }
