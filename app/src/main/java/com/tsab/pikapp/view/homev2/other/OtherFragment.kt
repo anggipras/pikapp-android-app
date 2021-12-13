@@ -1,7 +1,10 @@
 package com.tsab.pikapp.view.homev2.other
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +32,9 @@ class OtherFragment : Fragment() {
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val sessionManager = SessionManager()
 
+    var wifiConnected: Boolean? = false
+    var mobileConnected: Boolean? = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,13 +48,13 @@ class OtherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateConnectedFlags()
+
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getMerchantProfile(requireContext())
+            updateConnectedFlags()
         }
 
-        viewModel.getMerchantProfile(requireContext())
-        viewModel.getMerchantShopStatus(requireActivity())
         dataBinding.merchantProfile = viewModel
 
         dataBinding.merchantSettingClick.setOnClickListener {
@@ -70,6 +76,25 @@ class OtherFragment : Fragment() {
         }
 
         observeViewModel()
+    }
+
+    private fun updateConnectedFlags() {
+        val connMgr = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeInfo: NetworkInfo? = connMgr.activeNetworkInfo
+        if (activeInfo?.isConnected == true) {
+            wifiConnected = activeInfo.type == ConnectivityManager.TYPE_WIFI
+            mobileConnected = activeInfo.type == ConnectivityManager.TYPE_MOBILE
+        } else {
+            wifiConnected = false
+            mobileConnected = false
+        }
+
+        if (wifiConnected == true || mobileConnected == true) {
+            viewModel.getMerchantProfile(requireContext())
+            viewModel.getMerchantShopStatus(requireActivity())
+        } else {
+            /* CHANGE UI */
+        }
     }
 
     private fun observeViewModel() {
