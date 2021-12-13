@@ -596,6 +596,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                 Log.e("FAILED", t.message.toString())
+                setLoading(false)
             }
         })
     }

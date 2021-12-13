@@ -56,7 +56,9 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         PikappApiService().api.getMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {
-            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {}
+            override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
+                mutableIsLoading.value = false
+            }
 
             override fun onResponse(
                 call: Call<MerchantListCategoryResponse>,

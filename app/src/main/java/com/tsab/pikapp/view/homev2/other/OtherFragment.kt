@@ -85,7 +85,6 @@ class OtherFragment : Fragment() {
         })
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
-            Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
