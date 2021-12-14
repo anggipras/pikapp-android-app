@@ -20,6 +20,7 @@ import com.skydoves.balloon.showAlignTop
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditMenuBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
@@ -29,6 +30,9 @@ import com.tsab.pikapp.viewmodel.menu.MenuViewModel
 import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
 import kotlinx.android.synthetic.main.alert_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_edit_menu.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class EditMenuFragment : Fragment() {
     private val viewModelMenu: MenuViewModel by activityViewModels()
@@ -116,14 +120,23 @@ class EditMenuFragment : Fragment() {
         }
 
         dataBinding.btnNext.setOnClickListener {
-//            viewModelMenu.validateMenu(viewModelMenu.img.value)
             viewModelMenu.validateNama(dataBinding.namaMenu.text.toString())
             viewModelMenu.validateHarga(dataBinding.harga.text.toString())
             viewModelMenu.validateDesc(dataBinding.descMenu.text.toString())
 
             if (viewModelMenu.validatePage()) {
-                viewModelMenu.postMenu()
+                updateConnectedFlags()
             }
+        }
+    }
+
+    private fun updateConnectedFlags() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            viewModelMenu.postMenu()
+        } else {
+            /* CHANGE UI */
+            onlineService.showToast(requireContext())
         }
     }
 

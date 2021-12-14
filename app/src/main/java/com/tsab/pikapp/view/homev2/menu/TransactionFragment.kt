@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.view.homev2.transaction.CancelFragment
 import com.tsab.pikapp.view.homev2.transaction.DoneFragment
 import com.tsab.pikapp.view.homev2.transaction.ProcessFragment
@@ -48,9 +49,7 @@ class TransactionFragment : Fragment() {
 
         if (activity != null && isAdded) {
             activity?.overridePendingTransition(0, 0)
-            CoroutineScope(Dispatchers.Main).launch {
-                setUpTabs()
-            }
+            updateConnectedFlags()
 
             /* Hide manual transaction for next sprint */
            topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -144,6 +143,18 @@ class TransactionFragment : Fragment() {
 
             dataBinding.viewpager.adapter = adapter
             tabs.setupWithViewPager(dataBinding.viewpager)
+        }
+    }
+
+    private fun updateConnectedFlags() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            CoroutineScope(Dispatchers.Main).launch {
+                setUpTabs()
+            }
+        } else {
+            /* CHANGE UI */
+            onlineService.showToast(requireContext())
         }
     }
 

@@ -1,6 +1,5 @@
 package com.tsab.pikapp.view.homev2.menu
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,13 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
+import com.tsab.pikapp.services.CacheService
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import kotlinx.android.synthetic.main.menu_fragment.topAppBar
-import java.io.File
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -41,9 +41,19 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+        updateConnectedFlags()
         setMenuInvisible()
         observeViewModel()
+    }
+
+    private fun updateConnectedFlags() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+        } else {
+            /* CHANGE UI */
+            onlineService.showToast(requireContext())
+        }
     }
 
     override fun onResume() {
@@ -55,7 +65,7 @@ class MenuFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.restartFragment()
-        deleteCache(requireContext())
+        CacheService().deleteCache(requireContext())
     }
 
     private fun observeViewModel() {
@@ -201,32 +211,6 @@ class MenuFragment : Fragment() {
             sessionManager.setMenuDefInit(0)
         } else {
             dataBinding.viewpager.currentItem = 0
-        }
-    }
-
-    fun deleteCache(context: Context) {
-        try {
-            val dir: File = context.cacheDir
-            deleteDir(dir)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun deleteDir(dir: File?): Boolean {
-        return if (dir != null && dir.isDirectory) {
-            val children: Array<String> = dir.list()
-            for (i in children.indices) {
-                val success = deleteDir(File(dir, children[i]))
-                if (!success) {
-                    return false
-                }
-            }
-            dir.delete()
-        } else if (dir != null && dir.isFile) {
-            dir.delete()
-        } else {
-            false
         }
     }
 }

@@ -1,12 +1,8 @@
 package com.tsab.pikapp.view.homev2.other
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
@@ -31,9 +28,6 @@ class OtherFragment : Fragment() {
     private lateinit var viewModel: OtherViewModel
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val sessionManager = SessionManager()
-
-    var wifiConnected: Boolean? = false
-    var mobileConnected: Boolean? = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +43,6 @@ class OtherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         updateConnectedFlags()
-
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
             updateConnectedFlags()
@@ -79,21 +72,13 @@ class OtherFragment : Fragment() {
     }
 
     private fun updateConnectedFlags() {
-        val connMgr = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeInfo: NetworkInfo? = connMgr.activeNetworkInfo
-        if (activeInfo?.isConnected == true) {
-            wifiConnected = activeInfo.type == ConnectivityManager.TYPE_WIFI
-            mobileConnected = activeInfo.type == ConnectivityManager.TYPE_MOBILE
-        } else {
-            wifiConnected = false
-            mobileConnected = false
-        }
-
-        if (wifiConnected == true || mobileConnected == true) {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
             viewModel.getMerchantProfile(requireContext())
             viewModel.getMerchantShopStatus(requireActivity())
         } else {
             /* CHANGE UI */
+            onlineService.showToast(requireContext())
         }
     }
 
