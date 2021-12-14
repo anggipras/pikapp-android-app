@@ -3,7 +3,6 @@ package com.tsab.pikapp.view.homev2.other
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
@@ -42,13 +42,12 @@ class OtherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateConnectedFlags()
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getMerchantProfile(requireContext())
+            updateConnectedFlags()
         }
 
-        viewModel.getMerchantProfile(requireContext())
-        viewModel.getMerchantShopStatus(requireActivity())
         dataBinding.merchantProfile = viewModel
 
         dataBinding.merchantSettingClick.setOnClickListener {
@@ -72,6 +71,17 @@ class OtherFragment : Fragment() {
         observeViewModel()
     }
 
+    private fun updateConnectedFlags() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            viewModel.getMerchantProfile(requireContext())
+            viewModel.getMerchantShopStatus(requireActivity())
+        } else {
+            /* CHANGE UI */
+            onlineService.showToast(requireContext())
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.merchantResult.observe(viewLifecycleOwner, Observer { merchantProfile ->
             merchantProfile?.let {
@@ -85,7 +95,6 @@ class OtherFragment : Fragment() {
         })
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
-            Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {

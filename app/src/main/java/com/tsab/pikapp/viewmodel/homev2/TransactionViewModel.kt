@@ -306,6 +306,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         ).enqueue(object : Callback<GetStoreOrderListV2Response> {
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
                 Timber.tag(tag).d("Failed to get total: ${t.message.toString()}")
+                setLoading(false)
             }
 
             override fun onResponse(
@@ -342,6 +343,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
                     Timber.tag(tag).d("Logged out")
                     mutableErrCode.value = errorResponse?.errCode
+                    setLoading(false)
                 }
             }
 
@@ -484,7 +486,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         setAmountOfTrans(countTrans)
                     }
                 } else {
-                    Log.e("data1", "Fail")
                     val errorResponse: GetStoreOrderListV2Response? =
                         gson.fromJson(response.errorBody()!!.charStream(), type)
                     Timber.tag(tag).d("Error code: ${errorResponse?.errCode}")

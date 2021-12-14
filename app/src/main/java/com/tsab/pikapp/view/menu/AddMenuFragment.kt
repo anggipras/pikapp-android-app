@@ -19,6 +19,7 @@ import androidx.navigation.Navigation
 import com.skydoves.balloon.showAlignTop
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
@@ -106,10 +107,21 @@ class AddMenuFragment : Fragment() {
             viewModel.validateDesc(dataBinding.descMenu.text.toString())
 
             if (viewModel.validatePage()) {
-                viewModel.postMenu()
+                updateConnectedFlags()
             }
         }
     }
+
+    private fun updateConnectedFlags() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            viewModel.postMenu()
+        } else {
+            /* CHANGE UI */
+            onlineService.showToast(requireContext())
+        }
+    }
+
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { bool ->
