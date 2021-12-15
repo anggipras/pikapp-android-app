@@ -96,7 +96,13 @@ class ManualTxnListAdapter(
                 )
             }
             holder.orderStatus.setBackgroundResource(R.drawable.button_orange_square)
-            holder.rejectBtn.visibility = View.GONE
+            holder.rejectBtn.setOnClickListener {
+                updateStatus(UpdateStatusManualTxnRequest(
+                    transactionList[position].transaction_id,
+                    "CANCELLED",
+                    transactionList[position].payment_status),
+                "ON_PROCESS", mid, position, reycler, context)
+            }
         } else if (transactionList[position].order_status == "DELIVER") {
             setDate(position)
             setUpCard(holder, position)
@@ -143,11 +149,41 @@ class ManualTxnListAdapter(
             setDate(position)
             setUpCard(holder, position)
             holder.orderStatus.text = "Batal"
-            holder.orderStatus.setBackgroundResource(R.drawable.button_red_transparent)
+            holder.orderStatus.setBackgroundResource(R.drawable.button_red_square)
             holder.acceptBtn.visibility = View.GONE
             holder.rejectBtn.visibility = View.GONE
-        }else {
-            Toast.makeText(context, "Invalid Status Order", Toast.LENGTH_SHORT).show()
+            if (transactionList[position].payment_status == "PAID"){
+                holder.statusPayment.setTextColor(context.resources.getColor(R.color.green))
+                holder.statusPayment.text = "Sudah Bayar"
+                holder.updatePaymentBtn.text = "Refund ke Pelanggan"
+                holder.updatePaymentBtn.visibility = View.VISIBLE
+                holder.updatePaymentBtn.setOnClickListener {
+                    updateStatus(UpdateStatusManualTxnRequest(
+                        transactionList[position].transaction_id,
+                        transactionList[position].order_status,
+                        "REFUND"),
+                        "CANCELLED", mid, position, reycler, context)
+                }
+            } else if (transactionList[position].payment_status == "CANCELLED"){
+                holder.statusPayment.text = "Dibatalkan"
+                holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                holder.updatePaymentBtn.visibility = View.GONE
+            } else if (transactionList[position].payment_status == "REFUND"){
+                holder.statusPayment.text = "Dana Dikembalikan"
+                holder.statusPayment.setTextColor(context.resources.getColor(R.color.orange))
+                holder.updatePaymentBtn.visibility = View.GONE
+            } else {
+                Timber.tag(tag).d("Invalid status payment")
+            }
+        } else if (transactionList[position].order_status == "FAILED"){
+            setDate(position)
+            setUpCard(holder, position)
+            holder.orderStatus.text = "Gagal"
+            holder.orderStatus.setBackgroundResource(R.drawable.button_red_square)
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+        } else {
+            Timber.tag(tag).d("Invalid Status Order")
         }
     }
 
@@ -176,7 +212,7 @@ class ManualTxnListAdapter(
             holder.statusPayment.setTextColor(context.resources.getColor(R.color.green))
             holder.statusPayment.text = "Sudah Bayar"
             holder.updatePaymentBtn.visibility = View.GONE
-        } else {
+        } else if (transactionList[position].payment_status == "UNPAID") {
             holder.statusPayment.text = "Belum Bayar"
             holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
             holder.updatePaymentBtn.setOnClickListener {
@@ -192,6 +228,10 @@ class ManualTxnListAdapter(
                 transactionList[position].shipping?.shipping_method.toString(),
                 transactionList[position].transaction_id.toString(), transactionList[position].order_status.toString(), tabStatus, position)
             }
+        } else if (transactionList[position].payment_status == "FAILED"){
+            holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
+            holder.statusPayment.text = "Gagal"
+            holder.updatePaymentBtn.visibility = View.GONE
         }
     }
 
