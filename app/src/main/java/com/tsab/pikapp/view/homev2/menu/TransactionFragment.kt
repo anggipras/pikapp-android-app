@@ -65,6 +65,8 @@ class TransactionFragment : Fragment() {
                }
           }
 
+
+
             swipeRefreshLayout = swipeTransactionMenu
 
             swipeRefreshLayout = dataBinding.swipeTransactionMenu

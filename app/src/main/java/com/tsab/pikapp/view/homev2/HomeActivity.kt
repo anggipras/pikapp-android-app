@@ -1,10 +1,14 @@
 package com.tsab.pikapp.view.homev2
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -22,6 +26,9 @@ import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.layout_header_drawer.view.*
+import naci.showcaseview.ShowcaseView
+import naci.showcaseview.listener.IShowcaseListener
+import smartdevelop.ir.eram.showcaseviewlib.GuideView
 
 class HomeActivity : AppCompatActivity() {
     val model: CategoryViewModel by viewModels()
@@ -31,6 +38,9 @@ class HomeActivity : AppCompatActivity() {
     private val otherFragment = OtherFragment()
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: ActivityHomeNavigationBinding
+
+    var showcaseView: ShowcaseView? = null
+    var showcaseView2: ShowcaseView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +107,10 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
+
+        firstShowcase()
     }
+
 
     private fun replaceFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -122,4 +135,488 @@ class HomeActivity : AppCompatActivity() {
             open_drawer.openDrawer(GravityCompat.END)
         }
     }
+
+    fun firstShowcase(){
+        val showcaseView = ShowcaseView.Builder(this)
+            .setTargetView(bottom_navigation)
+            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body, Gravity.TOP,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    0f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    -30f,
+                    resources.displayMetrics
+                ),
+                0f)
+            .build()
+
+        showcaseView.show()
+
+        showcaseView!!.setClickListenerOnView(
+            R.id.skipBtn,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                showcaseView!!.hide()
+            }
+        )
+
+        showcaseView!!.setClickListenerOnView(
+            R.id.btn_Next,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                secondShowcase()
+                showcaseView!!.hide()
+            }
+        )
+    }
+
+    private fun secondShowcase(){
+        val showcaseView2 = ShowcaseView.Builder(this)
+            .setTargetView(findViewById(R.id.nav_transaction))
+            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body2, Gravity.TOP,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    0f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    -30f,
+                    resources.displayMetrics
+                ),
+                0f)
+            .build()
+
+        showcaseView2!!.setClickListenerOnView(
+            R.id.skipBtn,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                showcaseView2!!.hide()
+            }
+        )
+
+        showcaseView2!!.setClickListenerOnView(
+            R.id.btn_Next,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                thirdShowcase()
+                showcaseView2!!.hide()
+            }
+        )
+
+        showcaseView2!!.setClickListenerOnView(
+            R.id.btn_back,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                firstShowcase()
+                showcaseView2!!.hide()
+            }
+        )
+
+        showcaseView2.show()
+    }
+
+    private fun thirdShowcase() {
+        val showcaseView3 = ShowcaseView.Builder(this)
+            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
+            .setTargetView(transactionFragment.requireView().findViewById(R.id.header))
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseMargin(15F)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body3, Gravity.CENTER,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    0f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    -30f,
+                    resources.displayMetrics
+                ),
+                0f)
+            .build()
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.skipBtn,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_Next,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                fourthShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_back,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                secondShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3.show()
+    }
+
+    private fun fourthShowcase() {
+        val showcaseView3 = ShowcaseView.Builder(this)
+            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
+            .setTargetView(findViewById(R.id.nav_menu))
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseMargin(15F)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body4, Gravity.TOP,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    0f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    -30f,
+                    resources.displayMetrics
+                ),
+                0f)
+            .build()
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.skipBtn,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_Next,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                fifthShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_back,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                thirdShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3.show()
+    }
+
+    private fun fifthShowcase() {
+        val showcaseView3 = ShowcaseView.Builder(this)
+            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
+            .setTargetView(findViewById(R.id.nav_promo))
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseMargin(15F)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body5, Gravity.TOP,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    0f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    -30f,
+                    resources.displayMetrics
+                ),
+                0f)
+            .build()
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.skipBtn,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_Next,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                sixthShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_back,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                fourthShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3.show()
+    }
+
+    private fun sixthShowcase() {
+        val showcaseView3 = ShowcaseView.Builder(this)
+            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
+            .setTargetView(findViewById(R.id.nav_other))
+            .setRingColor(Color.BLUE)
+            .setShowCircles(true)
+            .setHideOnTouchOutside(false)
+            .setShowcaseMargin(15F)
+            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
+            .setRingWidth(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                )
+            )
+            .setDistanceBetweenShowcaseCircles(10)
+            .setShowcaseListener(object :
+                IShowcaseListener {
+                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+
+                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
+                    //TODO : do something..
+                }
+            })
+            .addCustomView(R.layout.layout_showcase_body6, Gravity.TOP,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    2f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    0f,
+                    resources.displayMetrics
+                ),
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    -30f,
+                    resources.displayMetrics
+                ),
+                0f)
+            .build()
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.skipBtn,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_Next,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3!!.setClickListenerOnView(
+            R.id.btn_back,
+            View.OnClickListener {
+                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
+                Log.e("Next", "Next")
+
+                fifthShowcase()
+                showcaseView3!!.hide()
+            }
+        )
+
+        showcaseView3.show()
+    }
+
 }
