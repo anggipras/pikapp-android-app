@@ -49,7 +49,10 @@ class TransactionFragment : Fragment() {
 
         if (activity != null && isAdded) {
             activity?.overridePendingTransition(0, 0)
-            updateConnectedFlags()
+//            updateConnectedFlags()
+            CoroutineScope(Dispatchers.Main).launch {
+                setUpTabs()
+            }
 
             /* Hide manual transaction for next sprint */
            topAppBar.setOnMenuItemClickListener { menuItem ->
