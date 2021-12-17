@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/pageproblem_icon"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_190sdp"
+            android:background="@drawable/page_problem_icon"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:foregroundGravity="center_horizontal"
+            app:layout_constraintBottom_toTopOf="@id/pageproblem_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pageproblem_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/proximanova_regular"
+            android:textSize="15sp"
+            android:textFontWeight="900"
+            android:text="@string/page_problem_title"
+            android:layout_marginTop="@dimen/_40sdp"
+            app:layout_constraintBottom_toTopOf="@+id/pageproblem_detail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pageproblem_icon"/>
+
+        <TextView
+            android:id="@+id/pageproblem_detail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_44sdp"
+            android:layout_marginEnd="@dimen/_44sdp"
+            android:fontFamily="@font/proximanova_regular"
+            android:gravity="center"
+            android:text="@string/page_problem_detail"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pageproblem_title"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
