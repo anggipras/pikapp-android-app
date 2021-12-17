@@ -100,6 +100,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         } else {
             general_error_done.isVisible = true
             viewModel.setLoading(false)
+            onlineService.networkDialog(requireActivity())
         }
     }
 
@@ -113,6 +114,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true
+            onlineService.networkDialog(requireActivity())
         }
     }
 

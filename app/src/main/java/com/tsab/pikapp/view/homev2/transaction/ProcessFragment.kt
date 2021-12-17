@@ -329,6 +329,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         } else {
             general_error_process.isVisible = true
             viewModel.setLoading(false)
+            onlineService.networkDialog(requireActivity())
         }
     }
 

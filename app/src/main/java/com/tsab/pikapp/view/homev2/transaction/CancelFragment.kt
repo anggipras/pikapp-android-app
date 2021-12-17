@@ -99,6 +99,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         } else {
             general_error_cancel.isVisible = true
             viewModel.setLoading(false)
+            onlineService.networkDialog(requireActivity())
         }
     }
 
