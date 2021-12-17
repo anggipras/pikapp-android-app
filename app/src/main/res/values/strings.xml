@@ -378,6 +378,6 @@
     <string name="no_network_title">Koneksi Internet Anda Terputus</string>
     <string name="no_network_detail">Silahkan periksa koneksi WiFi atau data seluler anda dan coba lagi!</string>
     <string name="page_problem_title">Halaman Bermasalah</string>
-    <string name="page_problem_detail">Silahkan coba lagi!</string>
+    <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silahkan coba lagi!</string>
 
 </resources>
