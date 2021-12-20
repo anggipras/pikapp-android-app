@@ -108,9 +108,54 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-        firstShowcase()
+        ShowIntro("Navigation Bar",
+            "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+        bottom_navigation, 2)
     }
 
+
+    private fun ShowIntro(title: String, desc:String, view: View, type: Int){
+        GuideView.Builder(this)
+            .setTitle(title)
+            .setContentText(desc)
+            .setGravity(GuideView.Gravity.auto)
+            .setTargetView(view)
+            .setContentTextSize(12)
+            .setTitleTextSize(14)
+            .setGuideListener {
+                if (type == 1) {
+                    ShowIntro("Navigation Bar",
+                        "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+                        bottom_navigation, 2)
+                }else if (type == 2){
+                    replaceFragment(transactionFragment)
+                    ShowIntro("Transaction Button",
+                        "Tombol transaksi digunakan untuk mengakses halaman transaksi pesanan dari merchant anda.",
+                        findViewById(R.id.nav_transaction), 3)
+                }else if (type == 3){
+                    ShowIntro("Transaction Page",
+                        "Halaman ini akan berisi daftar pesanan dari merchant anda.",
+                        findViewById(R.id.header), 4)
+                }else if (type == 4){
+                    replaceFragment(menuFragment)
+                    ShowIntro("Menu Button",
+                        "Tombol menu digunakan untuk mengakses halaman yang berisi daftar menu yang dimiliki merchant anda.",
+                        findViewById(R.id.nav_menu), 5)
+                }else if (type == 5){
+                    replaceFragment(promoFragment)
+                    ShowIntro("Promo Button",
+                        "Tombol Promo digunakan untuk mengakses halaman “Promo” yang dimiliki oleh merchant.",
+                        findViewById(R.id.nav_promo), 6)
+                }else if (type == 6){
+                    replaceFragment(otherFragment)
+                    ShowIntro("Other Page",
+                        "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.",
+                        findViewById(R.id.nav_other), 7)
+                }
+            }
+            .build()
+            .show()
+    }
 
     private fun replaceFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -136,7 +181,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun firstShowcase(){
+   /* fun firstShowcase(){
         val showcaseView = ShowcaseView.Builder(this)
             .setTargetView(bottom_navigation)
             .setBackgroundOverlayColor(Color.parseColor("#66000000"))
@@ -144,14 +189,6 @@ class HomeActivity : AppCompatActivity() {
             .setShowCircles(true)
             .setHideOnTouchOutside(false)
             .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setRingWidth(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                )
-            )
-            .setDistanceBetweenShowcaseCircles(10)
             .setShowcaseListener(object :
                 IShowcaseListener {
                 override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
@@ -166,23 +203,7 @@ class HomeActivity : AppCompatActivity() {
                     //TODO : do something..
                 }
             })
-            .addCustomView(R.layout.layout_showcase_body, Gravity.TOP,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    -30f,
-                    resources.displayMetrics
-                ),
-                0f)
+            .addCustomView(R.layout.layout_showcase_body, Gravity.TOP)
             .build()
 
         showcaseView.show()
@@ -215,14 +236,6 @@ class HomeActivity : AppCompatActivity() {
             .setShowCircles(true)
             .setHideOnTouchOutside(false)
             .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setRingWidth(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                )
-            )
-            .setDistanceBetweenShowcaseCircles(10)
             .setShowcaseListener(object :
                 IShowcaseListener {
                 override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
@@ -237,23 +250,7 @@ class HomeActivity : AppCompatActivity() {
                     //TODO : do something..
                 }
             })
-            .addCustomView(R.layout.layout_showcase_body2, Gravity.TOP,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    -30f,
-                    resources.displayMetrics
-                ),
-                0f)
+            .addCustomView(R.layout.layout_showcase_body2, Gravity.TOP)
             .build()
 
         showcaseView2!!.setClickListenerOnView(
@@ -617,6 +614,6 @@ class HomeActivity : AppCompatActivity() {
         )
 
         showcaseView3.show()
-    }
+    }*/
 
 }
