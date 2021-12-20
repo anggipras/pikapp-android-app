@@ -49,7 +49,6 @@ class TransactionFragment : Fragment() {
 
         if (activity != null && isAdded) {
             activity?.overridePendingTransition(0, 0)
-//            updateConnectedFlags()
             CoroutineScope(Dispatchers.Main).launch {
                 setUpTabs()
             }
@@ -146,18 +145,6 @@ class TransactionFragment : Fragment() {
 
             dataBinding.viewpager.adapter = adapter
             tabs.setupWithViewPager(dataBinding.viewpager)
-        }
-    }
-
-    private fun updateConnectedFlags() {
-        val onlineService = OnlineService()
-        if (onlineService.isOnline(context)) {
-            CoroutineScope(Dispatchers.Main).launch {
-                setUpTabs()
-            }
-        } else {
-            /* CHANGE UI */
-            onlineService.showToast(requireContext())
         }
     }
 

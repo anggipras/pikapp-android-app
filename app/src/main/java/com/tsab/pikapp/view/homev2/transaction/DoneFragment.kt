@@ -18,7 +18,6 @@ import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
-import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 
@@ -80,7 +79,9 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     "Done",
                     requireActivity().supportFragmentManager,
                     emptyStateDone,
-                    this
+                    this,
+                    requireActivity(),
+                    general_error_done
                 )
             }
             activity?.let {
@@ -91,7 +92,8 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     requireActivity(),
                     "Done",
                     emptyStateDone,
-                    requireParentFragment()
+                    requireParentFragment(),
+                    general_error_done
                 )
             }
 
@@ -110,7 +112,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone, this) }
+            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone, this, requireActivity(), general_error_done) }
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true

@@ -17,8 +17,6 @@ import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
 import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
-import kotlinx.android.synthetic.main.fragment_done.*
-import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 
@@ -79,7 +77,9 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     "Batal",
                     requireActivity().supportFragmentManager,
                     emptyState1,
-                    this
+                    this,
+                    requireActivity(),
+                    general_error_cancel
                 )
             }
             activity?.let {
@@ -90,7 +90,8 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     requireActivity(),
                     "Batal",
                     emptyState1,
-                    requireParentFragment()
+                    requireParentFragment(),
+                    general_error_cancel
                 )
             }
 

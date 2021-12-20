@@ -15,7 +15,6 @@ import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentHomeViewManualTxnBinding
 import com.tsab.pikapp.services.CacheService
-import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
@@ -44,7 +43,7 @@ class HomeViewManualTxn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.manualTransAct.value == 0) {
-            updateConnectedFlags()
+            activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
         }
 
         dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
@@ -60,16 +59,6 @@ class HomeViewManualTxn : Fragment() {
 
         observeViewModel()
         attachInputListeners()
-    }
-
-    private fun updateConnectedFlags() {
-        val onlineService = OnlineService()
-        if (onlineService.isOnline(context)) {
-            activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
-        } else {
-            /* CHANGE UI */
-            onlineService.showToast(requireContext())
-        }
     }
 
     override fun onDestroy() {
