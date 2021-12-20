@@ -9,12 +9,10 @@
 
         <ImageView
             android:id="@+id/pageproblem_icon"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_190sdp"
+            android:layout_width="@dimen/_265sdp"
+            android:layout_height="@dimen/_197sdp"
             android:background="@drawable/page_problem_icon"
             android:layout_marginTop="@dimen/_70sdp"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginEnd="@dimen/_40sdp"
             android:foregroundGravity="center_horizontal"
             app:layout_constraintBottom_toTopOf="@id/pageproblem_title"
             app:layout_constraintEnd_toEndOf="parent"

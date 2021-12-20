@@ -20,6 +20,7 @@ import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
+import kotlinx.android.synthetic.main.fragment_home_view_manual_txn.*
 
 class HomeViewManualTxn : Fragment() {
 
@@ -43,7 +44,11 @@ class HomeViewManualTxn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.manualTransAct.value == 0) {
-            activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+            activity?.let { viewModel.getMenuCategoryList(
+                it.baseContext,
+                requireActivity(),
+                loadingOverlay
+            ) }
         }
 
         dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{

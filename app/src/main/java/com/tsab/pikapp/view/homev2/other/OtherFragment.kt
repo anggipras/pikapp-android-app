@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,6 +22,7 @@ import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.view.other.otherReport.ReportActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import kotlinx.android.synthetic.main.other_fragment.*
 
 class OtherFragment : Fragment() {
@@ -42,10 +44,13 @@ class OtherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateConnectedFlags()
+        getMerchProfileData()
+        general_error_other.try_button.setOnClickListener {
+            getMerchProfileData()
+        }
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
-            updateConnectedFlags()
+            getMerchProfileData()
         }
 
         dataBinding.merchantProfile = viewModel
@@ -71,13 +76,14 @@ class OtherFragment : Fragment() {
         observeViewModel()
     }
 
-    private fun updateConnectedFlags() {
+    private fun getMerchProfileData() {
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            viewModel.getMerchantProfile(requireContext())
-            viewModel.getMerchantShopStatus(requireActivity())
+            viewModel.getMerchantProfile(requireContext(), requireActivity(), general_error_other)
+            viewModel.getMerchantShopStatus(requireContext(), requireActivity(), general_error_other)
+            general_error_other.isVisible = false
         } else {
-            /* CHANGE UI */
+            general_error_other.isVisible = true
             onlineService.networkDialog(requireActivity())
         }
     }
@@ -85,7 +91,6 @@ class OtherFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.merchantResult.observe(viewLifecycleOwner, Observer { merchantProfile ->
             merchantProfile?.let {
-                dataBinding.personName.text = merchantProfile.fullName.toString()
                 Picasso.get().load(merchantProfile.merchantLogo).into(merchant_logo)
                 dataBinding.merchantName.text = merchantProfile.merchantName.toString()
                 dataBinding.merchantPhone.text = merchantProfile.phoneNumber.toString()
