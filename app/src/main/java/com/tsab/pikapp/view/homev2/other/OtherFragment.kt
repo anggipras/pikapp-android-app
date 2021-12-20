@@ -78,7 +78,7 @@ class OtherFragment : Fragment() {
             viewModel.getMerchantShopStatus(requireActivity())
         } else {
             /* CHANGE UI */
-            onlineService.showToast(requireContext())
+            onlineService.networkDialog(requireActivity())
         }
     }
 

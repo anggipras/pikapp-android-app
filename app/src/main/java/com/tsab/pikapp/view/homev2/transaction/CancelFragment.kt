@@ -12,12 +12,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCancelBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
 import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
+import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
+import kotlinx.android.synthetic.main.layout_page_problem.view.*
 
 class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
@@ -57,32 +60,47 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
         dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
-        activity?.let {
-            viewModel.getStoreOrderList(
-                it.baseContext,
-                recyclerview_transaction,
-                "Batal",
-                requireActivity().supportFragmentManager,
-                emptyState1,
-                this
-            )
-        }
-        activity?.let {
-            viewModel.getListOmni(
-                it.baseContext,
-                recyclerview_tokopedia_cancel,
-                requireActivity().supportFragmentManager,
-                requireActivity(),
-                "Batal",
-                emptyState1,
-                requireParentFragment()
-            )
-        }
+        getDataCancel()
 
-        activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
-
+        general_error_cancel.try_button.setOnClickListener {
+            getDataCancel()
+        }
 
         observeViewModel()
+    }
+
+    private fun getDataCancel() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            activity?.let {
+                viewModel.getStoreOrderList(
+                    it.baseContext,
+                    recyclerview_transaction,
+                    "Batal",
+                    requireActivity().supportFragmentManager,
+                    emptyState1,
+                    this
+                )
+            }
+            activity?.let {
+                viewModel.getListOmni(
+                    it.baseContext,
+                    recyclerview_tokopedia_cancel,
+                    requireActivity().supportFragmentManager,
+                    requireActivity(),
+                    "Batal",
+                    emptyState1,
+                    requireParentFragment()
+                )
+            }
+
+            activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+            general_error_cancel.isVisible = false
+        } else {
+            general_error_cancel.isVisible = true
+            viewModel.setLoading(false)
+            onlineService.networkDialog(requireActivity())
+        }
     }
 
     override fun onResume() {
