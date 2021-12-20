@@ -2,7 +2,10 @@ package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,6 +28,7 @@ import java.util.*
 class OtherViewModel : ViewModel() {
     private val disposable = CompositeDisposable()
     private var sessionManager = SessionManager()
+    private val onlineService = OnlineService()
 
     val merchantResult = MutableLiveData<MerchantProfileData>()
     val merchantShopStatus = MutableLiveData<ShopSchedule>()
@@ -31,7 +36,11 @@ class OtherViewModel : ViewModel() {
     private val mutableErrCode = MutableLiveData("")
     val errCode: LiveData<String> get() = mutableErrCode
 
-    fun getMerchantProfile(context: Context) {
+    fun getMerchantProfile(
+        context: Context,
+        requireActivity: FragmentActivity,
+        general_error_other: View
+    ) {
         val timeStamp = getTimestamp()
         val email = sessionManager.getUserData()?.email
         val mid = sessionManager.getUserData()?.mid
@@ -47,6 +56,7 @@ class OtherViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
                     override fun onSuccess(t: MerchantProfileResponse) {
+                        general_error_other.isVisible = false
                         t.results?.let { res ->
                             merchantProfileRetrieved(res)
                         }
@@ -54,6 +64,8 @@ class OtherViewModel : ViewModel() {
 
                     override fun onError(e: Throwable) {
                         Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
+                        onlineService.serviceDialog(requireActivity)
+                        general_error_other.isVisible = true
                     }
                 })
         )
@@ -64,7 +76,11 @@ class OtherViewModel : ViewModel() {
         sessionManager.setMerchantProfile(response)
     }
 
-    fun getMerchantShopStatus(context: Context) {
+    fun getMerchantShopStatus(
+        context: Context,
+        requireActivity: FragmentActivity,
+        general_error_other: View
+    ) {
         val sdf = SimpleDateFormat("EEEE", Locale.ENGLISH)
         val d = Date()
         val dayOfTheWeek: String = sdf.format(d)
@@ -82,6 +98,8 @@ class OtherViewModel : ViewModel() {
         ).enqueue(object : Callback<MerchantTimeManagement> {
             override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
                 Toast.makeText(context, t.message.toString(), Toast.LENGTH_SHORT).show()
+                onlineService.serviceDialog(requireActivity)
+                general_error_other.isVisible = true
             }
 
             override fun onResponse(
@@ -91,6 +109,7 @@ class OtherViewModel : ViewModel() {
                 val gson = Gson()
                 val type = object : TypeToken<MerchantTimeManagement>() {}.type
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    general_error_other.isVisible = false
                     val timeManagementResult = response.body()?.results?.timeManagement
                     val filteredDay = timeManagementResult?.filter { selectedDay ->
                         selectedDay.days == dayOfTheWeek.toUpperCase()

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,7 +21,8 @@ import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.menu_fragment.topAppBar
+import kotlinx.android.synthetic.main.layout_page_problem.view.*
+import kotlinx.android.synthetic.main.menu_fragment.*
 
 class MenuFragment : Fragment() {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -41,18 +43,24 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateConnectedFlags()
+        getMenuData()
+        general_error_menu.try_button.setOnClickListener {
+            viewModel.mutableIsLoading.value = true
+            getMenuData()
+        }
         setMenuInvisible()
         observeViewModel()
     }
 
-    private fun updateConnectedFlags() {
+    private fun getMenuData() {
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+            activity?.let { viewModel.getMenuCategoryList(it.baseContext, requireActivity(), general_error_menu) }
+            general_error_menu.isVisible = false
         } else {
-            /* CHANGE UI */
-            onlineService.showToast(requireContext())
+            general_error_menu.isVisible = true
+            viewModel.mutableIsLoading.value = false
+            onlineService.networkDialog(requireActivity())
         }
     }
 
