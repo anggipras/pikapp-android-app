@@ -360,6 +360,12 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableEditCustAddressDetail.value = addressDetail
     }
 
+    private val mutableEmptyList = MutableLiveData(true)
+    val emptyList: LiveData<Boolean> get() = mutableEmptyList
+    fun setEmptyList(state: Boolean) {
+        mutableEmptyList.value = state
+    }
+
     private val mutableCustomerList = MutableLiveData<List<CustomerResponseDetail>>(listOf())
     val customerList: LiveData<List<CustomerResponseDetail>> = mutableCustomerList
 
@@ -554,6 +560,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                         manualTxnAdapter.notifyDataSetChanged()
                         recyclerview_transaction.adapter = manualTxnAdapter
                     }
+                    setEmptyList(false)
                 } else {
                     Timber.tag(tag).d("Result is null")
                 }
