@@ -5,7 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -24,6 +23,7 @@ import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.TransactionListAdapter
@@ -43,6 +43,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private val tag = javaClass.simpleName
 
     var activation: Boolean = true
+    private val onlineService = OnlineService()
 
     lateinit var categoryAdapter: TransactionListAdapter
     lateinit var omniAdapter: OmniTransactionListAdapter
@@ -282,7 +283,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         status: String,
         support: FragmentManager,
         empty: ConstraintLayout,
-        listener: TransactionListAdapter.OnItemClickListener
+        listener: TransactionListAdapter.OnItemClickListener,
+        activity: Activity,
+        general_error: View
     ) {
         setLoading(true)
         prefHelper.clearStoreOrderList()
@@ -307,6 +310,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             override fun onFailure(call: Call<GetStoreOrderListV2Response>, t: Throwable) {
                 Timber.tag(tag).d("Failed to get total: ${t.message.toString()}")
                 setLoading(false)
+                onlineService.serviceDialog(activity)
+                general_error.isVisible = true
             }
 
             override fun onResponse(
@@ -315,6 +320,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             ) {
                 val gson = Gson()
                 val type = object : TypeToken<GetStoreOrderListV2Response>() {}.type
+                general_error.isVisible = false
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val totalItemsTrans = response.body()!!.total_items
                     if (totalItemsTrans != 0) {
@@ -510,7 +516,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         activity: Activity,
         status: String,
         empty: ConstraintLayout,
-        lifecycle: Fragment
+        lifecycle: Fragment,
+        general_error: View
     ) {
         prefHelper.clearStoreOrderList()
 
@@ -524,6 +531,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             override fun onFailure(call: Call<ListOrderOmni>, t: Throwable) {
                 Toast.makeText(baseContext, "Error: $t", Toast.LENGTH_SHORT).show()
                 Timber.tag(tag).d("Failed to get omni list: ${t.message.toString()}")
+                onlineService.serviceDialog(activity)
+                general_error.isVisible = true
             }
 
             override fun onResponse(call: Call<ListOrderOmni>, response: Response<ListOrderOmni>) {
@@ -589,6 +598,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     mutableDoneOmni.value = doneList.size
                 } else {
                     Timber.tag(tag).d("Result is null")
+                    general_error.isVisible = false
                 }
 
                 Handler().postDelayed({

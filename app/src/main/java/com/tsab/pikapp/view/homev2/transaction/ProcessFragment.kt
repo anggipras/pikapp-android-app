@@ -25,9 +25,6 @@ import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
@@ -297,7 +294,9 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     "Proses",
                     requireActivity().supportFragmentManager,
                     emptyState,
-                    this
+                    this,
+                    requireActivity(),
+                    general_error_process
                 )
             }
 
@@ -309,7 +308,8 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     requireActivity(),
                     "Proses",
                     emptyState,
-                    requireParentFragment()
+                    requireParentFragment(),
+                    general_error_process
                 )
             }
 
@@ -390,7 +390,9 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     "Proses",
                     requireActivity().supportFragmentManager,
                     emptyState,
-                    this@ProcessFragment
+                    this@ProcessFragment,
+                    requireActivity(),
+                    general_error_process
                 )
                 viewModel.getListOmni(
                     context,
@@ -399,7 +401,8 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     requireActivity(),
                     "Proses",
                     emptyState,
-                    requireParentFragment()
+                    requireParentFragment(),
+                    general_error_process
                 )
             }
         }
