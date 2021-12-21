@@ -191,6 +191,15 @@
                     tools:ignore="ContentDescription" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <include
+                android:id="@+id/general_error_menu"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                layout="@layout/layout_page_problem"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout

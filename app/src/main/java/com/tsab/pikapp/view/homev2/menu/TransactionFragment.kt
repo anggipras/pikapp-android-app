@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.view.homev2.transaction.CancelFragment
 import com.tsab.pikapp.view.homev2.transaction.DoneFragment
 import com.tsab.pikapp.view.homev2.transaction.ProcessFragment

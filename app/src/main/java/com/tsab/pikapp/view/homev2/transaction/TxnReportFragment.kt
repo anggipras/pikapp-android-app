@@ -66,7 +66,6 @@ class TxnReportFragment : Fragment() {
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
                         val status: Boolean = floatingSlideUpBuilder.collapseBottomSheetStatus()
-                        Log.e("mkwmd", status.toString())
                         if (status == true) {
                             floatingSlideUpBuilder.collapseBottomSheet()
                         } else {

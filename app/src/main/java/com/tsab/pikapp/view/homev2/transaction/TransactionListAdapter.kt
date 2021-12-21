@@ -100,14 +100,12 @@ class TransactionListAdapter(
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
-                    Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putString("TransactionID", transactionList[position].transactionID)
                     reasonsheet.arguments = bundle
                     reasonsheet.show(supportFragmentManager, "show")
-                    Log.e("paid", "bisa bos")
                 }
             } else if (transactionList[position].status == "OPEN") {
                 setDate(position)
@@ -129,14 +127,12 @@ class TransactionListAdapter(
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "ON_PROCESS", "Proses", holder)
-                    Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.setOnClickListener {
                     val bundle = Bundle()
                     bundle.putString("TransactionID", transactionList[position].transactionID)
                     reasonsheet.arguments = bundle
                     reasonsheet.show(supportFragmentManager, "show")
-                    Log.e("paid", "bisa bos")
 
                 }
             } else if (transactionList[position].status == "ON_PROCESS") {
@@ -162,8 +158,6 @@ class TransactionListAdapter(
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "DELIVER", "Proses", holder)
-//                    listener.onItemClick(1)
-                    Log.e("paid", "bisa bos")
                 }
                 holder.rejectBtn.visibility = View.GONE
             }
@@ -220,7 +214,6 @@ class TransactionListAdapter(
                 holder.acceptBtn.setOnClickListener {
                     val txnId = transactionList[position].transactionID.toString()
                     updateTransaction(txnId, "CLOSE", "Done", holder)
-                    Log.e("paid", "bisa bos")
                 }
                 jumlah = 0
             } else if (transactionList[position].status == "CLOSE" || transactionList[position].status == "FINALIZE") {

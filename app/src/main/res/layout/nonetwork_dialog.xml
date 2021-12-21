@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/network_close"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right"
+        android:background="@drawable/ic_baseline_close_24"
+        android:layout_marginTop="@dimen/_11sdp"
+        android:layout_marginEnd="@dimen/_13sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/network_icon"
+        android:layout_width="@dimen/_193sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginTop="@dimen/_90sdp"
+        android:background="@drawable/no_network_icon"
+        android:foregroundGravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/network_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/inter_semibold"
+        android:textSize="17sp"
+        android:text="@string/no_network_title"
+        android:layout_marginTop="@dimen/_37sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/network_icon"/>
+
+    <TextView
+        android:id="@+id/network_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_44sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_44sdp"
+        android:layout_marginBottom="@dimen/_106sdp"
+        android:fontFamily="@font/inter_regular"
+        android:gravity="center"
+        android:text="@string/no_network_detail"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/network_title"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
