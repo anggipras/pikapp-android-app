@@ -62,6 +62,7 @@ class PromoFragment : Fragment() {
             adapter.addFragment(OngoingPromoFragment(), "Berlangsung")
             adapter.addFragment(UpcomingPromoFragment(), "Akan Datang")
             adapter.addFragment(ExpirePromoFragment(), "Berakhir")
+            adapter.addFragment(CanceledPromoFragment(), "Dihentikan")
 
             dataBinding.viewpager.adapter = adapter
             dataBinding.tabs.setupWithViewPager(dataBinding.viewpager)
@@ -75,11 +76,13 @@ class PromoFragment : Fragment() {
             adapter.rmFragment(OngoingPromoFragment(), "Berlangsung")
             adapter.rmFragment(UpcomingPromoFragment(), "Akan Datang")
             adapter.rmFragment(ExpirePromoFragment(), "Berakhir")
+            adapter.rmFragment(CanceledPromoFragment(), "Dihentikan")
 
             adapter.addFragment(AllPromoFragment(), "Semua")
             adapter.addFragment(OngoingPromoFragment(), "Berlangsung")
             adapter.addFragment(UpcomingPromoFragment(), "Akan Datang")
             adapter.addFragment(ExpirePromoFragment(), "Berakhir")
+            adapter.addFragment(CanceledPromoFragment(), "Dihentikan")
 
             dataBinding.viewpager.adapter = adapter
             dataBinding.tabs.setupWithViewPager(dataBinding.viewpager)
