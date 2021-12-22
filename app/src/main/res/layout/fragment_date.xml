@@ -35,14 +35,14 @@
                 android:textSize="@dimen/_14sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:fontFamily="@font/proximanova_semibold"
+                android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10sdp"
-                android:fontFamily="@font/proximanova_regular"
+                android:fontFamily="@font/inter_regular"
                 android:textColor="#aaaaaa"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -64,7 +64,7 @@
                     android:textColor="#aaaaaa"
                     android:textSize="@dimen/_12sdp"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:text="Sekarang"/>
@@ -78,7 +78,7 @@
                     android:background="@drawable/btn_date_disable"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:drawableTint="#aaaaaa"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:text="Custom Tanggal"
                     android:textAllCaps="false"
                     android:textColor="#aaaaaa"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_10sdp"
                 android:visibility="gone"
-                android:fontFamily="@font/proximanova_regular"
+                android:fontFamily="@font/inter_regular"
                 android:textColor="#aaaaaa"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -127,7 +127,7 @@
                     android:textColor="#aaaaaa"
                     android:textSize="@dimen/_12sdp"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:text="10.00"/>
@@ -142,7 +142,7 @@
                     android:textColor="#aaaaaa"
                     android:textSize="@dimen/_12sdp"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/nowTime"
                     android:text="11.00"/>
@@ -157,7 +157,7 @@
                     android:textColor="#aaaaaa"
                     android:textSize="@dimen/_12sdp"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/nowTimeSecond"
                     android:text="12.00"/>
@@ -175,7 +175,7 @@
                     android:textAllCaps="false"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:drawableTint="#aaaaaa"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/nowTimeThird"
                     android:text="Pilih Jam"/>
@@ -214,7 +214,7 @@
                         android:background="@drawable/button_dark_gray"
                         android:text="Simpan"
                         android:textAllCaps="false"
-                        android:fontFamily="@font/proximanova_semibold"
+                        android:fontFamily="@font/inter_bold"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -246,7 +246,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         android:layout_marginRight="@dimen/_10sdp"
-                        android:fontFamily="@font/proximanova_semibold"
+                        android:fontFamily="@font/inter_semibold"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp" />
 
@@ -262,7 +262,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:fontFamily="@font/proximanova_semibold"
+                        android:fontFamily="@font/inter_semibold"
                         android:textColor="@color/green"
                         android:textSize="@dimen/_12sdp" />
 

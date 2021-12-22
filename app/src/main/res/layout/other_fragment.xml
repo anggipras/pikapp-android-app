@@ -102,7 +102,7 @@
                                 android:id="@+id/merchant_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/montserrat_bold"
+                                android:fontFamily="@font/inter_bold"
                                 android:textColor="#494949"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
@@ -111,7 +111,7 @@
                                 android:id="@+id/merchant_phone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/proximanova_semibold"
+                                android:fontFamily="@font/inter_semibold"
                                 android:textColor="@color/borderSubtle"
                                 android:textSize="13sp" />
 
@@ -119,7 +119,7 @@
                                 android:id="@+id/merchant_email"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/proximanova_semibold"
+                                android:fontFamily="@font/inter_semibold"
                                 android:textColor="@color/borderSubtle"
                                 android:textSize="13sp" />
 
@@ -132,7 +132,7 @@
                                     android:id="@+id/merchant_status"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:fontFamily="@font/inter_semibold"
                                     android:textSize="13sp" />
 
                                 <View
@@ -149,7 +149,7 @@
                                     android:id="@+id/merchant_hour"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/proximanova_semibold"
+                                    android:fontFamily="@font/inter_semibold"
                                     android:textColor="@color/borderSubtle"
                                     android:textSize="13sp" />
 
@@ -196,7 +196,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:fontFamily="@font/proximanova_semibold"
+                                android:fontFamily="@font/inter_semibold"
                                 android:text="Pengaturan"
                                 android:textColor="@color/textSubtle"
                                 android:textSize="13sp" />
@@ -222,7 +222,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:fontFamily="@font/proximanova_semibold"
+                                android:fontFamily="@font/inter_semibold"
                                 android:text="Integrasi"
                                 android:textColor="@color/textSubtle"
                                 android:textSize="13sp" />
@@ -248,7 +248,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:fontFamily="@font/proximanova_semibold"
+                                android:fontFamily="@font/inter_semibold"
                                 android:text="Laporan"
                                 android:textColor="@color/textSubtle"
                                 android:textSize="13sp" />
@@ -273,7 +273,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:fontFamily="@font/proximanova_semibold"
+                                android:fontFamily="@font/inter_semibold"
                                 android:text="Bantuan"
                                 android:textColor="@color/textSubtle"
                                 android:textSize="13sp" />
@@ -288,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="34dp"
                     android:layout_marginTop="26dp"
-                    android:fontFamily="@font/montserrat"
+                    android:fontFamily="@font/inter_regular"
                     android:text="Informasi terbaru"
                     android:textColor="#494949"
                     android:textFontWeight="800"
@@ -332,7 +332,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_bold"
+                            android:fontFamily="@font/inter_bold"
                             android:text="Judul"
                             android:textColor="@color/black"
                             android:textFontWeight="800"
@@ -342,7 +342,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="3dp"
-                            android:fontFamily="@font/proximanova_regular"
+                            android:fontFamily="@font/inter_regular"
                             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                             android:textColor="@color/textSubtle"
                             android:textSize="13sp" />

@@ -92,7 +92,7 @@
                         android:id="@+id/cartHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat"
+                        android:fontFamily="@font/inter_bold"
                         android:textStyle="bold"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:text="Total Harga"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:text="Rp. 3.000"
                     android:textSize="16sp"
-                    android:fontFamily="@font/proximanova_bold"
+                    android:fontFamily="@font/inter_bold"
                     android:textColor="@color/green"/>
 
             </LinearLayout>
@@ -186,7 +186,7 @@
                 android:text="Check out (1)"
                 android:textSize="@dimen/_12sdp"
                 android:textAllCaps="false"
-                android:fontFamily="@font/proximanova_semibold"
+                android:fontFamily="@font/inter_bold"
                 android:textColor="@color/white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
