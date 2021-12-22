@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:fontFamily="@font/proximanova_semibold"
+                android:fontFamily="@font/inter_regular"
                 android:text="Belum ada menu yang diproses hari ini"
                 android:textAlignment="center"
                 android:textColor="#767676"

@@ -125,6 +125,10 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             dataBinding.loadingOverlay.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
         })
+
+        manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
+            dataBinding.emptyStateDone.visibility = if (state) View.VISIBLE else View.GONE
+        })
     }
 
     override fun onItemClick(i: Int) {

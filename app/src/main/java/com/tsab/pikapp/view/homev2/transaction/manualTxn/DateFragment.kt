@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.fragment.app.activityViewModels
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import kotlinx.android.synthetic.main.expanded_txn_fragment.*
@@ -21,7 +22,7 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.math.min
 
-class DateFragment : RoundedBottomSheetDialogFragment(){
+class DateFragment : BottomSheetDialogFragment(){
 
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private var sekarangStatus: Boolean = false

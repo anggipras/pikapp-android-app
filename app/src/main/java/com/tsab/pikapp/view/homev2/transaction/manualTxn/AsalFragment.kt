@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import kotlinx.android.synthetic.main.fragment_asal.*
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_checkout.*
 import kotlinx.android.synthetic.main.fragment_delivery.*
 import java.text.NumberFormat
 
-class AsalFragment : RoundedBottomSheetDialogFragment() {
+class AsalFragment : BottomSheetDialogFragment() {
 
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private var instagramStatus: Boolean = false
