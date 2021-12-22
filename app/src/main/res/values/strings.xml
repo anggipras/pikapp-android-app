@@ -380,4 +380,9 @@
     <string name="page_problem_title">Halaman Bermasalah</string>
     <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silahkan coba lagi!</string>
 
+    <!-- Promo screens -->
+    <string name="promo_empty_title">Belum ada promo nih!</string>
+    <string name="promo_empty_detail">Tunggu promo menarik yang bisa kamu ikuti disini ya</string>
+    <string name="button_add_promo">Tambah Promo</string>
+
 </resources>

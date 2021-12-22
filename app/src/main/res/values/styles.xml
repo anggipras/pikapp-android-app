@@ -72,6 +72,10 @@
         <item name="android:fontFamily">@font/inter_semibold</item>
     </style>
 
+    <style name="PromoTabLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
     <style name="RadioButtonStyle" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/green</item>
         <item name="android:textColorSecondary">@color/borderSubtle</item>
@@ -83,6 +87,11 @@
     </style>
 
     <style name="titleToolbar">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="promoToolbarTitle">
         <item name="fontFamily">@font/inter_bold</item>
         <item name="android:textSize">18sp</item>
     </style>
