@@ -26,11 +26,16 @@ import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.menu_fragment.*
 import kotlinx.android.synthetic.main.other_fragment.*
 import java.io.File
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import kotlinx.android.synthetic.main.menu_fragment.*
+import kotlinx.android.synthetic.main.menu_fragment.tabs
+import kotlinx.android.synthetic.main.menu_fragment.topAppBar
+import kotlinx.android.synthetic.main.transaction_fragment.*
+import smartdevelop.ir.eram.showcaseviewlib.GuideView
 
 class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val viewModel: MenuViewModel by activityViewModels()
@@ -61,6 +66,8 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
             viewModel.mutableIsLoading.value = true
             getMenuData()
         }
+
+        ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)
 
         setMenuInvisible()
         observeViewModel()
@@ -254,6 +261,19 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
         } else {
             dataBinding.viewpager.currentItem = 0
         }
+    }
+
+    fun ShowIntro(title: String, desc:String, view: View, type: Int){
+        GuideView.Builder(requireContext())
+            .setTitle(title)
+            .setContentText(desc)
+            .setGravity(GuideView.Gravity.auto)
+            .setTargetView(view)
+            .setDismissType(GuideView.DismissType.anywhere)
+            .setContentTextSize(12)
+            .setTitleTextSize(14)
+            .build()
+            .show()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

@@ -232,6 +232,7 @@ class HomeActivity : AppCompatActivity() {
             titleModal.text = "Pesanan Diproses"
             desc1.visibility = View.VISIBLE
             desc2.visibility = View.VISIBLE
+            desc3.visibility = View.GONE
             desc1.text = "Setelah Anda menekan tombol sudah bayar, maka status pesanan akan berubah menjadi “Diproses”."
             desc2.text = "Tombol “Pesanan Siap” digunakan untuk mengonfirmasi bahwa pesanan telah selesai dibuat dan siap untuk dihidangkan."
             pageNum.text = "4 Dari 8"
@@ -264,7 +265,7 @@ class HomeActivity : AppCompatActivity() {
             desc1.visibility = View.GONE
             desc2.text = "Status pesanan “selesai” digunakan untuk menjelaskan status dari pesanan jika telah terselesaikan."
             pageNum.text = "7 Dari 8"
-            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_done))
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_done_3))
             nextModal.setOnClickListener {
                 modalContent(7)
             }
@@ -275,7 +276,7 @@ class HomeActivity : AppCompatActivity() {
             desc1.text = "Pesanan yang dibatalkan akan menampilkan status seperti pada gambar dibawah"
             desc2.text = "Status gagal digunakan untuk menunjukkan bahwa pesanan telah gagal dan tidak diproses oleh mechant."
             pageNum.text = "8 Dari 8"
-            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_fail))
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_cancel))
             nextModal.setOnClickListener {
                 modalView.visibility = View.GONE
                 layerView.visibility = View.GONE
