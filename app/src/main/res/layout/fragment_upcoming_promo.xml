@@ -25,6 +25,7 @@
                     android:layout_marginTop="@dimen/_80sdp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_nopromo"
+                    app:layout_constraintBottom_toTopOf="@+id/promoEmptyTitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +45,20 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/promoEmptyImage" />
+
+                <TextView
+                    android:id="@+id/promoEmptyText"
+                    android:layout_width="@dimen/_206sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:text="@string/promo_empty_detail"
+                    android:fontFamily="@font/inter_regular"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/promoEmptyTitle" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
