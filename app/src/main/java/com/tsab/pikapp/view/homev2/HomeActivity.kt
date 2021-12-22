@@ -26,9 +26,14 @@ import com.tsab.pikapp.view.menuCategory.SortActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.layout_header_drawer.view.*
+import kotlinx.android.synthetic.main.transaction_fragment.*
 import naci.showcaseview.ShowcaseView
 import naci.showcaseview.listener.IShowcaseListener
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.fragment_login_v2_first.*
+
 
 class HomeActivity : AppCompatActivity() {
     val model: CategoryViewModel by viewModels()
@@ -47,6 +52,7 @@ class HomeActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         dataBinding = ActivityHomeNavigationBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
+
         when {
             sessionManager.getHomeNav() == 0 -> {
                 replaceFragment(transactionFragment)
@@ -98,6 +104,22 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
+        desc1.visibility = View.GONE
+        desc3.visibility = View.GONE
+
+        nextModal.setOnClickListener {
+            modalView.visibility = View.GONE
+            layerView.visibility = View.GONE
+            ShowIntro("Navigation Bar",
+                "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+                bottom_navigation, 2)
+        }
+
+        skipModal.setOnClickListener {
+            modalView.visibility = View.GONE
+            layerView.visibility = View.GONE
+        }
+
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_transaction -> replaceFragment(transactionFragment)
@@ -107,54 +129,158 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
-
-        ShowIntro("Navigation Bar",
-            "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
-        bottom_navigation, 2)
     }
 
 
-    private fun ShowIntro(title: String, desc:String, view: View, type: Int){
+    fun ShowIntro(title: String, desc:String, view: View, type: Int){
         GuideView.Builder(this)
             .setTitle(title)
             .setContentText(desc)
             .setGravity(GuideView.Gravity.auto)
             .setTargetView(view)
+            .setDismissType(GuideView.DismissType.anywhere)
             .setContentTextSize(12)
             .setTitleTextSize(14)
             .setGuideListener {
-                if (type == 1) {
-                    ShowIntro("Navigation Bar",
-                        "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
-                        bottom_navigation, 2)
-                }else if (type == 2){
+                if (type == 2){
                     replaceFragment(transactionFragment)
+                    bottom_navigation.selectedItemId = R.id.nav_transaction
                     ShowIntro("Transaction Button",
                         "Tombol transaksi digunakan untuk mengakses halaman transaksi pesanan dari merchant anda.",
-                        findViewById(R.id.nav_transaction), 3)
-                }else if (type == 3){
-                    ShowIntro("Transaction Page",
-                        "Halaman ini akan berisi daftar pesanan dari merchant anda.",
-                        findViewById(R.id.header), 4)
-                }else if (type == 4){
-                    replaceFragment(menuFragment)
+                        findViewById(R.id.nav_transaction), 4)
+                } else if (type == 4){
+                    replaceFragment(transactionFragment)
+                    bottom_navigation.selectedItemId = R.id.nav_transaction
                     ShowIntro("Menu Button",
                         "Tombol menu digunakan untuk mengakses halaman yang berisi daftar menu yang dimiliki merchant anda.",
                         findViewById(R.id.nav_menu), 5)
                 }else if (type == 5){
-                    replaceFragment(promoFragment)
+                    replaceFragment(transactionFragment)
+                    bottom_navigation.selectedItemId = R.id.nav_transaction
                     ShowIntro("Promo Button",
                         "Tombol Promo digunakan untuk mengakses halaman “Promo” yang dimiliki oleh merchant.",
                         findViewById(R.id.nav_promo), 6)
                 }else if (type == 6){
-                    replaceFragment(otherFragment)
+                    replaceFragment(transactionFragment)
+                    bottom_navigation.selectedItemId = R.id.nav_transaction
                     ShowIntro("Other Page",
                         "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.",
                         findViewById(R.id.nav_other), 7)
+                }else if (type == 7){
+                    ShowIntro("Transaction Tab",
+                        "Terdapat 3 pilihan tab pada halaman transaksi yang akan menampilkan daftar pesanan yang sedang diproses, telah selesai, dan yang telah dibatalkan.",
+                        findViewById(R.id.tabs), 8)
+                }else if (type == 8){
+                    var proses = (tabs.getChildAt(0) as ViewGroup).getChildAt(0)
+                    ShowIntro("Proses Tab",
+                        "Pada tab Diproses akan berisi daftar dari pesanan yang sedang diproses oleh merchant.",
+                        proses, 9)
+                }else if (type == 9) {
+                    var proses = (tabs.getChildAt(0) as ViewGroup).getChildAt(1)
+                    ShowIntro(
+                        "Selesai Tab",
+                        "Pada tab Selesai akan berisi daftar dari pesanan yang Telah selesai diproses oleh merchant.",
+                        proses, 10
+                    )
+                }else if (type == 10) {
+                    var proses = (tabs.getChildAt(0) as ViewGroup).getChildAt(2)
+                    ShowIntro(
+                        "Batal Tab",
+                        "Pada tab Batal akan berisi daftar dari pesanan yang Telah dibatalkan dan tidak diproses oleh merchant.",
+                        proses, 11
+                    )
+                }else if (type == 11) {
+                    ShowIntro(
+                        "Manual Transaction",
+                        "Tombol tambah digunakan untuk menambah transaksi masuk dari pelanggan",
+                        findViewById(R.id.manualTxn), 12
+                    )
+                }else if (type == 12){
+                    modalContent(1)
                 }
             }
             .build()
             .show()
+    }
+
+    private fun modalContent(status: Int){
+        modalView.visibility = View.VISIBLE
+        layerView.visibility = View.VISIBLE
+        if(status == 1){
+            titleModal.text = "Pesanan Masuk"
+            desc1.visibility = View.VISIBLE
+            desc1.text = "Pesanan masuk akan menampilkan status seperti pada gambar dibawah"
+            desc2.text = "Status “NEW” berarti pesanan tersebut adalah pesanan yang baru saja dipesan."
+            pageNum.text = "2 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.masuk_modal))
+            nextModal.setOnClickListener {
+                modalContent(2)
+            }
+        }else if (status == 2){
+            titleModal.text = "Pesanan Masuk"
+            desc1.visibility = View.GONE
+            desc2.visibility = View.VISIBLE
+            desc3.visibility = View.VISIBLE
+            desc3.text = "Tombol sudah bayar digunakan untuk mengonfirmasi bahwa pesanan tersebut telah dibayar "
+            desc2.text = "Tombol tolak digunakan untuk menolak pesanan."
+            pageNum.text = "3 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_enter))
+            nextModal.setOnClickListener {
+                modalContent(3)
+            }
+        }else if(status == 3){
+            titleModal.text = "Pesanan Diproses"
+            desc1.visibility = View.VISIBLE
+            desc2.visibility = View.VISIBLE
+            desc1.text = "Setelah Anda menekan tombol sudah bayar, maka status pesanan akan berubah menjadi “Diproses”."
+            desc2.text = "Tombol “Pesanan Siap” digunakan untuk mengonfirmasi bahwa pesanan telah selesai dibuat dan siap untuk dihidangkan."
+            pageNum.text = "4 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_proses))
+            nextModal.setOnClickListener {
+                modalContent(4)
+            }
+        }else if(status == 4){
+            titleModal.text = "Pesanan Dikirim"
+            desc1.visibility = View.VISIBLE
+            desc2.visibility = View.VISIBLE
+            desc1.text = "Pesanan yang telah siap akan menampilkan status seperti pada gambar dibawah"
+            desc2.text = "Status “Dikirim” digunakan untuk menjelaskan status dari suatu pesanan apabila pesanan tersebut telah dikirim kepada pelanggan"
+            pageNum.text = "5 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_kirim))
+            nextModal.setOnClickListener {
+                modalContent(5)
+            }
+        }else if(status == 5){
+            titleModal.text = "Pesanan Dikirim"
+            desc1.visibility = View.GONE
+            desc2.text = "Tombol selesai digunakan untuk mengonfirmasi pesanan jika pesanan telah sampai ke pelanggan."
+            pageNum.text = "6 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_kirim_2))
+            nextModal.setOnClickListener {
+                modalContent(6)
+            }
+        }else if(status == 6){
+            titleModal.text = "Pesanan Selesai"
+            desc1.visibility = View.GONE
+            desc2.text = "Status pesanan “selesai” digunakan untuk menjelaskan status dari pesanan jika telah terselesaikan."
+            pageNum.text = "7 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_done))
+            nextModal.setOnClickListener {
+                modalContent(7)
+            }
+        }else if(status == 7){
+            titleModal.text = "Pesanan Dibatalkan"
+            desc1.visibility = View.VISIBLE
+            desc2.visibility = View.VISIBLE
+            desc1.text = "Pesanan yang dibatalkan akan menampilkan status seperti pada gambar dibawah"
+            desc2.text = "Status gagal digunakan untuk menunjukkan bahwa pesanan telah gagal dan tidak diproses oleh mechant."
+            pageNum.text = "8 Dari 8"
+            image.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.modal_fail))
+            nextModal.setOnClickListener {
+                modalView.visibility = View.GONE
+                layerView.visibility = View.GONE
+            }
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -180,440 +306,4 @@ class HomeActivity : AppCompatActivity() {
             open_drawer.openDrawer(GravityCompat.END)
         }
     }
-
-   /* fun firstShowcase(){
-        val showcaseView = ShowcaseView.Builder(this)
-            .setTargetView(bottom_navigation)
-            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
-            .setRingColor(Color.BLUE)
-            .setShowCircles(true)
-            .setHideOnTouchOutside(false)
-            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setShowcaseListener(object :
-                IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-            })
-            .addCustomView(R.layout.layout_showcase_body, Gravity.TOP)
-            .build()
-
-        showcaseView.show()
-
-        showcaseView!!.setClickListenerOnView(
-            R.id.skipBtn,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                showcaseView!!.hide()
-            }
-        )
-
-        showcaseView!!.setClickListenerOnView(
-            R.id.btn_Next,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                secondShowcase()
-                showcaseView!!.hide()
-            }
-        )
-    }
-
-    private fun secondShowcase(){
-        val showcaseView2 = ShowcaseView.Builder(this)
-            .setTargetView(findViewById(R.id.nav_transaction))
-            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
-            .setRingColor(Color.BLUE)
-            .setShowCircles(true)
-            .setHideOnTouchOutside(false)
-            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setShowcaseListener(object :
-                IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-            })
-            .addCustomView(R.layout.layout_showcase_body2, Gravity.TOP)
-            .build()
-
-        showcaseView2!!.setClickListenerOnView(
-            R.id.skipBtn,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                showcaseView2!!.hide()
-            }
-        )
-
-        showcaseView2!!.setClickListenerOnView(
-            R.id.btn_Next,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                thirdShowcase()
-                showcaseView2!!.hide()
-            }
-        )
-
-        showcaseView2!!.setClickListenerOnView(
-            R.id.btn_back,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                firstShowcase()
-                showcaseView2!!.hide()
-            }
-        )
-
-        showcaseView2.show()
-    }
-
-    private fun thirdShowcase() {
-        val showcaseView3 = ShowcaseView.Builder(this)
-            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
-            .setTargetView(transactionFragment.requireView().findViewById(R.id.header))
-            .setRingColor(Color.BLUE)
-            .setShowCircles(true)
-            .setHideOnTouchOutside(false)
-            .setShowcaseMargin(15F)
-            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setRingWidth(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                )
-            )
-            .setDistanceBetweenShowcaseCircles(10)
-            .setShowcaseListener(object :
-                IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-            })
-            .addCustomView(R.layout.layout_showcase_body3, Gravity.CENTER,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    -30f,
-                    resources.displayMetrics
-                ),
-                0f)
-            .build()
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.skipBtn,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_Next,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                fourthShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_back,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                secondShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3.show()
-    }
-
-    private fun fourthShowcase() {
-        val showcaseView3 = ShowcaseView.Builder(this)
-            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
-            .setTargetView(findViewById(R.id.nav_menu))
-            .setRingColor(Color.BLUE)
-            .setShowCircles(true)
-            .setHideOnTouchOutside(false)
-            .setShowcaseMargin(15F)
-            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setRingWidth(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                )
-            )
-            .setDistanceBetweenShowcaseCircles(10)
-            .setShowcaseListener(object :
-                IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-            })
-            .addCustomView(R.layout.layout_showcase_body4, Gravity.TOP,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    -30f,
-                    resources.displayMetrics
-                ),
-                0f)
-            .build()
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.skipBtn,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_Next,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                fifthShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_back,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                thirdShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3.show()
-    }
-
-    private fun fifthShowcase() {
-        val showcaseView3 = ShowcaseView.Builder(this)
-            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
-            .setTargetView(findViewById(R.id.nav_promo))
-            .setRingColor(Color.BLUE)
-            .setShowCircles(true)
-            .setHideOnTouchOutside(false)
-            .setShowcaseMargin(15F)
-            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setRingWidth(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                )
-            )
-            .setDistanceBetweenShowcaseCircles(10)
-            .setShowcaseListener(object :
-                IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-            })
-            .addCustomView(R.layout.layout_showcase_body5, Gravity.TOP,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    -30f,
-                    resources.displayMetrics
-                ),
-                0f)
-            .build()
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.skipBtn,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_Next,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                sixthShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_back,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                fourthShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3.show()
-    }
-
-    private fun sixthShowcase() {
-        val showcaseView3 = ShowcaseView.Builder(this)
-            .setBackgroundOverlayColor(Color.parseColor("#66000000"))
-            .setTargetView(findViewById(R.id.nav_other))
-            .setRingColor(Color.BLUE)
-            .setShowCircles(true)
-            .setHideOnTouchOutside(false)
-            .setShowcaseMargin(15F)
-            .setShowcaseShape(ShowcaseView.SHAPE_SKEW)
-            .setRingWidth(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                )
-            )
-            .setDistanceBetweenShowcaseCircles(10)
-            .setShowcaseListener(object :
-                IShowcaseListener {
-                override fun onShowcaseDisplayed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseDismissed(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-
-                override fun onShowcaseSkipped(showcaseView: ShowcaseView) {
-                    //TODO : do something..
-                }
-            })
-            .addCustomView(R.layout.layout_showcase_body6, Gravity.TOP,
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    2f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0f,
-                    resources.displayMetrics
-                ),
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    -30f,
-                    resources.displayMetrics
-                ),
-                0f)
-            .build()
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.skipBtn,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_Next,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3!!.setClickListenerOnView(
-            R.id.btn_back,
-            View.OnClickListener {
-                // showcaseView!!.showcaseSkipped() // Use this when skip button clicked
-                Log.e("Next", "Next")
-
-                fifthShowcase()
-                showcaseView3!!.hide()
-            }
-        )
-
-        showcaseView3.show()
-    }*/
-
 }

@@ -13,12 +13,14 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.homev2.transaction.CancelFragment
 import com.tsab.pikapp.view.homev2.transaction.DoneFragment
 import com.tsab.pikapp.view.homev2.transaction.ProcessFragment
 import com.tsab.pikapp.view.homev2.transaction.TransactionAdapter
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
+import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.transaction_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
