@@ -44,14 +44,15 @@ class HomeActivity : AppCompatActivity() {
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: ActivityHomeNavigationBinding
 
-    var showcaseView: ShowcaseView? = null
-    var showcaseView2: ShowcaseView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         dataBinding = ActivityHomeNavigationBinding.inflate(layoutInflater)
         setContentView(dataBinding.root)
+
+        replaceFragment(transactionFragment)
+        sessionManager.setHomeNav(0)
+        bottom_navigation.selectedItemId = R.id.nav_transaction
 
         when {
             sessionManager.getHomeNav() == 0 -> {
