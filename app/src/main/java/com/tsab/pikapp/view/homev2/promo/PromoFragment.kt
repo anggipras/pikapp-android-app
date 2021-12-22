@@ -24,7 +24,6 @@ class PromoFragment : Fragment() {
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: PromoFragmentBinding
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var viewModel: PromoViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +38,6 @@ class PromoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(PromoViewModel::class.java)
 
         if (activity != null && isAdded) {
             sessionManager.setHomeNav(2)

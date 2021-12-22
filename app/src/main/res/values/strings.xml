@@ -384,5 +384,9 @@
     <string name="promo_empty_title">Belum ada promo nih!</string>
     <string name="promo_empty_detail">Tunggu promo menarik yang bisa kamu ikuti disini ya</string>
     <string name="button_add_promo">Tambah Promo</string>
+    <string name="menu_discount">Diskon menu</string>
+    <string name="promotion_id">ID Promosi: %s</string>
+    <string name="promotion_date">%s - %s</string>
+    <string name="promotion_status">Aktif</string>
 
 </resources>
