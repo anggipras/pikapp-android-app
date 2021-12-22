@@ -3,10 +3,10 @@ package com.tsab.pikapp.view.homev2.other
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,12 +15,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.view.other.otherReport.ReportActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import kotlinx.android.synthetic.main.other_fragment.*
 
 class OtherFragment : Fragment() {
@@ -42,13 +44,15 @@ class OtherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getMerchProfileData()
+        general_error_other.try_button.setOnClickListener {
+            getMerchProfileData()
+        }
         swipeRefreshLayout = swipeOtherMenu
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getMerchantProfile(requireContext())
+            getMerchProfileData()
         }
 
-        viewModel.getMerchantProfile(requireContext())
-        viewModel.getMerchantShopStatus(requireActivity())
         dataBinding.merchantProfile = viewModel
 
         dataBinding.merchantSettingClick.setOnClickListener {
@@ -72,10 +76,21 @@ class OtherFragment : Fragment() {
         observeViewModel()
     }
 
+    private fun getMerchProfileData() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            viewModel.getMerchantProfile(requireContext(), requireActivity(), general_error_other)
+            viewModel.getMerchantShopStatus(requireContext(), requireActivity(), general_error_other)
+            general_error_other.isVisible = false
+        } else {
+            general_error_other.isVisible = true
+            onlineService.networkDialog(requireActivity())
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.merchantResult.observe(viewLifecycleOwner, Observer { merchantProfile ->
             merchantProfile?.let {
-                dataBinding.personName.text = merchantProfile.fullName.toString()
                 Picasso.get().load(merchantProfile.merchantLogo).into(merchant_logo)
                 dataBinding.merchantName.text = merchantProfile.merchantName.toString()
                 dataBinding.merchantPhone.text = merchantProfile.phoneNumber.toString()
@@ -85,7 +100,6 @@ class OtherFragment : Fragment() {
         })
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
-            Log.e("errcode", errCode)
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {

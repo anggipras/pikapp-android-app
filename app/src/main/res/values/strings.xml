@@ -372,4 +372,12 @@
     <string name="add_customer_catatan_hint">Tulis Catatan</string>
     <string name="cart">Lihat Keranjang\t\t\t|\t\t\t%s item(s)</string>
 
+    <!-- Service Dialog -->
+    <string name="no_service_title">Sesi Anda Time Out</string>
+    <string name="no_service_detail">Maaf, saat ini server sedang tidak dapat memproses perintah anda. Silahkan coba lagi!</string>
+    <string name="no_network_title">Koneksi Internet Anda Terputus</string>
+    <string name="no_network_detail">Silahkan periksa koneksi WiFi atau data seluler anda dan coba lagi!</string>
+    <string name="page_problem_title">Halaman Bermasalah</string>
+    <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silahkan coba lagi!</string>
+
 </resources>

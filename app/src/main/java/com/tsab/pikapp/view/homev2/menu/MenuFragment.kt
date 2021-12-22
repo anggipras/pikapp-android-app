@@ -1,34 +1,49 @@
 package com.tsab.pikapp.view.homev2.menu
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
+import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
+import com.tsab.pikapp.services.CacheService
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.menu_fragment.topAppBar
+import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import kotlinx.android.synthetic.main.menu_fragment.*
+import kotlinx.android.synthetic.main.other_fragment.*
 import java.io.File
+import kotlinx.android.synthetic.main.layout_page_problem.view.*
+import kotlinx.android.synthetic.main.menu_fragment.*
 
-class MenuFragment : Fragment() {
+class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val viewModel: MenuViewModel by activityViewModels()
     private lateinit var dataBinding: MenuFragmentBinding
+    private val otherViewModel: OtherViewModel by activityViewModels()
 
     private var categoryList: List<String> = listOf()
     lateinit var linearLayoutManager: LinearLayoutManager
     private val sessionManager = SessionManager()
+
+    var list_of_items = arrayOf("Pikapp")
+    var merchantName = ""
+    //    var list_of_items = arrayOf("Pikapp", "Tokopedia", "Shopee")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,9 +56,27 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.let { viewModel.getMenuCategoryList(it.baseContext) }
+        getMenuData()
+        general_error_menu.try_button.setOnClickListener {
+            viewModel.mutableIsLoading.value = true
+            getMenuData()
+        }
+
         setMenuInvisible()
         observeViewModel()
+    }
+
+    private fun getMenuData() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            activity?.let { viewModel.getMenuCategoryList(it.baseContext, requireActivity(), general_error_menu) }
+            otherViewModel.getMerchantProfile(requireContext(), requireActivity(), general_error_menu)
+            general_error_menu.isVisible = false
+        } else {
+            general_error_menu.isVisible = true
+            viewModel.mutableIsLoading.value = false
+            onlineService.networkDialog(requireActivity())
+        }
     }
 
     override fun onResume() {
@@ -55,7 +88,7 @@ class MenuFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.restartFragment()
-        deleteCache(requireContext())
+        CacheService().deleteCache(requireContext())
     }
 
     private fun observeViewModel() {
@@ -105,6 +138,25 @@ class MenuFragment : Fragment() {
                     activity?.startActivity(this)
                 }
             }
+        })
+
+        otherViewModel.merchantResult.observe(viewLifecycleOwner, Observer { merchantProfile ->
+            merchantName = merchantProfile.merchantName.toString()
+            list_of_items = arrayOf(
+                "Pikapp - ${merchantProfile.merchantName}"
+                //"Tokopedia - ${merchantProfile.merchantName}"
+                //"Shopee - ${merchantProfile.merchantName}"
+            )
+            val spinner = this.menuSpinner
+
+            spinner!!.onItemSelectedListener = this
+
+            val array_adapter =
+                context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, list_of_items) }
+            array_adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            spinner.adapter = array_adapter
+
         })
     }
 
@@ -204,29 +256,11 @@ class MenuFragment : Fragment() {
         }
     }
 
-    fun deleteCache(context: Context) {
-        try {
-            val dir: File = context.cacheDir
-            deleteDir(dir)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Toast.makeText(context, list_of_items[position], Toast.LENGTH_SHORT).show()
     }
 
-    private fun deleteDir(dir: File?): Boolean {
-        return if (dir != null && dir.isDirectory) {
-            val children: Array<String> = dir.list()
-            for (i in children.indices) {
-                val success = deleteDir(File(dir, children[i]))
-                if (!success) {
-                    return false
-                }
-            }
-            dir.delete()
-        } else if (dir != null && dir.isFile) {
-            dir.delete()
-        } else {
-            false
-        }
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
 }

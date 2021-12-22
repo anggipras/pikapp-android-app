@@ -155,6 +155,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
         ).enqueue(object : retrofit2.Callback<BaseResponse> {
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
                 Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
+                setLoading(false)
             }
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
@@ -174,6 +175,7 @@ class CategoryViewModel(application: Application) : BaseViewModel(application) {
                         Toast.LENGTH_LONG
                     ).show()
                     _isLoadingIcon.value = false
+                    setLoading(false)
                 }
             }
         })
