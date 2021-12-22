@@ -13,6 +13,147 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+                <View
+                    android:id="@+id/layerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#64000000"
+                    android:elevation="100dp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/modalView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="101dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titleModal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Selamat Datang di Pikapp"
+                                    android:textColor="@color/black"
+                                    android:layout_marginTop="@dimen/_30sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:fontFamily="@font/proximanova_bold"
+                                    android:textSize="@dimen/_14sdp"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/desc1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_14sdp"
+                                    android:layout_marginLeft="@dimen/_30sdp"
+                                    android:layout_marginRight="@dimen/_30sdp"
+                                    android:textColor="#767676"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textAlignment="center"
+                                    android:text="Yuk ikuti langkah-langkah berikut untuk melakukan transaksi pertama di PikApp"
+                                    android:fontFamily="@font/proximanova_regular"/>
+
+                                <ImageView
+                                    android:id="@+id/image"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_width="@dimen/_150sdp"
+                                    android:layout_marginTop="@dimen/_30sdp"
+                                    android:layout_height="@dimen/_143sdp"
+                                    android:src="@drawable/modal_logo"/>
+
+                                <TextView
+                                    android:id="@+id/desc2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_14sdp"
+                                    android:layout_marginLeft="@dimen/_30sdp"
+                                    android:layout_marginRight="@dimen/_30sdp"
+                                    android:textColor="#767676"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textAlignment="center"
+                                    android:text="Yuk ikuti langkah-langkah berikut untuk melakukan transaksi pertama di PikApp"
+                                    android:fontFamily="@font/proximanova_regular"/>
+
+                                <TextView
+                                    android:id="@+id/desc3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_14sdp"
+                                    android:layout_marginLeft="@dimen/_30sdp"
+                                    android:layout_marginRight="@dimen/_30sdp"
+                                    android:textColor="#767676"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textAlignment="center"
+                                    android:text="Yuk ikuti langkah-langkah berikut untuk melakukan transaksi pertama di PikApp"
+                                    android:fontFamily="@font/proximanova_regular"/>
+
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/skipModal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="17dp"
+                                    android:layout_marginLeft="@dimen/_20sdp"
+                                    android:layout_marginBottom="@dimen/_20sdp"
+                                    android:fontFamily="@font/proximanova_bold"
+                                    android:text="Lewati"
+                                    android:textColor="#aaaaaa"
+                                    android:textSize="@dimen/_12sdp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/nextModal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lanjut"
+                                    android:fontFamily="@font/proximanova_bold"
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textColor="@color/green"
+                                    android:layout_marginBottom="@dimen/_20sdp"
+                                    android:layout_marginRight="@dimen/_20sdp"
+                                    android:layout_marginTop="@dimen/_90sdp"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                                <TextView
+                                    android:id="@+id/pageNum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1 Dari 8"
+                                    android:fontFamily="@font/proximanova_regular"
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textColor="#aaaaaa"
+                                    android:layout_marginBottom="@dimen/_20sdp"
+                                    android:layout_marginTop="@dimen/_90sdp"
+                                    app:layout_constraintRight_toLeftOf="@id/nextModal"
+                                    app:layout_constraintLeft_toRightOf="@id/skipModal"
+                                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
                 <com.google.android.material.bottomnavigation.BottomNavigationView
                     android:id="@+id/bottom_navigation"
                     android:layout_width="match_parent"

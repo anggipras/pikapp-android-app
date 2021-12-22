@@ -53,7 +53,7 @@
                 android:layout_marginBottom="23dp"
                 android:background="@drawable/button_green_small"
                 android:backgroundTint="@color/green"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/inter_bold"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="14sp"

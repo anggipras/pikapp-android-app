@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:fontFamily="@font/montserrat_bold"
+        android:fontFamily="@font/inter_bold"
         android:text="Pilih Kategori"
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -63,7 +63,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_green_small"
         android:backgroundTint="@color/green"
-        android:fontFamily="@font/montserrat"
+        android:fontFamily="@font/inter_regular"
         android:text="Pilih"
         android:textAllCaps="false"
         android:textColor="@color/white"

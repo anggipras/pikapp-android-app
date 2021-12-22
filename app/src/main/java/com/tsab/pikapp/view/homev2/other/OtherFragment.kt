@@ -22,8 +22,11 @@ import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.view.other.otherReport.ReportActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import kotlinx.android.synthetic.main.other_fragment.*
+import kotlinx.android.synthetic.main.transaction_fragment.*
+import smartdevelop.ir.eram.showcaseviewlib.GuideView
 
 class OtherFragment : Fragment() {
     private lateinit var dataBinding: OtherFragmentBinding
@@ -73,6 +76,8 @@ class OtherFragment : Fragment() {
             }
         }
 
+        ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)
+
         observeViewModel()
     }
 
@@ -86,6 +91,46 @@ class OtherFragment : Fragment() {
             general_error_other.isVisible = true
             onlineService.networkDialog(requireActivity())
         }
+    }
+
+    fun ShowIntro(title: String, desc:String, view: View, type: Int){
+        GuideView.Builder(requireContext())
+            .setTitle(title)
+            .setContentText(desc)
+            .setGravity(GuideView.Gravity.auto)
+            .setTargetView(view)
+            .setDismissType(GuideView.DismissType.anywhere)
+            .setContentTextSize(12)
+            .setTitleTextSize(14)
+            .setGuideListener {
+                if (type == 2) {
+                    ShowIntro(
+                        "Pengaturan Button",
+                        "Pada halaman ini terdapat tombol pengaturan yang berfungsi untuk mengatur toko Anda pada aplikasi",
+                        merchant_setting_click, 4
+                    )
+                } else if (type == 4) {
+                    ShowIntro(
+                        "Integrasi Button",
+                        "Pada halaman ini terdapat tombol integrasi di mana Anda dapat melakukan integrasi toko Anda dengan marketplace",
+                        integrasiButton, 5
+                    )
+                } else if (type == 5) {
+                    ShowIntro(
+                        "Laporan Button",
+                        "Pada halaman ini terdapat tombol laporan di mana Anda dapat melihat laporan mengenai toko Anda",
+                        merchant_report_click, 6
+                    )
+                } else if (type == 6) {
+                    ShowIntro(
+                        "Help Button",
+                        "Pada halaman ini terdapat tombol bantuan\u2028berguna untuk membantu Anda menghadapi kesulitan saat menggunakan aplikasi.",
+                        merchant_click_help, 7
+                    )
+                }
+            }
+            .build()
+            .show()
     }
 
     private fun observeViewModel() {

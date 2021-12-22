@@ -43,7 +43,7 @@
                     android:text="Belum ada menu yang selesai hari ini"
                     android:textColor="#767676"
                     android:layout_marginRight="32dp"
-                    android:fontFamily="@font/proximanova_semibold"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15sp"
                     android:textAlignment="center"
                     app:layout_constraintLeft_toLeftOf="parent"

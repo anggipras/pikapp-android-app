@@ -369,6 +369,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 dataBinding.text.isVisible = it == 0
             }
         })
+
+        manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
+            dataBinding.icon.visibility = if (state) View.VISIBLE else View.GONE
+            dataBinding.text.visibility = if (state) View.VISIBLE else View.GONE
+        })
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
