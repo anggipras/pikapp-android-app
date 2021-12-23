@@ -55,7 +55,9 @@ class PromoFragment : Fragment() {
                 swipeRefreshLayout.isRefreshing = false
             }
 
+/*
             ShowIntro("Promo Button", "Tombol Promo digunakan untuk mengakses halaman “Promo” yang dimiliki oleh merchant.", requireActivity().findViewById(R.id.nav_promo), 2)
+*/
         }
     }
 

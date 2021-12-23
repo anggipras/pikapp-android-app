@@ -18,12 +18,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#64000000"
-                    android:elevation="100dp"/>
+                    android:elevation="100dp"
+                    android:visibility="gone" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/modalView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_30sdp"
                     android:layout_marginBottom="@dimen/_30sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
