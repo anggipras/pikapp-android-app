@@ -105,7 +105,7 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-        desc1.visibility = View.GONE
+        /*desc1.visibility = View.GONE
         desc3.visibility = View.GONE
 
         nextModal.setOnClickListener {
@@ -120,7 +120,7 @@ class HomeActivity : AppCompatActivity() {
             modalView.visibility = View.GONE
             layerView.visibility = View.GONE
         }
-
+*/
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_transaction -> replaceFragment(transactionFragment)
