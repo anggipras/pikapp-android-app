@@ -76,7 +76,7 @@ class OtherFragment : Fragment() {
             }
         }
 
-        ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)
+        /*ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)*/
 
         observeViewModel()
     }

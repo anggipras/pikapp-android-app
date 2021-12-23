@@ -67,7 +67,7 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
             getMenuData()
         }
 
-        ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)
+       /* ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)*/
 
         setMenuInvisible()
         observeViewModel()
