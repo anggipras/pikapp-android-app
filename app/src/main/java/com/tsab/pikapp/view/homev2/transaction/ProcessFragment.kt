@@ -18,11 +18,13 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProccessBinding
+import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
+import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
 class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
@@ -79,41 +81,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
         dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
-        activity?.let {
-            viewModel.getStoreOrderList(
-                it.baseContext,
-                recyclerview_transaction,
-                "Proses",
-                requireActivity().supportFragmentManager,
-                emptyState,
-                this
-            )
+        getProcessData()
+
+        general_error_process.try_button.setOnClickListener {
+            getProcessData()
         }
-
-        activity?.let {
-            viewModel.getListOmni(
-                it.baseContext,
-                recyclerview_tokopedia,
-                requireActivity().supportFragmentManager,
-                requireActivity(),
-                "Proses",
-                emptyState,
-                requireParentFragment()
-            )
-        }
-
-        activity?.let { manualViewModel.getManualTxnList("ON_PROCESS", it.baseContext, recyclerview_manualTxn, requireActivity()) }
-
-        viewModel.editList(
-            recyclerview_transaction,
-            recyclerview_tokopedia,
-            buttonFilterPikapp,
-            buttonFilterTokped,
-            buttonFilterGrab,
-            buttonFilterShopee,
-            icon,
-            text
-        )
 
         buttonFilterPikapp.setOnClickListener {
             if (!viewModel.mutablePikappFilter.value!!) {
@@ -312,6 +284,55 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         }
     }
 
+    private fun getProcessData() {
+        val onlineService = OnlineService()
+        if (onlineService.isOnline(context)) {
+            activity?.let {
+                viewModel.getStoreOrderList(
+                    it.baseContext,
+                    recyclerview_transaction,
+                    "Proses",
+                    requireActivity().supportFragmentManager,
+                    emptyState,
+                    this,
+                    requireActivity(),
+                    general_error_process
+                )
+            }
+
+            activity?.let {
+                viewModel.getListOmni(
+                    it.baseContext,
+                    recyclerview_tokopedia,
+                    requireActivity().supportFragmentManager,
+                    requireActivity(),
+                    "Proses",
+                    emptyState,
+                    requireParentFragment(),
+                    general_error_process
+                )
+            }
+
+            activity?.let { manualViewModel.getManualTxnList("ON_PROCESS", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+
+            viewModel.editList(
+                recyclerview_transaction,
+                recyclerview_tokopedia,
+                buttonFilterPikapp,
+                buttonFilterTokped,
+                buttonFilterGrab,
+                buttonFilterShopee,
+                icon,
+                text
+            )
+            general_error_process.isVisible = false
+        } else {
+            general_error_process.isVisible = true
+            viewModel.setLoading(false)
+            onlineService.networkDialog(requireActivity())
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -348,6 +369,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 dataBinding.text.isVisible = it == 0
             }
         })
+
+        manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
+            dataBinding.icon.visibility = if (state) View.VISIBLE else View.GONE
+            dataBinding.text.visibility = if (state) View.VISIBLE else View.GONE
+        })
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -369,7 +395,9 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     "Proses",
                     requireActivity().supportFragmentManager,
                     emptyState,
-                    this@ProcessFragment
+                    this@ProcessFragment,
+                    requireActivity(),
+                    general_error_process
                 )
                 viewModel.getListOmni(
                     context,
@@ -378,7 +406,8 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                     requireActivity(),
                     "Proses",
                     emptyState,
-                    requireParentFragment()
+                    requireParentFragment(),
+                    general_error_process
                 )
             }
         }

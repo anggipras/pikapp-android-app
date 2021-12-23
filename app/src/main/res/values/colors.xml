@@ -32,6 +32,8 @@
     <color name="textSubtle">#767676</color>
     <color name="borderSubtle">#AAAAAA</color>
 
+    <color name="textSubtle1">#33767676</color>
+
     <color name="editTextGray">#D9CECE</color>
 
 </resources>

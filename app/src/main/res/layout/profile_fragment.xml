@@ -31,7 +31,7 @@
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="30dp"
                 android:drawableLeft="@drawable/ic_back_arrow"
-                android:fontFamily="@font/montserrat"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/kembali"
                 android:textColor="#FFFFFF"
                 android:textSize="15dp"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="65dp"
-                android:fontFamily="@font/proximanova_bold"
+                android:fontFamily="@font/inter_bold"
                 android:text="@string/profile_setting"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp"
@@ -77,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nama_lengkap_profile"
-                    android:fontFamily="@font/montserrat"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/textSubtle" />
 
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@{merchantProfileDetail.profileFullName}"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/black" />
 
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tanggal_lahir"
-                    android:fontFamily="@font/montserrat"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/textSubtle" />
 
@@ -113,7 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/tambahkan_tanggal_lahir"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/yellow"
                     android:visibility="visible"/>
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Tambahkan tanggal lahir"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/black"
                     android:visibility="gone"/>
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/jenis_kelamin"
-                    android:fontFamily="@font/montserrat"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/textSubtle" />
 
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/tambahkan_jenis_kelamin"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/yellow"
                     android:visibility="visible"/>
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Tambahkan jenis kelamin"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/black"
                     android:visibility="gone"/>
@@ -179,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/email"
-                    android:fontFamily="@font/montserrat"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/textSubtle" />
 
@@ -189,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@{merchantProfileDetail.profileEmail}"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/black" />
 
@@ -205,7 +205,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/no_handphone"
-                    android:fontFamily="@font/montserrat"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/textSubtle" />
 
@@ -215,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@{merchantProfileDetail.profilePhone}"
-                    android:fontFamily="@font/proximanova_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="15dp"
                     android:textColor="@color/black" />
 
