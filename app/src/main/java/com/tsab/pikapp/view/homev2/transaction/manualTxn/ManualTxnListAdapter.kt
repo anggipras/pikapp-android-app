@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
@@ -38,6 +40,10 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.transaction_list_items.view.totalPrice as totalPrice1
+import androidx.core.content.ContextCompat.startActivity
+
+
+
 
 class ManualTxnListAdapter(
     private val context: Context,
@@ -53,6 +59,8 @@ class ManualTxnListAdapter(
     var jumlah = 0
     var price = 0
     var str: String = ""
+    var temp: String = ""
+    var number: String = ""
     lateinit var linearLayoutManager: LinearLayoutManager
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -72,6 +80,7 @@ class ManualTxnListAdapter(
         var acceptBtn: Button = itemView.acceptButtonManual
         var rejectBtn: Button = itemView.rejectButtonManual
         var transactionId: TextView = itemView.transactionIdManual
+        var callBtn: ImageView = itemView.callBtn
 
     }
 
@@ -96,7 +105,20 @@ class ManualTxnListAdapter(
                 )
             }
             holder.orderStatus.setBackgroundResource(R.drawable.button_orange_square)
-            holder.rejectBtn.visibility = View.GONE
+            holder.rejectBtn.setOnClickListener {
+                updateStatus(UpdateStatusManualTxnRequest(
+                    transactionList[position].transaction_id,
+                    "CANCELLED",
+                    transactionList[position].payment_status),
+                "ON_PROCESS", mid, position, reycler, context)
+            }
+            holder.callBtn.setOnClickListener {
+                temp = ""
+                number = ""
+                temp = transactionList[position].customer?.phone_number.toString().substringAfter("0")
+                number = "+62 $temp"
+                openWhatsapp(number)
+            }
         } else if (transactionList[position].order_status == "DELIVER") {
             setDate(position)
             setUpCard(holder, position)
@@ -110,6 +132,13 @@ class ManualTxnListAdapter(
                 )
             }
             holder.acceptBtn.text = "Pesanan Tiba"
+            holder.callBtn.setOnClickListener {
+                temp = ""
+                number = ""
+                temp = transactionList[position].customer?.phone_number.toString().substringAfter("0")
+                number = "+62 $temp"
+                openWhatsapp(number)
+            }
         } else if (transactionList[position].order_status == "FINALIZE"){
             setDate(position)
             setUpCard(holder, position)
@@ -132,6 +161,13 @@ class ManualTxnListAdapter(
                 holder.acceptBtn.setTextColor(context.resources.getColor(R.color.borderSubtle))
                 holder.acceptBtn.setBackgroundResource(R.drawable.button_gray_transparent)
             }
+            holder.callBtn.setOnClickListener {
+                temp = ""
+                number = ""
+                temp = transactionList[position].customer?.phone_number.toString().substringAfter("0")
+                number = "+62 $temp"
+                openWhatsapp(number)
+            }
         } else if (transactionList[position].order_status == "CLOSE"){
             setDate(position)
             setUpCard(holder, position)
@@ -139,15 +175,66 @@ class ManualTxnListAdapter(
             holder.orderStatus.setBackgroundResource(R.drawable.button_green_square)
             holder.rejectBtn.visibility = View.GONE
             holder.acceptBtn.visibility = View.GONE
+            holder.callBtn.setOnClickListener {
+                temp = ""
+                number = ""
+                temp = transactionList[position].customer?.phone_number.toString().substringAfter("0")
+                number = "+62 $temp"
+                openWhatsapp(number)
+            }
         } else if (transactionList[position].order_status == "CANCELLED"){
             setDate(position)
             setUpCard(holder, position)
             holder.orderStatus.text = "Batal"
-            holder.orderStatus.setBackgroundResource(R.drawable.button_red_transparent)
+            holder.orderStatus.setBackgroundResource(R.drawable.button_red_square)
             holder.acceptBtn.visibility = View.GONE
             holder.rejectBtn.visibility = View.GONE
-        }else {
-            Toast.makeText(context, "Invalid Status Order", Toast.LENGTH_SHORT).show()
+            if (transactionList[position].payment_status == "PAID"){
+                holder.statusPayment.setTextColor(context.resources.getColor(R.color.green))
+                holder.statusPayment.text = "Sudah Bayar"
+                holder.updatePaymentBtn.text = "Refund ke Pelanggan"
+                holder.updatePaymentBtn.visibility = View.VISIBLE
+                holder.updatePaymentBtn.setOnClickListener {
+                    updateStatus(UpdateStatusManualTxnRequest(
+                        transactionList[position].transaction_id,
+                        transactionList[position].order_status,
+                        "REFUND"),
+                        "CANCELLED", mid, position, reycler, context)
+                }
+            } else if (transactionList[position].payment_status == "CANCELLED"){
+                holder.statusPayment.text = "Dibatalkan"
+                holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                holder.updatePaymentBtn.visibility = View.GONE
+            } else if (transactionList[position].payment_status == "REFUND"){
+                holder.statusPayment.text = "Dana Dikembalikan"
+                holder.statusPayment.setTextColor(context.resources.getColor(R.color.orange))
+                holder.updatePaymentBtn.visibility = View.GONE
+            } else {
+                Timber.tag(tag).d("Invalid status payment")
+            }
+            holder.callBtn.setOnClickListener {
+                temp = ""
+                number = ""
+                temp = transactionList[position].customer?.phone_number.toString().substringAfter("0")
+                number = "+62 $temp"
+                openWhatsapp(number)
+            }
+        } else if (transactionList[position].order_status == "FAILED"){
+            setDate(position)
+            setUpCard(holder, position)
+            holder.orderStatus.text = "Gagal"
+            holder.orderStatus.setBackgroundResource(R.drawable.button_red_square)
+            holder.acceptBtn.visibility = View.GONE
+            holder.rejectBtn.visibility = View.GONE
+            holder.callBtn.setOnClickListener {
+                temp = ""
+                number = ""
+                temp = transactionList[position].customer?.phone_number.toString().substringAfter("0")
+                number = "+62 $temp"
+                openWhatsapp(number)
+            }
+        } else {
+            Timber.tag(tag).d("Invalid Status Order")
         }
     }
 
@@ -176,7 +263,7 @@ class ManualTxnListAdapter(
             holder.statusPayment.setTextColor(context.resources.getColor(R.color.green))
             holder.statusPayment.text = "Sudah Bayar"
             holder.updatePaymentBtn.visibility = View.GONE
-        } else {
+        } else if (transactionList[position].payment_status == "UNPAID") {
             holder.statusPayment.text = "Belum Bayar"
             holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
             holder.updatePaymentBtn.setOnClickListener {
@@ -192,6 +279,10 @@ class ManualTxnListAdapter(
                 transactionList[position].shipping?.shipping_method.toString(),
                 transactionList[position].transaction_id.toString(), transactionList[position].order_status.toString(), tabStatus, position)
             }
+        } else if (transactionList[position].payment_status == "FAILED"){
+            holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
+            holder.statusPayment.text = "Gagal"
+            holder.updatePaymentBtn.visibility = View.GONE
         }
     }
 
@@ -226,6 +317,13 @@ class ManualTxnListAdapter(
         recyclerView.setHasFixedSize(false)
         var menuList1 = ManualTxnProductAdapter(context, productList)
         recyclerView.adapter = menuList1
+    }
+
+    private fun openWhatsapp(number: String){
+        val url = "https://api.whatsapp.com/send?phone=$number"
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        activity.startActivity(i)
     }
 
     private fun setDate(position: Int) {
