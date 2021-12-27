@@ -106,9 +106,10 @@ class EditMenuAdvanceMainFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+
+        dataBinding.topAppBar.setNavigationOnClickListener {
             navController.navigate(R.id.action_editMenuAdvanceMainFragment_to_updateMenuEditAdvFragment)
-        }, view)
+        }
 
         dataBinding.aktifkanSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setAdvanceMenuActive(isChecked)

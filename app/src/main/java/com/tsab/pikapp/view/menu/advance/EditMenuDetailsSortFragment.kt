@@ -103,9 +103,9 @@ class EditMenuDetailsSortFragment : Fragment() {
         val itemTouchHelperCallback = ItemTouchHelper(itemTouchHelper)
         itemTouchHelperCallback.attachToRecyclerView(recyclerview_menuChoice)
 
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             navController.navigate(R.id.action_editMenuDetailsSortFragment_to_editMenuAdvanceDetailsFragment)
-        }, view)
+        }
 
         dataBinding.nextButton.setOnClickListener {
             viewModel.sortAdditionalMenuEdit(menuEditChoiceList)
