@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.menuCategory
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentSortCategoryPageBinding
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_sort_category_page.*
 import java.util.*
@@ -98,7 +100,7 @@ class SortCategoryPage : Fragment(), SortCategoryAdapter.OnItemClickListener {
     }
 
     private fun attachInputListeners() {
-        dataBinding.backBtn.setOnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             navController?.navigate(R.id.action_sortCategoryPage_to_categoryPage)
         }
 
