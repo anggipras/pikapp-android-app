@@ -48,6 +48,7 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     var list_of_items = arrayOf("Pikapp")
     var merchantName = ""
+    var name = ""
     //    var list_of_items = arrayOf("Pikapp", "Tokopedia", "Shopee")
 
     override fun onCreateView(
@@ -277,7 +278,8 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Toast.makeText(context, list_of_items[position], Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, list_of_items[position], Toast.LENGTH_SHORT).show()
+        name = list_of_items[position]
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
