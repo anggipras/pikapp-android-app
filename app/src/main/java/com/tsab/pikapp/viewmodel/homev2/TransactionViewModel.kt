@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -544,6 +545,13 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 val token = sessionManager.getUserToken()!!
                 var clientId = getClientID()
                 var signature = getSignature(email, timestamp)
+
+                Log.e("UUId", uuid)
+                Log.e("time", timestamp)
+                Log.e("cid", clientId)
+                Log.e("token", token)
+                Log.e("sig", signature)
+                Log.e("mid", mid.toString())
 
                 val resultList = responseBody?.results
                 val prosesList = ArrayList<OrderDetailOmni>()

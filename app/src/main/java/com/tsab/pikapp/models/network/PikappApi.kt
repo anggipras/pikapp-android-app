@@ -684,6 +684,28 @@ interface PikappApi {
             @Body AcceptOrderTokopediaRequest: AcceptOrderTokopediaRequest
     ): Call<AcceptOrderTokopediaResponse>
 
+    //Tutorial
+    @POST("home/v1/tutorial-add")
+    fun updateTutorial(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body search: TutorialPostRequest
+    ): Call<TutorialPostResponse>
+
+    @GET("home/v1/tutorial-list/{mid1}")
+    fun getTutorial(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String?,
+        @Path("mid1") mid1: String
+    ): Call<TutorialGetResponse>
+
     //Report
     @Multipart
     @POST("merchant/api/upload-report/")

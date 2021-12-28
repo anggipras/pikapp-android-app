@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.PromoFragmentBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
 import kotlinx.android.synthetic.main.promo_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.tabs
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
@@ -17,6 +19,7 @@ import smartdevelop.ir.eram.showcaseviewlib.GuideView
 class PromoFragment : Fragment() {
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: PromoFragmentBinding
+    private val viewModel1: TutorialViewModel by activityViewModels()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
@@ -149,4 +152,5 @@ class PromoFragment : Fragment() {
 //            .build()
 //            .show()
 //    }
+
 }
