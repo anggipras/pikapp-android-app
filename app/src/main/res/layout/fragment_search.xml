@@ -15,59 +15,71 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="192dp"
-                android:background="@drawable/header"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0">
 
-                <TextView
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/headerAppbar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="28dp"
-                    android:fontFamily="@font/inter_regular"
-                    android:text="@string/kembali"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    app:drawableStartCompat="@drawable/ic_baseline_arrow_back_ios_24"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/judul"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/cari_menu"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.092"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.appbar.MaterialToolbar
+                            android:id="@+id/topAppBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            app:title="Cari Menu"
+                            app:navigationIcon="@drawable/ic_back_black"
+                            app:titleTextColor="@color/black"
+                            app:titleTextAppearance="@style/titleToolbar"
+                            app:contentInsetLeft="0dp"
+                            app:contentInsetStart="0dp"
+                            app:titleMarginStart="0dp"
+                            app:contentInsetStartWithNavigation="0dp"
+                            />
+
+                    </com.google.android.material.appbar.AppBarLayout>
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
                 <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="0dp"
+                    android:visibility="visible"
+                    android:id="@+id/search_field"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="32dp"
-                    android:autofillHints=""
                     app:searchHintIcon="@null"
-                    android:background="@drawable/form"
-                    android:clickable="true"
-                    android:inputType="text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    tools:ignore="LabelFor"
-                    android:focusable="true" />
+                    android:background="@drawable/gray_square_btn"
+                    android:backgroundTint="@color/lightGrey"
+                    android:drawableStart="@drawable/ic_baseline_search_24"
+                    android:drawablePadding="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/headerAppbar" />
+
+                <View
+                    android:visibility="visible"
+                    android:id="@+id/searchDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    app:layout_constraintTop_toBottomOf="@+id/search_field"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

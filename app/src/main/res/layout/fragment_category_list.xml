@@ -15,28 +15,39 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp">
+                android:paddingBottom="20dp"
+                android:background="@color/white">
 
-                <!-- Header layout -->
-                <include
-                    android:id="@+id/headerLayout"
-                    layout="@layout/layout_header_small"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/headerHeaderText"
-                    android:layout_width="wrap_content"
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/headerAppbar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginBottom="24dp"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/category_header"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/headerLayout"
-                    app:layout_constraintStart_toStartOf="@id/headerLayout" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
 
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.appbar.MaterialToolbar
+                            android:id="@+id/topAppBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            app:contentInsetLeft="0dp"
+                            app:contentInsetStart="0dp"
+                            app:contentInsetStartWithNavigation="0dp"
+                            app:navigationIcon="@drawable/ic_back_black"
+                            app:title="Kategori"
+                            app:titleMarginStart="0dp"
+                            app:titleTextAppearance="@style/titleToolbar"
+                            app:titleTextColor="@color/black" />
+
+                    </com.google.android.material.appbar.AppBarLayout>
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
                 <!-- Daftar kategori -->
                 <TextView
                     android:id="@+id/daftarKategoriHeaderText"
@@ -44,12 +55,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="32dp"
-                    android:fontFamily="@font/inter_regular"
+                    android:fontFamily="@font/inter_medium"
                     android:text="@string/category_daftar_kategori_header"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+                    app:layout_constraintTop_toBottomOf="@id/headerAppbar" />
 
                 <ImageView
                     android:id="@+id/daftarKategoriChangeOrderButton"
@@ -96,16 +107,17 @@
                     android:src="@drawable/ic_add"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/daftarKategoriRecyclerView"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    app:tint="@color/green"/>
 
                 <TextView
                     android:id="@+id/tambahKategoriHeaderText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:fontFamily="@font/inter_bold"
+                    android:fontFamily="@font/inter_semibold"
                     android:text="@string/category_tambah_kategori_header"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/green"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@id/tambahKategoriImage"
                     app:layout_constraintStart_toEndOf="@id/tambahKategoriImage"

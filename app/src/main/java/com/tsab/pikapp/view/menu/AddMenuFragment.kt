@@ -73,10 +73,10 @@ class AddMenuFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.header.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             sessionManager.setMenuDefInit(0)
             activity?.finish()
-        }, view)
+        }
 
         dataBinding.infoBtn.setOnClickListener {
             dataBinding.infoBtn.showAlignTop(viewModel.showTooltip(requireView().context))

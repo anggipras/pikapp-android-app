@@ -11,9 +11,10 @@
             </item>
             <item
                 android:gravity="center|end"
-                android:width="30dp"
-                android:height="15dp">
-                <bitmap android:src="@drawable/ic_down_arrow" />
+                android:right="10dp"
+                android:width="15dp"
+                android:height="7dp">
+                <bitmap android:src="@drawable/ic_down_arrow"/>
             </item>
         </layer-list>
     </item>
