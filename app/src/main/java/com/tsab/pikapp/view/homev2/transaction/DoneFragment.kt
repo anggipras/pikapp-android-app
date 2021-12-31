@@ -98,6 +98,10 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             }
 
             activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+
+            /* TRANSACTION LIST V2 START FROM HERE */
+            viewModel.getTransactionV2List()
+
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true

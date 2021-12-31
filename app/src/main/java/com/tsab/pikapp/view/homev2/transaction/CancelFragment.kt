@@ -96,6 +96,10 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             }
 
             activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+
+            /* TRANSACTION LIST V2 START FROM HERE */
+            viewModel.getTransactionV2List()
+
             general_error_cancel.isVisible = false
         } else {
             general_error_cancel.isVisible = true

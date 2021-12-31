@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProccessBinding
+import com.tsab.pikapp.models.model.TransactionListV2Data
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
@@ -27,12 +29,15 @@ import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
-class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, TransactionListV2Adapter.OnItemClickListener {
     private val viewModel: TransactionViewModel by activityViewModels()
     private val manualViewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var layoutManagerTransaction: LinearLayoutManager
     private lateinit var layoutManagerTokopedia: LinearLayoutManager
     private lateinit var layoutManagerManualTxn: LinearLayoutManager
+
+    private lateinit var layoutManagerTransactionV2: LinearLayoutManager
+    private lateinit var recyclerAdapter: TransactionListV2Adapter
 
     private lateinit var dataBinding: FragmentProccessBinding
     private val sessionManager = SessionManager()
@@ -80,6 +85,9 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
         dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
         dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
+
+        initRecyclerView()
+        initViewModel()
 
         getProcessData()
 
@@ -284,6 +292,35 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         }
     }
 
+    private fun initRecyclerView() {
+        dataBinding.recyclerviewAllTransaction.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager, this)
+        dataBinding.recyclerviewAllTransaction.adapter = recyclerAdapter
+    }
+
+    private fun initViewModel() {
+        viewModel.getLiveDataTransListV2ProcessObserver().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerAdapter.setTransactionList(it)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        })
+
+        viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerAdapter.setTransactionList(it)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        })
+
+        viewModel.getLiveDataTransListV2CancelObserver().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerAdapter.setTransactionList(it)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
     private fun getProcessData() {
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
@@ -325,6 +362,10 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
                 icon,
                 text
             )
+
+            /* TRANSACTION LIST V2 START FROM HERE */
+            viewModel.getTransactionV2List()
+
             general_error_process.isVisible = false
         } else {
             general_error_process.isVisible = true
@@ -420,5 +461,10 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     override fun onItemClick(i: Int) {
         viewModel.setDecreaseBadge(i)
+    }
+
+    override fun onItemClickTransaction(txnId: String, status: String) {
+        Timber.e(txnId)
+//        viewModel.transactionUpdate(txnId, status)
     }
 }

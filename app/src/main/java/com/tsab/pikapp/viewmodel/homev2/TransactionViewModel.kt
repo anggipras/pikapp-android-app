@@ -755,4 +755,50 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 })
         )
     }
+
+    /* TRANSACTION LIST V2 */
+    var liveDataTransListV2Process: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+    var liveDataTransListV2Done: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+    var liveDataTransListV2Cancel: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+
+    fun getLiveDataTransListV2ProcessObserver(): MutableLiveData<List<TransactionListV2Data>> {
+        return liveDataTransListV2Process
+    }
+
+    fun getLiveDataTransListV2DoneObserver(): MutableLiveData<List<TransactionListV2Data>> {
+        return liveDataTransListV2Done
+    }
+
+    fun getLiveDataTransListV2CancelObserver(): MutableLiveData<List<TransactionListV2Data>> {
+        return liveDataTransListV2Cancel
+    }
+
+    fun getTransactionV2List() {
+        /* Get response from incoming api */
+    }
+
+    fun transactionUpdate(id: String, status: String) {
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+
+//        disposable.add(
+//            pikappService.postUpdateOrderStatus(
+//                email,
+//                token,
+//                RequestBody.create(MediaType.parse("multipart/form-data"), id),
+//                RequestBody.create(MediaType.parse("multipart/form-data"), status)
+//            )
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>() {
+//                    override fun onSuccess(t: UpdateStatusResponse) {
+//                        Timber.tag(tag).d("Berhasil")
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Timber.tag(tag).d("Gagal")
+//                    }
+//                })
+//        )
+    }
 }
