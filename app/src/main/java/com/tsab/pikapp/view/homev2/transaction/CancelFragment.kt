@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_cancel.*
 import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
+import timber.log.Timber
 
 class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
@@ -30,6 +32,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     private lateinit var layoutManagerManualTxn: LinearLayoutManager
     private lateinit var dataBinding: FragmentCancelBinding
 
+    private lateinit var recyclerAdapter: TransactionListV2Adapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +61,9 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
         dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
+        initRecyclerView()
+        initViewModel()
+
         getDataCancel()
 
         general_error_cancel.try_button.setOnClickListener {
@@ -65,6 +71,21 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         }
 
         observeViewModel()
+    }
+
+    private fun initRecyclerView() {
+        dataBinding.recyclerviewAllTransactionCancel.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager)
+        dataBinding.recyclerviewAllTransactionCancel.adapter = recyclerAdapter
+    }
+
+    private fun initViewModel() {
+        viewModel.getLiveDataTransListV2CancelObserver().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerAdapter.setTransactionList(it)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
     private fun getDataCancel() {
@@ -98,7 +119,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List()
+            viewModel.getTransactionV2List(requireContext())
 
             general_error_cancel.isVisible = false
         } else {
@@ -128,4 +149,8 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     override fun onItemClick(i: Int) {
         TODO("Not yet implemented")
     }
+//
+//    override fun onItemClickTransaction(txnId: String, status: String) {
+//        Log.e("TXNID", txnId.toString())
+//    }
 }

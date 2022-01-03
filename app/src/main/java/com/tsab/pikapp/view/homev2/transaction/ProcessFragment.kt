@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
-class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, TransactionListV2Adapter.OnItemClickListener {
+class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     private val viewModel: TransactionViewModel by activityViewModels()
     private val manualViewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var layoutManagerTransaction: LinearLayoutManager
@@ -293,27 +293,13 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
     }
 
     private fun initRecyclerView() {
-        dataBinding.recyclerviewAllTransaction.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager, this)
-        dataBinding.recyclerviewAllTransaction.adapter = recyclerAdapter
+        dataBinding.recyclerviewAllTransactionProcess.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager)
+        dataBinding.recyclerviewAllTransactionProcess.adapter = recyclerAdapter
     }
 
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2ProcessObserver().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                recyclerAdapter.setTransactionList(it)
-                recyclerAdapter.notifyDataSetChanged()
-            }
-        })
-
-        viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                recyclerAdapter.setTransactionList(it)
-                recyclerAdapter.notifyDataSetChanged()
-            }
-        })
-
-        viewModel.getLiveDataTransListV2CancelObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 recyclerAdapter.setTransactionList(it)
                 recyclerAdapter.notifyDataSetChanged()
@@ -364,7 +350,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
             )
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List()
+            viewModel.getTransactionV2List(requireContext())
 
             general_error_process.isVisible = false
         } else {
@@ -463,8 +449,8 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
         viewModel.setDecreaseBadge(i)
     }
 
-    override fun onItemClickTransaction(txnId: String, status: String) {
-        Timber.e(txnId)
+//    override fun onItemClickTransaction(txnId: String, status: String) {
+//        Log.e("TXNID", txnId.toString())
 //        viewModel.transactionUpdate(txnId, status)
-    }
+//    }
 }

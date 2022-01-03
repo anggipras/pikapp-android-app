@@ -150,7 +150,9 @@ data class TransactionListV2Response(
     @SerializedName("shipping")
     val shipping: ShippingDetailV2Response?,
     @SerializedName("products")
-    val products: List<ProductDetailV2Response>?
+    val products: List<ProductDetailV2Response>?,
+    @SerializedName("customer")
+    val customer: CustomerDetailV2Response?
 )
 
 data class ShippingDetailV2Response(
@@ -219,6 +221,19 @@ data class ProductDetailV2Response(
     val extra_menus: List<ExtraMenusDetailV2Response>?
 )
 
+data class CustomerDetailV2Response(
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("address")
+    val address: String?,
+    @SerializedName("address_detail")
+    val address_detail: String?,
+    @SerializedName("phone_number")
+    val phone_number: String?,
+    @SerializedName("email")
+    val email: String?
+)
+
 data class ExtraMenusDetailV2Response(
     @SerializedName("variant_id")
     val variant_id: String?,
@@ -274,87 +289,102 @@ data class TransactionListV2Data(
     @SerializedName("transaction_time")
     val transaction_time: String?,
     @SerializedName("shipping")
-    val shipping: ShippingDetailV2Data?,
+    val shipping: ShippingDetailV2Response?,
     @SerializedName("products")
-    val products: List<ProductDetailV2Data>?
+    val products: List<ProductDetailV2Response>?,
+    @SerializedName("customer")
+    val customer: CustomerDetailV2Response?
 )
 
-data class ShippingDetailV2Data(
-    @SerializedName("awb")
-    val awb: String?,
-    @SerializedName("address")
-    val address: String?,
-    @SerializedName("province")
-    val province: String?,
-    @SerializedName("city")
-    val city: String?,
-    @SerializedName("country")
-    val country: String?,
-    @SerializedName("email")
-    val email: String?,
-    @SerializedName("geo")
-    val geo: String?,
-    @SerializedName("shipping_method")
-    val shipping_method: String?,
-    @SerializedName("shipping_cost")
-    val shipping_cost: Long?,
-    @SerializedName("shipping_time_type")
-    val shipping_time_type: String?,
-    @SerializedName("shipping_time")
-    val shipping_time: String?,
-    @SerializedName("shipping_service")
-    val shipping_service: String?,
-    @SerializedName("shipping_id")
-    val shipping_id: Int?,
-    @SerializedName("recipient_name")
-    val recipient_name: String?,
-    @SerializedName("address_detail")
-    val address_detail: String?,
-    @SerializedName("phone_number")
-    val phone_number: String?,
-    @SerializedName("postal_code")
-    val postal_code: String?
-)
-
-data class ProductDetailV2Data(
-    @SerializedName("product_id")
-    val product_id: String?,
-    @SerializedName("product_name")
-    val product_name: String?,
-    @SerializedName("product_price")
-    val product_price: String?,
-    @SerializedName("discount")
-    val discount: Int?,
-    @SerializedName("quantity")
-    val quantity: Int?,
-    @SerializedName("extra_price")
-    val extra_price: Int?,
-    @SerializedName("notes")
-    val notes: String?,
-    @SerializedName("weight")
-    val weight: Float?,
-    @SerializedName("sku")
-    val sku: String?,
-    @SerializedName("currency")
-    val currency: String?,
-    @SerializedName("total_weight")
-    val total_weight: Float?,
-    @SerializedName("total_price")
-    val total_price: Int?,
-    @SerializedName("extra_menus")
-    val extra_menus: List<ExtraMenusDetailV2Data>?
-)
-
-data class ExtraMenusDetailV2Data(
-    @SerializedName("variant_id")
-    val variant_id: String?,
-    @SerializedName("variant_name")
-    val variant_name: String?,
-    @SerializedName("variant_price")
-    val variant_price: Long?,
-    @SerializedName("quantity")
-    val quantity: Int?,
-)
+//data class ShippingDetailV2Data(
+//    @SerializedName("awb")
+//    val awb: String?,
+//    @SerializedName("address")
+//    val address: String?,
+//    @SerializedName("province")
+//    val province: String?,
+//    @SerializedName("city")
+//    val city: String?,
+//    @SerializedName("country")
+//    val country: String?,
+//    @SerializedName("email")
+//    val email: String?,
+//    @SerializedName("geo")
+//    val geo: String?,
+//    @SerializedName("shipping_method")
+//    val shipping_method: String?,
+//    @SerializedName("shipping_cost")
+//    val shipping_cost: Long?,
+//    @SerializedName("shipping_time_type")
+//    val shipping_time_type: String?,
+//    @SerializedName("shipping_time")
+//    val shipping_time: String?,
+//    @SerializedName("shipping_service")
+//    val shipping_service: String?,
+//    @SerializedName("shipping_id")
+//    val shipping_id: Int?,
+//    @SerializedName("recipient_name")
+//    val recipient_name: String?,
+//    @SerializedName("address_detail")
+//    val address_detail: String?,
+//    @SerializedName("phone_number")
+//    val phone_number: String?,
+//    @SerializedName("postal_code")
+//    val postal_code: String?
+//)
+//
+//data class ProductDetailV2Data(
+//    @SerializedName("product_id")
+//    val product_id: String?,
+//    @SerializedName("product_name")
+//    val product_name: String?,
+//    @SerializedName("product_price")
+//    val product_price: String?,
+//    @SerializedName("discount")
+//    val discount: Int?,
+//    @SerializedName("quantity")
+//    val quantity: Int?,
+//    @SerializedName("extra_price")
+//    val extra_price: Int?,
+//    @SerializedName("notes")
+//    val notes: String?,
+//    @SerializedName("weight")
+//    val weight: Float?,
+//    @SerializedName("sku")
+//    val sku: String?,
+//    @SerializedName("currency")
+//    val currency: String?,
+//    @SerializedName("total_weight")
+//    val total_weight: Float?,
+//    @SerializedName("total_price")
+//    val total_price: Int?,
+//    @SerializedName("extra_menus")
+//    val extra_menus: List<ExtraMenusDetailV2Data>?
+//)
+//
+//data class CustomerDetailV2Data(
+//    @SerializedName("name")
+//    val name: String?,
+//    @SerializedName("address")
+//    val address: String?,
+//    @SerializedName("address_detail")
+//    val address_detail: String?,
+//    @SerializedName("phone_number")
+//    val phone_number: String?,
+//    @SerializedName("email")
+//    val email: String?
+//)
+//
+//data class ExtraMenusDetailV2Data(
+//    @SerializedName("variant_id")
+//    val variant_id: String?,
+//    @SerializedName("variant_name")
+//    val variant_name: String?,
+//    @SerializedName("variant_price")
+//    val variant_price: Long?,
+//    @SerializedName("quantity")
+//    val quantity: Int?,
+//)
 
 
 

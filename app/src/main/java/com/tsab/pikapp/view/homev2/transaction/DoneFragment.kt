@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
 import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
+import timber.log.Timber
 
 class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
@@ -32,6 +34,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     private val sessionManager = SessionManager()
     private val manualViewModel: ManualTxnViewModel by activityViewModels()
 
+    private lateinit var recyclerAdapter: TransactionListV2Adapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +63,9 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
         dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
+        initRecyclerView()
+        initViewModel()
+
         getDataDone()
 
         general_error_done.try_button.setOnClickListener {
@@ -67,6 +73,21 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         }
 
         observeViewModel()
+    }
+
+    private fun initRecyclerView() {
+        dataBinding.recyclerviewAllTransactionDone.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager)
+        dataBinding.recyclerviewAllTransactionDone.adapter = recyclerAdapter
+    }
+
+    private fun initViewModel() {
+        viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                recyclerAdapter.setTransactionList(it)
+                recyclerAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
     private fun getDataDone() {
@@ -100,7 +121,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List()
+            viewModel.getTransactionV2List(requireContext())
 
             general_error_done.isVisible = false
         } else {
@@ -138,5 +159,9 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     override fun onItemClick(i: Int) {
         TODO("Not yet implemented")
     }
+
+//    override fun onItemClickTransaction(txnId: String, status: String) {
+//        Log.e("TXNID", txnId.toString())
+//    }
 
 }

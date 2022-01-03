@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
-import com.tsab.pikapp.models.model.ProductDetailV2Data
+import com.tsab.pikapp.models.model.ProductDetailV2Response
 import kotlinx.android.synthetic.main.item_transaction_menu.view.*
 
 class TransactionProductListV2Adapter(
-    private val productList: List<ProductDetailV2Data>?
+    private val productList: List<ProductDetailV2Response>?
 ) : RecyclerView.Adapter<TransactionProductListV2Adapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,

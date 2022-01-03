@@ -3,8 +3,9 @@ package com.tsab.pikapp.view.homev2.transaction
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,13 @@ import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.transaction.shipment.ResiTokopediaDialogFragment
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.cancel_dialog.view.*
 import kotlinx.android.synthetic.main.omni_tokped_popup.view.*
+import kotlinx.android.synthetic.main.omni_tokped_popup.view.dialog_back
+import kotlinx.android.synthetic.main.omni_tokped_popup.view.dialog_close
+import kotlinx.android.synthetic.main.omni_tokped_popup.view.dialog_text
+import kotlinx.android.synthetic.main.payment_dialog.view.*
+import kotlinx.android.synthetic.main.payment_dialog.view.nama
 import kotlinx.android.synthetic.main.transaction_list_items.view.*
 import kotlinx.android.synthetic.main.transaction_list_items.view.acceptButton
 import kotlinx.android.synthetic.main.transaction_list_items.view.lastOrder
@@ -32,10 +39,16 @@ import kotlinx.android.synthetic.main.transaction_list_items.view.menuCount
 import kotlinx.android.synthetic.main.transaction_list_items.view.paymentStatus
 import kotlinx.android.synthetic.main.transaction_list_items.view.rejectButton
 import kotlinx.android.synthetic.main.transaction_list_items.view.totalPrice
+import kotlinx.android.synthetic.main.transaction_list_items_manual.view.*
 import kotlinx.android.synthetic.main.transaction_list_items_omni.view.*
+import kotlinx.android.synthetic.main.transaction_list_items_omni.view.omniChannelIcon
+import kotlinx.android.synthetic.main.transaction_list_items_omni.view.recyclerview_menu_omni
+import kotlinx.android.synthetic.main.transaction_list_items_omni.view.totalPriceOmni
+import kotlinx.android.synthetic.main.update_payment_done.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,8 +58,7 @@ import kotlin.collections.ArrayList
 class TransactionListV2Adapter(
     private val context: Context,
     private val activity: Activity,
-    private val supportFragmentManager: FragmentManager,
-    private val listener: OnItemClickListener
+    private val supportFragmentManager: FragmentManager
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -95,7 +107,7 @@ class TransactionListV2Adapter(
             setMenu(rView, recyclerViewDineIn.products)
 
             if (orderStatusDineIn == "OPEN" || orderStatusDineIn == "PAID" || orderStatusDineIn == "ON_PROCESS") {
-                setDate(position)
+                setDate(position, recyclerViewDineIn)
                 when (orderStatusDineIn) {
                     "PAID" -> {
                         orderStatus.visibility = View.GONE
@@ -103,7 +115,7 @@ class TransactionListV2Adapter(
                         acceptBtn.text = "Terima"
                         acceptBtn.setOnClickListener {
                             val txnId = recyclerViewDineIn.transaction_id.toString()
-                            updateTransaction(txnId, "ON_PROCESS", "Proses", loadingOverlay)
+                            updateTransactionTxn(txnId, "ON_PROCESS", "Proses", loadingOverlay)
                         }
                         rejectBtn.setOnClickListener {
                             val bundle = Bundle()
@@ -114,10 +126,9 @@ class TransactionListV2Adapter(
                     }
                     "OPEN" -> {
                         orderStatus.text = "NEW"
-                        acceptBtn.text = "Terima"
                         acceptBtn.setOnClickListener {
                             val txnId = recyclerViewDineIn.transaction_id.toString()
-                            updateTransaction(txnId, "ON_PROCESS", "Proses", loadingOverlay)
+                            updateTransactionTxn(txnId, "ON_PROCESS", "Proses", loadingOverlay)
                         }
                         rejectBtn.setOnClickListener {
                             val bundle = Bundle()
@@ -129,14 +140,16 @@ class TransactionListV2Adapter(
                     "ON_PROCESS" -> {
                         orderStatus.visibility = View.GONE
                         acceptBtn.text = "Pesanan Siap"
+                        paymentStatus.text = "Diproses"
+                        paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
                         acceptBtn.setOnClickListener {
                             val txnId = recyclerViewDineIn.transaction_id.toString()
-                            updateTransaction(txnId, "DELIVER", "Proses", loadingOverlay)
+                            updateTransactionTxn(txnId, "DELIVER", "Proses", loadingOverlay)
                         }
                         rejectBtn.visibility = View.GONE
                     }
                 }
-                timeAgo(recyclerViewDineIn.transaction_time.toString(), lastOrder)
+//                timeAgo(recyclerViewDineIn.transaction_time.toString(), lastOrder)
                 tableNumber.text = "Meja " + recyclerViewDineIn.table_no
                 tableStatus.text = biz
                 orderDate.text = recyclerViewDineIn.transaction_time?.substringAfterLast("-")
@@ -149,7 +162,7 @@ class TransactionListV2Adapter(
                 totalPrice.text = "Rp " + str
                 menuPrice = 0
             } else if (orderStatusDineIn == "FAILED" || orderStatusDineIn == "ERROR") {
-                setDate(position)
+                setDate(position, recyclerViewDineIn)
                 orderStatus.visibility = View.GONE
                 rView.visibility = View.GONE
                 acceptBtn.visibility = View.GONE
@@ -173,14 +186,14 @@ class TransactionListV2Adapter(
                 menuPrice = 0
                 totalPrice.visibility = View.GONE
             } else if (orderStatusDineIn == "DELIVER" || orderStatusDineIn == "CLOSE" || orderStatusDineIn == "FINALIZE") {
-                setDate(position)
+                setDate(position, recyclerViewDineIn)
                 when (orderStatusDineIn) {
                     "DELIVER" -> {
                         acceptBtn.text = "Selesai"
                         paymentStatus.text = "Dikirim"
                         acceptBtn.setOnClickListener {
                             val txnId = recyclerViewDineIn.transaction_id.toString()
-                            updateTransaction(txnId, "CLOSE", "Done", loadingOverlay)
+                            updateTransactionTxn(txnId, "CLOSE", "Done", loadingOverlay)
                         }
                     }
                     else -> {
@@ -233,15 +246,16 @@ class TransactionListV2Adapter(
             val orderStatusChannel = recyclerViewOmni.order_status
             val logisticChannel = recyclerViewOmni.shipping
 
-            setDate(position)
+            setMenu(rView, recyclerViewOmni.products)
+            setDate(position, recyclerViewOmni)
             if (omniChannelName ==  "TOKOPEDIA") { // THIS CONDITION IS FOR TOKOPEDIA OMNICHANNEL (ALL STATUS WOULD BE APPEAR HERE)
                 if (logisticChannel != null) {
                     deliveryMethod.text = logisticChannel.shipping_method
                     deliveryStatus.text = logisticChannel.shipping_service
                 }
                 orderDate.text = recyclerViewOmni.transaction_time.toString().substringAfterLast("-")
-                    .substringBefore("T") + bulan + recyclerViewOmni.transaction_time.toString()
-                    .substringAfter("T").substringBeforeLast(":")
+                    .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
+                    .substringAfter(" ").substringBeforeLast(":")
                 formatNumber()
                 if (orderStatusChannel == "PAYMENT_VERIFIED") {
                     totalPrice2.visibility = View.GONE
@@ -259,7 +273,7 @@ class TransactionListV2Adapter(
                         /*rejectDialog(position)*/
                         openDialogTokopedia(position)
                     }
-                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
+//                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
                 } else if (orderStatusChannel == "SELLER_ACCEPT_ORDER") {
                     paymentStatus.text = "Diproses"
                     paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
@@ -270,7 +284,7 @@ class TransactionListV2Adapter(
                         openDialogTokopedia(position)
                     }
                     rejectBtn.visibility = View.GONE
-                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
+//                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
                 } else if (orderStatusChannel == "WAITING_FOR_PICKUP") {
                     paymentStatus.text = "Diproses"
                     paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
@@ -281,7 +295,7 @@ class TransactionListV2Adapter(
                         openDialogTokopedia(position)
                     }
                     rejectBtn.visibility = View.GONE
-                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
+//                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
                 } else if (orderStatusChannel == "SELLER_CANCEL_ORDER" || orderStatusChannel == "ORDER_REJECTED_BY_SELLER") {
                     rView.visibility = View.GONE
                     acceptBtn.visibility = View.GONE
@@ -299,7 +313,7 @@ class TransactionListV2Adapter(
                     paymentStatus.setBackgroundResource(R.drawable.button_green_square)
                     orderDate.text = "ID Transaksi: " + recyclerViewOmni.order_id
                     totalPrice.text = "Rp. $str"
-                } else if (orderStatusChannel == "ORDER_DELIVERED" || orderStatusChannel == "ORDER_FINISHED") {
+                } else if (orderStatusChannel == "ORDER_SHIPMENT" || orderStatusChannel == "DELIVERED_TO_PICKUP_POINT") {
                     rView.visibility = View.GONE
                     acceptBtn.visibility = View.GONE
                     rejectBtn.visibility = View.GONE
@@ -329,16 +343,16 @@ class TransactionListV2Adapter(
                     paymentStatus.text = "Diproses"
                     paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
                     orderDate.text = recyclerViewOmni.transaction_time.toString().substringAfterLast("-")
-                        .substringBefore("T") + bulan + recyclerViewOmni.transaction_time.toString()
-                        .substringAfter("T").substringBeforeLast(":")
+                        .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
+                        .substringAfter(" ").substringBeforeLast(":")
                     totalPrice2.visibility = View.GONE
                     totalPrice.text = "Rp. $str"
-                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
+//                    timeAgo(recyclerViewOmni.transaction_time.toString(), lastOrder)
                 } else {
                     orderDate.visibility = View.GONE
                     lastOrder.text = recyclerViewOmni.transaction_time.toString().substringAfterLast("-")
-                        .substringBefore("T") + bulan + recyclerViewOmni.transaction_time.toString()
-                        .substringAfter("T").substringBeforeLast(":")
+                        .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
+                        .substringAfter(" ").substringBeforeLast(":")
                     if (orderStatusChannel == "DELIVERED") {
                         paymentStatus.text = "Selesai"
                         paymentStatus.setBackgroundResource(R.drawable.button_green_square)
@@ -362,8 +376,174 @@ class TransactionListV2Adapter(
     }
 
     private inner class ViewHolderDelivery(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var logo: ImageView = itemView.omniChannelIcon
+        var orderDate: TextView = itemView.orderDateManual
+        var shippingMethod: TextView = itemView.shippingMethod
+        var custName: TextView = itemView.custName
+        var custPhone: TextView = itemView.custPhone
+        var custAddress: TextView = itemView.custAddress
+        var shippingDate: TextView = itemView.shippingDate
+        var statusPayment: TextView = itemView.statusPayment
+        var orderStatus: TextView = itemView.paymentStatusManual
+        var updatePaymentBtn: Button = itemView.updateStatus
+        var rView: RecyclerView = itemView.recyclerview_menu_omni
+        var itemCount: TextView = itemView.itemCount
+        var totalPrice: TextView = itemView.totalPriceManual
+        var acceptBtn: Button = itemView.acceptButtonManual
+        var rejectBtn: Button = itemView.rejectButtonManual
+        var transactionId: TextView = itemView.transactionIdManual
+        var callBtn: ImageView = itemView.callBtn
         fun bind(position: Int) {
             val recyclerViewDelivery = list[position]
+            val orderStatusManual = recyclerViewDelivery.order_status
+
+            setMenu(rView, recyclerViewDelivery.products)
+            setDate(position, recyclerViewDelivery)
+            setUpCard(recyclerViewDelivery, position)
+            if (orderStatusManual == "ON_PROCESS" || orderStatusManual == "OPEN") {
+                orderStatus.text = "Diproses"
+                orderStatus.setBackgroundResource(R.drawable.button_orange_square)
+                acceptBtn.setOnClickListener {
+                    postUpdatePOS(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "DELIVER", recyclerViewDelivery.payment_status))
+                }
+                rejectBtn.setOnClickListener {
+                    postUpdatePOS(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", recyclerViewDelivery.payment_status))
+                }
+            } else if (orderStatusManual == "DELIVER") {
+                orderStatus.text = "Dikirim"
+                orderStatus.setBackgroundResource(R.drawable.button_green_square)
+                rejectBtn.visibility = View.GONE
+                acceptBtn.text = "Pesanan Tiba"
+                acceptBtn.setOnClickListener {
+                    postUpdatePOS(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "FINALIZE", recyclerViewDelivery.payment_status))
+                }
+            } else if (orderStatusManual == "FINALIZE") {
+                orderStatus.text = "Sampai"
+                orderStatus.setBackgroundResource(R.drawable.button_green_square)
+                rejectBtn.visibility = View.GONE
+                acceptBtn.text = "Pesanan Selesai"
+                if (recyclerViewDelivery.payment_status == "PAID"){
+                    acceptBtn.isEnabled = true
+                    acceptBtn.setTextColor(context.resources.getColor(R.color.green))
+                    acceptBtn.setOnClickListener {
+                        postUpdatePOS(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CLOSE", recyclerViewDelivery.payment_status))
+                    }
+                    acceptBtn.setBackgroundResource(R.drawable.button_green_transparent)
+                } else {
+                    acceptBtn.isEnabled = false
+                    acceptBtn.setTextColor(context.resources.getColor(R.color.borderSubtle))
+                    acceptBtn.setBackgroundResource(R.drawable.button_gray_transparent)
+                }
+            } else if (orderStatusManual == "CLOSE") {
+                orderStatus.text = "Selesai"
+                orderStatus.setBackgroundResource(R.drawable.button_green_square)
+                rejectBtn.visibility = View.GONE
+                acceptBtn.visibility = View.GONE
+            } else if (orderStatusManual == "CANCELLED") {
+                orderStatus.text = "Batal"
+                orderStatus.setBackgroundResource(R.drawable.button_red_square)
+                rejectBtn.visibility = View.GONE
+                acceptBtn.visibility = View.GONE
+                when (recyclerViewDelivery.payment_status) {
+                    "PAID" -> {
+                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
+                        statusPayment.text = "Sudah Bayar"
+                        updatePaymentBtn.text = "Refund ke Pelanggan"
+                        updatePaymentBtn.visibility = View.VISIBLE
+                        updatePaymentBtn.setOnClickListener {
+                            postUpdatePOS(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUND"))
+                        }
+                    }
+                    "CANCELLED" -> {
+                        statusPayment.text = "Dibatalkan"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                        updatePaymentBtn.visibility = View.GONE
+                    }
+                    "REFUND" -> {
+                        statusPayment.text = "Dana Dikembalikan"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.orange))
+                        updatePaymentBtn.visibility = View.GONE
+                    }
+                    else -> Timber.tag("INVALID_STATUS").d("Invalid status payment")
+                }
+            } else if (orderStatusManual == "FAILED") {
+                orderStatus.text = "Gagal"
+                orderStatus.setBackgroundResource(R.drawable.button_red_square)
+                rejectBtn.visibility = View.GONE
+                acceptBtn.visibility = View.GONE
+            }
+            callBtn.setOnClickListener {
+                openWhatsapp(recyclerViewDelivery)
+            }
+        }
+
+        private fun setUpCard(recyclerViewDelivery: TransactionListV2Data, position: Int) {
+            setUpLogo(recyclerViewDelivery)
+            transactionId.text = "ID Transaksi: " + recyclerViewDelivery.transaction_id.toString().substring(0, 10)
+            orderDate.text = recyclerViewDelivery.transaction_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
+                    recyclerViewDelivery.transaction_time.toString().substringBefore("-") +", "+ recyclerViewDelivery.transaction_time.toString().substringAfter(" ").substringBeforeLast(":")
+            itemCount.text = "Total $jumlah items:"
+            jumlah = 0
+            formatNumber()
+            totalPrice.text = "Rp. " + str
+            menuPrice = 0
+            shippingMethod.text = recyclerViewDelivery.shipping?.shipping_method
+            shippingDate.text = recyclerViewDelivery.shipping?.shipping_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
+                    recyclerViewDelivery.shipping?.shipping_time.toString().substringBefore("-") +", "+ recyclerViewDelivery.shipping?.shipping_time.toString().substringAfter(" ").substringBeforeLast(":")
+            custName.text = recyclerViewDelivery.customer?.name
+            custAddress.text = recyclerViewDelivery.customer?.address
+            custPhone.text = "(" + recyclerViewDelivery.customer?.phone_number + ")"
+
+            when(recyclerViewDelivery.payment_status) {
+                "PAID" -> {
+                    statusPayment.setTextColor(context.resources.getColor(R.color.green))
+                    statusPayment.text = "Sudah Bayar"
+                    updatePaymentBtn.visibility = View.GONE
+                }
+                "UNPAID" -> {
+                    statusPayment.text = "Belum Bayar"
+                    statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                    updatePaymentBtn.setOnClickListener {
+                        var tabStatus = ""
+                        tabStatus = when(recyclerViewDelivery.order_status) {
+                            "ON_PROCESS" -> "ON_PROCESS"
+                            else -> "CLOSE"
+                        }
+                        openCancelDialog(recyclerViewDelivery, recyclerViewDelivery.customer?.name.toString(), recyclerViewDelivery.order_platform.toString(),
+                            recyclerViewDelivery.transaction_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
+                                    recyclerViewDelivery.transaction_time.toString().substringBefore("-") +", "+ recyclerViewDelivery.transaction_time.toString().substringAfter(" ").substringBeforeLast(":"),
+                            recyclerViewDelivery.shipping?.shipping_method.toString(),
+                            recyclerViewDelivery.transaction_id.toString(), recyclerViewDelivery.order_status.toString(), tabStatus, position)
+                    }
+                }
+                "FAILED" -> {
+                    statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                    statusPayment.text = "Gagal"
+                    updatePaymentBtn.visibility = View.GONE
+                }
+            }
+        }
+
+        private fun setUpLogo(recyclerViewDelivery: TransactionListV2Data){
+            if (recyclerViewDelivery.order_platform == "Instagram" ||
+                recyclerViewDelivery.order_platform == "INSTAGRAM"
+            ){
+                logo.setImageResource(R.drawable.logo_ig)
+            } else if (
+                recyclerViewDelivery.order_platform == "Whatsapp" ||
+                recyclerViewDelivery.order_platform == "WHATSAPP"
+            ){
+                logo.setImageResource(R.drawable.logo_wa)
+            } else if (
+                recyclerViewDelivery.order_platform == "Telepon" ||
+                recyclerViewDelivery.order_platform == "PHONE_CALL"
+            ){
+                logo.setImageResource(R.drawable.logo_phone)
+            } else if (recyclerViewDelivery.order_platform == "PIKAPP"){
+                logo.setImageResource(R.drawable.logo_pikapp_square)
+            } else {
+                Timber.tag("INVALID_LOGO").d("Invalid Order Platform")
+            }
         }
     }
 
@@ -409,21 +589,6 @@ class TransactionListV2Adapter(
     }
 
     /* OTHER FUNCTION */
-    private fun updateTransaction(
-        txnId: String,
-        status: String,
-        orderStatus: String,
-        loadingOverlay: View
-    ) {
-//        loadingOverlay.visibility = View.VISIBLE
-//        setIsLoading(true)
-//        postUpdate(txnId, status)
-        listener.onItemClickTransaction(txnId, status)
-        Handler().postDelayed({
-//            getStoreOrderList(status, orderStatus, loadingOverlay)
-            notifyDataSetChanged()
-        }, 2000)
-    }
 
 //    fun getStoreOrderList(deliveryStatus: String, status: String, loadingOverlay: View) {
 //        setIsLoading(true)
@@ -463,7 +628,7 @@ class TransactionListV2Adapter(
 
     private fun setMenu(
         recyclerView: RecyclerView,
-        productList: List<ProductDetailV2Data>?
+        productList: List<ProductDetailV2Response>?
     ) {
         linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
@@ -472,71 +637,56 @@ class TransactionListV2Adapter(
         recyclerView.adapter = menuList
     }
 
-    private fun timeAgo(time: String, holder: TextView) {
-        var format: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
-        var txnTime: Date = format.parse(time)
-        var timeNow: Date = Date()
-        var seconds: Long = TimeUnit.MILLISECONDS.toSeconds(timeNow.time - txnTime.time)
-        var minutes: Long = TimeUnit.MILLISECONDS.toMinutes(timeNow.time - txnTime.time)
-        var hours: Long = TimeUnit.MILLISECONDS.toHours(timeNow.time - txnTime.time)
-        var days: Long = TimeUnit.MILLISECONDS.toDays(timeNow.time - txnTime.time)
-
-        if (seconds < 60) {
-            holder.text = "Baru Saja"
-        } else if (minutes < 60) {
-            holder.text = minutes.toString() + " Menit Yang Lalu"
-        } else {
-            holder.text = hours.toString() + " Jam Yang Lalu"
-        }
-    }
+//    private fun timeAgo(time: String, holder: TextView) {
+//        var format: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S")
+//        var txnTime: Date = format.parse(time)
+//        var timeNow: Date = Date()
+//        var seconds: Long = TimeUnit.MILLISECONDS.toSeconds(timeNow.time - txnTime.time)
+//        var minutes: Long = TimeUnit.MILLISECONDS.toMinutes(timeNow.time - txnTime.time)
+//        var hours: Long = TimeUnit.MILLISECONDS.toHours(timeNow.time - txnTime.time)
+//        var days: Long = TimeUnit.MILLISECONDS.toDays(timeNow.time - txnTime.time)
+//
+//        if (seconds < 60) {
+//            holder.text = "Baru Saja"
+//        } else if (minutes < 60) {
+//            holder.text = minutes.toString() + " Menit Yang Lalu"
+//        } else {
+//            holder.text = hours.toString() + " Jam Yang Lalu"
+//        }
+//    }
 
     private fun formatNumber() {
         str = NumberFormat.getNumberInstance(Locale.US).format(this.menuPrice)
     }
 
-    private fun setDate(position: Int) {
+    private fun setDate(position: Int, recyclerView: TransactionListV2Data) {
         val transactionPositionList = list[position]
         bulanTemp = transactionPositionList.transaction_time?.substringAfter("-")?.substringBeforeLast("-").toString()
-        if (bulanTemp == "01") {
-            bulan = " Jan "
-        } else if (bulanTemp == "02") {
-            bulan = " Feb "
-        } else if (bulanTemp == "03") {
-            bulan = " Mar "
-        } else if (bulanTemp == "04") {
-            bulan = " Apr "
-        } else if (bulanTemp == "05") {
-            bulan = " Mei "
-        } else if (bulanTemp == "06") {
-            bulan = " Jun "
-        } else if (bulanTemp == "07") {
-            bulan = " Jul "
-        } else if (bulanTemp == "08") {
-            bulan = " Ags "
-        } else if (bulanTemp == "09") {
-            bulan = " Sep "
-        } else if (bulanTemp == "10") {
-            bulan = " Okt "
-        } else if (bulanTemp == "11") {
-            bulan = " Nov "
-        } else if (bulanTemp == "12") {
-            bulan = " Des "
+        bulan = when (bulanTemp) {
+            "01" -> " Jan "
+            "02" -> " Feb "
+            "03" -> " Mar "
+            "04" -> " Apr "
+            "05" -> " Mei "
+            "06" -> " Jun "
+            "07" -> " Jul "
+            "08" -> " Ags "
+            "09" -> " Sep "
+            "10" -> " Okt "
+            "11" -> " Nov "
+            else -> " Des "
         }
 
-        if (transactionPositionList.biz_type == "TAKE_AWAY") {
-            biz = "Bungkus/Takeaway"
-        } else if (transactionPositionList.biz_type == "DINE_IN") {
-            biz = "Makan di Tempat"
+        biz = when(transactionPositionList.biz_type) {
+            "TAKE_AWAY" -> "Bungkus/Takeaway"
+            "DINE_IN" -> "Makan di Tempat"
+            else -> ""
         }
 
         for (count in transactionPositionList.products!!) {
             jumlah += count.quantity!!.toInt()
-            if (count.quantity > 1) {
-                this.menuPrice += count.quantity * count.quantity
-            } else {
-                this.menuPrice += count.quantity
-            }
         }
+        this.menuPrice = transactionPositionList.total_payment!!.toInt()
     }
 
     private fun openDialogTokopedia(position: Int) {
@@ -582,6 +732,22 @@ class TransactionListV2Adapter(
             mDialogView.dialog_text.text =
                 "Mohon Atur Pengiriman di aplikasi e-\ncommerce sesuai pesanan untuk\nmenyelesaikan order ini."
         }
+    }
+
+    private fun updateTransactionTxn(
+        txnId: String,
+        status: String,
+        orderStatus: String,
+        loadingOverlay: View
+    ) {
+//        loadingOverlay.visibility = View.VISIBLE
+//        setIsLoading(true)
+//        postUpdate(txnId, status)
+//        listener.onItemClickTransaction(txnId, status)
+//        Handler().postDelayed({
+//            getStoreOrderList(status, orderStatus, loadingOverlay)
+//            notifyDataSetChanged()
+//        }, 2000)
     }
 
     private fun updateTransactionChannel(
@@ -631,11 +797,82 @@ class TransactionListV2Adapter(
         })
     }
 
+    private fun postUpdatePOS(status: UpdateStatusManualTxnRequest){
+        PikappApiService().api.postUpdateManualTransaction(status).enqueue(object : Callback<UpdateStatusManualResponse>{
+            override fun onResponse(
+                call: Call<UpdateStatusManualResponse>,
+                response: Response<UpdateStatusManualResponse>
+            ) {
+                if (response.code() == 200){
+                    /* GET POS API */
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateStatusManualResponse>, t: Throwable) {
+                Log.e("Fail", t.message.toString())
+            }
+        })
+    }
+
+    private fun openWhatsapp(recyclerViewDelivery: TransactionListV2Data){
+        var temp = ""
+        var number = ""
+        temp = recyclerViewDelivery.customer?.phone_number.toString().substringAfter("0")
+        number = "+62 $temp"
+
+        val url = "https://api.whatsapp.com/send?phone=$number"
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        activity.startActivity(i)
+    }
+
+    private fun openCancelDialog(recyclerViewDelivery: TransactionListV2Data, nama: String, platform: String, tanggal: String, ekspedisi: String, id: String, txnStatus: String, tabStatus: String, position: Int) {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.payment_dialog, null)
+        val mBuilder = AlertDialog.Builder(activity)
+            .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
+        )
+
+        mDialogView.nama.text = "Pesanan atas nama $nama melalui $platform tanggal $tanggal dan dikirim melalui $ekspedisi"
+        mDialogView.dialog_back.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+
+        mDialogView.dialog_update.setOnClickListener {
+            postUpdatePOS(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, txnStatus, "PAID"))
+            openDoneDialog(nama)
+            mAlertDialog.dismiss()
+        }
+    }
+
+    private fun openDoneDialog(nama: String) {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.update_payment_done, null)
+        val mBuilder = AlertDialog.Builder(activity)
+            .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.window?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
+        )
+
+        mDialogView.nama.text = "Status pembayaran untuk pesanan atas nama $nama berubah menjadi sudah dibayar"
+        mDialogView.btnDone.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+    }
+
     fun setIsLoading(value: Boolean) {
         isLoading = value
     }
 
-    interface OnItemClickListener {
-        fun onItemClickTransaction(txnId: String, status: String)
-    }
+//    interface OnItemClickListener {
+//        fun onItemClickTransaction(txnId: String, status: String)
+//    }
 }

@@ -39,6 +39,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
 
 class TransactionViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
@@ -773,8 +774,135 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         return liveDataTransListV2Cancel
     }
 
-    fun getTransactionV2List() {
+    fun getTransactionV2List(context: Context) {
         /* Get response from incoming api */
+        val theJson = readJson(context)
+        val gson = Gson()
+        val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
+
+        var theTransactionListV2: List<TransactionListV2Response> = gson.fromJson(theJson, listTransac)
+
+        val processList: MutableList<TransactionListV2Data> = ArrayList()
+        val doneList: MutableList<TransactionListV2Data> = ArrayList()
+        val cancelList: MutableList<TransactionListV2Data> = ArrayList()
+
+        theTransactionListV2.forEach {
+            if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                if (it.order_status == "OPEN" || it.order_status == "PAID" || it.order_status == "ON_PROCESS") {
+                    processList.add(addTransactionData(0, it))
+//                    processList.add(TransactionListV2Data(
+//                        viewType = 0,
+//                        txn_type = it.txn_type,
+//                        order_id = it.order_id,
+//                        merchant_name = it.merchant_name,
+//                        shop_id = it.shop_id,
+//                        table_no = it.table_no,
+//                        channel = it.channel,
+//                        mid = it.mid,
+//                        biz_type = it.biz_type,
+//                        order_platform = it.order_platform,
+//                        payment_method = it.payment_method,
+//                        order_status = it.order_status,
+//                        payment_status = it.payment_status,
+//                        total_product_price = it.total_product_price,
+//                        total_discount = it.total_discount,
+//                        total_payment = it.total_payment,
+//                        total_insurance_cost = it.total_insurance_cost,
+//                        voucher_type = it.voucher_type,
+//                        voucher_code = it.voucher_code,
+//                        transaction_id = it.transaction_id,
+//                        transaction_time = it.transaction_time,
+//                        shipping = it.shipping,
+//                        products = it.products,
+//                        customer = it.customer
+//                    ))
+                } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                    doneList.add(addTransactionData(0, it))
+                } else if (it.order_status == "FAILED" || it.order_status == "ERROR" ) {
+                    cancelList.add(addTransactionData(0, it))
+                } else {
+                    Timber.tag(tag).d("Invalid transaction")
+                }
+            } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                if (it.order_status == "PAYMENT_CONFIRMATION"
+                    || it.order_status == "PAYMENT_VERIFIED"
+                    || it.order_status == "SELLER_ACCEPT_ORDER"
+                    || it.order_status == "WAITING_FOR_PICKUP"
+                    || it.order_status == "DRIVER_ALLOCATED"
+                    || it.order_status == "DRIVER_ARRIVED") {
+                    processList.add(addTransactionData(1, it))
+                } else if (it.order_status == "ORDER_DELIVERED"
+                    || it.order_status == "ORDER_FINISHED"
+                    || it.order_status == "ORDER_SHIPMENT"
+                    || it.order_status == "DELIVERED_TO_PICKUP_POINT"
+                    || it.order_status == "DELIVERED"
+                    || it.order_status == "COLLECTED") {
+                    doneList.add(addTransactionData(1, it))
+                } else if (it.order_status == "SELLER_CANCEL_ORDER"
+                    || it.order_status == "ORDER_REJECTED_BY_SELLER"
+                    || it.order_status == "CANCELLED"
+                    || it.order_status == "FAILED") {
+                    cancelList.add(addTransactionData(1, it))
+                } else {
+                    Timber.tag(tag).d("Invalid transaction")
+                }
+            } else { // PIKAPP DELIVERY
+                if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
+                    processList.add(addTransactionData(2, it))
+                } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                    doneList.add(addTransactionData(2, it))
+                } else if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                    cancelList.add(addTransactionData(2, it))
+                } else {
+                    Timber.tag(tag).d("Invalid transaction")
+                }
+            }
+        }
+
+        liveDataTransListV2Process.postValue(processList)
+        liveDataTransListV2Done.postValue(doneList)
+        liveDataTransListV2Cancel.postValue(cancelList)
+    }
+
+    private fun addTransactionData(viewType: Int, it: TransactionListV2Response) : TransactionListV2Data {
+        return TransactionListV2Data(
+            viewType = viewType,
+            txn_type = it.txn_type,
+            order_id = it.order_id,
+            merchant_name = it.merchant_name,
+            shop_id = it.shop_id,
+            table_no = it.table_no,
+            channel = it.channel,
+            mid = it.mid,
+            biz_type = it.biz_type,
+            order_platform = it.order_platform,
+            payment_method = it.payment_method,
+            order_status = it.order_status,
+            payment_status = it.payment_status,
+            total_product_price = it.total_product_price,
+            total_discount = it.total_discount,
+            total_payment = it.total_payment,
+            total_insurance_cost = it.total_insurance_cost,
+            voucher_type = it.voucher_type,
+            voucher_code = it.voucher_code,
+            transaction_id = it.transaction_id,
+            transaction_time = it.transaction_time,
+            shipping = it.shipping,
+            products = it.products,
+            customer = it.customer
+        )
+    }
+
+    private fun readJson(context: Context): String? {
+        var jsonString: String
+
+        try {
+            jsonString = context.assets.open("sample_response_txn.json").bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 
     fun transactionUpdate(id: String, status: String) {
