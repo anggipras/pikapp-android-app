@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentProccessBinding
-import com.tsab.pikapp.models.model.TransactionListV2Data
+import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
-class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, TransactionListV2Adapter.OnItemClickListener {
     private val viewModel: TransactionViewModel by activityViewModels()
     private val manualViewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var layoutManagerTransaction: LinearLayoutManager
@@ -294,13 +294,14 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     private fun initRecyclerView() {
         dataBinding.recyclerviewAllTransactionProcess.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager, this)
         dataBinding.recyclerviewAllTransactionProcess.adapter = recyclerAdapter
     }
 
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2ProcessObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                viewModel.setLoading(false)
                 recyclerAdapter.setTransactionList(it)
                 recyclerAdapter.notifyDataSetChanged()
             }
@@ -350,7 +351,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             )
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List(requireContext())
+            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json")
 
             general_error_process.isVisible = false
         } else {
@@ -449,8 +450,24 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         viewModel.setDecreaseBadge(i)
     }
 
-//    override fun onItemClickTransaction(txnId: String, status: String) {
-//        Log.e("TXNID", txnId.toString())
-//        viewModel.transactionUpdate(txnId, status)
-//    }
+    override fun onItemClickTransactionTxn(txnId: String, status: String) {
+        viewModel.setLoading(true)
+        Handler().postDelayed({
+            viewModel.transactionTxnUpdateDummy(txnId, status, requireContext())
+        }, 3000)
+    }
+
+    override fun onItemClickTransactionChannel(channel: String, orderId: String) {
+        viewModel.setLoading(true)
+        Handler().postDelayed({
+            viewModel.transactionChannelUpdateDummy(channel, orderId, requireContext())
+        }, 3000)
+    }
+
+    override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
+        viewModel.setLoading(true)
+        Handler().postDelayed({
+            viewModel.transactionPosUpdateDummy(updateStatusManualTxnRequest, requireContext())
+        }, 3000)
+    }
 }

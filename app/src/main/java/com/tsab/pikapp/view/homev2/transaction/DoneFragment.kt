@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDoneBinding
+import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
-class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, TransactionListV2Adapter.OnItemClickListener {
 
     private val viewModel: TransactionViewModel by activityViewModels()
     lateinit var transactionListAdapter: TransactionListAdapter
@@ -77,7 +78,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
 
     private fun initRecyclerView() {
         dataBinding.recyclerviewAllTransactionDone.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager, this)
         dataBinding.recyclerviewAllTransactionDone.adapter = recyclerAdapter
     }
 
@@ -121,7 +122,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
             activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List(requireContext())
+            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json")
 
             general_error_done.isVisible = false
         } else {
@@ -160,8 +161,15 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         TODO("Not yet implemented")
     }
 
-//    override fun onItemClickTransaction(txnId: String, status: String) {
-//        Log.e("TXNID", txnId.toString())
-//    }
+    override fun onItemClickTransactionTxn(txnId: String, status: String) {
+        TODO("Not yet implemented")
+    }
 
+    override fun onItemClickTransactionChannel(channel: String, orderId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
+        TODO("Not yet implemented")
+    }
 }

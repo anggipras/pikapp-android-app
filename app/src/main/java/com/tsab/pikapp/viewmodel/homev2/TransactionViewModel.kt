@@ -774,9 +774,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         return liveDataTransListV2Cancel
     }
 
-    fun getTransactionV2List(context: Context) {
+    fun getTransactionV2List(context: Context, fileName: String) {
         /* Get response from incoming api */
-        val theJson = readJson(context)
+        val theJson = readJson(context, fileName)
         val gson = Gson()
         val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
 
@@ -893,11 +893,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         )
     }
 
-    private fun readJson(context: Context): String? {
+    private fun readJson(context: Context, fileName: String): String? {
         var jsonString: String
 
         try {
-            jsonString = context.assets.open("sample_response_txn.json").bufferedReader().use { it.readText() }
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
         } catch (ioException: IOException) {
             ioException.printStackTrace()
             return null
@@ -905,7 +905,19 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         return jsonString
     }
 
-    fun transactionUpdate(id: String, status: String) {
+    fun transactionTxnUpdateDummy(id: String, status: String, context: Context) {
+        getTransactionV2List(context, "sample_response_txn_updated.json")
+    }
+
+    fun transactionChannelUpdateDummy(channel: String, orderId: String, context: Context) {
+        getTransactionV2List(context, "sample_response_txn_updated.json")
+    }
+
+    fun transactionPosUpdateDummy(reqBody: UpdateStatusManualTxnRequest, context: Context) {
+        getTransactionV2List(context, "sample_response_txn_updated.json")
+    }
+
+    fun postUpdateTxn(id: String, status: String) {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
 
@@ -928,5 +940,45 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 //                    }
 //                })
 //        )
+    }
+
+    private fun postUpdateChannel(channel: String, orderId: String, context: Context) {
+        val mid = sessionManager.getUserData()!!.mid!!
+        var acceptOrderReq = AcceptOrderTokopediaRequest()
+        acceptOrderReq.channel = channel
+        acceptOrderReq.order_id = orderId
+        acceptOrderReq.mid = mid
+
+        PikappApiService().api.acceptOrderTokopedia(
+            getUUID(), getTimestamp(), getClientID(), acceptOrderReq
+        ).enqueue(object : Callback<AcceptOrderTokopediaResponse> {
+            override fun onFailure(call: Call<AcceptOrderTokopediaResponse>, t: Throwable) {
+                Toast.makeText(context, "fail: $t", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(
+                call: Call<AcceptOrderTokopediaResponse>,
+                response: Response<AcceptOrderTokopediaResponse>
+            ) {
+                Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    fun postUpdatePos(status: UpdateStatusManualTxnRequest){
+        PikappApiService().api.postUpdateManualTransaction(status).enqueue(object : Callback<UpdateStatusManualResponse>{
+            override fun onResponse(
+                call: Call<UpdateStatusManualResponse>,
+                response: Response<UpdateStatusManualResponse>
+            ) {
+                if (response.code() == 200){
+                    /* GET POS API */
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateStatusManualResponse>, t: Throwable) {
+                Log.e("Fail", t.message.toString())
+            }
+        })
     }
 }
