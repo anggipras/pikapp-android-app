@@ -26,6 +26,7 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
+import com.tsab.pikapp.view.homev2.transaction.FilterFragment
 import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.TransactionListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
@@ -133,7 +134,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableCategoryList = MutableLiveData<List<CategoryListResult>>(listOf())
 
-    private val mutableIsLoading = MutableLiveData<Boolean>(true)
+    private val mutableIsLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = mutableIsLoading
     fun setLoading(isLoading: Boolean) {
         mutableIsLoading.value = isLoading
@@ -758,9 +759,24 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     }
 
     /* TRANSACTION LIST V2 */
-    var liveDataTransListV2Process: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
-    var liveDataTransListV2Done: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
-    var liveDataTransListV2Cancel: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+    private var liveDataTransListV2Process: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+    private var liveDataTransListV2Done: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+    private var liveDataTransListV2Cancel: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+
+    private var liveDataTransListV2ProcessFilter: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
+    private var liveDataFilterStatus: MutableLiveData<List<FilterMockUp>> = MutableLiveData()
+
+    private val mutableProgressLoading = MutableLiveData(false)
+    val progressLoading: LiveData<Boolean> = mutableProgressLoading
+    fun setProgressLoading(isLoading: Boolean) {
+        mutableProgressLoading.value = isLoading
+    }
+
+    private val mutableSizeFilter = MutableLiveData(0)
+    val sizeFilter: LiveData<Int> = mutableSizeFilter
+    fun setSizeOfFilter(size: Int) {
+        mutableSizeFilter.value = size
+    }
 
     fun getLiveDataTransListV2ProcessObserver(): MutableLiveData<List<TransactionListV2Data>> {
         return liveDataTransListV2Process
@@ -774,7 +790,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         return liveDataTransListV2Cancel
     }
 
-    fun getTransactionV2List(context: Context, fileName: String) {
+    fun getLiveDataTransListV2ProcessFilterObserver(): MutableLiveData<List<TransactionListV2Data>> {
+        return liveDataTransListV2ProcessFilter
+    }
+
+    fun getTransactionV2List(context: Context, fileName: String, action: Boolean) {
+        setLoading(true)
         /* Get response from incoming api */
         val theJson = readJson(context, fileName)
         val gson = Gson()
@@ -790,32 +811,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             if (it.txn_type == "TXN") { // PIKAPP DINE IN
                 if (it.order_status == "OPEN" || it.order_status == "PAID" || it.order_status == "ON_PROCESS") {
                     processList.add(addTransactionData(0, it))
-//                    processList.add(TransactionListV2Data(
-//                        viewType = 0,
-//                        txn_type = it.txn_type,
-//                        order_id = it.order_id,
-//                        merchant_name = it.merchant_name,
-//                        shop_id = it.shop_id,
-//                        table_no = it.table_no,
-//                        channel = it.channel,
-//                        mid = it.mid,
-//                        biz_type = it.biz_type,
-//                        order_platform = it.order_platform,
-//                        payment_method = it.payment_method,
-//                        order_status = it.order_status,
-//                        payment_status = it.payment_status,
-//                        total_product_price = it.total_product_price,
-//                        total_discount = it.total_discount,
-//                        total_payment = it.total_payment,
-//                        total_insurance_cost = it.total_insurance_cost,
-//                        voucher_type = it.voucher_type,
-//                        voucher_code = it.voucher_code,
-//                        transaction_id = it.transaction_id,
-//                        transaction_time = it.transaction_time,
-//                        shipping = it.shipping,
-//                        products = it.products,
-//                        customer = it.customer
-//                    ))
                 } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
                     doneList.add(addTransactionData(0, it))
                 } else if (it.order_status == "FAILED" || it.order_status == "ERROR" ) {
@@ -858,10 +853,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 }
             }
         }
+        Handler().postDelayed({
+            setProgressLoading(action)
+            setLoading(false)
 
-        liveDataTransListV2Process.postValue(processList)
-        liveDataTransListV2Done.postValue(doneList)
-        liveDataTransListV2Cancel.postValue(cancelList)
+            liveDataTransListV2Process.postValue(processList)
+            liveDataTransListV2Done.postValue(doneList)
+            liveDataTransListV2Cancel.postValue(cancelList)
+        }, 3000)
     }
 
     private fun addTransactionData(viewType: Int, it: TransactionListV2Response) : TransactionListV2Data {
@@ -905,16 +904,128 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         return jsonString
     }
 
+    fun filterOnProcess(txnType: String, orderPlatform: String, action: Boolean) {
+        when(action) {
+            true -> {
+                var addFilterList: MutableList<FilterMockUp> = ArrayList()
+                if (!liveDataFilterStatus.value.isNullOrEmpty()) {
+                    liveDataFilterStatus.value!!.forEach {
+                        addFilterList.add(it)
+                    }
+                }
+                addFilterList.add(FilterMockUp(txnType = txnType, orderPlatform = orderPlatform))
+                liveDataFilterStatus.value = addFilterList
+            }
+            else -> {
+                var removeFilterList: List<FilterMockUp>?
+                val filteredData = liveDataFilterStatus.value?.filter {
+                    !(txnType == it.txnType && orderPlatform == it.orderPlatform)
+                }
+                removeFilterList = filteredData
+                liveDataFilterStatus.value = removeFilterList
+            }
+        }
+        filterTransactionV2ListProcess()
+    }
+
+    fun filterOnBottomSheet(txnType: String, orderPlatform: String, action: Boolean) {
+        when(action) {
+            true -> {
+                var addFilterList: MutableList<FilterMockUp> = ArrayList()
+                if (!liveDataFilterStatus.value.isNullOrEmpty()) {
+                    liveDataFilterStatus.value!!.forEach {
+                        addFilterList.add(it)
+                    }
+                }
+                addFilterList.add(FilterMockUp(txnType = txnType, orderPlatform = orderPlatform))
+                liveDataFilterStatus.value = addFilterList
+            }
+            else -> {
+                var removeFilterList: List<FilterMockUp>?
+                val filteredData = liveDataFilterStatus.value?.filter {
+                    !(txnType == it.txnType && orderPlatform == it.orderPlatform)
+                }
+                removeFilterList = filteredData
+                liveDataFilterStatus.value = removeFilterList
+            }
+        }
+        filterProcessBottomSheet()
+    }
+
+    private fun filterProcessBottomSheet() {
+        if (liveDataFilterStatus.value.isNullOrEmpty()) {
+            liveDataTransListV2Process.value?.let {
+                setSizeOfFilter(it.size)
+            }
+        } else {
+            var filteredList: MutableList<TransactionListV2Data> = ArrayList()
+
+            liveDataTransListV2Process.value?.forEach {
+                liveDataFilterStatus.value?.forEach { mockUp ->
+                    if (it.order_status == "OPEN"
+                        || it.order_status == "PAID"
+                        || it.order_status == "ON_PROCESS"
+                        || it.order_status == "PAYMENT_CONFIRMATION"
+                        || it.order_status == "PAYMENT_VERIFIED"
+                        || it.order_status == "SELLER_ACCEPT_ORDER"
+                        || it.order_status == "WAITING_FOR_PICKUP"
+                        || it.order_status == "DRIVER_ALLOCATED"
+                        || it.order_status == "DRIVER_ARRIVED") {
+                        if (it.txn_type == mockUp.txnType) {
+                            if (it.txn_type == "TXN") {
+                                filteredList.add(it)
+                            } else if (it.order_platform == mockUp.orderPlatform) {
+                                filteredList.add(it)
+                            }
+                        }
+                    }
+                }
+            }
+            setSizeOfFilter(filteredList.size)
+        }
+    }
+
+    fun filterTransactionV2ListProcess() {
+        if (liveDataFilterStatus.value.isNullOrEmpty()) {
+            liveDataTransListV2Process.postValue(liveDataTransListV2Process.value)
+        } else {
+            var filteredList: MutableList<TransactionListV2Data> = ArrayList()
+
+            liveDataTransListV2Process.value?.forEach {
+                liveDataFilterStatus.value?.forEach { mockUp ->
+                    if (it.order_status == "OPEN"
+                        || it.order_status == "PAID"
+                        || it.order_status == "ON_PROCESS"
+                        || it.order_status == "PAYMENT_CONFIRMATION"
+                        || it.order_status == "PAYMENT_VERIFIED"
+                        || it.order_status == "SELLER_ACCEPT_ORDER"
+                        || it.order_status == "WAITING_FOR_PICKUP"
+                        || it.order_status == "DRIVER_ALLOCATED"
+                        || it.order_status == "DRIVER_ARRIVED") {
+                        if (it.txn_type == mockUp.txnType) {
+                            if (it.txn_type == "TXN") {
+                                filteredList.add(it)
+                            } else if (it.order_platform == mockUp.orderPlatform) {
+                                filteredList.add(it)
+                            }
+                        }
+                    }
+                }
+            }
+            liveDataTransListV2ProcessFilter.postValue(filteredList)
+        }
+    }
+
     fun transactionTxnUpdateDummy(id: String, status: String, context: Context) {
-        getTransactionV2List(context, "sample_response_txn_updated.json")
+        getTransactionV2List(context, "sample_response_txn_updated.json", true)
     }
 
     fun transactionChannelUpdateDummy(channel: String, orderId: String, context: Context) {
-        getTransactionV2List(context, "sample_response_txn_updated.json")
+        getTransactionV2List(context, "sample_response_txn_updated.json", true)
     }
 
     fun transactionPosUpdateDummy(reqBody: UpdateStatusManualTxnRequest, context: Context) {
-        getTransactionV2List(context, "sample_response_txn_updated.json")
+        getTransactionV2List(context, "sample_response_txn_updated.json", true)
     }
 
     fun postUpdateTxn(id: String, status: String) {
@@ -980,5 +1091,19 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 Log.e("Fail", t.message.toString())
             }
         })
+    }
+
+    fun restartFragment() {
+        mutablePikappFilter.value = false
+        mutableTokpedFilter.value = false
+        mutableGrabFilter.value = false
+        mutableShopeeFilter.value = false
+        mutableWhatsappFilter.value = false
+        mutableTelpFilter.value = false
+
+        liveDataTransListV2Process.value = arrayListOf()
+        liveDataTransListV2ProcessFilter.value = arrayListOf()
+        liveDataTransListV2Done.value = arrayListOf()
+        liveDataTransListV2Cancel.value = arrayListOf()
     }
 }

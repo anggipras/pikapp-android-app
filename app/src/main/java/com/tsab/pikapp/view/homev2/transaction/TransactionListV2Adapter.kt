@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,6 +89,7 @@ class TransactionListV2Adapter(
         var rView: RecyclerView = itemView.recyclerview_menu
         var lastOrder: TextView = itemView.lastOrder
         var loadingOverlay: View = itemView.loadingOverlay
+        var dividerTop: View = itemView.dividerTop
         fun bind(position: Int) {
             val recyclerViewDineIn = list[position]
             val orderStatusDineIn = recyclerViewDineIn.order_status
@@ -153,6 +155,7 @@ class TransactionListV2Adapter(
                 setDate(position, recyclerViewDineIn)
                 orderStatus.visibility = View.GONE
                 rView.visibility = View.GONE
+                dividerTop.visibility = View.GONE
                 acceptBtn.visibility = View.GONE
                 rejectBtn.visibility = View.GONE
                 paymentStatus.text = "Gagal"
@@ -181,14 +184,17 @@ class TransactionListV2Adapter(
                             val txnId = recyclerViewDineIn.transaction_id.toString()
                             updateTransactionTxn(txnId, "CLOSE", loadingOverlay)
                         }
+                        totalPrice.visibility = View.VISIBLE
+                        totalPrice.text = "Rp " + str
                     }
                     else -> {
                         acceptBtn.visibility = View.GONE
                         paymentStatus.text = "Selesai"
+                        totalPrice.visibility = View.GONE
                     }
                 }
                 orderStatus.visibility = View.GONE
-                totalPrice.visibility = View.GONE
+                dividerTop.visibility = View.GONE
                 rView.visibility = View.GONE
                 rejectBtn.visibility = View.GONE
                 paymentStatus.setBackgroundResource(R.drawable.button_green_square)
@@ -200,7 +206,7 @@ class TransactionListV2Adapter(
                         ?.substringBefore(" ") + bulan + recyclerViewDineIn.transaction_time?.substringAfter(
                         " "
                     )?.substringBeforeLast(":")
-                menuCount.text = "Total " + jumlah + " Items"
+                menuCount.text = "Total " + jumlah + " Items:"
                 jumlah = 0
                 menuPrice = 0
                 formatNumber()
@@ -233,6 +239,8 @@ class TransactionListV2Adapter(
             setMenu(rView, recyclerViewOmni.products)
             setDate(position, recyclerViewOmni)
             if (omniChannelName ==  "TOKOPEDIA") { // THIS CONDITION IS FOR TOKOPEDIA OMNICHANNEL (ALL STATUS WOULD BE APPEAR HERE)
+                omniLogo.setImageResource(R.drawable.tokopedia)
+                deliveryStatus.visibility = View.VISIBLE
                 if (logisticChannel != null) {
                     deliveryMethod.text = logisticChannel.shipping_method
                     deliveryStatus.text = logisticChannel.shipping_service
@@ -241,65 +249,74 @@ class TransactionListV2Adapter(
                     .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
                     .substringAfter(" ").substringBeforeLast(":")
                 formatNumber()
-                if (orderStatusChannel == "PAYMENT_VERIFIED") {
-                    totalPrice2.visibility = View.GONE
-                    totalPrice.text = "Rp. $str"
-                    acceptBtn.text = "Siap Dikirim"
-                    acceptBtn.setOnClickListener {
-                        updateTransactionChannel(
-                            recyclerViewOmni.channel.toString(),
-                            recyclerViewOmni.order_id.toString(),
-                            loadingOverlay
-                        )
+                when(orderStatusChannel) {
+                    "PAYMENT_VERIFIED" -> {
+                        totalPrice2.visibility = View.GONE
+                        totalPrice.text = "Rp. $str"
+                        acceptBtn.visibility = View.VISIBLE
+                        acceptBtn.text = "Siap Dikirim"
+                        acceptBtn.setOnClickListener {
+                            updateTransactionChannel(
+                                recyclerViewOmni.channel.toString(),
+                                recyclerViewOmni.order_id.toString(),
+                                loadingOverlay
+                            )
+                        }
+                        rejectBtn.visibility = View.VISIBLE
+                        rejectBtn.setOnClickListener {
+                            /* rejectDialog(position) */
+                            openDialogTokopedia(position)
+                        }
+                        recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
                     }
-                    rejectBtn.setOnClickListener {
-                        /* rejectDialog(position) */
-                        openDialogTokopedia(position)
-                    }
-                    recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
-                } else if (orderStatusChannel == "SELLER_ACCEPT_ORDER") {
-                    paymentStatus.text = "Diproses"
-                    paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
-                    totalPrice2.visibility = View.GONE
-                    totalPrice.text = "Rp. $str"
-                    acceptBtn.text = "Upload Resi"
-                    acceptBtn.setOnClickListener {
-                        openDialogTokopedia(position)
-                    }
-                    rejectBtn.visibility = View.GONE
-                    recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
-                } else if (orderStatusChannel == "WAITING_FOR_PICKUP") {
-                    paymentStatus.text = "Diproses"
-                    paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
-                    totalPrice2.visibility = View.GONE
-                    totalPrice.text = "Rp. $str"
-                    acceptBtn.text = "Atur Pengiriman"
-                    acceptBtn.setOnClickListener {
-                        openDialogTokopedia(position)
-                    }
-                    rejectBtn.visibility = View.GONE
-                    recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
-                } else {
-                    rView.visibility = View.GONE
-                    acceptBtn.visibility = View.GONE
-                    rejectBtn.visibility = View.GONE
-                    totalPrice.visibility = View.GONE
-                    orderDate.text = "ID Transaksi: " + recyclerViewOmni.order_id
-                    lastOrder.text = recyclerViewOmni.transaction_time.toString().substringAfterLast("-")
-                        .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
-                        .substringAfter(" ").substringBeforeLast(":")
-                    if (orderStatusChannel == "SELLER_CANCEL_ORDER" || orderStatusChannel == "ORDER_REJECTED_BY_SELLER") {
-                        paymentStatus.text = "Gagal"
-                    } else if (orderStatusChannel == "ORDER_DELIVERED" || orderStatusChannel == "ORDER_FINISHED") {
-                        paymentStatus.text = "Selesai"
-                        paymentStatus.setBackgroundResource(R.drawable.button_green_square)
-                    } else if (orderStatusChannel == "ORDER_SHIPMENT" || orderStatusChannel == "DELIVERED_TO_PICKUP_POINT") {
-                        paymentStatus.text = "Dikirim"
+                    "SELLER_ACCEPT_ORDER" -> {
+                        paymentStatus.text = "Diproses"
                         paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
-                    } else if (orderStatusChannel == "BUYER_OPEN_A_CASE_TO_FINISH_AN_ORDER") {
-                        paymentStatus.text = "Dikomplain"
+                        totalPrice2.visibility = View.GONE
+                        totalPrice.text = "Rp. $str"
+                        acceptBtn.visibility = View.VISIBLE
+                        acceptBtn.text = "Upload Resi"
+                        acceptBtn.setOnClickListener {
+                            openDialogTokopedia(position)
+                        }
+                        rejectBtn.visibility = View.GONE
+                        recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
                     }
-                    totalPrice2.text = "Rp. $str"
+                    "WAITING_FOR_PICKUP" -> {
+                        paymentStatus.text = "Diproses"
+                        paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
+                        totalPrice2.visibility = View.GONE
+                        totalPrice.text = "Rp. $str"
+                        acceptBtn.visibility = View.VISIBLE
+                        acceptBtn.text = "Atur Pengiriman"
+                        acceptBtn.setOnClickListener {
+                            openDialogTokopedia(position)
+                        }
+                        rejectBtn.visibility = View.GONE
+                        recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
+                    }
+                    else -> {
+                        rView.visibility = View.GONE
+                        acceptBtn.visibility = View.GONE
+                        rejectBtn.visibility = View.GONE
+                        totalPrice.visibility = View.GONE
+                        orderDate.text = "ID Transaksi: " + recyclerViewOmni.order_id
+                        lastOrder.text = recyclerViewOmni.transaction_time.toString().substringAfterLast("-")
+                            .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
+                            .substringAfter(" ").substringBeforeLast(":")
+                        if (orderStatusChannel == "SELLER_CANCEL_ORDER" || orderStatusChannel == "ORDER_REJECTED_BY_SELLER") {
+                            paymentStatus.text = "Gagal"
+                        } else if (orderStatusChannel == "ORDER_DELIVERED" || orderStatusChannel == "ORDER_FINISHED") {
+                            paymentStatus.text = "Selesai"
+                            paymentStatus.setBackgroundResource(R.drawable.button_green_square)
+                        } else if (orderStatusChannel == "ORDER_SHIPMENT" || orderStatusChannel == "DELIVERED_TO_PICKUP_POINT") {
+                            paymentStatus.text = "Dikirim"
+                            paymentStatus.setBackgroundResource(R.drawable.button_orange_square)
+                        } else if (orderStatusChannel == "BUYER_OPEN_A_CASE_TO_FINISH_AN_ORDER") {
+                            paymentStatus.text = "Dikomplain"
+                        }
+                        totalPrice2.text = "Rp. $str"
+                    }
                 }
                 menuPrice = 0
                 menuCount.text = "Total $jumlah items:"
@@ -319,7 +336,7 @@ class TransactionListV2Adapter(
                     totalPrice.text = "Rp. $str"
                     recyclerViewOmni.transaction_time?.let { timeAgo(it, lastOrder) }
                 } else {
-                    orderDate.visibility = View.GONE
+                    orderDate.visibility = View.INVISIBLE
                     lastOrder.text = recyclerViewOmni.transaction_time.toString().substringAfterLast("-")
                         .substringBefore(" ") + bulan + recyclerViewOmni.transaction_time.toString()
                         .substringAfter(" ").substringBeforeLast(":")

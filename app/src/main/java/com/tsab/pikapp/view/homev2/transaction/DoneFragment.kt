@@ -19,8 +19,8 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
-import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
-import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
+//import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
+//import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
@@ -51,18 +51,18 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerview_transaction.setHasFixedSize(true)
-        linearLayoutManager =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        linearLayoutManager1 =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerview_transaction.layoutManager = linearLayoutManager
-        recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
-
-        layoutManagerManualTxn =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
-        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
+//        recyclerview_transaction.setHasFixedSize(true)
+//        linearLayoutManager =
+//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+//        linearLayoutManager1 =
+//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+//        recyclerview_transaction.layoutManager = linearLayoutManager
+//        recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
+//
+//        layoutManagerManualTxn =
+//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+//        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
+//        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
         initRecyclerView()
         initViewModel()
@@ -85,8 +85,11 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                dataBinding.emptyStateDone.visibility = View.GONE
                 recyclerAdapter.setTransactionList(it)
                 recyclerAdapter.notifyDataSetChanged()
+            } else {
+                dataBinding.emptyStateDone.visibility = View.VISIBLE
             }
         })
     }
@@ -94,35 +97,35 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
     private fun getDataDone() {
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let {
-                viewModel.getStoreOrderList(
-                    it.baseContext,
-                    recyclerview_transaction,
-                    "Done",
-                    requireActivity().supportFragmentManager,
-                    emptyStateDone,
-                    this,
-                    requireActivity(),
-                    general_error_done
-                )
-            }
-            activity?.let {
-                viewModel.getListOmni(
-                    it.baseContext,
-                    recyclerview_tokopedia_done,
-                    requireActivity().supportFragmentManager,
-                    requireActivity(),
-                    "Done",
-                    emptyStateDone,
-                    requireParentFragment(),
-                    general_error_done
-                )
-            }
-
-            activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+//            activity?.let {
+//                viewModel.getStoreOrderList(
+//                    it.baseContext,
+//                    recyclerview_transaction,
+//                    "Done",
+//                    requireActivity().supportFragmentManager,
+//                    emptyStateDone,
+//                    this,
+//                    requireActivity(),
+//                    general_error_done
+//                )
+//            }
+//            activity?.let {
+//                viewModel.getListOmni(
+//                    it.baseContext,
+//                    recyclerview_tokopedia_done,
+//                    requireActivity().supportFragmentManager,
+//                    requireActivity(),
+//                    "Done",
+//                    emptyStateDone,
+//                    requireParentFragment(),
+//                    general_error_done
+//                )
+//            }
+//
+//            activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json")
+//            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json", false)
 
             general_error_done.isVisible = false
         } else {
@@ -134,11 +137,11 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
 
     override fun onResume() {
         super.onResume()
-        observeViewModel()
+//        observeViewModel()
 
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone, this, requireActivity(), general_error_done) }
+//            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone, this, requireActivity(), general_error_done) }
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true
@@ -148,12 +151,11 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.loadingOverlay.loadingView.visibility =
-                    if (isLoading) View.VISIBLE else View.GONE
+            dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
 
         manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
-            dataBinding.emptyStateDone.visibility = if (state) View.VISIBLE else View.GONE
+//            dataBinding.emptyStateDone.visibility = if (state) View.VISIBLE else View.GONE
         })
     }
 

@@ -68,8 +68,6 @@ class TransactionFragment : Fragment() {
                }
           }
 
-
-
             swipeRefreshLayout = swipeTransactionMenu
 
             swipeRefreshLayout = dataBinding.swipeTransactionMenu
@@ -149,6 +147,7 @@ class TransactionFragment : Fragment() {
 
             dataBinding.viewpager.adapter = adapter
             tabs.setupWithViewPager(dataBinding.viewpager)
+            viewModel.restartFragment()
         }
     }
 

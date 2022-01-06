@@ -175,7 +175,7 @@ class TxnReportFragment : Fragment() {
                     }
             }
 
-            buttonFilterShopee.setOnClickListener {
+            buttonFilterInsta.setOnClickListener {
                 if (buttonShopee == 1) {
                     if (buttonTokped == 1 && buttonGrab== 1 && buttonPikapp == 1) {
                         filterTest.clear()
@@ -193,8 +193,8 @@ class TxnReportFragment : Fragment() {
                     }
                     recyclerview_transaction.adapter!!.notifyDataSetChanged()
                     buttonShopee = 2
-                    buttonFilterShopee.setBackgroundResource(R.drawable.button_green_square)
-                    buttonFilterShopee.setTextColor(resources.getColor(R.color.white))
+                    buttonFilterInsta.setBackgroundResource(R.drawable.button_green_square)
+                    buttonFilterInsta.setTextColor(resources.getColor(R.color.white))
                 }else if(buttonShopee == 2){
                     if (buttonTokped == 1 && buttonGrab== 1 && buttonPikapp == 1) {
                         filterTest.clear()
@@ -208,8 +208,8 @@ class TxnReportFragment : Fragment() {
                     }
                     recyclerview_transaction.adapter!!.notifyDataSetChanged()
                     buttonShopee = 1
-                    buttonFilterShopee.setBackgroundResource(R.drawable.gray_square_btn)
-                    buttonFilterShopee.setTextColor(resources.getColor(R.color.borderSubtle))
+                    buttonFilterInsta.setBackgroundResource(R.drawable.gray_square_btn)
+                    buttonFilterInsta.setTextColor(resources.getColor(R.color.borderSubtle))
                 }
             }
 

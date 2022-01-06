@@ -18,8 +18,8 @@ import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
-import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
-import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
+//import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
+//import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 
@@ -49,18 +49,18 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerview_transaction.setHasFixedSize(true)
-        linearLayoutManager =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        linearLayoutManager1 =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerview_transaction.layoutManager = linearLayoutManager
-        recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
-
-        layoutManagerManualTxn =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
-        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
+//        recyclerview_transaction.setHasFixedSize(true)
+//        linearLayoutManager =
+//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+//        linearLayoutManager1 =
+//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+//        recyclerview_transaction.layoutManager = linearLayoutManager
+//        recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
+//
+//        layoutManagerManualTxn =
+//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+//        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
+//        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
 
         initRecyclerView()
         initViewModel()
@@ -83,8 +83,11 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2CancelObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                dataBinding.emptyStateCancel.visibility = View.GONE
                 recyclerAdapter.setTransactionList(it)
                 recyclerAdapter.notifyDataSetChanged()
+            } else {
+                dataBinding.emptyStateCancel.visibility = View.VISIBLE
             }
         })
     }
@@ -92,35 +95,35 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
     private fun getDataCancel() {
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let {
-                viewModel.getStoreOrderList(
-                    it.baseContext,
-                    recyclerview_transaction,
-                    "Batal",
-                    requireActivity().supportFragmentManager,
-                    emptyState1,
-                    this,
-                    requireActivity(),
-                    general_error_cancel
-                )
-            }
-            activity?.let {
-                viewModel.getListOmni(
-                    it.baseContext,
-                    recyclerview_tokopedia_cancel,
-                    requireActivity().supportFragmentManager,
-                    requireActivity(),
-                    "Batal",
-                    emptyState1,
-                    requireParentFragment(),
-                    general_error_cancel
-                )
-            }
-
-            activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+//            activity?.let {
+//                viewModel.getStoreOrderList(
+//                    it.baseContext,
+//                    recyclerview_transaction,
+//                    "Batal",
+//                    requireActivity().supportFragmentManager,
+//                    emptyStateCancel,
+//                    this,
+//                    requireActivity(),
+//                    general_error_cancel
+//                )
+//            }
+//            activity?.let {
+//                viewModel.getListOmni(
+//                    it.baseContext,
+//                    recyclerview_tokopedia_cancel,
+//                    requireActivity().supportFragmentManager,
+//                    requireActivity(),
+//                    "Batal",
+//                    emptyStateCancel,
+//                    requireParentFragment(),
+//                    general_error_cancel
+//                )
+//            }
+//
+//            activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json")
+//            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json", false)
 
             general_error_cancel.isVisible = false
         } else {
@@ -132,18 +135,17 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
 
     override fun onResume() {
         super.onResume()
-        dataBinding.emptyState1.isVisible =
-            viewModel.batal.value == 0 && viewModel.batalOmni.value == 0
+//        dataBinding.emptyStateCancel.isVisible =
+//            viewModel.batal.value == 0 && viewModel.batalOmni.value == 0
     }
 
     private fun observeViewModel() {
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.loadingOverlay.loadingView.visibility =
-                if (isLoading) View.VISIBLE else View.GONE
+            dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
 
         manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
-            dataBinding.emptyState1.visibility = if (state) View.VISIBLE else View.GONE
+//            dataBinding.emptyStateCancel.visibility = if (state) View.VISIBLE else View.GONE
         })
     }
 
