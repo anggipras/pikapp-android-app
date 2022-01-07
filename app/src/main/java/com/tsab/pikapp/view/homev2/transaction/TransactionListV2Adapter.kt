@@ -184,10 +184,13 @@ class TransactionListV2Adapter(
                             val txnId = recyclerViewDineIn.transaction_id.toString()
                             updateTransactionTxn(txnId, "CLOSE", loadingOverlay)
                         }
+                        formatNumber()
                         totalPrice.visibility = View.VISIBLE
                         totalPrice.text = "Rp " + str
                     }
                     else -> {
+                        formatNumber()
+                        totalPrice2.text = "Rp " + str
                         acceptBtn.visibility = View.GONE
                         paymentStatus.text = "Selesai"
                         totalPrice.visibility = View.GONE
@@ -209,8 +212,6 @@ class TransactionListV2Adapter(
                 menuCount.text = "Total " + jumlah + " Items:"
                 jumlah = 0
                 menuPrice = 0
-                formatNumber()
-                totalPrice2.text = "Rp " + str
             }
         }
     }

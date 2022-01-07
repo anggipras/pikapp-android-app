@@ -16,9 +16,11 @@ import com.tsab.pikapp.databinding.FragmentDoneBinding
 import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.CustomProgressDialog
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
+import kotlinx.android.synthetic.main.fragment_proccess.*
 //import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
 //import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
@@ -34,7 +36,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
     private lateinit var dataBinding: FragmentDoneBinding
     private val sessionManager = SessionManager()
     private val manualViewModel: ManualTxnViewModel by activityViewModels()
-
+    private val progressDialog = CustomProgressDialog()
     private lateinit var recyclerAdapter: TransactionListV2Adapter
 
     override fun onCreateView(
@@ -92,6 +94,13 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
                 dataBinding.emptyStateDone.visibility = View.VISIBLE
             }
         })
+
+        viewModel.progressLoading.observe(viewLifecycleOwner, Observer { load ->
+            if (load) {
+                setProgressDialog(false)
+                viewModel.setProgressLoading(false)
+            }
+        })
     }
 
     private fun getDataDone() {
@@ -125,7 +134,7 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
 //            activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-//            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json", false)
+            viewModel.getTransactionV2List(requireContext(), requireActivity(), false, general_error_done)
 
             general_error_done.isVisible = false
         } else {
@@ -159,19 +168,30 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener, Tra
         })
     }
 
+    private fun setProgressDialog(action: Boolean) {
+        if (action) {
+            progressDialog.show(requireContext())
+        } else {
+            progressDialog.dialog.dismiss()
+        }
+    }
+
     override fun onItemClick(i: Int) {
         TODO("Not yet implemented")
     }
 
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
-        TODO("Not yet implemented")
+        setProgressDialog(true)
+        viewModel.transactionTxnUpdate(txnId, status, requireContext(), requireActivity(), general_error_done)
     }
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
-        TODO("Not yet implemented")
+        setProgressDialog(true)
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext(), requireActivity(), general_error_done)
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
-        TODO("Not yet implemented")
+        setProgressDialog(true)
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext(), requireActivity(), general_error_done)
     }
 }

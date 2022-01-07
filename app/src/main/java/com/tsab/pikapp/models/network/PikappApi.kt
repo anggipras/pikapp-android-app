@@ -743,5 +743,12 @@ interface PikappApi {
         @Path("customerId") customerId: Long
     ): Call<DeleteCustomerResponse>
 
+    /* ALL TRANSACTION GET LIST */
+    @GET("ntxn/v1/list/")
+    fun getTransactionListV2(
+        @Header("mid") merchantID: String?,
+        @Header("size") size: Int,
+        @Header("page") page: Int
+    ): Call<TransactionListV2RespAPI>
 }
 

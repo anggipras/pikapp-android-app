@@ -179,6 +179,16 @@ class FilterFragment : RoundedBottomSheetDialogFragment() {
 //                shopee.isChecked,
 //                size
 //            )
+            if (!viewModel.pikappFilter.value!!
+                && !viewModel.tokpedFilter.value!!
+                && !viewModel.grabFilter.value!!
+                && !viewModel.shopeeFilter.value!!
+                && !viewModel.whatsappFilter.value!!
+                && !viewModel.telpFilter.value!!) {
+                viewModel.setAllFiterColor(false)
+            } else {
+                viewModel.setAllFiterColor(true)
+            }
             viewModel.filterTransactionV2ListProcess()
             dismiss()
         }

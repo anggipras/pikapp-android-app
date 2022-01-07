@@ -74,18 +74,18 @@ class TransactionFragment : Fragment() {
             swipeRefreshLayout.setOnRefreshListener {
                 val position = dataBinding.tabs.selectedTabPosition
                 refreshPage()
-                Handler().postDelayed({
-                    dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number =
-                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                }, 2000)
-                Handler().postDelayed({
-                    dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number =
-                        viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
-                }, 2000)
-                Handler().postDelayed({
-                    dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number =
-                        viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
-                }, 2000)
+//                Handler().postDelayed({
+//                    dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number =
+//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+//                }, 2000)
+//                Handler().postDelayed({
+//                    dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number =
+//                        viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
+//                }, 2000)
+//                Handler().postDelayed({
+//                    dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number =
+//                        viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+//                }, 2000)
                 dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
                 swipeRefreshLayout.isRefreshing = false
             }
@@ -96,23 +96,33 @@ class TransactionFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.amountOfTransaction.observe(viewLifecycleOwner, Observer { amount ->
-            amount?.let {
-                if (it >= 2) {
-                    dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number =
-                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                    dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number =
-                        viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
-                    dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number =
-                        viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+//            amount?.let {
+//                if (it >= 2) {
+//                    dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number =
+//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+//                    dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number =
+//                        viewModel.batal.value!!.toInt() + viewModel.batalOmni.value!!.toInt()
+//                    dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number =
+//                        viewModel.done.value!!.toInt() + viewModel.doneOmni.value!!.toInt()
+//
+//                    val amountOfBadgeProcess =
+//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
+//                    viewModel.setTotalProcessBadge(amountOfBadgeProcess)
+//                } else {
+//                    Timber.tag(javaClass.simpleName)
+//                        .d("All transaction total amount still on progress")
+//                }
+//            }
+        })
 
-                    val amountOfBadgeProcess =
-                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-                    viewModel.setTotalProcessBadge(amountOfBadgeProcess)
-                } else {
-                    Timber.tag(javaClass.simpleName)
-                        .d("All transaction total amount still on progress")
-                }
-            }
+        viewModel.processSize.observe(viewLifecycleOwner, Observer {
+            dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = it
+        })
+        viewModel.doneSize.observe(viewLifecycleOwner, Observer {
+            dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = it
+        })
+        viewModel.cancelSize.observe(viewLifecycleOwner, Observer {
+            dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = it
         })
 
         viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->

@@ -106,6 +106,15 @@ data class CustomerData(
 /* Transaction List V2 */
 
 //Response from API
+data class TransactionListV2RespAPI(
+    @SerializedName("err_code")
+    val errCode: String?,
+    @SerializedName("err_message")
+    val errMessage: String?,
+    @SerializedName("results")
+    var results: List<TransactionListV2Response>?
+)
+
 data class TransactionListV2Response(
     @SerializedName("txn_type")
     val txn_type: String?,

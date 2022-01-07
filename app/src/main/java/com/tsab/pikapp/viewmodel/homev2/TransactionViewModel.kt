@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,7 +27,6 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.transaction.FilterFragment
 import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.TransactionListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
@@ -95,6 +95,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     val mutableShopeeFilter = MutableLiveData<Boolean>(false)
     val shopeeFilter: LiveData<Boolean> get() = mutableShopeeFilter
+
+    val mutableAllFilterColor = MutableLiveData(false)
+    val allFilterColor: LiveData<Boolean> get() = mutableAllFilterColor
+    fun setAllFiterColor(bool: Boolean) {
+        mutableAllFilterColor.value = bool
+    }
 
     private val mutableFilter = MutableLiveData<RecyclerView>()
     val filter: LiveData<RecyclerView> get() = mutableFilter
@@ -774,9 +780,16 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     private val mutableSizeFilter = MutableLiveData(0)
     val sizeFilter: LiveData<Int> = mutableSizeFilter
-    fun setSizeOfFilter(size: Int) {
+    private fun setSizeOfFilter(size: Int) {
         mutableSizeFilter.value = size
     }
+
+    private val mutableProcessSize = MutableLiveData(0)
+    val processSize: LiveData<Int> get() = mutableProcessSize
+    private val mutableDoneSize = MutableLiveData(0)
+    val doneSize: LiveData<Int> get() = mutableDoneSize
+    private val mutableCancelSize = MutableLiveData(0)
+    val cancelSize: LiveData<Int> get() = mutableCancelSize
 
     fun getLiveDataTransListV2ProcessObserver(): MutableLiveData<List<TransactionListV2Data>> {
         return liveDataTransListV2Process
@@ -794,73 +807,93 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         return liveDataTransListV2ProcessFilter
     }
 
-    fun getTransactionV2List(context: Context, fileName: String, action: Boolean) {
+    fun getTransactionV2List(context: Context, activity: Activity, action: Boolean, general_error: View) {
         setLoading(true)
-        /* Get response from incoming api */
-        val theJson = readJson(context, fileName)
-        val gson = Gson()
-        val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
+        var mid = sessionManager.getUserData()?.mid
+        var size = 100
+        var page = 0
 
-        var theTransactionListV2: List<TransactionListV2Response> = gson.fromJson(theJson, listTransac)
+        PikappApiService().api.getTransactionListV2(mid, size, page).enqueue(object : Callback<TransactionListV2RespAPI> {
+            override fun onResponse(
+                call: Call<TransactionListV2RespAPI>,
+                response: Response<TransactionListV2RespAPI>
+            ) {
+                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                    if (response.body()!!.results?.isNotEmpty() == true) {
+                        val theTransactionListV2 = response.body()!!.results
 
-        val processList: MutableList<TransactionListV2Data> = ArrayList()
-        val doneList: MutableList<TransactionListV2Data> = ArrayList()
-        val cancelList: MutableList<TransactionListV2Data> = ArrayList()
+                        val processList: MutableList<TransactionListV2Data> = ArrayList()
+                        val doneList: MutableList<TransactionListV2Data> = ArrayList()
+                        val cancelList: MutableList<TransactionListV2Data> = ArrayList()
 
-        theTransactionListV2.forEach {
-            if (it.txn_type == "TXN") { // PIKAPP DINE IN
-                if (it.order_status == "OPEN" || it.order_status == "PAID" || it.order_status == "ON_PROCESS") {
-                    processList.add(addTransactionData(0, it))
-                } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
-                    doneList.add(addTransactionData(0, it))
-                } else if (it.order_status == "FAILED" || it.order_status == "ERROR" ) {
-                    cancelList.add(addTransactionData(0, it))
-                } else {
-                    Timber.tag(tag).d("Invalid transaction")
-                }
-            } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
-                if (it.order_status == "PAYMENT_CONFIRMATION"
-                    || it.order_status == "PAYMENT_VERIFIED"
-                    || it.order_status == "SELLER_ACCEPT_ORDER"
-                    || it.order_status == "WAITING_FOR_PICKUP"
-                    || it.order_status == "DRIVER_ALLOCATED"
-                    || it.order_status == "DRIVER_ARRIVED") {
-                    processList.add(addTransactionData(1, it))
-                } else if (it.order_status == "ORDER_DELIVERED"
-                    || it.order_status == "ORDER_FINISHED"
-                    || it.order_status == "ORDER_SHIPMENT"
-                    || it.order_status == "DELIVERED_TO_PICKUP_POINT"
-                    || it.order_status == "DELIVERED"
-                    || it.order_status == "COLLECTED") {
-                    doneList.add(addTransactionData(1, it))
-                } else if (it.order_status == "SELLER_CANCEL_ORDER"
-                    || it.order_status == "ORDER_REJECTED_BY_SELLER"
-                    || it.order_status == "CANCELLED"
-                    || it.order_status == "FAILED") {
-                    cancelList.add(addTransactionData(1, it))
-                } else {
-                    Timber.tag(tag).d("Invalid transaction")
-                }
-            } else { // PIKAPP DELIVERY
-                if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
-                    processList.add(addTransactionData(2, it))
-                } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
-                    doneList.add(addTransactionData(2, it))
-                } else if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
-                    cancelList.add(addTransactionData(2, it))
-                } else {
-                    Timber.tag(tag).d("Invalid transaction")
+                        theTransactionListV2!!.forEach {
+                            if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                                if (it.order_status == "OPEN" || it.order_status == "PAID" || it.order_status == "ON_PROCESS") {
+                                    processList.add(addTransactionData(0, it))
+                                } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                    doneList.add(addTransactionData(0, it))
+                                } else if (it.order_status == "FAILED" || it.order_status == "ERROR" ) {
+                                    cancelList.add(addTransactionData(0, it))
+                                } else {
+                                    Timber.tag(tag).d("Invalid transaction")
+                                }
+                            } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                                if (it.order_status == "PAYMENT_CONFIRMATION"
+                                    || it.order_status == "PAYMENT_VERIFIED"
+                                    || it.order_status == "SELLER_ACCEPT_ORDER"
+                                    || it.order_status == "WAITING_FOR_PICKUP"
+                                    || it.order_status == "DRIVER_ALLOCATED"
+                                    || it.order_status == "DRIVER_ARRIVED") {
+                                    processList.add(addTransactionData(1, it))
+                                } else if (it.order_status == "ORDER_DELIVERED"
+                                    || it.order_status == "ORDER_FINISHED"
+                                    || it.order_status == "ORDER_SHIPMENT"
+                                    || it.order_status == "DELIVERED_TO_PICKUP_POINT"
+                                    || it.order_status == "DELIVERED"
+                                    || it.order_status == "COLLECTED") {
+                                    doneList.add(addTransactionData(1, it))
+                                } else if (it.order_status == "SELLER_CANCEL_ORDER"
+                                    || it.order_status == "ORDER_REJECTED_BY_SELLER"
+                                    || it.order_status == "CANCELLED"
+                                    || it.order_status == "FAILED") {
+                                    cancelList.add(addTransactionData(1, it))
+                                } else {
+                                    Timber.tag(tag).d("Invalid transaction")
+                                }
+                            } else { // PIKAPP DELIVERY
+                                if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
+                                    processList.add(addTransactionData(2, it))
+                                } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                    doneList.add(addTransactionData(2, it))
+                                } else if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                                    cancelList.add(addTransactionData(2, it))
+                                } else {
+                                    Timber.tag(tag).d("Invalid transaction")
+                                }
+                            }
+                        }
+                        general_error.isVisible = false
+                        setProgressLoading(action)
+                        setLoading(false)
+
+                        mutableProcessSize.value = processList.size
+                        mutableDoneSize.value = doneList.size
+                        mutableCancelSize.value = cancelList.size
+
+                        liveDataTransListV2Process.postValue(processList)
+                        liveDataTransListV2Done.postValue(doneList)
+                        liveDataTransListV2Cancel.postValue(cancelList)
+                    }
                 }
             }
-        }
-        Handler().postDelayed({
-            setProgressLoading(action)
-            setLoading(false)
 
-            liveDataTransListV2Process.postValue(processList)
-            liveDataTransListV2Done.postValue(doneList)
-            liveDataTransListV2Cancel.postValue(cancelList)
-        }, 3000)
+            override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
+                Toast.makeText(context, "Error: $t", Toast.LENGTH_SHORT).show()
+                onlineService.serviceDialog(activity)
+                general_error.isVisible = true
+            }
+
+        })
     }
 
     private fun addTransactionData(viewType: Int, it: TransactionListV2Response) : TransactionListV2Data {
@@ -890,18 +923,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             products = it.products,
             customer = it.customer
         )
-    }
-
-    private fun readJson(context: Context, fileName: String): String? {
-        var jsonString: String
-
-        try {
-            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return null
-        }
-        return jsonString
     }
 
     fun filterOnProcess(txnType: String, orderPlatform: String, action: Boolean) {
@@ -1016,44 +1037,54 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun transactionTxnUpdateDummy(id: String, status: String, context: Context) {
-        getTransactionV2List(context, "sample_response_txn_updated.json", true)
-    }
-
-    fun transactionChannelUpdateDummy(channel: String, orderId: String, context: Context) {
-        getTransactionV2List(context, "sample_response_txn_updated.json", true)
-    }
-
-    fun transactionPosUpdateDummy(reqBody: UpdateStatusManualTxnRequest, context: Context) {
-        getTransactionV2List(context, "sample_response_txn_updated.json", true)
-    }
-
-    fun postUpdateTxn(id: String, status: String) {
+    fun transactionTxnUpdate(
+        id: String,
+        status: String,
+        context: Context,
+        activity: Activity,
+        general_error: View
+    ) {
+        Log.e("ID", id)
+        Log.e("STATUS", status)
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
 
-//        disposable.add(
-//            pikappService.postUpdateOrderStatus(
-//                email,
-//                token,
-//                RequestBody.create(MediaType.parse("multipart/form-data"), id),
-//                RequestBody.create(MediaType.parse("multipart/form-data"), status)
-//            )
-//                .subscribeOn(Schedulers.newThread())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>() {
-//                    override fun onSuccess(t: UpdateStatusResponse) {
-//                        Timber.tag(tag).d("Berhasil")
-//                    }
-//
-//                    override fun onError(e: Throwable) {
-//                        Timber.tag(tag).d("Gagal")
-//                    }
-//                })
-//        )
+        disposable.add(
+            pikappService.postUpdateOrderStatus(
+                email,
+                token,
+                RequestBody.create(MediaType.parse("multipart/form-data"), id),
+                RequestBody.create(MediaType.parse("multipart/form-data"), status)
+            )
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>() {
+                    override fun onSuccess(t: UpdateStatusResponse) {
+                        Timber.tag(tag).d("Berhasil update txn")
+                        getTransactionV2List(
+                            context,
+                            activity,
+                            true,
+                            general_error
+                        )
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Timber.tag(tag).d("Gagal update txn")
+                    }
+                })
+        )
     }
 
-    private fun postUpdateChannel(channel: String, orderId: String, context: Context) {
+    fun transactionChannelUpdate(
+        channel: String,
+        orderId: String,
+        context: Context,
+        activity: Activity,
+        general_error: View
+    ) {
+        Log.e("channel", channel)
+        Log.e("orderId", orderId)
         val mid = sessionManager.getUserData()!!.mid!!
         var acceptOrderReq = AcceptOrderTokopediaRequest()
         acceptOrderReq.channel = channel
@@ -1072,23 +1103,38 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 response: Response<AcceptOrderTokopediaResponse>
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
+                getTransactionV2List(
+                    context,
+                    activity,
+                    true,
+                    general_error
+                )
             }
         })
     }
 
-    fun postUpdatePos(status: UpdateStatusManualTxnRequest){
-        PikappApiService().api.postUpdateManualTransaction(status).enqueue(object : Callback<UpdateStatusManualResponse>{
+    fun transactionPosUpdate(
+        reqBodyStatus: UpdateStatusManualTxnRequest,
+        context: Context,
+        activity: Activity,
+        general_error: View
+    ) {
+        PikappApiService().api.postUpdateManualTransaction(reqBodyStatus).enqueue(object : Callback<UpdateStatusManualResponse>{
             override fun onResponse(
                 call: Call<UpdateStatusManualResponse>,
                 response: Response<UpdateStatusManualResponse>
             ) {
-                if (response.code() == 200){
-                    /* GET POS API */
-                }
+                Log.e("POSUPDATED", "Berhasil update pos")
+                getTransactionV2List(
+                    context,
+                    activity,
+                    true,
+                    general_error
+                )
             }
 
             override fun onFailure(call: Call<UpdateStatusManualResponse>, t: Throwable) {
-                Log.e("Fail", t.message.toString())
+                Log.e("POSUPDATED", "Gagal update pos")
             }
         })
     }
@@ -1101,9 +1147,33 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         mutableWhatsappFilter.value = false
         mutableTelpFilter.value = false
 
+        mutableProcessSize.value = 0
+        mutableDoneSize.value = 0
+        mutableCancelSize.value = 0
+
         liveDataTransListV2Process.value = arrayListOf()
         liveDataTransListV2ProcessFilter.value = arrayListOf()
         liveDataTransListV2Done.value = arrayListOf()
         liveDataTransListV2Cancel.value = arrayListOf()
+    }
+
+    /* ADDITION FOR DUMMY TESTING */
+    private fun readJson(context: Context, fileName: String): String? {
+        var jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
+    }
+
+    fun mapListData(context: Context, fileName: String) {
+        val theJson = readJson(context, fileName)
+        val gson = Gson()
+        val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
+        var theTransactionListV2: List<TransactionListV2Response> = gson.fromJson(theJson, listTransac)
     }
 }

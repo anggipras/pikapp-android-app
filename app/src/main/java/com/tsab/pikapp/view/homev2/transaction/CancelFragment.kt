@@ -15,9 +15,11 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCancelBinding
 import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
+import com.tsab.pikapp.view.CustomProgressDialog
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
+import kotlinx.android.synthetic.main.fragment_proccess.*
 //import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
 //import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
@@ -32,7 +34,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
     lateinit var linearLayoutManager1: LinearLayoutManager
     private lateinit var layoutManagerManualTxn: LinearLayoutManager
     private lateinit var dataBinding: FragmentCancelBinding
-
+    private val progressDialog = CustomProgressDialog()
     private lateinit var recyclerAdapter: TransactionListV2Adapter
 
     override fun onCreateView(
@@ -90,6 +92,13 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
                 dataBinding.emptyStateCancel.visibility = View.VISIBLE
             }
         })
+
+        viewModel.progressLoading.observe(viewLifecycleOwner, Observer { load ->
+            if (load) {
+                setProgressDialog(false)
+                viewModel.setProgressLoading(false)
+            }
+        })
     }
 
     private fun getDataCancel() {
@@ -123,7 +132,7 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
 //            activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
 
             /* TRANSACTION LIST V2 START FROM HERE */
-//            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json", false)
+            viewModel.getTransactionV2List(requireContext(), requireActivity(), false, general_error_cancel)
 
             general_error_cancel.isVisible = false
         } else {
@@ -149,19 +158,30 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener, T
         })
     }
 
+    private fun setProgressDialog(action: Boolean) {
+        if (action) {
+            progressDialog.show(requireContext())
+        } else {
+            progressDialog.dialog.dismiss()
+        }
+    }
+
     override fun onItemClick(i: Int) {
         TODO("Not yet implemented")
     }
 
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
-        TODO("Not yet implemented")
+        setProgressDialog(true)
+        viewModel.transactionTxnUpdate(txnId, status, requireContext(), requireActivity(), general_error_cancel)
     }
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
-        TODO("Not yet implemented")
+        setProgressDialog(true)
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext(), requireActivity(), general_error_cancel)
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
-        TODO("Not yet implemented")
+        setProgressDialog(true)
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext(), requireActivity(), general_error_cancel)
     }
 }

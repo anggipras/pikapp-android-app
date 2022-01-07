@@ -78,6 +78,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="28dp"
                         android:layout_marginHorizontal="4dp"
+                        android:drawableStart="@drawable/ic_filter"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:background="@drawable/gray_square_btn"
                         android:minWidth="0dp"
                         android:paddingHorizontal="8dp"

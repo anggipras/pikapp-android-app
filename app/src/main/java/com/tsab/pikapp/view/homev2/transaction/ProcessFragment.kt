@@ -1,13 +1,12 @@
 package com.tsab.pikapp.view.homev2.transaction
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,10 @@ import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.util.Log
+import androidx.core.content.ContextCompat
 
 class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, TransactionListV2Adapter.OnItemClickListener {
     private val viewModel: TransactionViewModel by activityViewModels()
@@ -37,14 +40,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
     private lateinit var layoutManagerTransaction: LinearLayoutManager
     private lateinit var layoutManagerTokopedia: LinearLayoutManager
     private lateinit var layoutManagerManualTxn: LinearLayoutManager
-
     private lateinit var layoutManagerTransactionV2: LinearLayoutManager
     private lateinit var recyclerAdapter: TransactionListV2Adapter
-
     private val progressDialog = CustomProgressDialog()
     private lateinit var dataBinding: FragmentProccessBinding
     private val sessionManager = SessionManager()
-
     private val filterSheet = FilterFragment()
     var broadcastManager: LocalBroadcastManager? = null
 
@@ -69,6 +69,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
         return dataBinding.root
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables", "ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -341,7 +342,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
         viewModel.getLiveDataTransListV2ProcessObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isNullOrEmpty()) {
-                    dataBinding.emptyStateProcess.visibility = View.VISIBLE
+                    if (viewModel.isLoading.value == true) {
+                        dataBinding.emptyStateProcess.visibility = View.GONE
+                    } else {
+                        dataBinding.emptyStateProcess.visibility = View.VISIBLE
+                    }
                 } else {
                     dataBinding.emptyStateProcess.visibility = View.GONE
                 }
@@ -412,8 +417,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 //                text
 //            )
 
-            /* TRANSACTION LIST V2 START FROM HERE */
-            viewModel.getTransactionV2List(requireContext(), "sample_response_txn.json", false)
+            viewModel.getTransactionV2List(requireContext(), requireActivity(), false, general_error_process)
 
             general_error_process.isVisible = false
         } else {
@@ -442,6 +446,23 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)
                 }
+            }
+        })
+
+        viewModel.allFilterColor.observe(viewLifecycleOwner, Observer {
+            val drawable: Drawable = buttonFilterCount.context.resources.getDrawable(R.drawable.ic_filter)
+            if (it) {
+                buttonFilterCount.setBackgroundResource(R.drawable.button_green_square)
+                buttonFilterCount.setTextColor(Color.parseColor("#ffffff"))
+
+                drawable.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), PorterDuff.Mode.SRC_IN);
+                buttonFilterCount.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+            } else {
+                buttonFilterCount.setBackgroundResource(R.drawable.gray_square_btn)
+                buttonFilterCount.setTextColor(Color.parseColor("#aaaaaa"))
+
+                drawable.setColorFilter(ContextCompat.getColor(requireContext(), R.color.borderSubtle), PorterDuff.Mode.SRC_IN);
+                buttonFilterCount.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
             }
         })
 
@@ -478,26 +499,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
     private val mMessageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null && context != null) {
-//                viewModel.getStoreOrderList(
-//                    context,
-//                    recyclerview_transaction,
-//                    "Proses",
-//                    requireActivity().supportFragmentManager,
-//                    emptyStateProcess,
-//                    this@ProcessFragment,
-//                    requireActivity(),
-//                    general_error_process
-//                )
-//                viewModel.getListOmni(
-//                    context,
-//                    recyclerview_tokopedia,
-//                    requireActivity().supportFragmentManager,
-//                    requireActivity(),
-//                    "Proses",
-//                    emptyStateProcess,
-//                    requireParentFragment(),
-//                    general_error_process
-//                )
+                viewModel.getTransactionV2List(requireContext(), requireActivity(), false, general_error_process)
             }
         }
     }
@@ -521,22 +523,16 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
         setProgressDialog(true)
-        Handler().postDelayed({
-            viewModel.transactionTxnUpdateDummy(txnId, status, requireContext())
-        }, 2000)
+        viewModel.transactionTxnUpdate(txnId, status, requireContext(), requireActivity(), general_error_process)
     }
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
         setProgressDialog(true)
-        Handler().postDelayed({
-            viewModel.transactionChannelUpdateDummy(channel, orderId, requireContext())
-        }, 2000)
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext(), requireActivity(), general_error_process)
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
         setProgressDialog(true)
-        Handler().postDelayed({
-            viewModel.transactionPosUpdateDummy(updateStatusManualTxnRequest, requireContext())
-        }, 2000)
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext(), requireActivity(), general_error_process)
     }
 }
