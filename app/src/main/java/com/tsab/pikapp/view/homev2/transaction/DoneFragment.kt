@@ -1,6 +1,5 @@
 package com.tsab.pikapp.view.homev2.transaction
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
-import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 
 class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
@@ -57,7 +55,6 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
         dataBinding.recyclerviewAllTransactionDone.adapter = recyclerAdapter
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
             if (!it.isNullOrEmpty()) {
@@ -80,6 +77,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
     private fun getDataDone() {
         if (onlineService.isOnline(context)) {
+            viewModel.getDoneTransactionV2List(requireContext(), true)
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true

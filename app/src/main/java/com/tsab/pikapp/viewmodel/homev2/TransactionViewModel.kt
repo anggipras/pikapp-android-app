@@ -398,7 +398,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>() {
                     override fun onSuccess(t: UpdateStatusResponse) {
                         Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                        getTransactionV2List(
+                        getProcessTransactionV2List(
+                            context,
+                            false
+                        )
+                        getDoneTransactionV2List(
+                            context,
+                            false
+                        )
+                        getCancelTransactionV2List(
                             context,
                             false
                         )
@@ -436,7 +444,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 response: Response<AcceptOrderTokopediaResponse>
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                getTransactionV2List(
+                getProcessTransactionV2List(
+                    context,
+                    false
+                )
+                getDoneTransactionV2List(
+                    context,
+                    false
+                )
+                getCancelTransactionV2List(
                     context,
                     false
                 )
@@ -454,7 +470,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 response: Response<UpdateStatusManualResponse>
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                getTransactionV2List(
+                getProcessTransactionV2List(
+                    context,
+                    false
+                )
+                getDoneTransactionV2List(
+                    context,
+                    false
+                )
+                getCancelTransactionV2List(
                     context,
                     false
                 )
@@ -502,5 +526,291 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val gson = Gson()
         val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
         var theTransactionListV2: List<TransactionListV2Response> = gson.fromJson(theJson, listTransac)
+    }
+
+    /* FOR TESTING */
+    fun getBadgesTransactionV2List(context: Context) {
+        var mid = sessionManager.getUserData()?.mid
+        var size = 100
+        var page = 0
+
+        viewModelScope.launch {
+            try {
+                PikappApiService().api.getTransactionListV2(mid, size, page).enqueue(object : Callback<TransactionListV2RespAPI> {
+                    override fun onResponse(
+                        call: Call<TransactionListV2RespAPI>,
+                        response: Response<TransactionListV2RespAPI>
+                    ) {
+                        if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                            if (response.body()!!.results?.isNotEmpty() == true) {
+                                val theTransactionListV2 = response.body()!!.results
+                                val processList: MutableList<TransactionListV2Data> = ArrayList()
+                                val doneList: MutableList<TransactionListV2Data> = ArrayList()
+                                val cancelList: MutableList<TransactionListV2Data> = ArrayList()
+
+                                theTransactionListV2!!.forEach {
+                                    if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                                        if (it.order_status == "OPEN" || it.order_status == "PAID" || it.order_status == "ON_PROCESS") {
+                                            processList.add(addTransactionData(0, it))
+                                        } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                            doneList.add(addTransactionData(0, it))
+                                        } else if (it.order_status == "FAILED" || it.order_status == "ERROR" ) {
+                                            cancelList.add(addTransactionData(0, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                                        if (it.order_status == "PAYMENT_CONFIRMATION"
+                                            || it.order_status == "PAYMENT_VERIFIED"
+                                            || it.order_status == "SELLER_ACCEPT_ORDER"
+                                            || it.order_status == "WAITING_FOR_PICKUP"
+                                            || it.order_status == "DRIVER_ALLOCATED"
+                                            || it.order_status == "DRIVER_ARRIVED") {
+                                            processList.add(addTransactionData(1, it))
+                                        } else if (it.order_status == "ORDER_DELIVERED"
+                                            || it.order_status == "ORDER_FINISHED"
+                                            || it.order_status == "ORDER_SHIPMENT"
+                                            || it.order_status == "DELIVERED_TO_PICKUP_POINT"
+                                            || it.order_status == "DELIVERED"
+                                            || it.order_status == "COLLECTED") {
+                                            doneList.add(addTransactionData(1, it))
+                                        } else if (it.order_status == "SELLER_CANCEL_ORDER"
+                                            || it.order_status == "ORDER_REJECTED_BY_SELLER"
+                                            || it.order_status == "CANCELLED"
+                                            || it.order_status == "FAILED") {
+                                            cancelList.add(addTransactionData(1, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else { // PIKAPP DELIVERY
+                                        if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
+                                            processList.add(addTransactionData(2, it))
+                                        } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                            doneList.add(addTransactionData(2, it))
+                                        } else if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                                            cancelList.add(addTransactionData(2, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    }
+                                }
+                                mutableProcessSize.value = processList.size
+                                mutableDoneSize.value = doneList.size
+                                mutableCancelSize.value = cancelList.size
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
+                        Log.e(tag, "FAILURE ON GET LIST DATA")
+                    }
+
+                })
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getProcessTransactionV2List(context: Context, getOrUpdate: Boolean) {
+        if (getOrUpdate) {
+            setProgressLoading(true)
+            setProgressDialog(true, context)
+        }
+        var mid = sessionManager.getUserData()?.mid
+        var size = 100
+        var page = 0
+
+        viewModelScope.launch {
+            try {
+                PikappApiService().api.getTransactionListV2(mid, size, page).enqueue(object : Callback<TransactionListV2RespAPI> {
+                    override fun onResponse(
+                        call: Call<TransactionListV2RespAPI>,
+                        response: Response<TransactionListV2RespAPI>
+                    ) {
+                        if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                            if (response.body()!!.results?.isNotEmpty() == true) {
+                                val theTransactionListV2 = response.body()!!.results
+                                val processList: MutableList<TransactionListV2Data> = ArrayList()
+
+                                theTransactionListV2!!.forEach {
+                                    if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                                        if (it.order_status == "OPEN" || it.order_status == "PAID" || it.order_status == "ON_PROCESS") {
+                                            processList.add(addTransactionData(0, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                                        if (it.order_status == "PAYMENT_CONFIRMATION"
+                                            || it.order_status == "PAYMENT_VERIFIED"
+                                            || it.order_status == "SELLER_ACCEPT_ORDER"
+                                            || it.order_status == "WAITING_FOR_PICKUP"
+                                            || it.order_status == "DRIVER_ALLOCATED"
+                                            || it.order_status == "DRIVER_ARRIVED") {
+                                            processList.add(addTransactionData(1, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else { // PIKAPP DELIVERY
+                                        if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
+                                            processList.add(addTransactionData(2, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    }
+                                }
+                                mutableProcessSize.value = processList.size
+                                liveDataTransListV2Process.postValue(processList)
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
+                        setProgressLoading(false)
+                        setProgressDialog(false, context)
+                        setErrorLoading(true)
+                    }
+
+                })
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getDoneTransactionV2List(context: Context, getOrUpdate: Boolean) {
+        if (getOrUpdate) {
+            setProgressLoading(true)
+            setProgressDialog(true, context)
+        }
+        var mid = sessionManager.getUserData()?.mid
+        var size = 100
+        var page = 0
+
+        viewModelScope.launch {
+            try {
+                PikappApiService().api.getTransactionListV2(mid, size, page).enqueue(object : Callback<TransactionListV2RespAPI> {
+                    override fun onResponse(
+                        call: Call<TransactionListV2RespAPI>,
+                        response: Response<TransactionListV2RespAPI>
+                    ) {
+                        if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                            if (response.body()!!.results?.isNotEmpty() == true) {
+                                val theTransactionListV2 = response.body()!!.results
+                                val doneList: MutableList<TransactionListV2Data> = ArrayList()
+
+                                theTransactionListV2!!.forEach {
+                                    if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                                        if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                            doneList.add(addTransactionData(0, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                                        if (it.order_status == "ORDER_DELIVERED"
+                                            || it.order_status == "ORDER_FINISHED"
+                                            || it.order_status == "ORDER_SHIPMENT"
+                                            || it.order_status == "DELIVERED_TO_PICKUP_POINT"
+                                            || it.order_status == "DELIVERED"
+                                            || it.order_status == "COLLECTED") {
+                                            doneList.add(addTransactionData(1, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else { // PIKAPP DELIVERY
+                                        if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                            doneList.add(addTransactionData(2, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    }
+                                }
+                                mutableDoneSize.value = doneList.size
+                                liveDataTransListV2Done.postValue(doneList)
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
+                        setProgressLoading(false)
+                        setProgressDialog(false, context)
+                        setErrorLoading(true)
+                    }
+
+                })
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getCancelTransactionV2List(context: Context, getOrUpdate: Boolean) {
+        if (getOrUpdate) {
+            setProgressLoading(true)
+            setProgressDialog(true, context)
+        }
+        var mid = sessionManager.getUserData()?.mid
+        var size = 100
+        var page = 0
+
+        viewModelScope.launch {
+            try {
+                PikappApiService().api.getTransactionListV2(mid, size, page).enqueue(object : Callback<TransactionListV2RespAPI> {
+                    override fun onResponse(
+                        call: Call<TransactionListV2RespAPI>,
+                        response: Response<TransactionListV2RespAPI>
+                    ) {
+                        if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                            if (response.body()!!.results?.isNotEmpty() == true) {
+                                val theTransactionListV2 = response.body()!!.results
+                                val cancelList: MutableList<TransactionListV2Data> = ArrayList()
+
+                                theTransactionListV2!!.forEach {
+                                    if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                                        if (it.order_status == "FAILED" || it.order_status == "ERROR" ) {
+                                            cancelList.add(addTransactionData(0, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                                        if (it.order_status == "SELLER_CANCEL_ORDER"
+                                            || it.order_status == "ORDER_REJECTED_BY_SELLER"
+                                            || it.order_status == "CANCELLED"
+                                            || it.order_status == "FAILED") {
+                                            cancelList.add(addTransactionData(1, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else { // PIKAPP DELIVERY
+                                        if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                                            cancelList.add(addTransactionData(2, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    }
+                                }
+                                mutableCancelSize.value = cancelList.size
+                                liveDataTransListV2Cancel.postValue(cancelList)
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
+                        setProgressLoading(false)
+                        setProgressDialog(false, context)
+                        setErrorLoading(true)
+                    }
+
+                })
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            }
+        }
     }
 }

@@ -53,7 +53,7 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
     private val mMessageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null && context != null) {
-                viewModel.getTransactionV2List(requireContext(), true)
+                viewModel.getProcessTransactionV2List(requireContext(), true)
             }
         }
     }
@@ -182,13 +182,11 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
         dataBinding.recyclerviewAllTransactionProcess.adapter = recyclerAdapter
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2ProcessObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isNullOrEmpty()) {
                     dataBinding.emptyStateProcess.visibility = View.VISIBLE
-
                 } else {
                     dataBinding.emptyStateProcess.visibility = View.GONE
                 }
@@ -254,7 +252,7 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
 
     private fun getProcessData() {
         if (onlineService.isOnline(context)) {
-            viewModel.getTransactionV2List(requireContext(), true)
+            viewModel.getProcessTransactionV2List(requireContext(), true)
             general_error_process.isVisible = false
         } else {
             general_error_process.isVisible = true
