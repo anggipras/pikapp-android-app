@@ -254,6 +254,8 @@ class TransactionListV2Adapter(
                 formatNumber()
                 when(orderStatusChannel) {
                     "PAYMENT_VERIFIED" -> {
+                        paymentStatus.text = "NEW"
+                        paymentStatus.setBackgroundResource(R.drawable.button_red_square)
                         totalPrice2.visibility = View.GONE
                         totalPrice.text = "Rp. $str"
                         acceptBtn.visibility = View.VISIBLE
