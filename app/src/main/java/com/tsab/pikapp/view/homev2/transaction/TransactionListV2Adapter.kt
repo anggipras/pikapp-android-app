@@ -73,6 +73,7 @@ class TransactionListV2Adapter(
     /* GET LIST OF TRANSACTION FROM LIVEDATA MVVM */
     fun setTransactionList(transactionList: List<TransactionListV2Data>) {
         this.list = transactionList
+        notifyDataSetChanged()
     }
 
     private inner class ViewHolderDineIn(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -178,6 +179,7 @@ class TransactionListV2Adapter(
                 setDate(position, recyclerViewDineIn)
                 when (orderStatusDineIn) {
                     "DELIVER" -> {
+                        acceptBtn.visibility = View.VISIBLE
                         acceptBtn.text = "Selesai"
                         paymentStatus.text = "Dikirim"
                         acceptBtn.setOnClickListener {
@@ -401,6 +403,7 @@ class TransactionListV2Adapter(
                 orderStatus.text = "Dikirim"
                 orderStatus.setBackgroundResource(R.drawable.button_green_square)
                 rejectBtn.visibility = View.GONE
+                acceptBtn.visibility = View.VISIBLE
                 acceptBtn.text = "Pesanan Tiba"
                 acceptBtn.setOnClickListener {
                     listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "FINALIZE", recyclerViewDelivery.payment_status))
@@ -409,6 +412,7 @@ class TransactionListV2Adapter(
                 orderStatus.text = "Sampai"
                 orderStatus.setBackgroundResource(R.drawable.button_green_square)
                 rejectBtn.visibility = View.GONE
+                acceptBtn.visibility = View.VISIBLE
                 acceptBtn.text = "Pesanan Selesai"
                 if (recyclerViewDelivery.payment_status == "PAID"){
                     acceptBtn.isEnabled = true

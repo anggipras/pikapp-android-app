@@ -22,31 +22,23 @@ import com.tsab.pikapp.databinding.FragmentProccessBinding
 import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.CustomProgressDialog
 import com.tsab.pikapp.view.LoginV2Activity
-import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_proccess.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.core.content.ContextCompat
 
-class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, TransactionListV2Adapter.OnItemClickListener {
+class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
     private val viewModel: TransactionViewModel by activityViewModels()
-    private val manualViewModel: ManualTxnViewModel by activityViewModels()
-    private lateinit var layoutManagerTransaction: LinearLayoutManager
-    private lateinit var layoutManagerTokopedia: LinearLayoutManager
-    private lateinit var layoutManagerManualTxn: LinearLayoutManager
-    private lateinit var layoutManagerTransactionV2: LinearLayoutManager
     private lateinit var recyclerAdapter: TransactionListV2Adapter
-    private val progressDialog = CustomProgressDialog()
     private lateinit var dataBinding: FragmentProccessBinding
     private val sessionManager = SessionManager()
     private val filterSheet = FilterFragment()
     var broadcastManager: LocalBroadcastManager? = null
+    private val onlineService = OnlineService()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -56,6 +48,19 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 
         broadcastManager = LocalBroadcastManager.getInstance(requireContext())
         broadcastManager!!.registerReceiver(mMessageReceiver, actionReceiver)
+    }
+
+    private val mMessageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null && context != null) {
+                viewModel.getTransactionV2List(requireContext(), true)
+            }
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        broadcastManager?.unregisterReceiver(mMessageReceiver)
     }
 
     override fun onCreateView(
@@ -73,23 +78,6 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.mutableCountTxn.value = 0
-//        dataBinding.recyclerviewManualTxn.visibility = View.VISIBLE
-//
-//        layoutManagerTransaction =
-//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-//        dataBinding.recyclerviewTransaction.setHasFixedSize(true)
-//        dataBinding.recyclerviewTransaction.layoutManager = layoutManagerTransaction
-//
-//        layoutManagerTokopedia =
-//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-//        dataBinding.recyclerviewTokopedia.layoutManager = layoutManagerTokopedia
-//
-//        layoutManagerManualTxn =
-//            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-//        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
-//        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
-
         initRecyclerView()
         initViewModel()
 
@@ -101,48 +89,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 
         buttonFilterPikapp.setOnClickListener {
             if (!viewModel.mutablePikappFilter.value!!) {
-//                viewModel.mutableCountTxn.value = viewModel.proses.value!!.toInt()
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-//
-//                if (!viewModel.mutableTokpedFilter.value!!) {
-//                    viewModel.mutablePikappFilter.value = true
-//                    recyclerview_transaction.visibility = View.VISIBLE
-//                    recyclerview_tokopedia.visibility = View.GONE
-//                    buttonFilterPikapp.setBackgroundResource(R.drawable.button_green_square)
-//                    buttonFilterPikapp.setTextColor(Color.parseColor("#ffffff"))
-//                }
                 viewModel.mutablePikappFilter.value = true
-//                recyclerview_transaction.visibility = View.VISIBLE
                 buttonFilterPikapp.setBackgroundResource(R.drawable.button_green_square)
                 buttonFilterPikapp.setTextColor(Color.parseColor("#ffffff"))
                 viewModel.filterOnProcess("TXN", "TXN", true)
             } else if (viewModel.mutablePikappFilter.value!!) {
-//                if (!viewModel.mutableTokpedFilter.value!! && !viewModel.mutableGrabFilter.value!! && !viewModel.mutableShopeeFilter.value!!) {
-//                    viewModel.mutableCountTxn.value =
-//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-//                    recyclerview_transaction.visibility = View.VISIBLE
-//                    recyclerview_tokopedia.visibility = View.VISIBLE
-//                } else {
-//                    viewModel.mutableCountTxn.value =
-//                        viewModel.mutableCountTxn.value!! - viewModel.proses.value!!.toInt()
-//                    recyclerview_transaction.visibility = View.GONE
-//                }
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-
                 viewModel.mutablePikappFilter.value = false
                 buttonFilterPikapp.setBackgroundResource(R.drawable.gray_square_btn)
                 buttonFilterPikapp.setTextColor(Color.parseColor("#aaaaaa"))
@@ -152,48 +103,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 
         buttonFilterTokped.setOnClickListener {
             if (!viewModel.mutableTokpedFilter.value!!) {
-//                viewModel.mutableCountTxn.value = viewModel.prosesOmni.value!!.toInt()
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-//
-//                if (!viewModel.mutablePikappFilter.value!!) {
-//                    viewModel.mutableTokpedFilter.value = true
-//                    recyclerview_transaction.visibility = View.GONE
-//                    recyclerview_tokopedia.visibility = View.VISIBLE
-//                    buttonFilterTokped.setBackgroundResource(R.drawable.button_green_square)
-//                    buttonFilterTokped.setTextColor(Color.parseColor("#ffffff"))
-//                }
                 viewModel.mutableTokpedFilter.value = true
-//                recyclerview_tokopedia.visibility = View.VISIBLE
                 buttonFilterTokped.setBackgroundResource(R.drawable.button_green_square)
                 buttonFilterTokped.setTextColor(Color.parseColor("#ffffff"))
                 viewModel.filterOnProcess("CHANNEL", "TOKOPEDIA", true)
             } else if (viewModel.mutableTokpedFilter.value!!) {
-//                if (!viewModel.mutablePikappFilter.value!! && !viewModel.mutableGrabFilter.value!! && !viewModel.mutableShopeeFilter.value!!) {
-//                    viewModel.mutableCountTxn.value =
-//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-//                    recyclerview_transaction.visibility = View.VISIBLE
-//                    recyclerview_tokopedia.visibility = View.VISIBLE
-//                } else {
-//                    viewModel.mutableCountTxn.value =
-//                        viewModel.mutableCountTxn.value!! - viewModel.prosesOmni.value!!.toInt()
-//                    recyclerview_tokopedia.visibility = View.GONE
-//                }
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-
                 viewModel.mutableTokpedFilter.value = false
                 buttonFilterTokped.setBackgroundResource(R.drawable.gray_square_btn)
                 buttonFilterTokped.setTextColor(Color.parseColor("#aaaaaa"))
@@ -203,43 +117,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 
         buttonFilterGrab.setOnClickListener {
             if (!viewModel.mutableGrabFilter.value!!) {
-//                if (!viewModel.mutablePikappFilter.value!! && !viewModel.mutableTokpedFilter.value!!) {
-//                    viewModel.mutableCountTxn.value = 0
-//                    viewModel.mutableGrabFilter.value = true
-//                    recyclerview_transaction.visibility = View.GONE
-//                    recyclerview_tokopedia.visibility = View.GONE
-//                    buttonFilterGrab.setBackgroundResource(R.drawable.button_green_square)
-//                    buttonFilterGrab.setTextColor(Color.parseColor("#ffffff"))
-//                }
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-
                 viewModel.mutableGrabFilter.value = true
                 buttonFilterGrab.setBackgroundResource(R.drawable.button_green_square)
                 buttonFilterGrab.setTextColor(Color.parseColor("#ffffff"))
                 viewModel.filterOnProcess("CHANNEL", "GRAB", true)
             } else if (viewModel.mutableGrabFilter.value!!) {
-//                if (!viewModel.mutablePikappFilter.value!! && !viewModel.mutableTokpedFilter.value!! && !viewModel.mutableShopeeFilter.value!!) {
-//                    viewModel.mutableCountTxn.value =
-//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-//                    recyclerview_transaction.visibility = View.VISIBLE
-//                    recyclerview_tokopedia.visibility = View.VISIBLE
-//                }
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-
                 viewModel.mutableGrabFilter.value = false
                 buttonFilterGrab.setBackgroundResource(R.drawable.gray_square_btn)
                 buttonFilterGrab.setTextColor(Color.parseColor("#aaaaaa"))
@@ -249,43 +131,11 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
 
         buttonFilterInsta.setOnClickListener {
             if (!viewModel.mutableShopeeFilter.value!!) {
-//                if (!viewModel.mutablePikappFilter.value!! && !viewModel.mutableTokpedFilter.value!!) {
-//                    viewModel.mutableCountTxn.value = 0
-//                    viewModel.mutableShopeeFilter.value = true
-//                    recyclerview_transaction.visibility = View.GONE
-//                    recyclerview_tokopedia.visibility = View.GONE
-//                    buttonFilterInsta.setBackgroundResource(R.drawable.button_green_square)
-//                    buttonFilterInsta.setTextColor(Color.parseColor("#ffffff"))
-//                }
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-
                 viewModel.mutableShopeeFilter.value = true
                 buttonFilterInsta.setBackgroundResource(R.drawable.button_green_square)
                 buttonFilterInsta.setTextColor(Color.parseColor("#ffffff"))
                 viewModel.filterOnProcess("POS", "INSTAGRAM", true)
             } else if (viewModel.mutableShopeeFilter.value == true) {
-//                if (!viewModel.mutablePikappFilter.value!! && !viewModel.mutableTokpedFilter.value!! && !viewModel.mutableGrabFilter.value!!) {
-//                    viewModel.mutableCountTxn.value =
-//                        viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-//                    recyclerview_transaction.visibility = View.VISIBLE
-//                    recyclerview_tokopedia.visibility = View.VISIBLE
-//                }
-//
-//                if (viewModel.mutableCountTxn.value == 0) {
-//                    icon.visibility = View.VISIBLE
-//                    text.visibility = View.VISIBLE
-//                } else {
-//                    icon.visibility = View.GONE
-//                    text.visibility = View.GONE
-//                }
-
                 viewModel.mutableShopeeFilter.value = false
                 buttonFilterInsta.setBackgroundResource(R.drawable.gray_square_btn)
                 buttonFilterInsta.setTextColor(Color.parseColor("#aaaaaa"))
@@ -322,42 +172,33 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
         }
 
         buttonFilterCount.setOnClickListener {
-            if (viewModel.mutablePikappFilter.value == false && viewModel.mutableGrabFilter.value == false
-                && viewModel.mutableShopeeFilter.value == false && viewModel.mutableTokpedFilter.value == false
-            ) {
-                viewModel.mutableCountTxn.value =
-                    viewModel.proses.value!!.toInt() + viewModel.prosesOmni.value!!.toInt()
-            }
             filterSheet.show(requireActivity().supportFragmentManager, "show")
         }
     }
 
     private fun initRecyclerView() {
         dataBinding.recyclerviewAllTransactionProcess.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager, this)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager,this)
         dataBinding.recyclerviewAllTransactionProcess.adapter = recyclerAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initViewModel() {
         viewModel.getLiveDataTransListV2ProcessObserver().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isNullOrEmpty()) {
-                    if (viewModel.isLoading.value == true) {
-                        dataBinding.emptyStateProcess.visibility = View.GONE
-                    } else {
-                        dataBinding.emptyStateProcess.visibility = View.VISIBLE
-                    }
+                    dataBinding.emptyStateProcess.visibility = View.VISIBLE
+
                 } else {
                     dataBinding.emptyStateProcess.visibility = View.GONE
                 }
                 recyclerAdapter.setTransactionList(it)
-                recyclerAdapter.notifyDataSetChanged()
             }
         })
 
         viewModel.progressLoading.observe(viewLifecycleOwner, Observer { load ->
             if (load) {
-                setProgressDialog(false)
+                dataBinding.emptyStateProcess.visibility = View.GONE
                 viewModel.setProgressLoading(false)
             }
         })
@@ -370,72 +211,7 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
                     dataBinding.emptyStateProcess.visibility = View.GONE
                 }
                 recyclerAdapter.setTransactionList(it)
-                recyclerAdapter.notifyDataSetChanged()
             }
-        })
-    }
-
-    private fun getProcessData() {
-        val onlineService = OnlineService()
-        if (onlineService.isOnline(context)) {
-//            activity?.let {
-//                viewModel.getStoreOrderList(
-//                    it.baseContext,
-//                    recyclerview_transaction,
-//                    "Proses",
-//                    requireActivity().supportFragmentManager,
-//                    emptyStateProcess,
-//                    this,
-//                    requireActivity(),
-//                    general_error_process
-//                )
-//            }
-//
-//            activity?.let {
-//                viewModel.getListOmni(
-//                    it.baseContext,
-//                    recyclerview_tokopedia,
-//                    requireActivity().supportFragmentManager,
-//                    requireActivity(),
-//                    "Proses",
-//                    emptyStateProcess,
-//                    requireParentFragment(),
-//                    general_error_process
-//                )
-//            }
-//
-//            activity?.let { manualViewModel.getManualTxnList("ON_PROCESS", it.baseContext, recyclerview_manualTxn, requireActivity()) }
-//
-//            viewModel.editList(
-//                recyclerview_transaction,
-//                recyclerview_tokopedia,
-//                buttonFilterPikapp,
-//                buttonFilterTokped,
-//                buttonFilterGrab,
-//                buttonFilterInsta,
-//                icon,
-//                text
-//            )
-
-            viewModel.getTransactionV2List(requireContext(), requireActivity(), false, general_error_process)
-
-            general_error_process.isVisible = false
-        } else {
-            general_error_process.isVisible = true
-            viewModel.setLoading(false)
-            onlineService.networkDialog(requireActivity())
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
@@ -466,73 +242,38 @@ class ProcessFragment : Fragment(), TransactionListAdapter.OnItemClickListener, 
             }
         })
 
-//        viewModel.processBadges.observe(viewLifecycleOwner, Observer { amount ->
-//            amount?.let {
-//                dataBinding.icon.isVisible = it == 0
-//                dataBinding.text.isVisible = it == 0
-//            }
-//        })
-//
-//        viewModel.decreaseBadge.observe(viewLifecycleOwner, Observer { amount ->
-//            amount?.let {
-//                dataBinding.icon.isVisible = it == 0
-//                dataBinding.text.isVisible = it == 0
-//            }
-//        })
-//
-//        manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
-//            dataBinding.icon.visibility = if (state) View.VISIBLE else View.GONE
-//            dataBinding.text.visibility = if (state) View.VISIBLE else View.GONE
-//        })
-    }
-
-//    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-//        super.setUserVisibleHint(isVisibleToUser)
-//        if (isVisibleToUser) {
-//            layoutManagerTransaction =
-//                LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-//            dataBinding.recyclerviewTransaction.setHasFixedSize(true)
-//            dataBinding.recyclerviewTransaction.layoutManager = layoutManagerTransaction
-//        }
-//    }
-
-    private val mMessageReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent != null && context != null) {
-                viewModel.getTransactionV2List(requireContext(), requireActivity(), false, general_error_process)
+        viewModel.errorLoading.observe(viewLifecycleOwner, Observer { error ->
+            if (error) {
+                general_error_process.isVisible = true
+                onlineService.serviceDialog(requireActivity())
+            } else {
+                general_error_process.isVisible = false
             }
-        }
+        })
     }
 
-    private fun setProgressDialog(action: Boolean) {
-        if (action) {
-            progressDialog.show(requireContext())
+    private fun getProcessData() {
+        if (onlineService.isOnline(context)) {
+            viewModel.getTransactionV2List(requireContext(), true)
+            general_error_process.isVisible = false
         } else {
-            progressDialog.dialog.dismiss()
+            general_error_process.isVisible = true
+            onlineService.networkDialog(requireActivity())
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        broadcastManager?.unregisterReceiver(mMessageReceiver)
-    }
-
-    override fun onItemClick(i: Int) {
-        viewModel.setDecreaseBadge(i)
     }
 
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
-        setProgressDialog(true)
-        viewModel.transactionTxnUpdate(txnId, status, requireContext(), requireActivity(), general_error_process)
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionTxnUpdate(txnId, status, requireContext())
     }
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
-        setProgressDialog(true)
-        viewModel.transactionChannelUpdate(channel, orderId, requireContext(), requireActivity(), general_error_process)
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
-        setProgressDialog(true)
-        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext(), requireActivity(), general_error_process)
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
     }
 }
