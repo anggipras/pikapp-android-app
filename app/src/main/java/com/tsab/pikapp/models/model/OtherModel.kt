@@ -135,3 +135,30 @@ data class UploadResult(
         val Status: String?,
         var filename: List<String>
 )
+
+//SHIPMENT MANAGEMENT SETTINGS
+
+data class SubdistrictResponse(
+        @SerializedName("err_code")
+        val err_code: String?,
+        @SerializedName("err_message")
+        val err_message: String?,
+        var result: List<SubdistrictResult>?
+)
+
+data class SubdistrictResult(
+        @SerializedName("formatted_subdistrict_name")
+        val formatted_subdistrict_name: String?,
+        @SerializedName("subdisctrict_name")
+        val subdisctrict_name: String?,
+)
+
+data class SubdistrictRequest(
+        @SerializedName("subdistrict_name")
+        val subdistrict_name: String?,
+)
+
+data class CurrentLatLng(
+        val latitude: Double,
+        val longitude: Double,
+)

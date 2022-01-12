@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.other.otherSettings.shippingSetting.ShipmentSubdistrictFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/header_insideSettings"
+            layout="@layout/layout_header_general" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/subdistrict_searchField"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            app:searchHintIcon="@null"
+            android:background="@drawable/gray_square_btn"
+            android:backgroundTint="@color/lightGrey"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:hint="Kota / Kecamatan"
+            android:layout_marginTop="@dimen/_11sdp"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginEnd="@dimen/_11sdp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_insideSettings" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_subdistrict"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_11sdp"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginEnd="@dimen/_11sdp"
+            android:layout_marginBottom="@dimen/_60sdp"
+            tools:listitem="@layout/item_subdistrict"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subdistrict_searchField" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/_11sdp"
+            android:layout_marginBottom="@dimen/_11sdp"
+            android:background="@drawable/button_green_small"
+            android:fontFamily="@font/inter_semibold"
+            android:text="@string/simpan"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

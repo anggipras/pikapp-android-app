@@ -633,6 +633,12 @@ interface PikappApi {
         @Body search: SearchRequest
     ): Call<SearchResponse>
 
+    // GET LIST OF SUBDISTRICT - SHIPMENT SETTING
+    @GET("/api/subdistrict-name/")
+    fun getSubdistrict(
+        @Body subdistrictRequest: SubdistrictRequest
+    ): Single<SubdistrictResponse>
+
     // Omnichannel integration
     @GET("channel/v1/channel-integration/list/")
     fun listIntegration(
