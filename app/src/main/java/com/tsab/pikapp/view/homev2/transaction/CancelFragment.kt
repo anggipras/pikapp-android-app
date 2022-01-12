@@ -12,24 +12,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCancelBinding
+import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
-import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_cancel.*
-import kotlinx.android.synthetic.main.fragment_cancel.recyclerview_manualTxn
-import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 
-class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
     private val viewModel: TransactionViewModel by activityViewModels()
-    private val manualViewModel: ManualTxnViewModel by activityViewModels()
-    lateinit var transactionListAdapter: TransactionListAdapter
-    lateinit var linearLayoutManager: LinearLayoutManager
-    lateinit var linearLayoutManager1: LinearLayoutManager
-    private lateinit var layoutManagerManualTxn: LinearLayoutManager
     private lateinit var dataBinding: FragmentCancelBinding
-
+    private lateinit var recyclerAdapter: TransactionListV2Adapter
+    private val onlineService = OnlineService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,83 +39,64 @@ class CancelFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerview_transaction.setHasFixedSize(true)
-        linearLayoutManager =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        linearLayoutManager1 =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerview_transaction.layoutManager = linearLayoutManager
-        recyclerview_tokopedia_cancel.layoutManager = linearLayoutManager1
-
-        layoutManagerManualTxn =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
-        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
+        initRecyclerView()
+        initViewModel()
 
         getDataCancel()
 
         general_error_cancel.try_button.setOnClickListener {
             getDataCancel()
         }
+    }
 
-        observeViewModel()
+    private fun initRecyclerView() {
+        dataBinding.recyclerviewAllTransactionCancel.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager,this)
+        dataBinding.recyclerviewAllTransactionCancel.adapter = recyclerAdapter
+    }
+
+    private fun initViewModel() {
+        viewModel.getLiveDataTransListV2CancelObserver().observe(viewLifecycleOwner, Observer {
+            if (!it.isNullOrEmpty()) {
+                dataBinding.emptyStateCancel.visibility = View.GONE
+                recyclerAdapter.setTransactionList(it)
+            } else {
+                dataBinding.emptyStateCancel.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.errorLoading.observe(viewLifecycleOwner, Observer { error ->
+            if (error) {
+                general_error_cancel.isVisible = true
+                onlineService.serviceDialog(requireActivity())
+            } else {
+                general_error_cancel.isVisible = false
+            }
+        })
     }
 
     private fun getDataCancel() {
-        val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let {
-                viewModel.getStoreOrderList(
-                    it.baseContext,
-                    recyclerview_transaction,
-                    "Batal",
-                    requireActivity().supportFragmentManager,
-                    emptyState1,
-                    this,
-                    requireActivity(),
-                    general_error_cancel
-                )
-            }
-            activity?.let {
-                viewModel.getListOmni(
-                    it.baseContext,
-                    recyclerview_tokopedia_cancel,
-                    requireActivity().supportFragmentManager,
-                    requireActivity(),
-                    "Batal",
-                    emptyState1,
-                    requireParentFragment(),
-                    general_error_cancel
-                )
-            }
-
-            activity?.let { manualViewModel.getManualTxnList("CANCELLED", it.baseContext, recyclerview_manualTxn, requireActivity()) }
+            viewModel.getCancelTransactionV2List(requireContext(), true)
             general_error_cancel.isVisible = false
         } else {
             general_error_cancel.isVisible = true
-            viewModel.setLoading(false)
             onlineService.networkDialog(requireActivity())
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        dataBinding.emptyState1.isVisible =
-            viewModel.batal.value == 0 && viewModel.batalOmni.value == 0
+    override fun onItemClickTransactionTxn(txnId: String, status: String) {
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionTxnUpdate(txnId, status, requireContext())
     }
 
-    private fun observeViewModel() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.loadingOverlay.loadingView.visibility =
-                if (isLoading) View.VISIBLE else View.GONE
-        })
-
-        manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
-            dataBinding.emptyState1.visibility = if (state) View.VISIBLE else View.GONE
-        })
+    override fun onItemClickTransactionChannel(channel: String, orderId: String) {
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
     }
 
-    override fun onItemClick(i: Int) {
-        TODO("Not yet implemented")
+    override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
     }
 }

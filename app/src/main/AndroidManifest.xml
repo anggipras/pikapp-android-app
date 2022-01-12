@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.tsab.pikapp">
+    package="com.tsab.pikapp" >
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,13 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
-        <activity android:name=".view.homev2.menu.WebMenuActivity"></activity>
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup" >
+        <activity android:name=".view.homev2.menu.WebMenuActivity" />
         <activity
             android:name=".view.homev2.transaction.manualTxn.ManualTxnActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.homev2.transaction.shipment.ScanResiActivity"
             android:configChanges="orientation"
@@ -101,7 +102,7 @@
         <activity
             android:name=".view.StoreOrderListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="StoreOrderListActivity" />
 
@@ -111,7 +112,7 @@
         <activity
             android:name=".view.OrderListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="OrderListActivity" />
 
@@ -144,7 +145,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -175,8 +176,11 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDpgv_S1kGc7pYaxSh_q6Q-IWz_qlIwQpg" />
 
-        <service android:name=".services.PikappMessagingService">
+        <service android:name=".services.PikappMessagingService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

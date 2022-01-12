@@ -633,6 +633,12 @@ interface PikappApi {
         @Body search: SearchRequest
     ): Call<SearchResponse>
 
+    // GET LIST OF SUBDISTRICT - SHIPMENT SETTING
+    @GET("/api/subdistrict-name/")
+    fun getSubdistrict(
+        @Body subdistrictRequest: SubdistrictRequest
+    ): Single<SubdistrictResponse>
+
     // Omnichannel integration
     @GET("channel/v1/channel-integration/list/")
     fun listIntegration(
@@ -743,5 +749,12 @@ interface PikappApi {
         @Path("customerId") customerId: Long
     ): Call<DeleteCustomerResponse>
 
+    /* ALL TRANSACTION GET LIST */
+    @GET("ntxn/v1/list/")
+    fun getTransactionListV2(
+        @Header("mid") merchantID: String?,
+        @Header("size") size: Int,
+        @Header("page") page: Int
+    ): Call<TransactionListV2RespAPI>
 }
 

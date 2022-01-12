@@ -1,6 +1,8 @@
 package com.tsab.pikapp.viewmodel.other
 
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -20,6 +22,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.*
 import retrofit2.Response
+import java.util.*
 
 class OtherSettingViewModel : ViewModel() {
     private var sessionManager = SessionManager()
@@ -382,5 +385,66 @@ class OtherSettingViewModel : ViewModel() {
 
     fun setAutoOnOffFalse(autoOnOff: Boolean){
         mutableAutoOnOff.value = false
+    }
+
+    /* SHIPPING SETTINGS */
+    private val mutableShippingMode = MutableLiveData<Boolean>()
+    val shippingMode: LiveData<Boolean> = mutableShippingMode
+    fun setShippingMode(act: Boolean) {
+        mutableShippingMode.value = act
+    }
+
+    val mutableSearchSubdistrict = MutableLiveData<String?>()
+    val searchSubdistrict: LiveData<String?> = mutableSearchSubdistrict
+
+    val mutableCurrentLatLng = MutableLiveData<CurrentLatLng>()
+    val currentLatLng: LiveData<CurrentLatLng> = mutableCurrentLatLng
+    fun setCurrentLocation(latLng: CurrentLatLng) {
+        mutableCurrentLatLng.value = latLng
+    }
+
+    val mutableAddressLocation = MutableLiveData<List<Address>>()
+    val addressLocation: LiveData<List<Address>> = mutableAddressLocation
+    fun setAddressLocation(context: Context, latLng: CurrentLatLng) {
+        val gcd = Geocoder(context, Locale.getDefault())
+        val addresses: List<Address> = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1)
+        mutableAddressLocation.value = addresses
+    }
+
+    private var liveDataSubdistrictList: MutableLiveData<List<SubdistrictResult>> = MutableLiveData()
+    fun getLiveDataSubdistrictListObserver(): MutableLiveData<List<SubdistrictResult>> {
+        return liveDataSubdistrictList
+    }
+
+    private var liveDataSubdistrictSelected: MutableLiveData<String> = MutableLiveData()
+    fun getLiveDataSubdistrictSelectedObserver(): MutableLiveData<String> {
+        return liveDataSubdistrictSelected
+    }
+    fun setSearchSubdistrict(query: String?) {
+        mutableSearchSubdistrict.postValue(query)
+    }
+    fun setSelectedSubdistrict(position: Int) {
+        liveDataSubdistrictSelected.postValue(liveDataSubdistrictList.value?.get(position)?.subdisctrict_name)
+    }
+
+    fun getSubdistrictList() {
+        val nameOfSubdistrict = SubdistrictRequest(subdistrict_name = searchSubdistrict.value)
+
+        disposable.add(
+            PikappApiService().shipmentApi.getSubdistrict(nameOfSubdistrict)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<SubdistrictResponse>() {
+                    override fun onSuccess(t: SubdistrictResponse) {
+                        t.result?.let { res ->
+                            Log.e("RESULTSUBDIS", res.toString())
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                    }
+                })
+        )
     }
 }

@@ -41,7 +41,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/header">
 
@@ -60,12 +60,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:theme="@style/Theme.MaterialComponents.Light"
-                            app:tabGravity="fill"
-                            app:tabIndicatorColor="@color/colorGreen"
                             app:tabIndicatorHeight="4dp"
-                            app:tabMode="fixed"
+                            app:tabBackground="@android:color/white"
+                            app:tabIndicatorColor="@color/colorGreen"
+                            app:tabSelectedTextColor="@color/colorGreen"
+                            app:tabInlineLabel="true"
                             app:tabTextAppearance="@style/MenuTabLayout"
-                            app:tabTextColor="@android:color/black" />
+                            app:tabTextColor="@android:color/black"/>
 
                     </com.google.android.material.appbar.AppBarLayout>
 
@@ -75,7 +76,7 @@
                         android:layout_height="match_parent"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                        <androidx.viewpager.widget.ViewPager
+                        <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/viewpager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />

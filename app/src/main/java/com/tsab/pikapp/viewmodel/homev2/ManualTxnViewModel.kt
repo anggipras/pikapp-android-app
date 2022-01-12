@@ -191,7 +191,13 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     }
 
     fun setBayar(nama: String){
-        mutableBayar.value = nama
+        if (nama != "ShopeePay" || nama != "Gopay") {
+            mutableBayar.value = "WALLET_${nama.uppercase()}"
+        } else if(nama == "OVO" || nama == "DANA" || nama == "LinkAja") {
+            mutableBayar.value = nama.uppercase()
+        } else {
+            mutableBayar.value = nama
+        }
     }
 
     fun setWaktu(nama: String, custom:String){
