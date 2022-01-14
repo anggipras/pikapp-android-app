@@ -239,10 +239,8 @@
     <!-- Setting Shipping Fragment Screen -->
     <string name="enable_shipping_mode">Aktifkan Mode Pengiriman</string>
     <string name="select_current_location">Pilih Lokasi Saat Ini</string>
-    <string name="subdistrict_shipping">Kota / Kec</string>
     <string name="postal_code_shipping">Kode pos</string>
     <string name="address_shipping">Alamat</string>
-    <string name="location_shipping">Masukkan Koordinat</string>
     <string name="new_shipment_merchant_text">Atur restoran Anda ke mode pengiriman agar restoran Anda dapat menerima transaksi pengiriman</string>
     <string name="gps_enabled">Lokasi Pengaturan</string>
     <string name="required_for_this_app">Mohon Aktifkan Lokasi Anda</string>
@@ -250,6 +248,9 @@
     <string name="main_address_location">%s</string>
     <string name="detail_address_location">%s</string>
     <string name="pick_location">Pilih Lokasi Saat Ini</string>
+    <string name="find_location_title">Cari Lokasi</string>
+    <string name="find_location">Cari lokasi…</string>
+    <string name="change_shipping_title">Ubah Pengiriman</string>
 
     <!-- Omnichannel transaction filter -->
     <string name="filter">Filter</string>

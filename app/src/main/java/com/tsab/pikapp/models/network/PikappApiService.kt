@@ -47,22 +47,21 @@ class PikappApiService {
     val reportApi = Retrofit.Builder()
         .baseUrl(checkBuildConfig())
         .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
         .create(PikappApi::class.java)
 
-    val shipmentApi = Retrofit.Builder()
-        .baseUrl(checkBuildConfigShipment())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(PikappApi::class.java)
-
-    private fun checkBuildConfigShipment(): String {
-        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
-            "http://dev-api.pikapp.id:9005/"
-        } else {
-            "http://dev-api.pikapp.id:9005/"
-        }
+    private val googleApiKey = "AIzaSyDpgv_S1kGc7pYaxSh_q6Q-IWz_qlIwQpg"
+    fun getGoogleApiKey() : String {
+        return googleApiKey
     }
+
+    val googleApi = Retrofit.Builder()
+        .baseUrl("https://maps.googleapis.com/maps/api/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .build()
+        .create(PikappApi::class.java)
 
     // Merchant LOGIN, LOGOUT, REGISTER
     // AUTH

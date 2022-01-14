@@ -164,28 +164,31 @@
         android:label="fragment_merchant_add_shipment"
         tools:layout="@layout/fragment_merchant_add_shipment" >
         <action
-            android:id="@+id/navigateTo_shipmentAddAddressDetailFragment"
-            app:destination="@id/shipmentAddAddressDetailFragment" />
+            android:id="@+id/navigateTo_merchantGetLocationFragment"
+            app:destination="@id/merchantGetLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/shipmentAddAddressDetailFragment"
         android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.ShipmentAddAddressDetailFragment"
-        android:label="fragment_shipment_add_address_detail" >
-        <action
-            android:id="@+id/navigateTo_shipmentSubdistrictFragment"
-            app:destination="@id/shipmentSubdistrictFragment" />
-        <action
-            android:id="@+id/navigateTo_merchantGetLocationFragment"
-            app:destination="@id/merchantGetLocationFragment" />
+        android:label="fragment_shipment_add_address_detail"
+        tools:layout="@layout/fragment_shipment_add_address_detail">
     </fragment>
     <fragment
         android:id="@+id/merchantGetLocationFragment"
         android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantGetLocationFragment"
         android:label="fragment_merchant_get_location"
-        tools:layout="@layout/fragment_merchant_get_location" />
+        tools:layout="@layout/fragment_merchant_get_location" >
+        <action
+            android:id="@+id/navigateTo_merchantFindLocationFragment"
+            app:destination="@id/merchantFindLocationFragment" />
+        <action
+            android:id="@+id/navigateTo_shipmentAddAddressDetailFragment"
+            app:destination="@id/shipmentAddAddressDetailFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/shipmentSubdistrictFragment"
-        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.ShipmentSubdistrictFragment"
-        android:label="fragment_shipment_subdistrict"
-        tools:layout="@layout/fragment_shipment_subdistrict" />
+        android:id="@+id/merchantFindLocationFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantFindLocationFragment"
+        android:label="fragment_merchant_find_location"
+        tools:layout="@layout/fragment_merchant_find_location" >
+    </fragment>
 </navigation>

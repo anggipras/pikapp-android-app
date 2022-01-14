@@ -394,16 +394,13 @@ class OtherSettingViewModel : ViewModel() {
         mutableShippingMode.value = act
     }
 
-    val mutableSearchSubdistrict = MutableLiveData<String?>()
-    val searchSubdistrict: LiveData<String?> = mutableSearchSubdistrict
-
-    val mutableCurrentLatLng = MutableLiveData<CurrentLatLng>()
+    private val mutableCurrentLatLng = MutableLiveData<CurrentLatLng>()
     val currentLatLng: LiveData<CurrentLatLng> = mutableCurrentLatLng
     fun setCurrentLocation(latLng: CurrentLatLng) {
         mutableCurrentLatLng.value = latLng
     }
 
-    val mutableAddressLocation = MutableLiveData<List<Address>>()
+    private val mutableAddressLocation = MutableLiveData<List<Address>>()
     val addressLocation: LiveData<List<Address>> = mutableAddressLocation
     fun setAddressLocation(context: Context, latLng: CurrentLatLng) {
         val gcd = Geocoder(context, Locale.getDefault())
@@ -411,38 +408,29 @@ class OtherSettingViewModel : ViewModel() {
         mutableAddressLocation.value = addresses
     }
 
-    private var liveDataSubdistrictList: MutableLiveData<List<SubdistrictResult>> = MutableLiveData()
-    fun getLiveDataSubdistrictListObserver(): MutableLiveData<List<SubdistrictResult>> {
-        return liveDataSubdistrictList
+    //GET LIST GOOGLE PLACE
+    private var liveDataGooglePlacesList: MutableLiveData<List<ListGooglePlaces>> = MutableLiveData()
+    fun getLiveDataGooglePlacesListObserver(): MutableLiveData<List<ListGooglePlaces>> {
+        return liveDataGooglePlacesList
+    }
+    fun setLiveDataPlaces(placeList: List<ListGooglePlaces>) {
+        liveDataGooglePlacesList.postValue(placeList)
     }
 
-    private var liveDataSubdistrictSelected: MutableLiveData<String> = MutableLiveData()
-    fun getLiveDataSubdistrictSelectedObserver(): MutableLiveData<String> {
-        return liveDataSubdistrictSelected
-    }
-    fun setSearchSubdistrict(query: String?) {
-        mutableSearchSubdistrict.postValue(query)
-    }
-    fun setSelectedSubdistrict(position: Int) {
-        liveDataSubdistrictSelected.postValue(liveDataSubdistrictList.value?.get(position)?.subdisctrict_name)
-    }
-
-    fun getSubdistrictList() {
-        val nameOfSubdistrict = SubdistrictRequest(subdistrict_name = searchSubdistrict.value)
-
+    fun getListGooglePlaces(text: String) {
         disposable.add(
-            PikappApiService().shipmentApi.getSubdistrict(nameOfSubdistrict)
+            PikappApiService().googleApi.getListOfPlaces(text, PikappApiService().getGoogleApiKey())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<SubdistrictResponse>() {
-                    override fun onSuccess(t: SubdistrictResponse) {
-                        t.result?.let { res ->
-                            Log.e("RESULTSUBDIS", res.toString())
+                .subscribeWith(object : DisposableSingleObserver<GooglePlacesResponse>() {
+                    override fun onSuccess(t: GooglePlacesResponse) {
+                        t.results.let { res ->
+                            liveDataGooglePlacesList.postValue(res)
                         }
                     }
 
                     override fun onError(e: Throwable) {
-
+                        Log.e("ERROR_GET_PLACES", e.message.toString())
                     }
                 })
         )

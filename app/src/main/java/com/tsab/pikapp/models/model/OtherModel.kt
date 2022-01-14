@@ -137,28 +137,77 @@ data class UploadResult(
 )
 
 //SHIPMENT MANAGEMENT SETTINGS
-
-data class SubdistrictResponse(
-        @SerializedName("err_code")
-        val err_code: String?,
-        @SerializedName("err_message")
-        val err_message: String?,
-        var result: List<SubdistrictResult>?
-)
-
-data class SubdistrictResult(
-        @SerializedName("formatted_subdistrict_name")
-        val formatted_subdistrict_name: String?,
-        @SerializedName("subdisctrict_name")
-        val subdisctrict_name: String?,
-)
-
-data class SubdistrictRequest(
-        @SerializedName("subdistrict_name")
-        val subdistrict_name: String?,
-)
-
 data class CurrentLatLng(
         val latitude: Double,
         val longitude: Double,
+)
+
+//LIST OF GOOGLE PLACES
+data class GooglePlacesResponse (
+        @SerializedName("html_attributions")
+        val htmlAttributions: List<String>?,
+        val results: List<ListGooglePlaces>,
+        val status: String
+)
+
+data class ListGooglePlaces (
+        @SerializedName("business_status")
+        val businessStatus: String?,
+        @SerializedName("formatted_address")
+        val formattedAddress: String?,
+        val geometry: Geometry,
+        val icon: String?,
+        @SerializedName("icon_background_color")
+        val iconBackgroundColor: String?,
+        @SerializedName("icon_mask_base_uri")
+        val iconMaskBaseURI: String?,
+        val name: String?,
+        @SerializedName("opening_hours")
+        val openingHours: OpeningHours?,
+        val photos: List<Photo>?,
+        @SerializedName("place_id")
+        val placeID: String?,
+        @SerializedName("plus_code")
+        val plusCode: PlusCode?,
+        val rating: Double?,
+        val reference: String?,
+        val types: List<String>?,
+        @SerializedName("user_ratings_total")
+        val userRatingsTotal: Long?
+)
+
+data class Geometry (
+        val location: Location,
+        val viewport: Viewport?
+)
+
+data class Location (
+        val lat: Double,
+        val lng: Double
+)
+
+data class Viewport (
+        val northeast: Location?,
+        val southwest: Location?
+)
+
+data class OpeningHours (
+        @SerializedName("open_now")
+        val openNow: Boolean?
+)
+
+data class Photo (
+        val height: Long?,
+        @SerializedName("html_attributions")
+        val htmlAttributions: List<String>?,
+        @SerializedName("photo_reference")
+        val photoReference: String?,
+        val width: Long?
+)
+
+data class PlusCode (
+        @SerializedName("compound_code")
+        val compoundCode: String?,
+        @SerializedName("global_code")
+        val globalCode: String?
 )

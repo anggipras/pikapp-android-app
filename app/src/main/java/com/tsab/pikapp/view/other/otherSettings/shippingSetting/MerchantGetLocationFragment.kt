@@ -1,26 +1,20 @@
 package com.tsab.pikapp.view.other.otherSettings.shippingSetting
 
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentMerchantGetLocationBinding
 import com.tsab.pikapp.models.model.CurrentLatLng
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
-import java.util.*
 
 class MerchantGetLocationFragment : Fragment() {
     private lateinit var dataBinding: FragmentMerchantGetLocationBinding
@@ -41,6 +35,9 @@ class MerchantGetLocationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.shipping_title)
+        dataBinding.searchLocation.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.navigateTo_merchantFindLocationFragment)
+        }
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
 
@@ -83,8 +80,18 @@ class MerchantGetLocationFragment : Fragment() {
 
                     val currentLatLng = CurrentLatLng(latitude = newPosition.latitude, longitude = newPosition.longitude)
                     viewModel.setAddressLocation(requireContext(), currentLatLng)
+                } else {
+                    val viewModelPosition = LatLng(viewModel.currentLatLng.value!!.latitude, viewModel.currentLatLng.value!!.longitude)
+                    if (viewModelPosition != oldPosition) {
+                        // start animation
+                        dataBinding.iconMarker.animate().translationY(0f).start()
+                        dataBinding.iconMarkerShadow.animate().withStartAction {
+                            dataBinding.iconMarkerShadow.setPadding(0, 0, 0, 0)
+                        }.start()
 
-                    dataBinding.locationAddressBottom.visibility = View.VISIBLE
+                        val currentLatLng = CurrentLatLng(latitude = viewModel.currentLatLng.value!!.latitude, longitude = viewModel.currentLatLng.value!!.longitude)
+                        viewModel.setAddressLocation(requireContext(), currentLatLng)
+                    }
                 }
             }
         }
@@ -97,6 +104,7 @@ class MerchantGetLocationFragment : Fragment() {
             if (it != null) {
                 dataBinding.locationAddressTitle.text = getString(R.string.main_address_location, it[0].locality)
                 dataBinding.locationAddressDetail.text = getString(R.string.detail_address_location, it[0].getAddressLine(0))
+                dataBinding.locationAddressBottom.visibility = View.VISIBLE
             }
         })
     }
