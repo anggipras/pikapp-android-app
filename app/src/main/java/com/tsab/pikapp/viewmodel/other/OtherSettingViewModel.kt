@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.*
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 class OtherSettingViewModel : ViewModel() {
     private var sessionManager = SessionManager()
@@ -387,7 +388,7 @@ class OtherSettingViewModel : ViewModel() {
         mutableAutoOnOff.value = false
     }
 
-    /* SHIPPING SETTINGS */
+    /* SHIPPING SETTINGS ------- */
     private val mutableShippingMode = MutableLiveData<Boolean>()
     val shippingMode: LiveData<Boolean> = mutableShippingMode
     fun setShippingMode(act: Boolean) {
@@ -435,4 +436,47 @@ class OtherSettingViewModel : ViewModel() {
                 })
         )
     }
+
+    //COURIER SETTINGS DATA
+    private var liveDataCourierList: MutableLiveData<MutableList<CourierList>> = MutableLiveData()
+    fun getLiveDataCourierListObserver(): MutableLiveData<MutableList<CourierList>> {
+        return liveDataCourierList
+    }
+
+    private fun setCourierList(courierList: MutableList<CourierList>) {
+        liveDataCourierList.value = courierList
+    }
+
+    fun setDummyCourierList() {
+        val listOfCourier: MutableList<CourierList> = ArrayList()
+        listOfCourier.add(CourierList(courier_name = "Gojek", courierService = mutableListOf(
+            CourierServiceList(service_name = "Instant", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true)
+            )))
+        listOfCourier.add(CourierList(courier_name = "Grabsend", courierService = mutableListOf(
+            CourierServiceList(service_name = "Instant Bike", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Instant Car", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
+            )))
+        listOfCourier.add(CourierList(courier_name = "Paxel", courierService = mutableListOf(
+            CourierServiceList(service_name = "Small Package", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Medium Package", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Large Package", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Paxel Big", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
+            )))
+        listOfCourier.add(CourierList(courier_name = "Lalamove", courierService = mutableListOf(
+            CourierServiceList(service_name = "Motorcycle", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "MPV", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Van", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Truck", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
+        )))
+        listOfCourier.add(CourierList(courier_name = "Rara Delivery", courierService = mutableListOf(
+            CourierServiceList(service_name = "Instant", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true)
+        )))
+        listOfCourier.add(CourierList(courier_name = "Mr. Speedy", courierService = mutableListOf(
+            CourierServiceList(service_name = "Instant Bike", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
+            CourierServiceList(service_name = "Instant Car", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
+        )))
+
+        setCourierList(listOfCourier)
+    }
+
 }

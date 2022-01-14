@@ -172,6 +172,9 @@
         android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.ShipmentAddAddressDetailFragment"
         android:label="fragment_shipment_add_address_detail"
         tools:layout="@layout/fragment_shipment_add_address_detail">
+        <action
+            android:id="@+id/fromShipmentAddAddress_navigateTo_merchantGetLocationFragment"
+            app:destination="@id/merchantGetLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/merchantGetLocationFragment"

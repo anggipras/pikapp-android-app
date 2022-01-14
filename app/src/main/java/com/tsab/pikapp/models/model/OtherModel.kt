@@ -136,7 +136,7 @@ data class UploadResult(
         var filename: List<String>
 )
 
-//SHIPMENT MANAGEMENT SETTINGS
+//SHIPMENT MANAGEMENT SETTINGS ------- //
 data class CurrentLatLng(
         val latitude: Double,
         val longitude: Double,
@@ -210,4 +210,15 @@ data class PlusCode (
         val compoundCode: String?,
         @SerializedName("global_code")
         val globalCode: String?
+)
+
+data class CourierList(
+        var courier_name: String?,
+        var courierService: MutableList<CourierServiceList>
+)
+
+data class CourierServiceList(
+        var service_name: String?,
+        var service_desc: String?,
+        var service_type: Boolean
 )

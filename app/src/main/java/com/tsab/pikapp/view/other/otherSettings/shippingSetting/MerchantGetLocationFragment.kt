@@ -39,6 +39,10 @@ class MerchantGetLocationFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.navigateTo_merchantFindLocationFragment)
         }
 
+        dataBinding.nextButton.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.navigateTo_shipmentAddAddressDetailFragment)
+        }
+
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
 
         mapFragment.getMapAsync { map ->
