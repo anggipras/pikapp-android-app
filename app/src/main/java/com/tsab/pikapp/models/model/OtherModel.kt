@@ -212,13 +212,127 @@ data class PlusCode (
         val globalCode: String?
 )
 
+//COURIER LIST
+data class CourierListResponse(
+        val err_code: String?,
+        val err_message: String?,
+        val result: MutableList<CourierList>
+)
+
 data class CourierList(
-        var courier_name: String?,
-        var courierService: MutableList<CourierServiceList>
+        var courier_image: String?,
+        var courier_name: String,
+        var services_list: MutableList<CourierServiceList>
 )
 
 data class CourierServiceList(
-        var service_name: String?,
-        var service_desc: String?,
-        var service_type: Boolean
+        var courier_services_code: String?,
+        var courier_services_name: String?,
+        var description: String?,
+        var courier_services_type: Boolean = true
+)
+
+//REQUEST SUBMIT DATA SHIPMENT
+data class SubmitDataShipmentResponse (
+        val err_code: String?,
+        val err_message: String?,
+        val result: String?
+)
+
+data class RequestMerchantShipment (
+        val merchant_address: String,
+        val latitude: String,
+        val longtitude: String,
+        val postal_code: String,
+        val subdistrict_name: String,
+        val province: String,
+        val shipping_available: Boolean,
+        val courier: MutableList<Courier>
+)
+
+data class Courier (
+        val gojek: Gojek,
+        val grab: Grab,
+        val lalamove: Lalamove,
+        val mr_speedy: MrSpeedy,
+        val paxel: Paxel,
+        val rara: Rara
+)
+
+data class Gojek (
+        @SerializedName("gojek_main")
+        var gojek_main: Boolean,
+
+        @SerializedName("instant_services")
+        var instant_services: Boolean,
+
+        @SerializedName("same_day_services")
+        var same_day_services: Boolean
+)
+
+data class Grab (
+        @SerializedName("grab_main")
+        var grab_main: Boolean,
+
+        @SerializedName("instant_services")
+        var instant_services: Boolean,
+
+        @SerializedName("same_day_services")
+        var same_day_services: Boolean,
+
+        @SerializedName("instant_car_services")
+        var instant_car_services: Boolean
+)
+
+data class Lalamove (
+        @SerializedName("lalamove_main")
+        var lalamove_main: Boolean,
+
+        @SerializedName("motor_services")
+        var motor_services: Boolean,
+
+        @SerializedName("mpv_services")
+        var mpv_services: Boolean,
+
+        @SerializedName("truck_services")
+        var truck_services: Boolean,
+
+        @SerializedName("van_services")
+        var van_services: Boolean
+)
+
+data class MrSpeedy (
+        @SerializedName("mr_speedy_main")
+        var mr_speedy_main: Boolean,
+
+        @SerializedName("car_services")
+        var car_services: Boolean,
+
+        @SerializedName("bike_services")
+        var bike_services: Boolean
+)
+
+data class Paxel (
+        @SerializedName("paxel_main")
+        var paxel_main: Boolean,
+
+        @SerializedName("big_services")
+        var big_services: Boolean,
+
+        @SerializedName("large_services")
+        var large_services: Boolean,
+
+        @SerializedName("medium_services")
+        var medium_services: Boolean,
+
+        @SerializedName("small_services")
+        var small_services: Boolean
+)
+
+data class Rara (
+        @SerializedName("rara_main")
+        var rara_main: Boolean,
+
+        @SerializedName("instant_services")
+        var instant_services: Boolean
 )

@@ -175,6 +175,9 @@
         <action
             android:id="@+id/fromShipmentAddAddress_navigateTo_merchantGetLocationFragment"
             app:destination="@id/merchantGetLocationFragment" />
+        <action
+            android:id="@+id/fromShipmentAddAddress_navigateTo_settingFragment"
+            app:popUpTo="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/merchantGetLocationFragment"

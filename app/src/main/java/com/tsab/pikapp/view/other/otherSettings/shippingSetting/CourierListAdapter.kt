@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.other.otherSettings.shippingSetting
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,15 @@ import com.tsab.pikapp.models.model.CourierList
 import com.tsab.pikapp.models.model.CourierServiceList
 
 class CourierListAdapter(
-    private val context: Context
+    private val context: Context,
+    private val listener: CourierServiceListAdapter.OnCheckListener
 ) : RecyclerView.Adapter<CourierListAdapter.ViewHolder>() {
     private var listOfCourier: MutableList<CourierList> = ArrayList()
     lateinit var linearLayoutManager: LinearLayoutManager
 
     fun setCourierListAdapter(courierList: MutableList<CourierList>) {
         this.listOfCourier = courierList
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,16 +35,20 @@ class CourierListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.courierName.text = listOfCourier[position].courier_name
-        setCourierServiceList(holder.courierServiceList, listOfCourier[position].courierService)
+        setCourierServiceList(holder.courierServiceList, listOfCourier[position].services_list, listOfCourier.indexOf(listOfCourier[position]))
     }
 
     override fun getItemCount(): Int = listOfCourier.size
 
-    private fun setCourierServiceList(recyclerView: RecyclerView, courierService: MutableList<CourierServiceList>) {
+    private fun setCourierServiceList(
+        recyclerView: RecyclerView,
+        courierService: MutableList<CourierServiceList>,
+        courierNameIndex: Int
+    ) {
         linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(false)
-        var courierServiceList = CourierServiceListAdapter(courierService)
+        var courierServiceList = CourierServiceListAdapter(courierService, listener, courierNameIndex)
         recyclerView.adapter = courierServiceList
     }
 }

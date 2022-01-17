@@ -1,17 +1,26 @@
 package com.tsab.pikapp.viewmodel.other
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.LayoutLoadingOverlayBinding
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -20,6 +29,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.profile_gender_dialog.view.*
+import kotlinx.android.synthetic.main.second_alert_dialog.view.*
 import retrofit2.*
 import retrofit2.Response
 import java.util.*
@@ -447,36 +458,230 @@ class OtherSettingViewModel : ViewModel() {
         liveDataCourierList.value = courierList
     }
 
+    fun getCourierList(loadingOverlay: LayoutLoadingOverlayBinding) {
+        loadingOverlay.loadingView.isVisible = true
+        disposable.add(
+            PikappApiService().shipmentApi.getCourierList()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<CourierListResponse>() {
+                    override fun onSuccess(t: CourierListResponse) {
+                        val listOfCourier: MutableList<CourierList> = ArrayList()
+                        listOfCourier.addAll(t.result)
+                        listOfCourier.forEach { courierName ->
+                            courierName.services_list.forEach { courierService ->
+                                courierService.courier_services_type = true
+                            }
+                        }
+                        setCourierList(listOfCourier)
+                        loadingOverlay.loadingView.isVisible = false
+                    }
+
+                    override fun onError(e: Throwable) {
+                        TODO("Not yet implemented")
+                        loadingOverlay.loadingView.isVisible = false
+                    }
+
+                })
+        )
+    }
+
+    fun changeCourierService(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean) {
+        liveDataCourierList.value!![courierNameIndex].services_list[courierServiceIndex].courier_services_type = isChecked
+    }
+
+    fun submitShipmentData(view: View, loadingOverlay: LayoutLoadingOverlayBinding) {
+        val mappedCourierData: MutableList<Courier> = ArrayList()
+        val gojekTemplate = Gojek(gojek_main = true, instant_services = true, same_day_services = true)
+        val grabTemplate = Grab(grab_main = true, instant_services = true, same_day_services = true, instant_car_services = true)
+        val paxelTemplate = Paxel(paxel_main = true, big_services = true, large_services = true, medium_services = true, small_services = true)
+        val lalamoveTemplate = Lalamove(lalamove_main = true, motor_services = true, mpv_services = true, truck_services = true, van_services = true)
+        val raraTemplate = Rara(rara_main = true, instant_services = true)
+        val mrspeedyTemplate = MrSpeedy(mr_speedy_main = true, car_services = true, bike_services = true)
+        liveDataCourierList.value?.forEach { courierName ->
+            when(courierName.courier_name) {
+                "Gojek" -> {
+                    var countService = 0
+                    courierName.services_list.forEach { courierService ->
+                        if (courierService.courier_services_type) {
+                            countService++
+                        }
+
+                        when(courierService.courier_services_code) {
+                            "instant" ->gojekTemplate.instant_services = courierService.courier_services_type
+                            else -> gojekTemplate.same_day_services = courierService.courier_services_type
+                        }
+                    }
+                    gojekTemplate.gojek_main = countService > 0
+                }
+                "Grab" -> {
+                    var countService = 0
+                    courierName.services_list.forEach { courierService ->
+                        if (courierService.courier_services_type) {
+                            countService++
+                        }
+
+                        when(courierService.courier_services_code) {
+                            "instant" -> grabTemplate.instant_services = courierService.courier_services_type
+                            "same_day" -> grabTemplate.same_day_services = courierService.courier_services_type
+                            else -> grabTemplate.instant_car_services = courierService.courier_services_type
+                        }
+                    }
+                    grabTemplate.grab_main = countService > 0
+                }
+                "Paxel" -> {
+                    var countService = 0
+                    courierName.services_list.forEach { courierService ->
+                        if (courierService.courier_services_type) {
+                            countService++
+                        }
+
+                        when(courierService.courier_services_code) {
+                            "small" -> paxelTemplate.small_services = courierService.courier_services_type
+                            "medium" -> paxelTemplate.medium_services = courierService.courier_services_type
+                            "large" -> paxelTemplate.large_services = courierService.courier_services_type
+                            else -> paxelTemplate.big_services = courierService.courier_services_type
+                        }
+                    }
+                    paxelTemplate.paxel_main = countService > 0
+                }
+                "Lalamove" -> {
+                    var countService = 0
+                    courierName.services_list.forEach { courierService ->
+                        if (courierService.courier_services_type) {
+                            countService++
+                        }
+
+                        when(courierService.courier_services_code) {
+                            "motorcycle" -> lalamoveTemplate.motor_services = courierService.courier_services_type
+                            "mpv" -> lalamoveTemplate.mpv_services = courierService.courier_services_type
+                            "van" -> lalamoveTemplate.van_services = courierService.courier_services_type
+                            else -> lalamoveTemplate.truck_services = courierService.courier_services_type
+                        }
+                    }
+                    lalamoveTemplate.lalamove_main = countService > 0
+                }
+                "Rara Delivery" -> {
+                    var countService = 0
+                    courierName.services_list.forEach { courierService ->
+                        if (courierService.courier_services_type) {
+                            countService++
+                        }
+
+                        raraTemplate.instant_services = courierService.courier_services_type
+                    }
+                    raraTemplate.rara_main = countService > 0
+                }
+                "Mr Speedy" -> {
+                    var countService = 0
+                    courierName.services_list.forEach { courierService ->
+                        if (courierService.courier_services_type) {
+                            countService++
+                        }
+
+                        when(courierService.courier_services_code) {
+                            "instant_bike" -> mrspeedyTemplate.bike_services = courierService.courier_services_type
+                            else -> mrspeedyTemplate.car_services = courierService.courier_services_type
+                        }
+                    }
+                    mrspeedyTemplate.mr_speedy_main = countService > 0
+                }
+            }
+        }
+        mappedCourierData.add(Courier(gojek = gojekTemplate, grab = grabTemplate, paxel = paxelTemplate, lalamove = lalamoveTemplate, rara = raraTemplate, mr_speedy = mrspeedyTemplate))
+        val reqMerchShipment = RequestMerchantShipment(
+            merchant_address = sessionManager.getMerchantProfile()?.address!!,
+            latitude = currentLatLng.value?.latitude.toString(),
+            longtitude = currentLatLng.value?.longitude.toString(),
+            postal_code = addressLocation.value?.get(0)?.postalCode!!,
+            subdistrict_name = addressLocation.value?.get(0)?.locality!!,
+            province = addressLocation.value?.get(0)?.adminArea!!,
+            shipping_available = shippingMode.value ?: false,
+            courier = mappedCourierData
+        )
+
+        loadingOverlay.loadingView.isVisible = true
+        val mid = sessionManager.getUserData()!!.mid!!
+        disposable.add(
+            PikappApiService().shipmentApi.submitMerchantShipment(mid, reqMerchShipment)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<SubmitDataShipmentResponse>() {
+                    override fun onSuccess(t: SubmitDataShipmentResponse) {
+                        Log.e("SUCCEED", t.result.toString())
+                        loadingOverlay.loadingView.isVisible = false
+                        Navigation.findNavController(view).navigate(R.id.fromShipmentAddAddress_navigateTo_settingFragment)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("ERROR", e.message.toString())
+                        loadingOverlay.loadingView.isVisible = false
+                    }
+                })
+        )
+    }
+
+    fun openSubmitDialog(
+        activity: Activity,
+        view: View,
+        loadingOverlay: LayoutLoadingOverlayBinding
+    ) {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.second_alert_dialog, null)
+        val mBuilder = AlertDialog.Builder(activity)
+            .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.getWindow()?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
+        )
+        mDialogView.second_dialog_text.text = "Anda yakin ingin menyimpan informasi terkait pengiriman?"
+
+        mDialogView.second_dialog_back.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mDialogView.second_dialog_close.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mDialogView.second_dialog_ok.setOnClickListener {
+            mAlertDialog.dismiss()
+            submitShipmentData(view, loadingOverlay)
+        }
+    }
+
+    // DUMMY DATA
     fun setDummyCourierList() {
         val listOfCourier: MutableList<CourierList> = ArrayList()
-        listOfCourier.add(CourierList(courier_name = "Gojek", courierService = mutableListOf(
-            CourierServiceList(service_name = "Instant", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true)
-            )))
-        listOfCourier.add(CourierList(courier_name = "Grabsend", courierService = mutableListOf(
-            CourierServiceList(service_name = "Instant Bike", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Instant Car", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
-            )))
-        listOfCourier.add(CourierList(courier_name = "Paxel", courierService = mutableListOf(
-            CourierServiceList(service_name = "Small Package", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Medium Package", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Large Package", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Paxel Big", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
-            )))
-        listOfCourier.add(CourierList(courier_name = "Lalamove", courierService = mutableListOf(
-            CourierServiceList(service_name = "Motorcycle", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "MPV", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Van", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Truck", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_name = "Gojek", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "same_day", courier_services_name = "Same Day", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
         )))
-        listOfCourier.add(CourierList(courier_name = "Rara Delivery", courierService = mutableListOf(
-            CourierServiceList(service_name = "Instant", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_name = "Grab", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant Bike", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "same_day", courier_services_name = "Same Day", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "instant_car", courier_services_name = "Instant Car", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
         )))
-        listOfCourier.add(CourierList(courier_name = "Mr. Speedy", courierService = mutableListOf(
-            CourierServiceList(service_name = "Instant Bike", service_desc = "On Demand Instant (bike) (1-3 hours)", service_type = true),
-            CourierServiceList(service_name = "Instant Car", service_desc = "On Demand Instant (car) (1-3 hours)", service_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_name = "Paxel", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "small", courier_services_name = "Small Package", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "medium", courier_services_name = "Medium Package", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "large", courier_services_name = "Large Package", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "paxel_big", courier_services_name = "Paxel Big", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
+        )))
+        listOfCourier.add(CourierList(courier_image = null, courier_name = "Lalamove", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "motorcycle", courier_services_name = "Motorcycle", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "mpv", courier_services_name = "MPV", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "van", courier_services_name = "Van", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "truck", courier_services_name = "Truck", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
+        )))
+        listOfCourier.add(CourierList(courier_image = null, courier_name = "Rara Delivery", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true)
+        )))
+        listOfCourier.add(CourierList(courier_image = null, courier_name = "Mr Speedy", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant_bike", courier_services_name = "Instant Bike", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+            CourierServiceList(courier_services_code = "instant_car", courier_services_name = "Instant Car", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
         )))
 
         setCourierList(listOfCourier)
     }
-
 }

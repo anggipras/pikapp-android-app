@@ -1,6 +1,5 @@
 package com.tsab.pikapp.view.other.otherSettings.shippingSetting
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,9 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CourierServiceList
 
 class CourierServiceListAdapter(
-    private val courierService: MutableList<CourierServiceList>
+    private val courierService: MutableList<CourierServiceList>,
+    private val listener: OnCheckListener,
+    private val courierNameIndex: Int
 ) : RecyclerView.Adapter<CourierServiceListAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var courierServiceCheckBox: CheckBox = itemView.findViewById(R.id.courier_service_checkbox)
@@ -24,11 +25,19 @@ class CourierServiceListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.courierServiceCheckBox.text = courierService[position].service_name
-        holder.courierServiceDesc.text = courierService[position].service_desc
+        holder.courierServiceCheckBox.text = courierService[position].courier_services_name
+        holder.courierServiceDesc.text = courierService[position].description
 
-        holder.courierServiceCheckBox.isChecked = courierService[position].service_type
+
+        holder.courierServiceCheckBox.isChecked = courierService[position].courier_services_type
+        holder.courierServiceCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            listener.onCheckClick(courierNameIndex, courierService.indexOf(courierService[position]), isChecked)
+        }
     }
 
     override fun getItemCount(): Int = courierService.size
+
+    interface OnCheckListener {
+        fun onCheckClick(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean)
+    }
 }

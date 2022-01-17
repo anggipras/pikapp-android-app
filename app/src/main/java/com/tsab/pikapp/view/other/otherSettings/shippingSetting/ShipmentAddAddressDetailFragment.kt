@@ -3,7 +3,6 @@ package com.tsab.pikapp.view.other.otherSettings.shippingSetting
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +20,7 @@ import com.tsab.pikapp.util.PermissionUtils
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 
-class ShipmentAddAddressDetailFragment : Fragment() {
+class ShipmentAddAddressDetailFragment : Fragment(), CourierServiceListAdapter.OnCheckListener {
     private lateinit var dataBinding: FragmentShipmentAddAddressDetailBinding
     private val viewModel: OtherSettingViewModel by activityViewModels()
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -42,7 +41,10 @@ class ShipmentAddAddressDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setDummyCourierList()
+        initRecyclerView()
+        initViewModel()
+
+        viewModel.getCourierList(dataBinding.loadingOverlay)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -58,14 +60,15 @@ class ShipmentAddAddressDetailFragment : Fragment() {
             }
         }
 
+        dataBinding.selectLocationText.text = viewModel.addressLocation.value?.get(0)?.getAddressLine(0)
         dataBinding.postalCodeContent.text = viewModel.addressLocation.value?.get(0)?.postalCode
         dataBinding.addressShippingDetail.text = sessionManager.getMerchantProfile()?.address
         dataBinding.switchShippingMode.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setShippingMode(isChecked)
         }
-
-        initRecyclerView()
-        initViewModel()
+        dataBinding.nextButton.setOnClickListener {
+            viewModel.openSubmitDialog(requireActivity(), view, dataBinding.loadingOverlay)
+        }
     }
 
     private fun initViewModel() {
@@ -78,7 +81,7 @@ class ShipmentAddAddressDetailFragment : Fragment() {
 
     private fun initRecyclerView() {
         dataBinding.recyclerviewCourierChoice.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerAdapter = CourierListAdapter(requireContext())
+        recyclerAdapter = CourierListAdapter(requireContext(), this)
         dataBinding.recyclerviewCourierChoice.adapter = recyclerAdapter
     }
 
@@ -102,5 +105,9 @@ class ShipmentAddAddressDetailFragment : Fragment() {
                 view?.let { v -> Navigation.findNavController(v).navigate(R.id.fromShipmentAddAddress_navigateTo_merchantGetLocationFragment) }
             }
         }
+    }
+
+    override fun onCheckClick(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean) {
+        viewModel.changeCourierService(courierNameIndex, courierServiceIndex, isChecked)
     }
 }

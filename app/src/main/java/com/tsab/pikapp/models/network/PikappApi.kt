@@ -633,12 +633,24 @@ interface PikappApi {
         @Body search: SearchRequest
     ): Call<SearchResponse>
 
+    // SHIPMENT SETTINGS
     // GET LIST OF GOOGLE PLACES
     @GET("place/textsearch/json")
     fun getListOfPlaces(
         @Query("query") query: String?,
         @Query("key") key: String,
     ): Single<GooglePlacesResponse>
+
+    // Get Courier List
+    @GET("merchant/courier-list/")
+    fun getCourierList(): Single<CourierListResponse>
+
+    // Submit merchant shipment data for the first time
+    @POST("/api/submit-data/{mid}")
+    fun submitMerchantShipment(
+        @Path("mid") mid: String,
+        @Body requestMerchantShipment: RequestMerchantShipment
+    ): Single<SubmitDataShipmentResponse>
 
     // Omnichannel integration
     @GET("channel/v1/channel-integration/list/")
