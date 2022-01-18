@@ -210,7 +210,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                         }
                                     }
                                 }
-                                setProgressLoading(false)
                                 mutableProcessSize.value = processList.size
                                 mutableDoneSize.value = doneList.size
                                 mutableCancelSize.value = cancelList.size
@@ -490,45 +489,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         })
     }
 
-    fun restartFragment() {
-        mutablePikappFilter.value = false
-        mutableTokpedFilter.value = false
-        mutableGrabFilter.value = false
-        mutableShopeeFilter.value = false
-        mutableWhatsappFilter.value = false
-        mutableTelpFilter.value = false
-
-        mutableProcessSize.value = 0
-        mutableDoneSize.value = 0
-        mutableCancelSize.value = 0
-
-        liveDataTransListV2Process.value = arrayListOf()
-        liveDataTransListV2ProcessFilter.value = arrayListOf()
-        liveDataTransListV2Done.value = arrayListOf()
-        liveDataTransListV2Cancel.value = arrayListOf()
-    }
-
-    /* ADDITION FOR DUMMY TESTING */
-    private fun readJson(context: Context, fileName: String): String? {
-        var jsonString: String
-
-        try {
-            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return null
-        }
-        return jsonString
-    }
-
-    fun mapListData(context: Context, fileName: String) {
-        val theJson = readJson(context, fileName)
-        val gson = Gson()
-        val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
-        var theTransactionListV2: List<TransactionListV2Response> = gson.fromJson(theJson, listTransac)
-    }
-
-    /* FOR TESTING */
     fun getBadgesTransactionV2List(context: Context) {
         var mid = sessionManager.getUserData()?.mid
         var size = 100
@@ -617,9 +577,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
-        var mid = sessionManager.getUserData()?.mid
-        var size = 100
-        var page = 0
+        val mid = sessionManager.getUserData()?.mid
+        val size = 100
+        val page = 0
 
         viewModelScope.launch {
             try {
@@ -663,6 +623,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 liveDataTransListV2Process.postValue(processList)
                                 setProgressLoading(false)
                                 setProgressDialog(false, context)
+                            } else {
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
                             }
                         }
                     }
@@ -685,9 +648,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
-        var mid = sessionManager.getUserData()?.mid
-        var size = 100
-        var page = 0
+        val mid = sessionManager.getUserData()?.mid
+        val size = 100
+        val page = 0
 
         viewModelScope.launch {
             try {
@@ -731,6 +694,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 liveDataTransListV2Done.postValue(doneList)
                                 setProgressLoading(false)
                                 setProgressDialog(false, context)
+                            } else {
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
                             }
                         }
                     }
@@ -753,9 +719,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
-        var mid = sessionManager.getUserData()?.mid
-        var size = 100
-        var page = 0
+        val mid = sessionManager.getUserData()?.mid
+        val size = 100
+        val page = 0
 
         viewModelScope.launch {
             try {
@@ -797,6 +763,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 liveDataTransListV2Cancel.postValue(cancelList)
                                 setProgressLoading(false)
                                 setProgressDialog(false, context)
+                            } else {
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
                             }
                         }
                     }
@@ -812,5 +781,43 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 Log.e("ERROR", e.message.toString())
             }
         }
+    }
+
+    fun restartFragment() {
+        mutablePikappFilter.value = false
+        mutableTokpedFilter.value = false
+        mutableGrabFilter.value = false
+        mutableShopeeFilter.value = false
+        mutableWhatsappFilter.value = false
+        mutableTelpFilter.value = false
+
+        mutableProcessSize.value = 0
+        mutableDoneSize.value = 0
+        mutableCancelSize.value = 0
+
+        liveDataTransListV2Process.value = arrayListOf()
+        liveDataTransListV2ProcessFilter.value = arrayListOf()
+        liveDataTransListV2Done.value = arrayListOf()
+        liveDataTransListV2Cancel.value = arrayListOf()
+    }
+
+    /* ADDITION FOR DUMMY TESTING */
+    private fun readJson(context: Context, fileName: String): String? {
+        var jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
+    }
+
+    fun mapListData(context: Context, fileName: String) {
+        val theJson = readJson(context, fileName)
+        val gson = Gson()
+        val listTransac = object : TypeToken<List<TransactionListV2Response>>() {}.type
+        var theTransactionListV2: List<TransactionListV2Response> = gson.fromJson(theJson, listTransac)
     }
 }

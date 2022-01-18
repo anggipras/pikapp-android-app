@@ -41,6 +41,10 @@ class MerchantAddShipmentFragment : Fragment() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.shipping_title)
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_merchantAddShipmentFragment_to_settingFragment)
+            viewModel.setFirstEnterEdit(false)
+        }
         dataBinding.nextButton.setOnClickListener {
             when {
                 PermissionUtils.isLocationEnabled(requireContext()) -> {

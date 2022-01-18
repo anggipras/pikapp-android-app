@@ -137,6 +137,38 @@ data class UploadResult(
 )
 
 //SHIPMENT MANAGEMENT SETTINGS ------- //
+//Check Shipment Condition
+data class ShipmentConditionResponse (
+        val err_code: String?,
+        val err_message: String?,
+        val result: List<AddressConditionResult>
+)
+
+data class AddressConditionResult (
+        val postal_code: Boolean,
+        val province: Boolean,
+        val subdistrict_name: Boolean
+)
+
+//GET MERCHANT LOCATION AND DELIVERY OPTIONS DATA
+data class MerchantShipmentDataResponse(
+        val err_code: String?,
+        val err_message: String?,
+        val result: MerchantShipmentDataResult
+)
+
+data class MerchantShipmentDataResult(
+        val address: String,
+        val courier: MutableList<CourierList>,
+        val latitude: String,
+        val longitude: String,
+        val postal_code: String,
+        val province: String,
+        val shipping_available: Boolean,
+        val subdistrict_name: String,
+)
+
+//Latitude Longitude Template
 data class CurrentLatLng(
         val latitude: Double,
         val longitude: Double,
@@ -222,6 +254,7 @@ data class CourierListResponse(
 data class CourierList(
         var courier_image: String?,
         var courier_name: String,
+        var courier_main: Boolean?,
         var services_list: MutableList<CourierServiceList>
 )
 
@@ -229,7 +262,7 @@ data class CourierServiceList(
         var courier_services_code: String?,
         var courier_services_name: String?,
         var description: String?,
-        var courier_services_type: Boolean = true
+        var courier_service_type: Boolean
 )
 
 //REQUEST SUBMIT DATA SHIPMENT
@@ -242,7 +275,7 @@ data class SubmitDataShipmentResponse (
 data class RequestMerchantShipment (
         val merchant_address: String,
         val latitude: String,
-        val longtitude: String,
+        val longitude: String,
         val postal_code: String,
         val subdistrict_name: String,
         val province: String,

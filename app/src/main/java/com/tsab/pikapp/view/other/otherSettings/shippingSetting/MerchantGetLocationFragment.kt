@@ -35,12 +35,19 @@ class MerchantGetLocationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.shipping_title)
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
+            Navigation.findNavController(view).navigateUp()
+        }
         dataBinding.searchLocation.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.navigateTo_merchantFindLocationFragment)
         }
 
         dataBinding.nextButton.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.navigateTo_shipmentAddAddressDetailFragment)
+            if (viewModel.editOrAddShipment.value == true) {
+                Navigation.findNavController(view).popBackStack()
+            } else {
+                Navigation.findNavController(view).navigate(R.id.navigateTo_shipmentAddAddressDetailFragment)
+            }
         }
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map_view) as SupportMapFragment
@@ -84,6 +91,7 @@ class MerchantGetLocationFragment : Fragment() {
 
                     val currentLatLng = CurrentLatLng(latitude = newPosition.latitude, longitude = newPosition.longitude)
                     viewModel.setAddressLocation(requireContext(), currentLatLng)
+                    viewModel.setCurrentLocation(currentLatLng)
                 } else {
                     val viewModelPosition = LatLng(viewModel.currentLatLng.value!!.latitude, viewModel.currentLatLng.value!!.longitude)
                     if (viewModelPosition != oldPosition) {
@@ -95,6 +103,7 @@ class MerchantGetLocationFragment : Fragment() {
 
                         val currentLatLng = CurrentLatLng(latitude = viewModel.currentLatLng.value!!.latitude, longitude = viewModel.currentLatLng.value!!.longitude)
                         viewModel.setAddressLocation(requireContext(), currentLatLng)
+                        viewModel.setCurrentLocation(currentLatLng)
                     }
                 }
             }

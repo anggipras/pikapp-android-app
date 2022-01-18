@@ -11,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,7 +31,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.profile_gender_dialog.view.*
 import kotlinx.android.synthetic.main.second_alert_dialog.view.*
 import retrofit2.*
 import retrofit2.Response
@@ -400,6 +401,18 @@ class OtherSettingViewModel : ViewModel() {
     }
 
     /* SHIPPING SETTINGS ------- */
+    private val mutableEditOrAddShipment = MutableLiveData<Boolean>()
+    val editOrAddShipment: LiveData<Boolean> = mutableEditOrAddShipment
+    fun setEditOrAddShipment(bool: Boolean) {
+        mutableEditOrAddShipment.value = bool
+    }
+
+    private val mutableFirstEnterEdit = MutableLiveData<Boolean>()
+    val firstEnterEdit: LiveData<Boolean> = mutableFirstEnterEdit
+    fun setFirstEnterEdit(bool: Boolean) {
+        mutableFirstEnterEdit.value = bool
+    }
+
     private val mutableShippingMode = MutableLiveData<Boolean>()
     val shippingMode: LiveData<Boolean> = mutableShippingMode
     fun setShippingMode(act: Boolean) {
@@ -418,6 +431,105 @@ class OtherSettingViewModel : ViewModel() {
         val gcd = Geocoder(context, Locale.getDefault())
         val addresses: List<Address> = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1)
         mutableAddressLocation.value = addresses
+        setPostalCode(addresses[0].postalCode)
+    }
+
+    private val mutablePostalCode = MutableLiveData<String?>()
+    val postalCode: LiveData<String?> = mutablePostalCode
+    fun setPostalCode(postalCd: String?) {
+        mutablePostalCode.value = postalCd
+    }
+
+    fun checkMerchantShipmentCondition(
+        context: Context,
+        view: View,
+        nestedShipmentLayout: NestedScrollView,
+        shipmentButtonSection: ConstraintLayout,
+        loadingOverlay: LayoutLoadingOverlayBinding,
+    ) {
+        nestedShipmentLayout.isVisible = false
+        shipmentButtonSection.isVisible = false
+        loadingOverlay.loadingView.isVisible = true
+        val mid = sessionManager.getUserData()!!.mid!!
+        disposable.add(
+            PikappApiService().shipmentApi.checkShipmentCondition(mid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<ShipmentConditionResponse>() {
+                    override fun onSuccess(t: ShipmentConditionResponse) {
+                        t.result.let {
+                            val checkResult = t.result[0]
+                            if (checkResult.postal_code) {
+                                setEditOrAddShipment(true)
+                                if (firstEnterEdit.value == true) {
+                                    nestedShipmentLayout.isVisible = true
+                                    shipmentButtonSection.isVisible = true
+                                    loadingOverlay.loadingView.isVisible = false
+                                } else {
+                                    getMerchantShipment(context, nestedShipmentLayout, shipmentButtonSection, loadingOverlay)
+                                    setFirstEnterEdit(true)
+                                }
+                            } else {
+                                setEditOrAddShipment(false)
+                                loadingOverlay.loadingView.isVisible = false
+                                Navigation.findNavController(view).navigate(R.id.navigateTo_merchantAddShipmentFragment)
+                            }
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("ERROR", e.message.toString())
+                        loadingOverlay.loadingView.isVisible = false
+                    }
+
+                })
+        )
+    }
+
+    fun getMerchantShipment(
+        context: Context,
+        nestedShipmentLayout: NestedScrollView,
+        shipmentButtonSection: ConstraintLayout,
+        loadingOverlay: LayoutLoadingOverlayBinding
+    ) {
+        val mid = sessionManager.getUserData()!!.mid!!
+        disposable.add(
+            PikappApiService().shipmentApi.getMerchantShipment(mid)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<MerchantShipmentDataResponse>() {
+                    override fun onSuccess(t: MerchantShipmentDataResponse) {
+                        val theResult = t.result
+                        val currentLatLng = CurrentLatLng(latitude = theResult.latitude.toDouble(), longitude = theResult.longitude.toDouble())
+
+                        /* set longlat from database */
+                        setCurrentLocation(currentLatLng)
+
+                        /* set longlat to be extracted */
+                        setAddressLocation(context, currentLatLng)
+
+                        /* set shipping mode */
+                        setShippingMode(theResult.shipping_available)
+
+                        /* set postal code */
+                        setPostalCode(theResult.postal_code)
+
+                        /* set courier list to be shown */
+                        setCourierList(theResult.courier)
+
+                        /* final change the view to show */
+                        nestedShipmentLayout.isVisible = true
+                        shipmentButtonSection.isVisible = true
+                        loadingOverlay.loadingView.isVisible = false
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("ERROR", e.message.toString())
+                        loadingOverlay.loadingView.isVisible = false
+                    }
+
+                })
+        )
     }
 
     //GET LIST GOOGLE PLACE
@@ -470,7 +582,7 @@ class OtherSettingViewModel : ViewModel() {
                         listOfCourier.addAll(t.result)
                         listOfCourier.forEach { courierName ->
                             courierName.services_list.forEach { courierService ->
-                                courierService.courier_services_type = true
+                                courierService.courier_service_type = true
                             }
                         }
                         setCourierList(listOfCourier)
@@ -478,7 +590,7 @@ class OtherSettingViewModel : ViewModel() {
                     }
 
                     override fun onError(e: Throwable) {
-                        TODO("Not yet implemented")
+                        Log.e("ERROR", e.message.toString())
                         loadingOverlay.loadingView.isVisible = false
                     }
 
@@ -487,10 +599,10 @@ class OtherSettingViewModel : ViewModel() {
     }
 
     fun changeCourierService(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean) {
-        liveDataCourierList.value!![courierNameIndex].services_list[courierServiceIndex].courier_services_type = isChecked
+        liveDataCourierList.value!![courierNameIndex].services_list[courierServiceIndex].courier_service_type = isChecked
     }
 
-    fun submitShipmentData(view: View, loadingOverlay: LayoutLoadingOverlayBinding) {
+    private fun submitShipmentData(view: View, loadingOverlay: LayoutLoadingOverlayBinding) {
         val mappedCourierData: MutableList<Courier> = ArrayList()
         val gojekTemplate = Gojek(gojek_main = true, instant_services = true, same_day_services = true)
         val grabTemplate = Grab(grab_main = true, instant_services = true, same_day_services = true, instant_car_services = true)
@@ -503,13 +615,13 @@ class OtherSettingViewModel : ViewModel() {
                 "Gojek" -> {
                     var countService = 0
                     courierName.services_list.forEach { courierService ->
-                        if (courierService.courier_services_type) {
+                        if (courierService.courier_service_type) {
                             countService++
                         }
 
                         when(courierService.courier_services_code) {
-                            "instant" ->gojekTemplate.instant_services = courierService.courier_services_type
-                            else -> gojekTemplate.same_day_services = courierService.courier_services_type
+                            "instant" ->gojekTemplate.instant_services = courierService.courier_service_type
+                            else -> gojekTemplate.same_day_services = courierService.courier_service_type
                         }
                     }
                     gojekTemplate.gojek_main = countService > 0
@@ -517,14 +629,14 @@ class OtherSettingViewModel : ViewModel() {
                 "Grab" -> {
                     var countService = 0
                     courierName.services_list.forEach { courierService ->
-                        if (courierService.courier_services_type) {
+                        if (courierService.courier_service_type) {
                             countService++
                         }
 
                         when(courierService.courier_services_code) {
-                            "instant" -> grabTemplate.instant_services = courierService.courier_services_type
-                            "same_day" -> grabTemplate.same_day_services = courierService.courier_services_type
-                            else -> grabTemplate.instant_car_services = courierService.courier_services_type
+                            "instant" -> grabTemplate.instant_services = courierService.courier_service_type
+                            "same_day" -> grabTemplate.same_day_services = courierService.courier_service_type
+                            else -> grabTemplate.instant_car_services = courierService.courier_service_type
                         }
                     }
                     grabTemplate.grab_main = countService > 0
@@ -532,15 +644,15 @@ class OtherSettingViewModel : ViewModel() {
                 "Paxel" -> {
                     var countService = 0
                     courierName.services_list.forEach { courierService ->
-                        if (courierService.courier_services_type) {
+                        if (courierService.courier_service_type) {
                             countService++
                         }
 
                         when(courierService.courier_services_code) {
-                            "small" -> paxelTemplate.small_services = courierService.courier_services_type
-                            "medium" -> paxelTemplate.medium_services = courierService.courier_services_type
-                            "large" -> paxelTemplate.large_services = courierService.courier_services_type
-                            else -> paxelTemplate.big_services = courierService.courier_services_type
+                            "small" -> paxelTemplate.small_services = courierService.courier_service_type
+                            "medium" -> paxelTemplate.medium_services = courierService.courier_service_type
+                            "large" -> paxelTemplate.large_services = courierService.courier_service_type
+                            else -> paxelTemplate.big_services = courierService.courier_service_type
                         }
                     }
                     paxelTemplate.paxel_main = countService > 0
@@ -548,15 +660,15 @@ class OtherSettingViewModel : ViewModel() {
                 "Lalamove" -> {
                     var countService = 0
                     courierName.services_list.forEach { courierService ->
-                        if (courierService.courier_services_type) {
+                        if (courierService.courier_service_type) {
                             countService++
                         }
 
                         when(courierService.courier_services_code) {
-                            "motorcycle" -> lalamoveTemplate.motor_services = courierService.courier_services_type
-                            "mpv" -> lalamoveTemplate.mpv_services = courierService.courier_services_type
-                            "van" -> lalamoveTemplate.van_services = courierService.courier_services_type
-                            else -> lalamoveTemplate.truck_services = courierService.courier_services_type
+                            "motorcycle" -> lalamoveTemplate.motor_services = courierService.courier_service_type
+                            "mpv" -> lalamoveTemplate.mpv_services = courierService.courier_service_type
+                            "van" -> lalamoveTemplate.van_services = courierService.courier_service_type
+                            else -> lalamoveTemplate.truck_services = courierService.courier_service_type
                         }
                     }
                     lalamoveTemplate.lalamove_main = countService > 0
@@ -564,24 +676,24 @@ class OtherSettingViewModel : ViewModel() {
                 "Rara Delivery" -> {
                     var countService = 0
                     courierName.services_list.forEach { courierService ->
-                        if (courierService.courier_services_type) {
+                        if (courierService.courier_service_type) {
                             countService++
                         }
 
-                        raraTemplate.instant_services = courierService.courier_services_type
+                        raraTemplate.instant_services = courierService.courier_service_type
                     }
                     raraTemplate.rara_main = countService > 0
                 }
                 "Mr Speedy" -> {
                     var countService = 0
                     courierName.services_list.forEach { courierService ->
-                        if (courierService.courier_services_type) {
+                        if (courierService.courier_service_type) {
                             countService++
                         }
 
                         when(courierService.courier_services_code) {
-                            "instant_bike" -> mrspeedyTemplate.bike_services = courierService.courier_services_type
-                            else -> mrspeedyTemplate.car_services = courierService.courier_services_type
+                            "instant_bike" -> mrspeedyTemplate.bike_services = courierService.courier_service_type
+                            else -> mrspeedyTemplate.car_services = courierService.courier_service_type
                         }
                     }
                     mrspeedyTemplate.mr_speedy_main = countService > 0
@@ -592,33 +704,57 @@ class OtherSettingViewModel : ViewModel() {
         val reqMerchShipment = RequestMerchantShipment(
             merchant_address = sessionManager.getMerchantProfile()?.address!!,
             latitude = currentLatLng.value?.latitude.toString(),
-            longtitude = currentLatLng.value?.longitude.toString(),
-            postal_code = addressLocation.value?.get(0)?.postalCode!!,
+            longitude = currentLatLng.value?.longitude.toString(),
+            postal_code = postalCode.value ?: "14045",
             subdistrict_name = addressLocation.value?.get(0)?.locality!!,
             province = addressLocation.value?.get(0)?.adminArea!!,
             shipping_available = shippingMode.value ?: false,
             courier = mappedCourierData
         )
+        Log.e("MAPCOURIER", mappedCourierData.toString())
 
         loadingOverlay.loadingView.isVisible = true
         val mid = sessionManager.getUserData()!!.mid!!
-        disposable.add(
-            PikappApiService().shipmentApi.submitMerchantShipment(mid, reqMerchShipment)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<SubmitDataShipmentResponse>() {
-                    override fun onSuccess(t: SubmitDataShipmentResponse) {
-                        Log.e("SUCCEED", t.result.toString())
-                        loadingOverlay.loadingView.isVisible = false
-                        Navigation.findNavController(view).navigate(R.id.fromShipmentAddAddress_navigateTo_settingFragment)
-                    }
 
-                    override fun onError(e: Throwable) {
-                        Log.e("ERROR", e.message.toString())
-                        loadingOverlay.loadingView.isVisible = false
-                    }
-                })
-        )
+        if (editOrAddShipment.value == true) { // EDIT TO UPDATE MERCHANT LOCATION AND DELIVERY OPTIONS
+            disposable.add(
+                PikappApiService().shipmentApi.updateMerchantShipment(mid, reqMerchShipment)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableSingleObserver<SubmitDataShipmentResponse>() {
+                        override fun onSuccess(t: SubmitDataShipmentResponse) {
+                            Log.e("UPDATE_SUCCEED", t.result.toString())
+                            loadingOverlay.loadingView.isVisible = false
+                            setFirstEnterEdit(false)
+                            Navigation.findNavController(view).navigateUp()
+                        }
+
+                        override fun onError(e: Throwable) {
+                            Log.e("UPDATE_ERROR", e.message.toString())
+                            loadingOverlay.loadingView.isVisible = false
+                        }
+                    })
+            )
+        } else { // ADD MERCHANT LOCATION AND DELIVERY OPTIONS
+            disposable.add(
+                PikappApiService().shipmentApi.submitMerchantShipment(mid, reqMerchShipment)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableSingleObserver<SubmitDataShipmentResponse>() {
+                        override fun onSuccess(t: SubmitDataShipmentResponse) {
+                            Log.e("SUBMIT_SUCCEED", t.result.toString())
+                            loadingOverlay.loadingView.isVisible = false
+                            setFirstEnterEdit(false)
+                            Navigation.findNavController(view).navigate(R.id.fromShipmentAddAddress_navigateTo_settingFragment)
+                        }
+
+                        override fun onError(e: Throwable) {
+                            Log.e("SUBMIT_ERROR", e.message.toString())
+                            loadingOverlay.loadingView.isVisible = false
+                        }
+                    })
+            )
+        }
     }
 
     fun openSubmitDialog(
@@ -653,33 +789,33 @@ class OtherSettingViewModel : ViewModel() {
     // DUMMY DATA
     fun setDummyCourierList() {
         val listOfCourier: MutableList<CourierList> = ArrayList()
-        listOfCourier.add(CourierList(courier_image = null, courier_name = "Gojek", services_list = mutableListOf(
-            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "same_day", courier_services_name = "Same Day", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
+        listOfCourier.add(CourierList(courier_image = null, courier_main = true, courier_name = "Gojek", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "same_day", courier_services_name = "Same Day", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
         )))
-        listOfCourier.add(CourierList(courier_image = null, courier_name = "Grab", services_list = mutableListOf(
-            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant Bike", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "same_day", courier_services_name = "Same Day", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "instant_car", courier_services_name = "Instant Car", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_main = true, courier_name = "Grab", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant Bike", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "same_day", courier_services_name = "Same Day", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "instant_car", courier_services_name = "Instant Car", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true)
         )))
-        listOfCourier.add(CourierList(courier_image = null, courier_name = "Paxel", services_list = mutableListOf(
-            CourierServiceList(courier_services_code = "small", courier_services_name = "Small Package", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "medium", courier_services_name = "Medium Package", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "large", courier_services_name = "Large Package", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "paxel_big", courier_services_name = "Paxel Big", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_main = true, courier_name = "Paxel", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "small", courier_services_name = "Small Package", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "medium", courier_services_name = "Medium Package", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "large", courier_services_name = "Large Package", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "paxel_big", courier_services_name = "Paxel Big", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true)
         )))
-        listOfCourier.add(CourierList(courier_image = null, courier_name = "Lalamove", services_list = mutableListOf(
-            CourierServiceList(courier_services_code = "motorcycle", courier_services_name = "Motorcycle", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "mpv", courier_services_name = "MPV", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "van", courier_services_name = "Van", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "truck", courier_services_name = "Truck", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_main = true, courier_name = "Lalamove", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "motorcycle", courier_services_name = "Motorcycle", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "mpv", courier_services_name = "MPV", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "van", courier_services_name = "Van", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "truck", courier_services_name = "Truck", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true)
         )))
-        listOfCourier.add(CourierList(courier_image = null, courier_name = "Rara Delivery", services_list = mutableListOf(
-            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_main = true, courier_name = "Rara Delivery", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant", courier_services_name = "Instant", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true)
         )))
-        listOfCourier.add(CourierList(courier_image = null, courier_name = "Mr Speedy", services_list = mutableListOf(
-            CourierServiceList(courier_services_code = "instant_bike", courier_services_name = "Instant Bike", description = "On Demand Instant (bike) (1-3 hours)", courier_services_type = true),
-            CourierServiceList(courier_services_code = "instant_car", courier_services_name = "Instant Car", description = "On Demand Instant (car) (1-3 hours)", courier_services_type = true)
+        listOfCourier.add(CourierList(courier_image = null, courier_main = true, courier_name = "Mr Speedy", services_list = mutableListOf(
+            CourierServiceList(courier_services_code = "instant_bike", courier_services_name = "Instant Bike", description = "On Demand Instant (bike) (1-3 hours)", courier_service_type = true),
+            CourierServiceList(courier_services_code = "instant_car", courier_services_name = "Instant Car", description = "On Demand Instant (car) (1-3 hours)", courier_service_type = true)
         )))
 
         setCourierList(listOfCourier)

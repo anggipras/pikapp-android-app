@@ -641,6 +641,18 @@ interface PikappApi {
         @Query("key") key: String,
     ): Single<GooglePlacesResponse>
 
+    // Check Merchant Shipment Condition
+    @GET("/api/checking-data/{mid}")
+    fun checkShipmentCondition(
+        @Path("mid") mid: String
+    ): Single<ShipmentConditionResponse>
+
+    // Check Merchant Shipment Location and Delivery Data
+    @GET("/api/locations-and-courier/{mid}")
+    fun getMerchantShipment(
+        @Path("mid") mid: String
+    ): Single<MerchantShipmentDataResponse>
+
     // Get Courier List
     @GET("merchant/courier-list/")
     fun getCourierList(): Single<CourierListResponse>
@@ -648,6 +660,13 @@ interface PikappApi {
     // Submit merchant shipment data for the first time
     @POST("/api/submit-data/{mid}")
     fun submitMerchantShipment(
+        @Path("mid") mid: String,
+        @Body requestMerchantShipment: RequestMerchantShipment
+    ): Single<SubmitDataShipmentResponse>
+
+    // Update merchant shipment
+    @PUT("/api/update-locations-courier/{mid}")
+    fun updateMerchantShipment(
         @Path("mid") mid: String,
         @Body requestMerchantShipment: RequestMerchantShipment
     ): Single<SubmitDataShipmentResponse>

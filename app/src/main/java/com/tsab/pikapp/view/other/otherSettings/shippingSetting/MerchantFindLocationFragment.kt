@@ -46,6 +46,9 @@ class MerchantFindLocationFragment : Fragment(), GoogleListPlacesAdapter.OnPlace
         super.onViewCreated(view, savedInstanceState)
 
         dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.find_location_title)
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
+            Navigation.findNavController(view).navigateUp()
+        }
         dataBinding.findLocation.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
                 hideKeyboard()

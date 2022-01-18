@@ -157,6 +157,9 @@
         <action
             android:id="@+id/navigateTo_merchantAddShipmentFragment"
             app:destination="@id/merchantAddShipmentFragment" />
+        <action
+            android:id="@+id/fromMerchantShippingFragmentTo_merchantGetLocationFragment"
+            app:destination="@id/merchantGetLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/merchantAddShipmentFragment"
@@ -166,6 +169,9 @@
         <action
             android:id="@+id/navigateTo_merchantGetLocationFragment"
             app:destination="@id/merchantGetLocationFragment" />
+        <action
+            android:id="@+id/action_merchantAddShipmentFragment_to_settingFragment"
+            app:popUpTo="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/shipmentAddAddressDetailFragment"
