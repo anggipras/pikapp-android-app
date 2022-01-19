@@ -155,6 +155,7 @@ dependencies {
         exclude group: 'org.json', module: 'json' //provided by Android natively
     }
 
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-messaging-ktx:20.3.0'

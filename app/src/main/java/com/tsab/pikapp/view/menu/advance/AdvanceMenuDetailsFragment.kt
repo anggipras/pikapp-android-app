@@ -187,13 +187,13 @@ class AdvanceMenuDetailsFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             if (viewModel.addOrEdit.value == true) {
                 navController.navigate(R.id.action_advanceMenuDetailsFragment_to_editMenuAdvanceMainFragment, bundleOf(EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to false))
             } else {
                 navController.navigate(R.id.action_advanceMenuDetailsFragment_to_advanceMenuMainFragment, bundleOf(AdvanceMenuMainFragment.ARGUMENT_ADVANCE_EDIT to false))
             }
-        }, view)
+        }
 
         dataBinding.namaPilihanInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {

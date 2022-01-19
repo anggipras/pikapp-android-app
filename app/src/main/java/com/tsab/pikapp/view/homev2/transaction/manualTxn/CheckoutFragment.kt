@@ -135,7 +135,7 @@ class CheckoutFragment : Fragment() {
                     dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
                 }
                 dataBinding.bayarPesanan.visibility = View.VISIBLE
-                dataBinding.bayarPesanDengan.text = nama
+                dataBinding.bayarPesanDengan.text = nama.lowercase().capitalize()
             }
         })
 

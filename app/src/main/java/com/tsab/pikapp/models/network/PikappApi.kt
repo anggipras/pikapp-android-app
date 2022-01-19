@@ -633,6 +633,44 @@ interface PikappApi {
         @Body search: SearchRequest
     ): Call<SearchResponse>
 
+    // SHIPMENT SETTINGS
+    // GET LIST OF GOOGLE PLACES
+    @GET("place/textsearch/json")
+    fun getListOfPlaces(
+        @Query("query") query: String?,
+        @Query("key") key: String,
+    ): Single<GooglePlacesResponse>
+
+    // Check Merchant Shipment Condition
+    @GET("/api/checking-data/{mid}")
+    fun checkShipmentCondition(
+        @Path("mid") mid: String
+    ): Single<ShipmentConditionResponse>
+
+    // Check Merchant Shipment Location and Delivery Data
+    @GET("/api/locations-and-courier/{mid}")
+    fun getMerchantShipment(
+        @Path("mid") mid: String
+    ): Single<MerchantShipmentDataResponse>
+
+    // Get Courier List
+    @GET("merchant/courier-list/")
+    fun getCourierList(): Single<CourierListResponse>
+
+    // Submit merchant shipment data for the first time
+    @POST("/api/submit-data/{mid}")
+    fun submitMerchantShipment(
+        @Path("mid") mid: String,
+        @Body requestMerchantShipment: RequestMerchantShipment
+    ): Single<SubmitDataShipmentResponse>
+
+    // Update merchant shipment
+    @PUT("/api/update-locations-courier/{mid}")
+    fun updateMerchantShipment(
+        @Path("mid") mid: String,
+        @Body requestMerchantShipment: RequestMerchantShipment
+    ): Single<SubmitDataShipmentResponse>
+
     // Omnichannel integration
     @GET("channel/v1/channel-integration/list/")
     fun listIntegration(
@@ -684,6 +722,28 @@ interface PikappApi {
             @Body AcceptOrderTokopediaRequest: AcceptOrderTokopediaRequest
     ): Call<AcceptOrderTokopediaResponse>
 
+    //Tutorial
+    @POST("home/v1/tutorial-add")
+    fun updateTutorial(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body search: TutorialPostRequest
+    ): Call<TutorialPostResponse>
+
+    @GET("home/v1/tutorial-list/{mid1}")
+    fun getTutorial(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String?,
+        @Path("mid1") mid1: String
+    ): Call<TutorialGetResponse>
+
     //Report
     @Multipart
     @POST("merchant/api/upload-report/")
@@ -721,5 +781,12 @@ interface PikappApi {
         @Path("customerId") customerId: Long
     ): Call<DeleteCustomerResponse>
 
+    /* ALL TRANSACTION GET LIST */
+    @GET("ntxn/v1/list/")
+    fun getTransactionListV2(
+        @Header("mid") merchantID: String?,
+        @Header("size") size: Int,
+        @Header("page") page: Int
+    ): Call<TransactionListV2RespAPI>
 }
 

@@ -52,13 +52,13 @@ class SearchFragment : Fragment() {
         dataBinding.listMenu.layoutManager = linearLayoutManager
         dataBinding.listMenu.setHasFixedSize(false)
 
-        dataBinding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+        dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 observeViewModel()
                 activity?.let { viewModel.getSearchList(query.toString(), it.baseContext, dataBinding.listMenu, dataBinding.noFound,
                     dataBinding.noFoundText) }
                 view.hideKeyboard()
-                dataBinding.searchView.onActionViewCollapsed()
+                dataBinding.searchField.onActionViewCollapsed()
                 return false
             }
 
@@ -102,14 +102,15 @@ class SearchFragment : Fragment() {
     }
 
     private fun attachInputListeners(){
-        dataBinding.back.setOnClickListener {
+
+        dataBinding.topAppBar.setNavigationOnClickListener {
             val intent = Intent(activity?.baseContext, HomeActivity::class.java)
             activity?.startActivity(intent)
             activity?.finish()
         }
 
-        dataBinding.searchView.setOnClickListener {
-            dataBinding.searchView.onActionViewExpanded()
+        dataBinding.searchField.setOnClickListener {
+            dataBinding.searchField.onActionViewExpanded()
         }
     }
 }

@@ -77,9 +77,9 @@ class AddCategoryPage : Fragment() {
             }
         }
 
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
-        }, view)
+        }
 
         dataBinding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

@@ -198,9 +198,15 @@
     <string name="masukkan_nama_pemilik_rekening">Masukkan Nama Pemilik Rekening</string>
 
     <!-- Setting Fragment Screen -->
-    <string name="profile_setting">Profile</string>
-    <string name="information_setting">Informasi Restoran</string>
-    <string name="pin_setting">Ubah PIN</string>
+    <string name="profile_title">Profile</string>
+    <string name="pin_title">Pin</string>
+    <string name="account_title">No. Rekening</string>
+    <string name="information_title">Informasi</string>
+    <string name="openHours_title">Jam Buka Restoran</string>
+    <string name="shipping_title">Pengiriman</string>
+    <string name="paymentMethod_title">Metode Pembayaran</string>
+    <string name="ppn_title">Pajak Restoran</string>
+    <string name="qrcode_title">QR Code</string>
 
     <!-- Setting Profile Fragment Screen -->
     <string name="nama_lengkap_profile">Nama Lengkap</string>
@@ -229,6 +235,22 @@
     <string name="komisi">Komisi</string>
     <string name="pajak">Pajak</string>
     <string name="total">Total</string>
+
+    <!-- Setting Shipping Fragment Screen -->
+    <string name="enable_shipping_mode">Aktifkan Mode Pengiriman</string>
+    <string name="select_current_location">Pilih Lokasi Saat Ini</string>
+    <string name="postal_code_shipping">Kode pos</string>
+    <string name="address_shipping">Alamat</string>
+    <string name="new_shipment_merchant_text">Atur restoran Anda ke mode pengiriman agar restoran Anda dapat menerima transaksi pengiriman</string>
+    <string name="gps_enabled">Lokasi Pengaturan</string>
+    <string name="required_for_this_app">Mohon Aktifkan Lokasi Anda</string>
+    <string name="enable_now">Aktifkan</string>
+    <string name="main_address_location">%s</string>
+    <string name="detail_address_location">%s</string>
+    <string name="pick_location">Pilih Lokasi Saat Ini</string>
+    <string name="find_location_title">Cari Lokasi</string>
+    <string name="find_location">Cari lokasi…</string>
+    <string name="change_shipping_title">Ubah Pengiriman</string>
 
     <!-- Omnichannel transaction filter -->
     <string name="filter">Filter</string>
@@ -370,6 +392,9 @@
     <string name="add_customer_phone_hint">##########</string>
     <string name="add_customer_alamat_hint">e.g Jl. Selasih No.18</string>
     <string name="add_customer_catatan_hint">Tulis Catatan</string>
+    <string name="add_customer_postalcode_title">Kode Pos</string>
+    <string name="add_customer_postalcode_hint">Masukkan Kode Pos</string>
+    <string name="customer_shipment_location">Lokasi Pengiriman</string>
     <string name="cart">Lihat Keranjang\t\t\t|\t\t\t%s item(s)</string>
 
     <!-- Service Dialog -->

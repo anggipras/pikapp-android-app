@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,14 +19,17 @@ import com.google.android.material.tabs.TabLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.MenuFragmentBinding
+import com.tsab.pikapp.models.model.TutorialGetResponse
+import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.services.CacheService
 import com.tsab.pikapp.services.OnlineService
-import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menuCategory.CategoryNavigation
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.menu_fragment.*
 import kotlinx.android.synthetic.main.other_fragment.*
@@ -35,10 +39,14 @@ import kotlinx.android.synthetic.main.menu_fragment.*
 import kotlinx.android.synthetic.main.menu_fragment.tabs
 import kotlinx.android.synthetic.main.menu_fragment.topAppBar
 import kotlinx.android.synthetic.main.transaction_fragment.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
 
 class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val viewModel: MenuViewModel by activityViewModels()
+    private val viewModel1: TutorialViewModel by activityViewModels()
     private lateinit var dataBinding: MenuFragmentBinding
     private val otherViewModel: OtherViewModel by activityViewModels()
 
@@ -48,6 +56,7 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     var list_of_items = arrayOf("Pikapp")
     var merchantName = ""
+    var name = ""
     //    var list_of_items = arrayOf("Pikapp", "Tokopedia", "Shopee")
 
     override fun onCreateView(
@@ -67,7 +76,9 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
             getMenuData()
         }
 
-       /* ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)*/
+//        getTutorial("TUTORIAL_MENU")
+
+//       ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)
 
         setMenuInvisible()
         observeViewModel()
@@ -272,12 +283,57 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
             .setDismissType(GuideView.DismissType.anywhere)
             .setContentTextSize(12)
             .setTitleTextSize(14)
+            .setGuideListener {
+                if(type == 2){
+                    viewModel1.postTutorial("TUTORIAL_MENU")
+                }
+            }
             .build()
             .show()
     }
 
+    fun getTutorial(name: String){
+        val email = sessionManager.getUserData()?.email
+        val token = sessionManager.getUserToken()!!
+        var mid = sessionManager.getUserData()?.mid
+        var timestamp = getTimestamp()
+        var uuid = getUUID()
+        var clientId = getClientID()
+        var status = false
+        var signature = getSignature(email, timestamp)
+
+        PikappApiService().api.getTutorial(uuid, timestamp, clientId, signature, token, mid, mid.toString())
+            .enqueue(object : Callback<TutorialGetResponse> {
+                override fun onResponse(
+                    call: Call<TutorialGetResponse>,
+                    response: Response<TutorialGetResponse>
+                ) {
+                    Log.e("Response", response.code().toString())
+                    Log.e("Response", response.body()?.results.toString())
+                    if(response.body()?.results?.isEmpty() == true){
+                        ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)
+                    }else{
+                        for (i in response.body()?.results!!){
+                            if(i.tutorial_page == name){
+                                status = true
+                            }
+                        }
+                        if(status == false){
+                            ShowIntro("Add Kategori", "Pada halaman menu, anda dapat menambahkan menu yang merchant anda jual.", dataBinding.appbar, 2)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<TutorialGetResponse>, t: Throwable) {
+                    Log.e("error", t.message.toString())
+                }
+
+            })
+    }
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Toast.makeText(context, list_of_items[position], Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, list_of_items[position], Toast.LENGTH_SHORT).show()
+        name = list_of_items[position]
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

@@ -31,6 +31,9 @@
         <action
             android:id="@+id/navigateTo_dataBankFragment"
             app:destination="@id/dataBankFragment" />
+        <action
+            android:id="@+id/navigateTo_merchantShippingFragment"
+            app:destination="@id/merchantShippingFragment" />
     </fragment>
     <fragment
         android:id="@+id/informationFragment"
@@ -145,5 +148,59 @@
         <action
             android:id="@+id/action_editRekFragment_to_dataBankFragment"
             app:destination="@id/dataBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantShippingFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantShipmentFragment"
+        android:label="MerchantShippingFragment"
+        tools:layout="@layout/fragment_merchant_shipment">
+        <action
+            android:id="@+id/navigateTo_merchantAddShipmentFragment"
+            app:destination="@id/merchantAddShipmentFragment" />
+        <action
+            android:id="@+id/fromMerchantShippingFragmentTo_merchantGetLocationFragment"
+            app:destination="@id/merchantGetLocationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantAddShipmentFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantAddShipmentFragment"
+        android:label="fragment_merchant_add_shipment"
+        tools:layout="@layout/fragment_merchant_add_shipment" >
+        <action
+            android:id="@+id/navigateTo_merchantGetLocationFragment"
+            app:destination="@id/merchantGetLocationFragment" />
+        <action
+            android:id="@+id/action_merchantAddShipmentFragment_to_settingFragment"
+            app:popUpTo="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shipmentAddAddressDetailFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.ShipmentAddAddressDetailFragment"
+        android:label="fragment_shipment_add_address_detail"
+        tools:layout="@layout/fragment_shipment_add_address_detail">
+        <action
+            android:id="@+id/fromShipmentAddAddress_navigateTo_merchantGetLocationFragment"
+            app:destination="@id/merchantGetLocationFragment" />
+        <action
+            android:id="@+id/fromShipmentAddAddress_navigateTo_settingFragment"
+            app:popUpTo="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantGetLocationFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantGetLocationFragment"
+        android:label="fragment_merchant_get_location"
+        tools:layout="@layout/fragment_merchant_get_location" >
+        <action
+            android:id="@+id/navigateTo_merchantFindLocationFragment"
+            app:destination="@id/merchantFindLocationFragment" />
+        <action
+            android:id="@+id/navigateTo_shipmentAddAddressDetailFragment"
+            app:destination="@id/shipmentAddAddressDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantFindLocationFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantFindLocationFragment"
+        android:label="fragment_merchant_find_location"
+        tools:layout="@layout/fragment_merchant_find_location" >
     </fragment>
 </navigation>

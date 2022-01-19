@@ -18,24 +18,50 @@
                 android:layout_height="wrap_content">
 
                 <!-- Header layout -->
-                <include
-                    android:id="@+id/headerLayout"
-                    layout="@layout/layout_header_small"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/headerHeaderText"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginBottom="24dp"
-                    android:fontFamily="@font/inter_bold"
-                    android:text="@string/am_details_tambah_header"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/headerLayout"
-                    app:layout_constraintStart_toStartOf="@id/headerLayout" />
+                    android:background="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <androidx.coordinatorlayout.widget.CoordinatorLayout
+                        android:id="@+id/headerAppbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
+
+                        <com.google.android.material.appbar.AppBarLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.appbar.MaterialToolbar
+                                android:id="@+id/topAppBar"
+                                android:layout_width="match_parent"
+                                android:layout_height="?attr/actionBarSize"
+                                app:title="Pilihan Menu"
+                                app:navigationIcon="@drawable/ic_back_black"
+                                app:titleTextColor="@color/black"
+                                app:titleTextAppearance="@style/titleToolbar"
+                                app:contentInsetLeft="0dp"
+                                app:contentInsetStart="0dp"
+                                app:titleMarginStart="0dp"
+                                app:contentInsetStartWithNavigation="0dp"
+                                />
+
+                        </com.google.android.material.appbar.AppBarLayout>
+
+                    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Nama pilihan input group -->
                 <TextView
@@ -49,7 +75,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+                    app:layout_constraintTop_toBottomOf="@id/header" />
 
                 <TextView
                     android:id="@+id/namaPilihanRequiredText"

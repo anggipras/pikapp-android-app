@@ -131,7 +131,7 @@ class HomeViewManualTxn : Fragment() {
 
         dataBinding.tabs.getTabAt(viewModel.menuTabs.value!!)?.select()
         dataBinding.viewpager.currentItem = viewModel.menuTabs.value!!
-        viewModel.mutableManualTransAct.value = 0
+//        viewModel.mutableManualTransAct.value = 0
     }
 
     private fun initViews() {

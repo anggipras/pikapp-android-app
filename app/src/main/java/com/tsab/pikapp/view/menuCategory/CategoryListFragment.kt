@@ -81,12 +81,12 @@ class CategoryListFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
                 startActivity(this)
                 activity?.finish()
             }
-        }, view)
+        }
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {
             Intent(activity?.baseContext, SortActivity::class.java).apply {
