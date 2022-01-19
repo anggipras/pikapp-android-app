@@ -19,7 +19,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentMerchantShipmentBinding
-import com.tsab.pikapp.models.model.CurrentLatLng
 import com.tsab.pikapp.util.PermissionUtils
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel

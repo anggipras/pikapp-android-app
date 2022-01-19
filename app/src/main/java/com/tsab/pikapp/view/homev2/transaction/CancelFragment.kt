@@ -73,6 +73,14 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
                 general_error_cancel.isVisible = false
             }
         })
+
+        viewModel.emptyState.observe(viewLifecycleOwner, {
+            if (it) {
+                dataBinding.emptyStateCancel.visibility = View.VISIBLE
+            } else {
+                dataBinding.emptyStateCancel.visibility = View.GONE
+            }
+        })
     }
 
     private fun getDataCancel() {
@@ -92,11 +100,18 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
         viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
+        viewModel.transactionChannelUpdate(
+            channel,
+            orderId,
+            requireContext()
+        )
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
         viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
+        viewModel.transactionPosUpdate(
+            updateStatusManualTxnRequest,
+            requireContext()
+        )
     }
 }

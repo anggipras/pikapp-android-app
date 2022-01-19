@@ -73,6 +73,14 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
                 general_error_done.isVisible = false
             }
         })
+
+        viewModel.emptyState.observe(viewLifecycleOwner, {
+            if (it) {
+                dataBinding.emptyStateDone.visibility = View.VISIBLE
+            } else {
+                dataBinding.emptyStateDone.visibility = View.GONE
+            }
+        })
     }
 
     private fun getDataDone() {

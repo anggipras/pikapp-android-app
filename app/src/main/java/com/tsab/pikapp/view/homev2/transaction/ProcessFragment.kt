@@ -53,7 +53,10 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
     private val mMessageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null && context != null) {
-                viewModel.getProcessTransactionV2List(requireContext(), true)
+                viewModel.getProcessTransactionV2List(
+                    requireContext(),
+                    true
+                )
             }
         }
     }
@@ -246,6 +249,14 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
                 onlineService.serviceDialog(requireActivity())
             } else {
                 general_error_process.isVisible = false
+            }
+        })
+
+        viewModel.emptyState.observe(viewLifecycleOwner, {
+            if (it) {
+                dataBinding.emptyStateProcess.visibility = View.VISIBLE
+            } else {
+                dataBinding.emptyStateProcess.visibility = View.GONE
             }
         })
     }

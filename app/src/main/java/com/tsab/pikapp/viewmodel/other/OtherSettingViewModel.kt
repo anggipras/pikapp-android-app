@@ -711,7 +711,6 @@ class OtherSettingViewModel : ViewModel() {
             shipping_available = shippingMode.value ?: false,
             courier = mappedCourierData
         )
-        Log.e("MAPCOURIER", mappedCourierData.toString())
 
         loadingOverlay.loadingView.isVisible = true
         val mid = sessionManager.getUserData()!!.mid!!

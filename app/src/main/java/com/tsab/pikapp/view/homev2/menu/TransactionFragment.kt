@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,10 +62,14 @@ class TransactionFragment : Fragment() {
 
             swipeRefreshLayout = dataBinding.swipeTransactionMenu
             swipeRefreshLayout.setOnRefreshListener {
+                viewModel.restartFragment()
                 val position = dataBinding.tabs.selectedTabPosition
                 when(position) {
                     0 -> viewModel.getProcessTransactionV2List(requireContext(), true)
-                    1 -> viewModel.getDoneTransactionV2List(requireContext(), true)
+                    1 -> viewModel.getDoneTransactionV2List(
+                        requireContext(),
+                        true
+                    )
                     else -> viewModel.getCancelTransactionV2List(requireContext(), true)
                 }
                 dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))

@@ -1,42 +1,26 @@
 package com.tsab.pikapp.viewmodel.homev2
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.graphics.Color
-import android.os.Handler
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.CustomProgressDialog
-import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
-import com.tsab.pikapp.view.homev2.transaction.TransactionListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -123,6 +107,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     val doneSize: LiveData<Int> get() = mutableDoneSize
     private val mutableCancelSize = MutableLiveData(0)
     val cancelSize: LiveData<Int> get() = mutableCancelSize
+
+    private val mutableEmptyState = MutableLiveData<Boolean>()
+    val emptyState: LiveData<Boolean> get() = mutableEmptyState
 
     fun getLiveDataTransListV2ProcessObserver(): MutableLiveData<List<TransactionListV2Data>> {
         return liveDataTransListV2Process
@@ -572,11 +559,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun getProcessTransactionV2List(context: Context, getOrUpdate: Boolean) {
+    fun getProcessTransactionV2List(
+        context: Context,
+        getOrUpdate: Boolean
+    ) {
         if (getOrUpdate) {
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
+        mutableEmptyState.value = false
         val mid = sessionManager.getUserData()?.mid
         val size = 100
         val page = 0
@@ -626,6 +617,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             } else {
                                 setProgressLoading(false)
                                 setProgressDialog(false, context)
+                                mutableEmptyState.value = true
                             }
                         }
                     }
@@ -643,11 +635,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun getDoneTransactionV2List(context: Context, getOrUpdate: Boolean) {
+    fun getDoneTransactionV2List(
+        context: Context,
+        getOrUpdate: Boolean
+    ) {
         if (getOrUpdate) {
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
+        mutableEmptyState.value = false
         val mid = sessionManager.getUserData()?.mid
         val size = 100
         val page = 0
@@ -697,6 +693,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             } else {
                                 setProgressLoading(false)
                                 setProgressDialog(false, context)
+                                mutableEmptyState.value = true
                             }
                         }
                     }
@@ -714,11 +711,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    fun getCancelTransactionV2List(context: Context, getOrUpdate: Boolean) {
+    fun getCancelTransactionV2List(
+        context: Context,
+        getOrUpdate: Boolean
+    ) {
         if (getOrUpdate) {
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
+        mutableEmptyState.value = false
         val mid = sessionManager.getUserData()?.mid
         val size = 100
         val page = 0
@@ -766,6 +767,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             } else {
                                 setProgressLoading(false)
                                 setProgressDialog(false, context)
+                                mutableEmptyState.value = true
                             }
                         }
                     }
@@ -790,15 +792,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         mutableShopeeFilter.value = false
         mutableWhatsappFilter.value = false
         mutableTelpFilter.value = false
-
-        mutableProcessSize.value = 0
-        mutableDoneSize.value = 0
-        mutableCancelSize.value = 0
-
-        liveDataTransListV2Process.value = arrayListOf()
-        liveDataTransListV2ProcessFilter.value = arrayListOf()
-        liveDataTransListV2Done.value = arrayListOf()
-        liveDataTransListV2Cancel.value = arrayListOf()
     }
 
     /* ADDITION FOR DUMMY TESTING */
