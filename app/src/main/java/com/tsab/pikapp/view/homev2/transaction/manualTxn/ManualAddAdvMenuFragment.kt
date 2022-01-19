@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
@@ -89,6 +90,7 @@ class ManualAddAdvMenuFragment : Fragment(), ManualChildAdvMenuAdapter.OnItemCli
                 adapter.notifyDataSetChanged()
                 Navigation.findNavController(view).popBackStack()
             } else {
+                dataBinding.loadingOverlay.loadingView.isVisible = true
                 viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate, view)
                 Toast.makeText(context, "${viewModel.menuName.value} berhasil masuk keranjang", Toast.LENGTH_SHORT).show()
             }

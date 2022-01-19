@@ -85,7 +85,7 @@ class OtherFragment : Fragment() {
             }
         }
 
-        getTutorial("TUTORIAL_OTHERS")
+//        getTutorial("TUTORIAL_OTHERS")
         /*ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)*/
 
         observeViewModel()

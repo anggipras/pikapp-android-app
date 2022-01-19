@@ -28,7 +28,6 @@ class CourierServiceListAdapter(
         holder.courierServiceCheckBox.text = courierService[position].courier_services_name
         holder.courierServiceDesc.text = courierService[position].description
 
-
         holder.courierServiceCheckBox.isChecked = courierService[position].courier_service_type
         holder.courierServiceCheckBox.setOnCheckedChangeListener { _, isChecked ->
             listener.onCheckClick(courierNameIndex, courierService.indexOf(courierService[position]), isChecked)

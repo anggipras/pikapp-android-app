@@ -4,12 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CourierList
 import com.tsab.pikapp.models.model.CourierServiceList
+import kotlinx.android.synthetic.main.fragment_edit_menu.*
 
 class CourierListAdapter(
     private val context: Context,
@@ -25,6 +29,7 @@ class CourierListAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var courierName: TextView = itemView.findViewById(R.id.courier_parentName)
+        var courierImage: ImageView = itemView.findViewById(R.id.courier_image)
         var courierServiceList: RecyclerView = itemView.findViewById(R.id.recyclerview_courierService_check)
     }
 
@@ -35,6 +40,9 @@ class CourierListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.courierName.text = listOfCourier[position].courier_name
+        if (!listOfCourier[position].courier_image.isNullOrEmpty()) {
+            Picasso.get().load(listOfCourier[position].courier_image).into(holder.courierImage)
+        }
         setCourierServiceList(holder.courierServiceList, listOfCourier[position].services_list, listOfCourier.indexOf(listOfCourier[position]))
     }
 

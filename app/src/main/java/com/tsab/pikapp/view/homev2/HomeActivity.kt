@@ -39,7 +39,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class HomeActivity : AppCompatActivity() {
     val model: CategoryViewModel by viewModels()
     val viewModel: TutorialViewModel by viewModels()
@@ -114,27 +113,27 @@ class HomeActivity : AppCompatActivity() {
         modalView.visibility = View.GONE
         layerView.visibility = View.GONE
 
-        getTutorial("TUTORIAL_TRANSACTION")
+//        getTutorial("TUTORIAL_TRANSACTION")
 
-       /* if(viewModel.mutableMenuTabs.value == true){
-            modalView.visibility = View.GONE
-            layerView.visibility = View.GONE
-        }else{
-            desc1.visibility = View.GONE
-            desc3.visibility = View.GONE
-            nextModal.setOnClickListener {
-                modalView.visibility = View.GONE
-                layerView.visibility = View.GONE
-                ShowIntro("Navigation Bar",
-                    "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
-                    bottom_navigation, 2)
-            }
-
-            skipModal.setOnClickListener {
-                modalView.visibility = View.GONE
-                layerView.visibility = View.GONE
-            }
-        }*/
+//       if(viewModel.mutableMenuTabs.value == true){
+//            modalView.visibility = View.GONE
+//            layerView.visibility = View.GONE
+//        }else{
+//            desc1.visibility = View.GONE
+//            desc3.visibility = View.GONE
+//            nextModal.setOnClickListener {
+//                modalView.visibility = View.GONE
+//                layerView.visibility = View.GONE
+//                ShowIntro("Navigation Bar",
+//                    "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+//                    bottom_navigation, 2)
+//            }
+//
+//            skipModal.setOnClickListener {
+//                modalView.visibility = View.GONE
+//                layerView.visibility = View.GONE
+//            }
+//        }
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {

@@ -103,11 +103,13 @@ class TransactionListV2Adapter(
                     "PAID" -> {
                         orderStatus.visibility = View.GONE
                         paymentStatus.text = "NEW"
+                        acceptBtn.visibility = View.VISIBLE
                         acceptBtn.text = "Terima"
                         acceptBtn.setOnClickListener {
                             val txnId = recyclerViewDineIn.transaction_id.toString()
                             updateTransactionTxn(txnId, "ON_PROCESS", loadingOverlay)
                         }
+                        rejectBtn.visibility = View.GONE
                         rejectBtn.setOnClickListener {
                             val bundle = Bundle()
                             bundle.putString("TransactionID", recyclerViewDineIn.transaction_id)
@@ -116,11 +118,18 @@ class TransactionListV2Adapter(
                         }
                     }
                     "OPEN" -> {
+                        paymentStatus.text = "UNPAID"
+                        paymentStatus.setBackgroundResource(R.drawable.button_red_square)
+                        orderStatus.visibility = View.VISIBLE
                         orderStatus.text = "NEW"
+                        acceptBtn.visibility = View.VISIBLE
+                        acceptBtn.text = "Sudah Bayar"
                         acceptBtn.setOnClickListener {
                             val txnId = recyclerViewDineIn.transaction_id.toString()
                             updateTransactionTxn(txnId, "ON_PROCESS", loadingOverlay)
                         }
+                        rejectBtn.visibility = View.VISIBLE
+                        rejectBtn.text = "Tolak"
                         rejectBtn.setOnClickListener {
                             val bundle = Bundle()
                             bundle.putString("TransactionID", recyclerViewDineIn.transaction_id)
@@ -130,6 +139,7 @@ class TransactionListV2Adapter(
                     }
                     "ON_PROCESS" -> {
                         orderStatus.visibility = View.GONE
+                        acceptBtn.visibility = View.VISIBLE
                         acceptBtn.text = "Pesanan Siap"
                         paymentStatus.text = "Diproses"
                         paymentStatus.setBackgroundResource(R.drawable.button_orange_square)

@@ -3,6 +3,8 @@ package com.tsab.pikapp.viewmodel.homev2
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -766,5 +768,55 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
         })
         return status
+    }
+
+    /* CUSTOMER GET LOCATION */
+    private val mutableCurrentLatLng = MutableLiveData<CurrentLatLng>()
+    val currentLatLng: LiveData<CurrentLatLng> = mutableCurrentLatLng
+    fun setCurrentLocation(latLng: CurrentLatLng) {
+        mutableCurrentLatLng.value = latLng
+    }
+
+    private val mutableAddressLocation = MutableLiveData<List<Address>>()
+    val addressLocation: LiveData<List<Address>> = mutableAddressLocation
+    fun setAddressLocation(context: Context, latLng: CurrentLatLng) {
+        val gcd = Geocoder(context, Locale.getDefault())
+        val addresses: List<Address> = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1)
+        mutableAddressLocation.value = addresses
+        setPostalCode(addresses[0].postalCode)
+    }
+
+    private val mutableCustomerPostalCode = MutableLiveData<String>()
+    val customerPostalCode: LiveData<String> = mutableCustomerPostalCode
+    fun setPostalCode(postalCd: String) {
+        mutableCustomerPostalCode.value = postalCd
+    }
+
+    //GET LIST GOOGLE PLACE
+    private var liveDataGooglePlacesList: MutableLiveData<List<ListGooglePlaces>> = MutableLiveData()
+    fun getLiveDataGooglePlacesListObserver(): MutableLiveData<List<ListGooglePlaces>> {
+        return liveDataGooglePlacesList
+    }
+    fun setLiveDataPlaces(placeList: List<ListGooglePlaces>) {
+        liveDataGooglePlacesList.postValue(placeList)
+    }
+
+    fun getListGooglePlaces(text: String) {
+        disposable.add(
+            PikappApiService().googleApi.getListOfPlaces(text, PikappApiService().getGoogleApiKey())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<GooglePlacesResponse>() {
+                    override fun onSuccess(t: GooglePlacesResponse) {
+                        t.results.let { res ->
+                            liveDataGooglePlacesList.postValue(res)
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("ERROR_GET_PLACES", e.message.toString())
+                    }
+                })
+        )
     }
 }
