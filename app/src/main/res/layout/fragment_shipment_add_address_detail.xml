@@ -117,17 +117,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/address_shipping_detail"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_8sdp"
+                        android:minHeight="@dimen/_70sdp"
+                        android:backgroundTint="@color/white"
                         android:fontFamily="@font/inter_regular"
-                        android:text="Jl Abcde X nomor 1234"
+                        android:inputType="text"
+                        android:gravity="top"
+                        android:hint="Masukkan Alamat"
+                        android:textColorHint="@color/borderSubtle"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/address_shipping_title" />
+                        app:layout_constraintTop_toBottomOf="@+id/address_shipping_title"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,17 +157,19 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/postal_code_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:backgroundTint="@color/white"
                         android:fontFamily="@font/inter_regular"
+                        android:inputType="number"
+                        android:hint="Masukkan Kode Pos"
+                        android:textColorHint="@color/borderSubtle"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:text="17415"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/postal_code_title" />
+                        app:layout_constraintTop_toBottomOf="@+id/postal_code_title"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

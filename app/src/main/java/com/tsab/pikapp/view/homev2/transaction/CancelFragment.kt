@@ -90,7 +90,7 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
 
     private fun getDataCancel() {
         if (onlineService.isOnline(context)) {
-            viewModel.getCancelTransactionV2List(requireContext(), true)
+            viewModel.getCancelTransactionV2List(requireContext(), true, 0)
             general_error_cancel.isVisible = false
         } else {
             general_error_cancel.isVisible = true

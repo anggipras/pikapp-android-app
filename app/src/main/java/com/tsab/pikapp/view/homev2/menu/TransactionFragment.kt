@@ -87,12 +87,9 @@ class TransactionFragment : Fragment() {
                 viewModel.restartFragment()
                 val position = dataBinding.tabs.selectedTabPosition
                 when(position) {
-                    0 -> viewModel.getProcessTransactionV2List(requireContext(), true)
-                    1 -> viewModel.getDoneTransactionV2List(
-                        requireContext(),
-                        true
-                    )
-                    2 -> viewModel.getCancelTransactionV2List(requireContext(), true)
+                    0 -> viewModel.getProcessTransactionV2List(requireContext(), true, 1)
+                    1 -> viewModel.getDoneTransactionV2List(requireContext(), true, 1)
+                    2 -> viewModel.getCancelTransactionV2List(requireContext(), true, 1)
                 }
                 dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
                 swipeRefreshLayout.isRefreshing = false
