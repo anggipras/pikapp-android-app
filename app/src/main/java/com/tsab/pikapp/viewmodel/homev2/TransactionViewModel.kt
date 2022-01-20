@@ -390,18 +390,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 .subscribeWith(object : DisposableSingleObserver<UpdateStatusResponse>() {
                     override fun onSuccess(t: UpdateStatusResponse) {
                         Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                        getProcessTransactionV2List(
-                            context,
-                            false
-                        )
-                        getDoneTransactionV2List(
-                            context,
-                            false
-                        )
-                        getCancelTransactionV2List(
-                            context,
-                            false
-                        )
+                        getProcessTransactionV2List(context, false, 0)
+                        getDoneTransactionV2List(context, false, 0)
+                        getCancelTransactionV2List(context, false, 0)
                     }
 
                     override fun onError(e: Throwable) {
@@ -434,18 +425,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 response: Response<AcceptOrderTokopediaResponse>
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                getProcessTransactionV2List(
-                    context,
-                    false
-                )
-                getDoneTransactionV2List(
-                    context,
-                    false
-                )
-                getCancelTransactionV2List(
-                    context,
-                    false
-                )
+                getProcessTransactionV2List(context, false, 0)
+                getDoneTransactionV2List(context, false, 0)
+                getCancelTransactionV2List(context, false, 0)
             }
         })
     }
@@ -460,18 +442,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 response: Response<UpdateStatusManualResponse>
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                getProcessTransactionV2List(
-                    context,
-                    false
-                )
-                getDoneTransactionV2List(
-                    context,
-                    false
-                )
-                getCancelTransactionV2List(
-                    context,
-                    false
-                )
+                getProcessTransactionV2List(context, false, 0)
+                getDoneTransactionV2List(context, false, 0)
+                getCancelTransactionV2List(context, false, 0)
             }
 
             override fun onFailure(call: Call<UpdateStatusManualResponse>, t: Throwable) {
@@ -565,11 +538,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     fun getProcessTransactionV2List(
         context: Context,
-        getOrUpdate: Boolean
+        getOrUpdate: Boolean,
+        swipeDown: Int
     ) {
         if (getOrUpdate) {
-            setProgressLoading(true)
-            setProgressDialog(true, context)
+            if (swipeDown == 0) {
+                setProgressLoading(true)
+                setProgressDialog(true, context)
+            }
         }
         mutableEmptyState.value = false
         val mid = sessionManager.getUserData()?.mid
@@ -616,19 +592,25 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 }
                                 mutableProcessSize.value = processList.size
                                 liveDataTransListV2Process.postValue(processList)
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (swipeDown == 0) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                             } else {
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (swipeDown == 0) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                                 mutableEmptyState.value = true
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
-                        setProgressLoading(false)
-                        setProgressDialog(false, context)
+                        if (swipeDown == 0) {
+                            setProgressLoading(false)
+                            setProgressDialog(false, context)
+                        }
                         setErrorLoading(true)
                     }
 
@@ -641,11 +623,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     fun getDoneTransactionV2List(
         context: Context,
-        getOrUpdate: Boolean
+        getOrUpdate: Boolean,
+        swipeDown: Int
     ) {
         if (getOrUpdate) {
-            setProgressLoading(true)
-            setProgressDialog(true, context)
+            if (swipeDown == 0) {
+                setProgressLoading(true)
+                setProgressDialog(true, context)
+            }
         }
         mutableEmptyState.value = false
         val mid = sessionManager.getUserData()?.mid
@@ -692,19 +677,25 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 }
                                 mutableDoneSize.value = doneList.size
                                 liveDataTransListV2Done.postValue(doneList)
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (swipeDown == 0) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                             } else {
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (swipeDown == 0) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                                 mutableEmptyState.value = true
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
-                        setProgressLoading(false)
-                        setProgressDialog(false, context)
+                        if (swipeDown == 0) {
+                            setProgressLoading(false)
+                            setProgressDialog(false, context)
+                        }
                         setErrorLoading(true)
                     }
 
@@ -717,11 +708,14 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     fun getCancelTransactionV2List(
         context: Context,
-        getOrUpdate: Boolean
+        getOrUpdate: Boolean,
+        swipeDown: Int
     ) {
         if (getOrUpdate) {
-            setProgressLoading(true)
-            setProgressDialog(true, context)
+            if (swipeDown == 0) {
+                setProgressLoading(true)
+                setProgressDialog(true, context)
+            }
         }
         mutableEmptyState.value = false
         val mid = sessionManager.getUserData()?.mid
@@ -766,19 +760,25 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 }
                                 mutableCancelSize.value = cancelList.size
                                 liveDataTransListV2Cancel.postValue(cancelList)
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (swipeDown == 0) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                             } else {
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (swipeDown == 0) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                                 mutableEmptyState.value = true
                             }
                         }
                     }
 
                     override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
-                        setProgressLoading(false)
-                        setProgressDialog(false, context)
+                        if (swipeDown == 0) {
+                            setProgressLoading(false)
+                            setProgressDialog(false, context)
+                        }
                         setErrorLoading(true)
                     }
 

@@ -439,6 +439,19 @@ class OtherSettingViewModel : ViewModel() {
     fun setPostalCode(postalCd: String?) {
         mutablePostalCode.value = postalCd
     }
+    private val mutableMerchantAddress = MutableLiveData<String>()
+    val merchantAddress: LiveData<String> = mutableMerchantAddress
+    fun setMerchantAddress(address: String) {
+        mutableMerchantAddress.value = address
+    }
+
+    fun validateAddress(context: Context, postalCode: String, merchantAddress: String): Boolean {
+        if (postalCode.isBlank() || merchantAddress.isBlank()) {
+            Toast.makeText(context, "Mohon isi field yang kosong terlebih dahulu", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
 
     fun checkMerchantShipmentCondition(
         context: Context,
@@ -510,6 +523,9 @@ class OtherSettingViewModel : ViewModel() {
 
                         /* set shipping mode */
                         setShippingMode(theResult.shipping_available)
+
+                        /* set merchant address */
+                        setMerchantAddress(theResult.address)
 
                         /* set postal code */
                         setPostalCode(theResult.postal_code)
@@ -602,7 +618,12 @@ class OtherSettingViewModel : ViewModel() {
         liveDataCourierList.value!![courierNameIndex].services_list[courierServiceIndex].courier_service_type = isChecked
     }
 
-    private fun submitShipmentData(view: View, loadingOverlay: LayoutLoadingOverlayBinding) {
+    private fun submitShipmentData(
+        view: View,
+        loadingOverlay: LayoutLoadingOverlayBinding,
+        postalCode: String,
+        merchantAddress: String
+    ) {
         val mappedCourierData: MutableList<Courier> = ArrayList()
         val gojekTemplate = Gojek(gojek_main = true, instant_services = true, same_day_services = true)
         val grabTemplate = Grab(grab_main = true, instant_services = true, same_day_services = true, instant_car_services = true)
@@ -702,10 +723,10 @@ class OtherSettingViewModel : ViewModel() {
         }
         mappedCourierData.add(Courier(gojek = gojekTemplate, grab = grabTemplate, paxel = paxelTemplate, lalamove = lalamoveTemplate, rara = raraTemplate, mr_speedy = mrspeedyTemplate))
         val reqMerchShipment = RequestMerchantShipment(
-            merchant_address = sessionManager.getMerchantProfile()?.address!!,
+            merchant_address = merchantAddress,
             latitude = currentLatLng.value?.latitude.toString(),
             longitude = currentLatLng.value?.longitude.toString(),
-            postal_code = postalCode.value ?: "14045",
+            postal_code = postalCode,
             subdistrict_name = addressLocation.value?.get(0)?.locality!!,
             province = addressLocation.value?.get(0)?.adminArea!!,
             shipping_available = shippingMode.value ?: false,
@@ -759,7 +780,9 @@ class OtherSettingViewModel : ViewModel() {
     fun openSubmitDialog(
         activity: Activity,
         view: View,
-        loadingOverlay: LayoutLoadingOverlayBinding
+        loadingOverlay: LayoutLoadingOverlayBinding,
+        postalCode: String,
+        merchantAddress: String
     ) {
         val mDialogView = LayoutInflater.from(activity).inflate(R.layout.second_alert_dialog, null)
         val mBuilder = AlertDialog.Builder(activity)
@@ -781,7 +804,7 @@ class OtherSettingViewModel : ViewModel() {
         }
         mDialogView.second_dialog_ok.setOnClickListener {
             mAlertDialog.dismiss()
-            submitShipmentData(view, loadingOverlay)
+            submitShipmentData(view, loadingOverlay, postalCode, merchantAddress)
         }
     }
 

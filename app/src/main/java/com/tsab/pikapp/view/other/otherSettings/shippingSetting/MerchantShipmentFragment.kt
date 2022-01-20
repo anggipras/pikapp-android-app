@@ -1,14 +1,17 @@
 package com.tsab.pikapp.view.other.otherSettings.shippingSetting
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -62,15 +65,30 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
                 }
             }
         }
-        dataBinding.postalCodeId.setOnClickListener {
-            postalCodeDialog()
-        }
         viewModel.checkMerchantShipmentCondition(requireContext(), view, dataBinding.nestedMerchantLayout, dataBinding.shipmentButtonSection, dataBinding.loadingOverlay)
         dataBinding.switchShippingMode.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setShippingMode(isChecked)
         }
+        dataBinding.addressShippingDetail.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                hideKeyboard()
+            }
+            false
+        }
+
+        dataBinding.postalCodeContent.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                hideKeyboard()
+            }
+            false
+        }
         dataBinding.nextButton.setOnClickListener {
-            viewModel.openSubmitDialog(requireActivity(), view, dataBinding.loadingOverlay)
+            if (!viewModel.validateAddress(
+                    requireContext(),
+                    dataBinding.postalCodeContent.text.toString(),
+                    dataBinding.addressShippingDetail.text.toString()
+                )) return@setOnClickListener
+            viewModel.openSubmitDialog(requireActivity(), view, dataBinding.loadingOverlay, dataBinding.postalCodeContent.text.toString(), dataBinding.addressShippingDetail.text.toString())
         }
         observeViewModel()
     }
@@ -84,10 +102,12 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
             dataBinding.selectLocationText.text = it[0].getAddressLine(0) ?: "Pilih Lokasi Saat Ini"
         })
 
-        dataBinding.addressShippingDetail.text = sessionManager.getMerchantProfile()?.address
-
         viewModel.postalCode.observe(viewLifecycleOwner, {
-            dataBinding.postalCodeContent.text = it
+            dataBinding.postalCodeContent.setText(it)
+        })
+
+        viewModel.merchantAddress.observe(viewLifecycleOwner, {
+            dataBinding.addressShippingDetail.setText(it)
         })
     }
 
@@ -126,6 +146,21 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
         }
     }
 
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = activity?.getSystemService(
+            Activity.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+
+        if (inputManager.isAcceptingText) {
+            inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        }
+    }
+
+    override fun onCheckClick(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean) {
+        viewModel.changeCourierService(courierNameIndex, courierServiceIndex, isChecked)
+    }
+
+    /* REUSE FUNCTION */
     private fun postalCodeDialog() {
         val mDialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.input_dialog, null)
         val mBuilder = AlertDialog.Builder(requireActivity())
@@ -147,9 +182,5 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
             viewModel.setPostalCode(mDialogView.input_dialog_area.text.toString())
             mAlertDialog.dismiss()
         }
-    }
-
-    override fun onCheckClick(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean) {
-        viewModel.changeCourierService(courierNameIndex, courierServiceIndex, isChecked)
     }
 }

@@ -90,7 +90,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
     private fun getDataDone() {
         if (onlineService.isOnline(context)) {
-            viewModel.getDoneTransactionV2List(requireContext(), true)
+            viewModel.getDoneTransactionV2List(requireContext(), true, 0)
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true
