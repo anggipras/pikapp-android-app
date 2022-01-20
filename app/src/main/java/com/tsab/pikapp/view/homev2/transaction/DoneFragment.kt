@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,8 +43,6 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
         initRecyclerView()
         initViewModel()
 
-        getDataDone()
-
         general_error_done.try_button.setOnClickListener {
             getDataDone()
         }
@@ -79,6 +78,12 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
                 dataBinding.emptyStateDone.visibility = View.VISIBLE
             } else {
                 dataBinding.emptyStateDone.visibility = View.GONE
+            }
+        })
+
+        viewModel.tabPosition.observe(viewLifecycleOwner, {
+            if (it == 1) {
+                getDataDone()
             }
         })
     }

@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
@@ -17,6 +19,8 @@ import com.tsab.pikapp.view.homev2.transaction.TransactionAdapter
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.transaction_fragment.*
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 class TransactionFragment : Fragment() {
     private val viewModel: TransactionViewModel by activityViewModels()
@@ -46,6 +50,24 @@ class TransactionFragment : Fragment() {
             activity?.overridePendingTransition(0, 0)
             setUpTabs()
 
+            dataBinding.tabs.addOnTabSelectedListener(object : OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    when(tab.position) {
+                        0 -> viewModel.setTabPosition(0)
+                        1 -> viewModel.setTabPosition(1)
+                        else -> viewModel.setTabPosition(2)
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+                    // No-op
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab) {
+                    // No-op
+                }
+            })
+
 //           topAppBar.setOnMenuItemClickListener { menuItem ->
 //                when (menuItem.itemId) {
 //                   R.id.manualTxn -> {
@@ -70,7 +92,7 @@ class TransactionFragment : Fragment() {
                         requireContext(),
                         true
                     )
-                    else -> viewModel.getCancelTransactionV2List(requireContext(), true)
+                    2 -> viewModel.getCancelTransactionV2List(requireContext(), true)
                 }
                 dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
                 swipeRefreshLayout.isRefreshing = false
@@ -102,7 +124,7 @@ class TransactionFragment : Fragment() {
             when(position) {
                 0 -> tab.text = "Diproses"
                 1 -> tab.text = "Selesai"
-                else -> tab.text = "Batal"
+                2 -> tab.text = "Batal"
             }
             dataBinding.viewpager.setCurrentItem(tab.position, true)
         }.attach()

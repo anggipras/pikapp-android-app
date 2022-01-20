@@ -321,6 +321,7 @@ class TransactionListV2Adapter(
                             .substringAfter(" ").substringBeforeLast(":")
                         if (orderStatusChannel == "SELLER_CANCEL_ORDER" || orderStatusChannel == "ORDER_REJECTED_BY_SELLER") {
                             paymentStatus.text = "Gagal"
+                            paymentStatus.setBackgroundResource(R.drawable.button_red_square)
                         } else if (orderStatusChannel == "ORDER_DELIVERED" || orderStatusChannel == "ORDER_FINISHED") {
                             paymentStatus.text = "Selesai"
                             paymentStatus.setBackgroundResource(R.drawable.button_green_square)
@@ -405,6 +406,8 @@ class TransactionListV2Adapter(
             if (orderStatusManual == "ON_PROCESS" || orderStatusManual == "OPEN") {
                 orderStatus.text = "Diproses"
                 orderStatus.setBackgroundResource(R.drawable.button_orange_square)
+                acceptBtn.visibility = View.VISIBLE
+                acceptBtn.text = "Pesanan Siap"
                 acceptBtn.setOnClickListener {
                     listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "DELIVER", recyclerViewDelivery.payment_status))
                 }
@@ -452,8 +455,8 @@ class TransactionListV2Adapter(
                     "PAID" -> {
                         statusPayment.setTextColor(context.resources.getColor(R.color.green))
                         statusPayment.text = "Sudah Bayar"
-                        updatePaymentBtn.text = "Refund ke Pelanggan"
                         updatePaymentBtn.visibility = View.VISIBLE
+                        updatePaymentBtn.text = "Refund ke Pelanggan"
                         updatePaymentBtn.setOnClickListener {
                             listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUND"))
                         }
@@ -500,13 +503,14 @@ class TransactionListV2Adapter(
 
             when(recyclerViewDelivery.payment_status) {
                 "PAID" -> {
-                    statusPayment.setTextColor(context.resources.getColor(R.color.green))
                     statusPayment.text = "Sudah Bayar"
+                    statusPayment.setTextColor(context.resources.getColor(R.color.green))
                     updatePaymentBtn.visibility = View.GONE
                 }
                 "UNPAID" -> {
                     statusPayment.text = "Belum Bayar"
                     statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                    updatePaymentBtn.visibility = View.VISIBLE
                     updatePaymentBtn.setOnClickListener {
                         var tabStatus = ""
                         tabStatus = when(recyclerViewDelivery.order_status) {
@@ -521,8 +525,8 @@ class TransactionListV2Adapter(
                     }
                 }
                 "FAILED" -> {
-                    statusPayment.setTextColor(context.resources.getColor(R.color.red))
                     statusPayment.text = "Gagal"
+                    statusPayment.setTextColor(context.resources.getColor(R.color.red))
                     updatePaymentBtn.visibility = View.GONE
                 }
             }

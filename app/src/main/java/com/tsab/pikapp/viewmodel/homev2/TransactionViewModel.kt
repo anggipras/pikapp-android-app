@@ -89,6 +89,12 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
+    private val mutableTabPosition = MutableLiveData(0)
+    val tabPosition: LiveData<Int> = mutableTabPosition
+    fun setTabPosition(pos: Int) {
+        mutableTabPosition.value = pos
+    }
+
     private val mutableProgressLoading = MutableLiveData(false)
     val progressLoading: LiveData<Boolean> = mutableProgressLoading
     fun setProgressLoading(isLoading: Boolean) {
@@ -410,8 +416,6 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         orderId: String,
         context: Context
     ) {
-        Log.e("channel", channel)
-        Log.e("orderId", orderId)
         val mid = sessionManager.getUserData()!!.mid!!
         var acceptOrderReq = AcceptOrderTokopediaRequest()
         acceptOrderReq.channel = channel

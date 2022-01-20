@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,8 +43,6 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
         initRecyclerView()
         initViewModel()
 
-        getDataCancel()
-
         general_error_cancel.try_button.setOnClickListener {
             getDataCancel()
         }
@@ -79,6 +78,12 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
                 dataBinding.emptyStateCancel.visibility = View.VISIBLE
             } else {
                 dataBinding.emptyStateCancel.visibility = View.GONE
+            }
+        })
+
+        viewModel.tabPosition.observe(viewLifecycleOwner, {
+            if (it == 2) {
+                getDataCancel()
             }
         })
     }

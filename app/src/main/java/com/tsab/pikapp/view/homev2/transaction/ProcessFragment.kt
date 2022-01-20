@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import timber.log.Timber
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.core.content.ContextCompat
 
 class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
@@ -83,8 +84,6 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
 
         initRecyclerView()
         initViewModel()
-
-        getProcessData()
 
         general_error_process.try_button.setOnClickListener {
             getProcessData()
@@ -257,6 +256,12 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
                 dataBinding.emptyStateProcess.visibility = View.VISIBLE
             } else {
                 dataBinding.emptyStateProcess.visibility = View.GONE
+            }
+        })
+
+        viewModel.tabPosition.observe(viewLifecycleOwner, {
+            if (it == 0) {
+                getProcessData()
             }
         })
     }
