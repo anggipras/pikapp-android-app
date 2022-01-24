@@ -47,7 +47,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="65dp"
                 android:fontFamily="@font/inter_bold"
-                android:text="@string/profile_setting"
+                android:text="@string/profile_title"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp"
                 app:layout_constraintEnd_toEndOf="parent"

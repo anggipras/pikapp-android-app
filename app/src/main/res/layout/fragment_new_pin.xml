@@ -39,7 +39,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="65dp"
             android:fontFamily="@font/inter_bold"
-            android:text="@string/pin_setting"
+            android:text="Ubah PIN"
             android:textColor="#FFFFFF"
             android:textSize="25dp"
             app:layout_constraintEnd_toEndOf="parent"

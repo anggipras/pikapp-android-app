@@ -62,7 +62,7 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
         viewModel.setMenuExtId(arguments?.getLong(ARGUMENT_MENU_EXT_ID) ?: 1)
 
         if (arguments?.getBoolean(ARGUMENT_IS_EDIT) == true) {
-            dataBinding.headerHeaderText.text = getString(R.string.am_ubah_daftar_pilihan_header)
+            dataBinding.topAppBar.title = getString(R.string.am_ubah_daftar_pilihan_header)
             dataBinding.deleteMenuChoiceText.isVisible = true
         } else {
             dataBinding.deleteMenuChoiceText.isVisible = false
@@ -117,9 +117,10 @@ class EditMenuAdvanceAdditionalFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+
+        dataBinding.topAppBar.setNavigationOnClickListener {
             navController.navigateUp()
-        }, view)
+        }
 
         dataBinding.namaDaftarPilihanInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {

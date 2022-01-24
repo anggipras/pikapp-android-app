@@ -453,7 +453,7 @@ class PaymentFragment : Fragment() {
 
     private fun observeViewModel() {
        viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama->
-           if(nama == "Gopay"){
+           if(nama.lowercase() == "gopay"){
                gopay.setBackgroundResource(R.drawable.btn_green)
                gopay_title.setTextColor(Color.parseColor("#4BB7AC"))
                ovo.setBackgroundResource(R.drawable.btn_transparant)
@@ -485,7 +485,7 @@ class PaymentFragment : Fragment() {
                bniStatus = false
                briStatus = false
                dataBinding.btnSaveBayar.setBackgroundResource(R.drawable.button_green_square)
-           }else if(nama == "OVO"){
+           }else if(nama.lowercase() == "ovo"){
                ovo.setBackgroundResource(R.drawable.btn_green)
                ovo_title.setTextColor(Color.parseColor("#4BB7AC"))
                gopay.setBackgroundResource(R.drawable.btn_transparant)
@@ -517,7 +517,7 @@ class PaymentFragment : Fragment() {
                bniStatus = false
                briStatus = false
                dataBinding.btnSaveBayar.setBackgroundResource(R.drawable.button_green_square)
-           }else if(nama == "DANA"){
+           }else if(nama.lowercase() == "dana"){
                dana.setBackgroundResource(R.drawable.btn_green)
                dana_title.setTextColor(Color.parseColor("#4BB7AC"))
                ovo.setBackgroundResource(R.drawable.btn_transparant)
@@ -549,7 +549,7 @@ class PaymentFragment : Fragment() {
                bniStatus = false
                briStatus = false
                dataBinding.btnSaveBayar.setBackgroundResource(R.drawable.button_green_square)
-           }else if(nama == "LinkAja"){
+           }else if(nama.lowercase() == "linkaja"){
                linkaja.setBackgroundResource(R.drawable.btn_green)
                linkaja_title.setTextColor(Color.parseColor("#4BB7AC"))
                ovo.setBackgroundResource(R.drawable.btn_transparant)
@@ -581,7 +581,7 @@ class PaymentFragment : Fragment() {
                bniStatus = false
                briStatus = false
                dataBinding.btnSaveBayar.setBackgroundResource(R.drawable.button_green_square)
-           }else if(nama == "ShopeePay"){
+           }else if(nama.lowercase() == "shopeepay"){
                shopee.setBackgroundResource(R.drawable.btn_green)
                shopee_title.setTextColor(Color.parseColor("#4BB7AC"))
                ovo.setBackgroundResource(R.drawable.btn_transparant)

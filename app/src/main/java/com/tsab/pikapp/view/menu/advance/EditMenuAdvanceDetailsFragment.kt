@@ -174,9 +174,9 @@ class EditMenuAdvanceDetailsFragment : Fragment() {
     }
 
     private fun attachInputListeners() {
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             navController.navigate(R.id.action_editMenuAdvanceDetailsFragment_to_editMenuAdvanceMainFragment, bundleOf(EditMenuAdvanceMainFragment.ARGUMENT_ADVANCE_EDIT to false))
-        }, view)
+        }
 
         dataBinding.namaPilihanInputText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || event == null || event.keyCode == KeyEvent.KEYCODE_ENTER) {

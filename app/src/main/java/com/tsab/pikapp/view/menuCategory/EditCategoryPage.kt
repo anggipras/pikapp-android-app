@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.menuCategory
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditCategoryPageBinding
 import com.tsab.pikapp.util.setAllOnClickListener
+import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.categoryMenu.CategoryViewModel
 import kotlinx.android.synthetic.main.delete_category_popup.view.*
 import kotlinx.android.synthetic.main.edit_category_popup.view.*
@@ -66,9 +68,9 @@ class EditCategoryPage : Fragment() {
             }
         }
 
-        dataBinding.headerLayout.backButton.setAllOnClickListener(View.OnClickListener {
+        dataBinding.topAppBar.setNavigationOnClickListener {
             navController?.navigate(R.id.action_editCategoryPage_to_categoryPage)
-        }, view)
+        }
 
         dataBinding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

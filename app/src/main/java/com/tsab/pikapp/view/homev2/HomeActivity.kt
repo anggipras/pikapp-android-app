@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityHomeNavigationBinding
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.homev2.menu.MenuFragment
 import com.tsab.pikapp.view.homev2.other.OtherFragment
 import com.tsab.pikapp.view.homev2.promo.PromoFragment
@@ -32,11 +31,17 @@ import naci.showcaseview.listener.IShowcaseListener
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.tsab.pikapp.models.model.TutorialGetResponse
+import com.tsab.pikapp.util.*
+import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
 import kotlinx.android.synthetic.main.fragment_login_v2_first.*
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
     val model: CategoryViewModel by viewModels()
+    val viewModel: TutorialViewModel by viewModels()
     private val transactionFragment = TransactionFragment()
     private val menuFragment = MenuFragment()
     private val promoFragment = PromoFragment()
@@ -105,22 +110,31 @@ class HomeActivity : AppCompatActivity() {
             true
         }
 
-        /*desc1.visibility = View.GONE
-        desc3.visibility = View.GONE
+        modalView.visibility = View.GONE
+        layerView.visibility = View.GONE
 
-        nextModal.setOnClickListener {
-            modalView.visibility = View.GONE
-            layerView.visibility = View.GONE
-            ShowIntro("Navigation Bar",
-                "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
-                bottom_navigation, 2)
-        }
+//        getTutorial("TUTORIAL_TRANSACTION")
 
-        skipModal.setOnClickListener {
-            modalView.visibility = View.GONE
-            layerView.visibility = View.GONE
-        }
-*/
+//       if(viewModel.mutableMenuTabs.value == true){
+//            modalView.visibility = View.GONE
+//            layerView.visibility = View.GONE
+//        }else{
+//            desc1.visibility = View.GONE
+//            desc3.visibility = View.GONE
+//            nextModal.setOnClickListener {
+//                modalView.visibility = View.GONE
+//                layerView.visibility = View.GONE
+//                ShowIntro("Navigation Bar",
+//                    "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+//                    bottom_navigation, 2)
+//            }
+//
+//            skipModal.setOnClickListener {
+//                modalView.visibility = View.GONE
+//                layerView.visibility = View.GONE
+//            }
+//        }
+
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_transaction -> replaceFragment(transactionFragment)
@@ -281,6 +295,7 @@ class HomeActivity : AppCompatActivity() {
             nextModal.setOnClickListener {
                 modalView.visibility = View.GONE
                 layerView.visibility = View.GONE
+                viewModel.postTutorial("TUTORIAL_TRANSACTION")
             }
         }
     }
@@ -307,5 +322,77 @@ class HomeActivity : AppCompatActivity() {
         }else{
             open_drawer.openDrawer(GravityCompat.END)
         }
+    }
+
+    fun getTutorial(name: String){
+        val email = sessionManager.getUserData()?.email
+        val token = sessionManager.getUserToken()!!
+        var mid = sessionManager.getUserData()?.mid
+        var timestamp = getTimestamp()
+        var uuid = getUUID()
+        var clientId = getClientID()
+        var status = false
+        var signature = getSignature(email, timestamp)
+
+        PikappApiService().api.getTutorial(uuid, timestamp, clientId, signature, token, mid, mid.toString())
+            .enqueue(object : Callback<TutorialGetResponse> {
+                override fun onResponse(
+                    call: Call<TutorialGetResponse>,
+                    response: Response<TutorialGetResponse>
+                ) {
+                    Log.e("Response", response.code().toString())
+                    Log.e("Response", response.body()?.results.toString())
+                    if(response.body()?.results?.isEmpty() == true){
+                        modalView.visibility = View.VISIBLE
+                        layerView.visibility = View.VISIBLE
+                        desc1.visibility = View.GONE
+                        desc3.visibility = View.GONE
+                        nextModal.setOnClickListener {
+                            modalView.visibility = View.GONE
+                            layerView.visibility = View.GONE
+                            ShowIntro("Navigation Bar",
+                                "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+                                bottom_navigation, 2)
+                        }
+
+                        skipModal.setOnClickListener {
+                            modalView.visibility = View.GONE
+                            layerView.visibility = View.GONE
+                        }
+
+                    }else{
+                        for (i in response.body()?.results!!){
+                            if(i.tutorial_page == name){
+                                status = true
+                                modalView.visibility = View.GONE
+                                layerView.visibility = View.GONE
+                            }
+                        }
+                        if(status == false){
+                            modalView.visibility = View.VISIBLE
+                            layerView.visibility = View.VISIBLE
+                            desc1.visibility = View.GONE
+                            desc3.visibility = View.GONE
+                            nextModal.setOnClickListener {
+                                modalView.visibility = View.GONE
+                                layerView.visibility = View.GONE
+                                ShowIntro("Navigation Bar",
+                                    "Terdapat navigation bar dengan 4 tombol yang memiliki fungsi berbeda",
+                                    bottom_navigation, 2)
+                            }
+
+                            skipModal.setOnClickListener {
+                                modalView.visibility = View.GONE
+                                layerView.visibility = View.GONE
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<TutorialGetResponse>, t: Throwable) {
+                    Log.e("error", t.message.toString())
+                }
+
+            })
     }
 }

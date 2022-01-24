@@ -105,7 +105,7 @@ class InvoiceFragment : Fragment() {
 
         viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
             if (nama != "") {
-                dataBinding.namaBayar.text = nama
+                dataBinding.namaBayar.text = nama.lowercase().capitalize()
             }
         })
 

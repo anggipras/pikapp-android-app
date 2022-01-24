@@ -57,7 +57,7 @@ class CancelReasonFragment: RoundedBottomSheetDialogFragment() {
         }
         mDialogView.dialog_ok.setOnClickListener {
             Log.e("ID", arguments?.getString("TransactionID").toString())
-            viewModel.postUpdate(arguments?.getString("TransactionID").toString(), "FAILED")
+            viewModel.transactionTxnUpdate(arguments?.getString("TransactionID").toString(), "FAILED", requireContext())
             sessionManager.transactionUpdate()
             val intent = Intent(activity?.baseContext, HomeActivity::class.java)
             activity?.startActivity(intent)

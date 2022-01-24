@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,26 +13,18 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDoneBinding
+import com.tsab.pikapp.models.model.UpdateStatusManualTxnRequest
 import com.tsab.pikapp.services.OnlineService
-import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
-import kotlinx.android.synthetic.main.fragment_done.recyclerview_manualTxn
-import kotlinx.android.synthetic.main.fragment_proccess.recyclerview_transaction
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 
-class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
+class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
     private val viewModel: TransactionViewModel by activityViewModels()
-    lateinit var transactionListAdapter: TransactionListAdapter
-    lateinit var linearLayoutManager: LinearLayoutManager
-    lateinit var linearLayoutManager1: LinearLayoutManager
-    private lateinit var layoutManagerManualTxn: LinearLayoutManager
     private lateinit var dataBinding: FragmentDoneBinding
-    private val sessionManager = SessionManager()
-    private val manualViewModel: ManualTxnViewModel by activityViewModels()
-
+    private lateinit var recyclerAdapter: TransactionListV2Adapter
+    private val onlineService = OnlineService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,72 +40,57 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerview_transaction.setHasFixedSize(true)
-        linearLayoutManager =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        linearLayoutManager1 =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        recyclerview_transaction.layoutManager = linearLayoutManager
-        recyclerview_tokopedia_done.layoutManager = linearLayoutManager1
-
-        layoutManagerManualTxn =
-            LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
-        dataBinding.recyclerviewManualTxn.setHasFixedSize(true)
-        dataBinding.recyclerviewManualTxn.layoutManager = layoutManagerManualTxn
-
-        getDataDone()
+        initRecyclerView()
+        initViewModel()
 
         general_error_done.try_button.setOnClickListener {
             getDataDone()
         }
+    }
 
-        observeViewModel()
+    private fun initRecyclerView() {
+        dataBinding.recyclerviewAllTransactionDone.layoutManager = LinearLayoutManager(requireView().context, LinearLayoutManager.VERTICAL, false)
+        recyclerAdapter = TransactionListV2Adapter(requireContext(), requireActivity(), requireActivity().supportFragmentManager,this)
+        dataBinding.recyclerviewAllTransactionDone.adapter = recyclerAdapter
+    }
+
+    private fun initViewModel() {
+        viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
+            if (!it.isNullOrEmpty()) {
+                dataBinding.emptyStateDone.visibility = View.GONE
+                recyclerAdapter.setTransactionList(it)
+            } else {
+                dataBinding.emptyStateDone.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.errorLoading.observe(viewLifecycleOwner, Observer { error ->
+            if (error) {
+                general_error_done.isVisible = true
+                onlineService.serviceDialog(requireActivity())
+            } else {
+                general_error_done.isVisible = false
+            }
+        })
+
+        viewModel.emptyState.observe(viewLifecycleOwner, {
+            if (it) {
+                dataBinding.emptyStateDone.visibility = View.VISIBLE
+            } else {
+                dataBinding.emptyStateDone.visibility = View.GONE
+            }
+        })
+
+        viewModel.tabPosition.observe(viewLifecycleOwner, {
+            if (it == 1) {
+                getDataDone()
+            }
+        })
     }
 
     private fun getDataDone() {
-        val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
-            activity?.let {
-                viewModel.getStoreOrderList(
-                    it.baseContext,
-                    recyclerview_transaction,
-                    "Done",
-                    requireActivity().supportFragmentManager,
-                    emptyStateDone,
-                    this,
-                    requireActivity(),
-                    general_error_done
-                )
-            }
-            activity?.let {
-                viewModel.getListOmni(
-                    it.baseContext,
-                    recyclerview_tokopedia_done,
-                    requireActivity().supportFragmentManager,
-                    requireActivity(),
-                    "Done",
-                    emptyStateDone,
-                    requireParentFragment(),
-                    general_error_done
-                )
-            }
-
-            activity?.let { manualViewModel.getManualTxnList("CLOSE", it.baseContext, recyclerview_manualTxn, requireActivity()) }
-            general_error_done.isVisible = false
-        } else {
-            general_error_done.isVisible = true
-            viewModel.setLoading(false)
-            onlineService.networkDialog(requireActivity())
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        observeViewModel()
-
-        val onlineService = OnlineService()
-        if (onlineService.isOnline(context)) {
-            activity?.let { viewModel.getStoreOrderList(it.baseContext, recyclerview_transaction, "Done", requireActivity().supportFragmentManager, emptyStateDone, this, requireActivity(), general_error_done) }
+            viewModel.getDoneTransactionV2List(requireContext(), true, 0)
             general_error_done.isVisible = false
         } else {
             general_error_done.isVisible = true
@@ -120,19 +98,18 @@ class DoneFragment : Fragment(), TransactionListAdapter.OnItemClickListener {
         }
     }
 
-    private fun observeViewModel() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.loadingOverlay.loadingView.visibility =
-                    if (isLoading) View.VISIBLE else View.GONE
-        })
-
-        manualViewModel.emptyList.observe(viewLifecycleOwner, Observer { state ->
-            dataBinding.emptyStateDone.visibility = if (state) View.VISIBLE else View.GONE
-        })
+    override fun onItemClickTransactionTxn(txnId: String, status: String) {
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionTxnUpdate(txnId, status, requireContext())
     }
 
-    override fun onItemClick(i: Int) {
-        TODO("Not yet implemented")
+    override fun onItemClickTransactionChannel(channel: String, orderId: String) {
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
     }
 
+    override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
+        viewModel.setProgressDialog(true, requireContext())
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
+    }
 }

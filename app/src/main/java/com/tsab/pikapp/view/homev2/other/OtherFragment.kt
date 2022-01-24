@@ -3,34 +3,43 @@ package com.tsab.pikapp.view.homev2.other
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.OtherFragmentBinding
+import com.tsab.pikapp.models.model.TutorialGetResponse
+import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.services.OnlineService
-import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.omni.integration.IntegrationActivity
 import com.tsab.pikapp.view.other.OtherSettingsActivity
 import com.tsab.pikapp.view.other.otherReport.ReportActivity
 import com.tsab.pikapp.viewmodel.homev2.OtherViewModel
+import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
 import kotlinx.android.synthetic.main.activity_home_navigation.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
 import kotlinx.android.synthetic.main.other_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
 
 class OtherFragment : Fragment() {
     private lateinit var dataBinding: OtherFragmentBinding
     private lateinit var viewModel: OtherViewModel
+    private val viewModel1: TutorialViewModel by activityViewModels()
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val sessionManager = SessionManager()
 
@@ -76,6 +85,7 @@ class OtherFragment : Fragment() {
             }
         }
 
+//        getTutorial("TUTORIAL_OTHERS")
         /*ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)*/
 
         observeViewModel()
@@ -127,6 +137,8 @@ class OtherFragment : Fragment() {
                         "Pada halaman ini terdapat tombol bantuan\u2028berguna untuk membantu Anda menghadapi kesulitan saat menggunakan aplikasi.",
                         merchant_click_help, 7
                     )
+                }else if(type == 7){
+                    viewModel1.postTutorial("TUTORIAL_OTHERS")
                 }
             }
             .build()
@@ -194,4 +206,44 @@ class OtherFragment : Fragment() {
             }
         })
     }
+
+    fun getTutorial(name: String){
+        val email = sessionManager.getUserData()?.email
+        val token = sessionManager.getUserToken()!!
+        var mid = sessionManager.getUserData()?.mid
+        var timestamp = getTimestamp()
+        var uuid = getUUID()
+        var clientId = getClientID()
+        var status = false
+        var signature = getSignature(email, timestamp)
+
+        PikappApiService().api.getTutorial(uuid, timestamp, clientId, signature, token, mid, mid.toString())
+            .enqueue(object : Callback<TutorialGetResponse> {
+                override fun onResponse(
+                    call: Call<TutorialGetResponse>,
+                    response: Response<TutorialGetResponse>
+                ) {
+                    Log.e("Response", response.code().toString())
+                    Log.e("Response", response.body()?.results.toString())
+                    if(response.body()?.results?.isEmpty() == true){
+                        ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)
+                    }else{
+                        for (i in response.body()?.results!!){
+                            if(i.tutorial_page == name){
+                                status = true
+                            }
+                        }
+                        if(status == false){
+                            ShowIntro("Merchant Info", "Tombol lainnya digunakan untuk mengkases halaman yang berisi informasi dari merchant anda.", requireActivity().findViewById(R.id.nav_other), 2)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<TutorialGetResponse>, t: Throwable) {
+                    Log.e("error", t.message.toString())
+                }
+
+            })
+    }
+
 }
