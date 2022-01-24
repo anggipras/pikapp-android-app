@@ -214,3 +214,16 @@ data class FoodListRadio(
         var price: String
 )
 /*ADD MANUAL TXN ADVANCE MENU END*/
+
+/* MENU MODEL FOR GET COURIER */
+data class GetCourierRequestBody(
+        val destination_latitude: Double,
+        val destination_longitude: Double,
+        val items: List<MenuListForCourier>
+)
+
+data class MenuListForCourier(
+        val name: String,
+        val quantity: Int,
+        val value: Long
+)

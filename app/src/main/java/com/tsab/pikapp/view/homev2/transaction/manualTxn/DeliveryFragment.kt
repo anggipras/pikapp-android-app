@@ -90,7 +90,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
         dataDeliv.setOnClickListener {
             select_shipment_id.visibility = View.GONE
             courier_list_id.visibility = View.VISIBLE
-            viewModel.setDummyData()
+            viewModel.getCourierPriceList()
         }
 
         btnSaveCourierService.setOnClickListener {
