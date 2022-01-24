@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -214,7 +215,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     fun setTime(nama: String){
         mutableHour.value = nama
     }
-
 
     private val mutableTotalQuantity = MutableLiveData(0)
     val totalQuantity: LiveData<Int> get() = mutableTotalQuantity
@@ -700,6 +700,37 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private fun setCourierList(courierList: MutableList<CustomerCourierListResult>) {
         liveDataCourierList.value = courierList
+    }
+
+    fun getCourierPriceList() {
+        val listOfMenus: MutableList<MenuListForCourier> = ArrayList()
+        selectedMenuTemp.value?.forEach {
+            listOfMenus.add(MenuListForCourier(name = it.foodName, quantity = it.foodAmount, value = it.foodTotalPrice.toLong()))
+        }
+
+        val courierReqBody = GetCourierRequestBody(
+            destination_latitude = -6.270794928895856,
+            destination_longitude = 106.7406809150353,
+            items = listOfMenus
+        )
+
+        val mid = sessionManager.getUserData()!!.mid!!
+        disposable.add(
+            PikappApiService().courierPriceApi.getCourierPrice(mid, courierReqBody)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<CustomerCourierListResponse>() {
+                    override fun onSuccess(t: CustomerCourierListResponse) {
+                        if (!t.result.isNullOrEmpty()) {
+                            setCourierList(t.result)
+                        }
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("ERROR", e.message.toString())
+                    }
+                })
+        )
     }
 
     fun setDummyData() {

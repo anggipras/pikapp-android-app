@@ -7,7 +7,7 @@ data class CustomerCourierListResponse(
     val errCode: String?,
     @SerializedName("err_message")
     val errMessage: String?,
-    val result: List<CustomerCourierListResult>
+    val result: MutableList<CustomerCourierListResult>
 )
 
 data class CustomerCourierListResult(

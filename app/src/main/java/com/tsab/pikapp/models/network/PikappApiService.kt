@@ -78,6 +78,21 @@ class PikappApiService {
         .build()
         .create(PikappApi::class.java)
 
+    private fun checkCourierPriceConfig(): String {
+        return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
+            "http://dev-api.pikapp.id:9006"
+        } else {
+            "http://api.pikapp.id:9006"
+        }
+    }
+
+    val courierPriceApi = Retrofit.Builder()
+        .baseUrl(checkCourierPriceConfig())
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .build()
+        .create(PikappApi::class.java)
+
     // Merchant LOGIN, LOGOUT, REGISTER
     // AUTH
     fun loginUser(email: String, password: String, fcmToken: String): Single<LoginResponse> {

@@ -766,6 +766,12 @@ interface PikappApi {
         @Path("mid") mid: String
     ): Call<CustomerResponse>
 
+    @POST("api/transaction/courier-pricing")
+    fun getCourierPrice(
+        @Header("merchant-id") mid: String,
+        @Body courierPriceReqBody: GetCourierRequestBody
+    ): Single<CustomerCourierListResponse>
+
     @POST("pos/v1/customerlist/add/")
     fun addCustomer(
         @Body addCustomerRequest: addCustomerRequest
