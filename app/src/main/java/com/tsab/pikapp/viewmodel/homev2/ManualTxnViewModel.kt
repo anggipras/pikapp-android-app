@@ -313,7 +313,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableAddCustId.value = id
     }
 
-
     val mutableCustNameTemp = MutableLiveData("")
     val custNameTemp: LiveData<String> get() = mutableCustNameTemp
     fun setCustNameTemp(custName: String) {
@@ -411,7 +410,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
         )) }
-//        addTotalQty(quantity.value!!)
         addTotalItems(quantity.value!!)
         cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
         Navigation.findNavController(view).popBackStack()
@@ -682,6 +680,50 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                     }
                 })
         )
+    }
+
+    private var liveDataCourierList: MutableLiveData<List<CustomerCourierListResult>> = MutableLiveData()
+    fun getLiveDataCourierListObserver(): MutableLiveData<List<CustomerCourierListResult>> {
+        return liveDataCourierList
+    }
+
+    var liveDataCourierServiceList: MutableLiveData<MutableList<CustomerCourierServiceList>> = MutableLiveData()
+    fun getLiveDataCourierServiceListObserver(): MutableLiveData<MutableList<CustomerCourierServiceList>> {
+        return liveDataCourierServiceList
+    }
+
+    private val mutableSelectedCourierService = MutableLiveData<CustomerCourierServiceList>()
+    val selectedCourierService: LiveData<CustomerCourierServiceList> get() = mutableSelectedCourierService
+    fun setSelectedCourierService(courierService: CustomerCourierServiceList) {
+        mutableSelectedCourierService.value = courierService
+    }
+
+    private fun setCourierList(courierList: MutableList<CustomerCourierListResult>) {
+        liveDataCourierList.value = courierList
+    }
+
+    fun setDummyData() {
+        val listOfCourier: MutableList<CustomerCourierListResult> = ArrayList()
+        listOfCourier.add(CustomerCourierListResult(name = "Instant Bike", description = "Estimasi Tiba 1 jam", lower_limit = 5000, upper_limit = 10000, courier_list = mutableListOf(
+            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 7000, service_name = null),
+            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 9000, service_name = null),
+            CustomerCourierServiceList(courier_image = null, name = "Lalamove", description = "On Demand instant 1-3 hours", price = 5000, service_name = "mpv"),
+            CustomerCourierServiceList(courier_image = null, name = "Rara", description = "On Demand instant 1-3 hours", price = 10000, service_name = "ouyeah")
+        )))
+        listOfCourier.add(CustomerCourierListResult(name = "Instant Car", description = "Estimasi Tiba 3 jam", lower_limit = 11000, upper_limit = 20000, courier_list = mutableListOf(
+            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 14000, service_name = null),
+            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 19000, service_name = null)
+        )))
+        listOfCourier.add(CustomerCourierListResult(name = "Instant Cargo", description = "Estimasi Tiba 1 jam", lower_limit = 5000, upper_limit = 10000, courier_list = mutableListOf(
+            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 7000, service_name = null),
+            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 9000, service_name = null)
+        )))
+        listOfCourier.add(CustomerCourierListResult(name = "Instant Becak", description = "Estimasi Tiba 3 jam", lower_limit = 11000, upper_limit = 20000, courier_list = mutableListOf(
+            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 14000, service_name = null),
+            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 19000, service_name = null)
+        )))
+
+        setCourierList(listOfCourier)
     }
 
     fun postOrder(paymentStatus: Boolean, nav: NavController, activity: Activity): Int{

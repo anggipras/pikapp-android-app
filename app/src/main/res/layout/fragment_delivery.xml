@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="50dp">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="50dp"
+    android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/select_shipment_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="50dp"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -128,84 +129,44 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:visibility="gone"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_11sdp"
+                android:paddingVertical="@dimen/_11sdp"
                 android:background="@drawable/btn_green_transparant"
                 app:layout_constraintTop_toBottomOf="@id/holder">
 
-                <TextView
-                    android:id="@+id/namaEkspedisiTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nama Ekspedisi"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textSize="@dimen/_10sdp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:textColor="@color/black"/>
-
-                <EditText
-                    android:id="@+id/namaEkspedisi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/namaEkspedisiTitle"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:hint="e.g Lorem Ipsum"
-                    android:fontFamily="@font/inter_regular"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_marginRight="@dimen/_10sdp"/>
-
-                <TextView
-                    android:id="@+id/hargaEkspedisiTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Harga Ekspedisi"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:fontFamily="@font/inter_regular"
-                    android:textSize="@dimen/_10sdp"
-                    app:layout_constraintTop_toBottomOf="@id/namaEkspedisi"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:textColor="@color/black"/>
-
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/customer_shipment_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/hargaEkspedisiTitle"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_7sdp"
+                    android:background="@drawable/gray_square_btn"
+                    android:foregroundGravity="center_vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/shipmentAddressTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_11sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="Rp."
+                        android:drawableStart="@drawable/ic_baseline_location_on_24"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Pilih Kurir"
+                        android:gravity="center_vertical"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <EditText
-                        android:id="@+id/hargaEkspedisi"
-                        android:layout_width="0dp"
+                    <ImageView
+                        android:id="@+id/ic_nextArrow_customer"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:hint="xx.xxx"
-                        android:inputType="number"
-                        android:paddingLeft="@dimen/_20sdp"
-                        android:fontFamily="@font/inter_regular"
-                        android:textSize="@dimen/_12sdp"
-                        android:layout_marginRight="@dimen/_10sdp"/>
+                        android:background="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        android:backgroundTint="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -242,6 +203,178 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/courier_list_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_10sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="1dp"
+            android:outlineProvider="none"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/select_courier_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pilih Kurir"
+                android:textSize="15sp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ic_close_bottomSheet_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_baseline_close_24"
+                android:backgroundTint="@color/textSubtle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/itemHeaderDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_customer_courier_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@+id/itemHeaderDivider"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/item_customer_courier_list" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/courier_serviceList_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_10sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="1dp"
+            android:outlineProvider="none"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/select_courierService_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instant Bike"
+                android:textSize="15sp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ic_closeService_bottomSheet_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_baseline_close_24"
+                android:backgroundTint="@color/textSubtle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/itemHeaderServiceDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_customer_courier_service_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_11sdp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintBottom_toTopOf="@+id/btnSaveCourierService"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemHeaderServiceDivider"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_customer_courier_service_list" />
+
+                <Button
+                    android:id="@+id/btnSaveCourierService"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/button_dark_gray"
+                    android:text="Pilih"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
