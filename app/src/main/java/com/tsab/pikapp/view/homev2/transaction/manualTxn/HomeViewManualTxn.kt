@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
@@ -20,7 +22,6 @@ import com.tsab.pikapp.view.LoginV2Activity
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_home_view_manual_txn.*
 
 class HomeViewManualTxn : Fragment() {
 
@@ -44,11 +45,7 @@ class HomeViewManualTxn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.manualTransAct.value == 0) {
-            activity?.let { viewModel.getMenuCategoryList(
-                it.baseContext,
-                requireActivity(),
-                loadingOverlay
-            ) }
+            activity?.let { viewModel.getMenuManualTxnList(it.baseContext) }
         }
 
         dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
@@ -75,25 +72,24 @@ class HomeViewManualTxn : Fragment() {
     private fun attachInputListeners() {
         sessionManager.setHomeNav(0)
         dataBinding.topAppBar.setNavigationOnClickListener {
-            Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                startActivity(this)
-                activity?.finish()
-            }
+            activity?.finish()
         }
 
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                        startActivity(this)
-                        activity?.finish()
-                    }
+                    activity?.finish()
                 }
             })
 
         dataBinding.searchField.setOnClickListener {
             dataBinding.searchField.onActionViewExpanded()
+        }
+
+        dataBinding.nextToCart.setOnClickListener {
+            viewModelDynamic.addTotalQty()
+            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage) }
         }
     }
 
@@ -131,7 +127,14 @@ class HomeViewManualTxn : Fragment() {
 
         dataBinding.tabs.getTabAt(viewModel.menuTabs.value!!)?.select()
         dataBinding.viewpager.currentItem = viewModel.menuTabs.value!!
-//        viewModel.mutableManualTransAct.value = 0
+        viewModelDynamic.totalItems.observe(viewLifecycleOwner, { totalItems ->
+            if (totalItems > 0){
+                dataBinding.nextToCart.visibility = View.VISIBLE
+                dataBinding.nextToCart.text = getString(R.string.cart, totalItems.toString())
+            } else {
+                dataBinding.nextToCart.visibility = View.GONE
+            }
+        })
     }
 
     private fun initViews() {

@@ -6,6 +6,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PikappApi {
@@ -165,9 +166,8 @@ interface PikappApi {
         @Path("mid") merchantId: String
     ): Single<ListMenuCategoryResponse>
 
-    // TODO: Delete old API call
     @GET("merchant/v1/menu/{mid}/category/list/")
-    fun getMenuCategoryList(
+    fun getSortMenuCategoryList(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
@@ -175,6 +175,26 @@ interface PikappApi {
         @Header("token") token: String,
         @Path("mid") mid: String
     ): Call<MerchantListCategoryResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    suspend fun getMenuCategoryList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Response<MerchantListCategoryResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    suspend fun getMenuCategoryListManualTxn(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Response<MerchantListCategoryResponse>
 
     @POST("merchant/v1/menu/category/update/")
     fun updateMenuCategory(

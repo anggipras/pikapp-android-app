@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CustomerCourierServiceList
 import java.text.NumberFormat
@@ -34,6 +35,9 @@ class CustomerCourierServiceListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val courierServiceObject = courierServiceList[position]
+        if (!courierServiceObject.courier_image.isNullOrEmpty()) {
+            Picasso.get().load(courierServiceObject.courier_image).into(holder.courierServiceImage)
+        }
         if (courierServiceObject.service_name.isNullOrEmpty()) {
             holder.courierServiceNameAndPrice.text = "${courierServiceObject.name} (Rp ${formatNumber(courierServiceObject.price)})"
         } else {
@@ -64,6 +68,7 @@ class CustomerCourierServiceListAdapter(
         var courierServiceNameAndPrice: TextView = itemView.findViewById(R.id.courier_service_nameAndPrice)
         var courierServiceDescription: TextView = itemView.findViewById(R.id.courier_service_description)
         var courierServiceChecked: ImageView = itemView.findViewById(R.id.customer_courier_checked)
+        var courierServiceImage: ImageView = itemView.findViewById(R.id.customer_courier_service_image)
     }
 
     interface OnItemCourierServiceClickListener {

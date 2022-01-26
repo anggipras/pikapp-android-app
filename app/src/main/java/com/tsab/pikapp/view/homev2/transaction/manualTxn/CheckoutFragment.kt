@@ -1,26 +1,19 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCheckoutBinding
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
-import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_checkout.*
-import kotlinx.android.synthetic.main.fragment_proccess.view.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -52,11 +45,11 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun observeViewModel(){
-        viewModel.totalQuantity.observe(viewLifecycleOwner, Observer { totalQty ->
+        viewModel.totalQuantity.observe(viewLifecycleOwner, { totalQty ->
             dataBinding.totalHargaTitle.text = "Total Harga ($totalQty Item(s))"
         })
 
-        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, { nama ->
             if(nama != ""){
                 kurirStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -67,7 +60,7 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.AsalPesanan.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.AsalPesanan.observe(viewLifecycleOwner, { nama ->
             if(nama != ""){
                 asalStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -78,7 +71,7 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
+        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, { harga ->
             if(harga != "" && harga != " "){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
@@ -97,7 +90,7 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.WaktuPesan.observe(viewLifecycleOwner, Observer { waktu ->
+        viewModel.WaktuPesan.observe(viewLifecycleOwner, { waktu ->
             if(waktu != ""){
                 dateStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -108,14 +101,14 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.WaktuPesanCustom.observe(viewLifecycleOwner, Observer { custom ->
+        viewModel.WaktuPesanCustom.observe(viewLifecycleOwner, { custom ->
             if(custom != ""){
                 dataBinding.dataTanggal.visibility = View.VISIBLE
                 dataBinding.customWaktu.text = custom
             }
         })
 
-        viewModel.totalCart.observe(viewLifecycleOwner, Observer { price ->
+        viewModel.totalCart.observe(viewLifecycleOwner, { price ->
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
@@ -128,7 +121,7 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.BayarPesanan.observe(viewLifecycleOwner, { nama ->
             if (nama != "") {
                 paymentStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -139,7 +132,7 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.custName.observe(viewLifecycleOwner, Observer { name ->
+        viewModel.custName.observe(viewLifecycleOwner, { name ->
             if (name != ""){
                 custStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){

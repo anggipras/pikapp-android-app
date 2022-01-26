@@ -100,7 +100,7 @@
             app:destination="@id/invoiceFragment" />
         <action
             android:id="@+id/action_checkoutFragment_to_manualTxnCartPage"
-            app:destination="@id/manualTxnCartPage" />
+            app:popUpTo="@id/manualTxnCartPage" />
     </fragment>
     <fragment
         android:id="@+id/paymentFragment"

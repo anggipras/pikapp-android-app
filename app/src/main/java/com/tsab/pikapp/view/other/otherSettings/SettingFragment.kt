@@ -43,10 +43,7 @@ class SettingFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                        startActivity(this)
-                        activity?.finish()
-                    }
+                    activity?.finish()
                 }
             })
 
@@ -58,10 +55,7 @@ class SettingFragment : Fragment() {
 //        dataBinding.shippingSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_merchantShippingFragment) }
 
         dataBinding.backButton.setOnClickListener {
-            Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                startActivity(this)
-                activity?.finish()
-            }
+            activity?.finish()
         }
 
         dataBinding.logoutText.setOnClickListener {

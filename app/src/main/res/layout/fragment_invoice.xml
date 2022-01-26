@@ -66,6 +66,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/congrats_animation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_90sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="false"
+                    android:scaleType="centerCrop"
+                    app:lottie_fileName="success_animation.json"/>
+
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="@dimen/_58sdp"

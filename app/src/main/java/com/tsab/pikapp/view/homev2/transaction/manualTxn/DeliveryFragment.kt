@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
@@ -61,6 +60,14 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
     }
 
     private fun attachInputListeners() {
+        ic_close_bottomSheet_id.setOnClickListener {
+            dismiss()
+        }
+
+        ic_closeService_bottomSheet_id.setOnClickListener {
+            dismiss()
+        }
+
         pickup.setOnClickListener {
             if(!selfPickup){
                 pickup.setBackgroundResource(R.drawable.btn_green)
@@ -71,6 +78,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
                 selfPickup = true
                 ekspedisiSend = false
                 btnSaveExpedition.setBackgroundResource(R.drawable.button_green_square)
+                btnSaveExpedition.isEnabled = true
             }
         }
 
@@ -83,7 +91,8 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
                 dataDeliv.visibility = View.VISIBLE
                 ekspedisiSend = true
                 selfPickup = false
-                btnSaveExpedition.setBackgroundResource(R.drawable.button_green_square)
+                btnSaveExpedition.setBackgroundResource(R.drawable.button_dark_gray)
+                btnSaveExpedition.isEnabled = false
             }
         }
 
@@ -115,7 +124,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
 
     private fun observeViewModel() {
 
-        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, { nama ->
             if (nama != "") {
                 if(nama == "Pickup Sendiri"){
                     pickup.setBackgroundResource(R.drawable.btn_green)
@@ -139,7 +148,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
             }
         })
 
-        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
+        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, { harga ->
             if (harga != "" && harga != " ") {
                 delivery.setBackgroundResource(R.drawable.btn_green)
                 delivery_title.setTextColor(Color.parseColor("#4BB7AC"))
@@ -167,6 +176,6 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
 
     override fun onCourierServiceClick(courierServiceObject: CustomerCourierServiceList) {
         viewModel.setSelectedCourierService(courierServiceObject)
-        btnSaveCourierService.backgroundTintList = requireContext().resources.getColorStateList(R.color.colorGreen)
+        btnSaveCourierService.setBackgroundResource(R.drawable.button_green_square)
     }
 }

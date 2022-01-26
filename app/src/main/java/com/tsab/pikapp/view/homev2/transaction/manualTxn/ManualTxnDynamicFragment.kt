@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnDynamicBinding
 import com.tsab.pikapp.models.model.SearchItem
+import com.tsab.pikapp.view.AdvanceMenuActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
+import java.io.Serializable
 
 class ManualTxnDynamicFragment : Fragment() {
     companion object {
@@ -70,8 +73,7 @@ class ManualTxnDynamicFragment : Fragment() {
         })
 
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            dataBinding.loadingOverlay.loadingView.visibility =
-                    if (isLoading) View.VISIBLE else View.GONE
+            dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
 
         viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
@@ -97,13 +99,22 @@ class ManualTxnDynamicFragment : Fragment() {
             menuList.toMutableList(),
             object : ListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, menuList: SearchItem) {
-                    viewModel.setPID(menuList.product_id.toString())
-                    viewModel.setMenuImg(menuList.pict_01.toString())
-                    viewModel.setMenuName(menuList.product_name.toString())
-                    viewModel.setMenuPrice(menuList.price.toString())
-                    viewModel.setQty(1)
-                    viewModelMenu.mutableManualTransAct.value = 1
-                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to false, ManualAddAdvMenuFragment.CART_POSITION to 0)) }
+                    val intent = Intent(requireActivity(), ManualAddAdvMenuActivity::class.java)
+                    intent.putExtra(ManualAddAdvMenuActivity.ADVANCE_MENU_EDIT, false)
+                    intent.putExtra(ManualAddAdvMenuActivity.CART_POSITION, 0)
+                    intent.putExtra(ManualAddAdvMenuActivity.MENU_PID, menuList.product_id.toString())
+                    intent.putExtra(ManualAddAdvMenuActivity.MENU_IMG, menuList.pict_01.toString())
+                    intent.putExtra(ManualAddAdvMenuActivity.MENU_NAME, menuList.product_name.toString())
+                    intent.putExtra(ManualAddAdvMenuActivity.MENU_PRICE, menuList.price.toString())
+                    intent.putExtra(ManualAddAdvMenuActivity.MENU_QTY, 1)
+                    startActivityForResult(intent, 1)
+//                    viewModel.setPID(menuList.product_id.toString())
+//                    viewModel.setMenuImg(menuList.pict_01.toString())
+//                    viewModel.setMenuName(menuList.product_name.toString())
+//                    viewModel.setMenuPrice(menuList.price.toString())
+//                    viewModel.setQty(1)
+//                    viewModelMenu.mutableManualTransAct.value = 1
+//                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to false, ManualAddAdvMenuFragment.CART_POSITION to 0)) }
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter

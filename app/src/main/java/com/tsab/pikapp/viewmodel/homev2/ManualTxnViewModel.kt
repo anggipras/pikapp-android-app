@@ -8,9 +8,7 @@ import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -21,11 +19,8 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCustomerPage
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnListAdapter
-import com.tsab.pikapp.view.onboarding.login.navController
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -50,6 +45,16 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val mutableSelectedMenuTemp = MutableLiveData<List<AddManualAdvMenu>>(listOf())
     val selectedMenuTemp: LiveData<List<AddManualAdvMenu>> = mutableSelectedMenuTemp
+    fun setSelectedMenu(menuListData: List<AddManualAdvMenu>?) {
+        val manualAdvMenu: MutableList<AddManualAdvMenu> = ArrayList()
+        if (!selectedMenuTemp.value.isNullOrEmpty()) {
+            selectedMenuTemp.value!!.forEach {
+                manualAdvMenu.add(it)
+            }
+        }
+        menuListData?.get(0)?.let { manualAdvMenu.add(it) }
+        mutableSelectedMenuTemp.value = manualAdvMenu
+    }
 
     val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
     val menuList: LiveData<List<SearchItem>> = mutableMenuList
@@ -228,7 +233,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val mutableTotalItems = MutableLiveData(0)
     val totalItems: LiveData<Int> get() = mutableTotalItems
-    private var x : String = ""
     fun addTotalItems(quantity: Int){
         mutableTotalItems.value = mutableTotalItems.value?.plus(quantity)
     }
@@ -757,33 +761,33 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         setCourierList(listOfCourier)
     }
 
-    fun postOrder(paymentStatus: Boolean, nav: NavController, activity: Activity): Int{
+    fun postOrder(paymentStatus: Boolean, nav: NavController, activity: Activity): Int {
         mutablePayStat.value = paymentStatus
         var hargaEkspedisi: String = ""
         var orderType: String = ""
         var payStatus: String = ""
         var status = 0
         var ekspedisi = ""
-        var menuList: ArrayList<MenuList> = ArrayList()
-        var mid: String? = sessionManager.getUserData()?.mid
+        val menuList: ArrayList<MenuList> = ArrayList()
+        val mid: String? = sessionManager.getUserData()?.mid
 
-        if(paymentStatus){
-            payStatus = "PAID"
+        payStatus = if(paymentStatus){
+            "PAID"
         }else{
-            payStatus = "UNPAID"
+            "UNPAID"
         }
 
-        if(mutableHargaEkspedisi.value == " "){
-            hargaEkspedisi = "0"
+        hargaEkspedisi = if(mutableHargaEkspedisi.value == " "){
+            "0"
         }else{
-            hargaEkspedisi = mutableHargaEkspedisi.value.toString()
+            mutableHargaEkspedisi.value.toString()
         }
 
         for(q in mutableSelectedMenuTemp.value!!){
-            var extraList: ArrayList<ExtraList> = ArrayList()
+            val extraList: ArrayList<ExtraList> = ArrayList()
             for (q in q.foodListRadio){
                 if (q != null) {
-                    var price: Int = q.foodListChildRadio!!.price.substringBefore(".").toInt()
+                    val price: Int = q.foodListChildRadio!!.price.substringBefore(".").toInt()
                     extraList.add(ExtraList(q.foodListChildRadio!!.name, price))
                 }
             }
@@ -791,7 +795,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 if (q != null) {
                     for(m in q.foodListChildCheck){
                         if (m != null) {
-                            var price: Int = m.price.substringBefore(".").toInt()
+                            val price: Int = m.price.substringBefore(".").toInt()
                             extraList.add(ExtraList(m.name, price))
                         }
                     }
@@ -800,46 +804,43 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice.toInt(), q.foodNote.toString(), q.foodAmount, 0, "0", extraList))
         }
 
-        if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
-            orderType = "PICKUP"
-        }else{
-            orderType = "DELIVERY"
+        orderType = if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
+            "PICKUP"
+        } else{
+            "DELIVERY"
         }
 
 
-        if(mutableAsal.value == "Telepon"){
-            ekspedisi ="PHONE_CALL"
-        }else{
-            ekspedisi = mutableAsal.value.toString().uppercase(Locale.getDefault())
+        ekspedisi = if(mutableAsal.value == "Telepon"){
+            "PHONE_CALL"
+        } else{
+            mutableAsal.value.toString().uppercase(Locale.getDefault())
         }
 
-        var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
-        var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi.toInt(), mutablePostWaktu.value.toString(), mutableStatusTime.value.toString())
-        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType,
-            ekspedisi, mutableCartPrice.value!!.toInt(), payStatus,
-            mutableBayar.value!!.toString().uppercase(Locale.getDefault()), "OPEN", 0, mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt())).
-        enqueue(object : Callback<ManualTxnResponse>{
-            override fun onResponse(
-                call: Call<ManualTxnResponse>,
-                response: Response<ManualTxnResponse>
-            ) {
-                status = response.code()
-                if(response.code() == 200){
-                   nav.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
-                }else{
-                    Toast.makeText(activity,"Transaksi Gagal Dilakukan", Toast.LENGTH_SHORT).show()
-                }
-                Log.e("WAKTU", mutablePostWaktu.value.toString())
-                Log.e("WAKTU", mutableCustId.value.toString())
-                Log.e("Fail", response.code().toString())
-                Log.e("success", response.body().toString())
-            }
+        nav.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
 
-            override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
-               Log.e("Fail", t.toString())
-            }
-
-        })
+//        var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
+//        val shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi.toInt(), mutablePostWaktu.value.toString(), mutableStatusTime.value.toString())
+//        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType,
+//            ekspedisi, mutableCartPrice.value!!.toInt(), payStatus,
+//            mutableBayar.value!!.toString().uppercase(Locale.getDefault()), "OPEN", 0, mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt())).
+//        enqueue(object : Callback<ManualTxnResponse>{
+//            override fun onResponse(
+//                call: Call<ManualTxnResponse>,
+//                response: Response<ManualTxnResponse>
+//            ) {
+//                status = response.code()
+//                if(response.code() == 200){
+//                   nav.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+//                }else{
+//                    Toast.makeText(activity,"Transaksi Gagal Dilakukan", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
+//               Log.e("Fail", t.toString())
+//            }
+//        })
         return status
     }
 
