@@ -11,9 +11,6 @@
         android:label="fragment_home_view_manual_txn"
         tools:layout="@layout/fragment_home_view_manual_txn" >
         <action
-            android:id="@+id/action_homeViewManualTxn_to_manualAddAdvMenuFragment"
-            app:destination="@id/manualAddAdvMenuFragment" />
-        <action
             android:id="@+id/action_homeViewManualTxn_to_manualTxnDynamicFragment"
             app:destination="@id/manualTxnDynamicFragment" />
         <action
@@ -30,9 +27,6 @@
         android:name="com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnDynamicFragment"
         android:label="fragment_manual_txn_dynamic"
         tools:layout="@layout/fragment_manual_txn_dynamic" >
-        <action
-            android:id="@+id/action_manualTxnDynamicFragment_to_manualTxnCartPage"
-            app:destination="@id/manualTxnCartPage" />
     </fragment>
     <fragment
         android:id="@+id/manualTxnCartPage"
@@ -48,9 +42,6 @@
         <action
             android:id="@+id/action_manualTxnCartPage_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
-        <action
-            android:id="@+id/action_manualTxnCartPage_to_homeViewManualTxn"
-            app:destination="@id/homeViewManualTxn" />
     </fragment>
     <dialog
         android:id="@+id/manualTxnDetail"

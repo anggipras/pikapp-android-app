@@ -19,7 +19,6 @@ import com.tsab.pikapp.databinding.FragmentHomeViewManualTxnBinding
 import com.tsab.pikapp.services.CacheService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 
@@ -147,10 +146,8 @@ class HomeViewManualTxn : Fragment() {
 
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                if (viewModel.manualTransAct.value == 0) {
-                    dataBinding.viewpager.currentItem = tab.position
-                    viewModel.mutableMenuTabs.value = tab.position
-                }
+                dataBinding.viewpager.currentItem = tab.position
+                viewModel.mutableMenuTabs.value = tab.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}

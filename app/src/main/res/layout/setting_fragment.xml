@@ -291,59 +291,59 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/shipping_setting"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="38dp"-->
-<!--            android:background="@drawable/setting_border"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/open_hour_setting">-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shipping_setting"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:background="@drawable/setting_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/open_hour_setting">
 
-<!--            <TextView-->
-<!--                android:id="@+id/shipping_setting_text"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="18dp"-->
-<!--                android:fontFamily="@font/inter_light"-->
-<!--                android:text="@string/shipping_title"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="16sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/shipping_setting_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:fontFamily="@font/inter_light"
+                android:text="@string/shipping_title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/shipping_setting_newText"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="@dimen/_4sdp"-->
-<!--                android:fontFamily="@font/inter_light"-->
-<!--                android:background="@drawable/button_red_oval"-->
-<!--                android:paddingHorizontal="@dimen/_5sdp"-->
-<!--                android:paddingVertical="@dimen/_2sdp"-->
-<!--                android:text="New"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="10sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/shipping_setting_text"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/shipping_setting_newText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:fontFamily="@font/inter_light"
+                android:background="@drawable/button_red_oval"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="New"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/shipping_setting_text"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <ImageView-->
-<!--                android:layout_width="10dp"-->
-<!--                android:layout_height="15dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@drawable/button_next"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="1.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_next"
+                android:layout_marginRight="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/payment_method_setting"
@@ -352,7 +352,7 @@
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/open_hour_setting">
+            app:layout_constraintTop_toBottomOf="@+id/shipping_setting">
 
             <TextView
                 android:id="@+id/payment_method_setting_text"

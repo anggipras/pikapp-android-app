@@ -2,11 +2,9 @@ package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,10 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnDynamicBinding
 import com.tsab.pikapp.models.model.SearchItem
-import com.tsab.pikapp.view.AdvanceMenuActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
-import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import java.io.Serializable
 
 class ManualTxnDynamicFragment : Fragment() {
     companion object {
@@ -33,7 +28,6 @@ class ManualTxnDynamicFragment : Fragment() {
     }
 
     private val viewModel: ManualTxnViewModel by activityViewModels()
-    private val viewModelMenu: MenuViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualTxnDynamicBinding
     private var navController: NavController? = null
     var menuList: MutableList<SearchItem> = mutableListOf()
@@ -59,7 +53,6 @@ class ManualTxnDynamicFragment : Fragment() {
 
         observeViewModel()
         setupRecyclerView()
-        attachInputListeners()
     }
 
     private fun observeViewModel() {
@@ -74,15 +67,6 @@ class ManualTxnDynamicFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             dataBinding.loadingOverlay.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
-        })
-
-        viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
-            if (totalItems > 0){
-                dataBinding.btnNext.visibility = View.VISIBLE
-                dataBinding.btnNext.text = getString(R.string.cart, totalItems.toString())
-            } else {
-                dataBinding.btnNext.visibility = View.GONE
-            }
         })
 
         viewModel.isSearch.observe(viewLifecycleOwner, Observer { isSearch ->
@@ -108,36 +92,9 @@ class ManualTxnDynamicFragment : Fragment() {
                     intent.putExtra(ManualAddAdvMenuActivity.MENU_PRICE, menuList.price.toString())
                     intent.putExtra(ManualAddAdvMenuActivity.MENU_QTY, 1)
                     startActivityForResult(intent, 1)
-//                    viewModel.setPID(menuList.product_id.toString())
-//                    viewModel.setMenuImg(menuList.pict_01.toString())
-//                    viewModel.setMenuName(menuList.product_name.toString())
-//                    viewModel.setMenuPrice(menuList.price.toString())
-//                    viewModel.setQty(1)
-//                    viewModelMenu.mutableManualTransAct.value = 1
-//                    view?.let { Navigation.findNavController(it).navigate(R.id.action_homeViewManualTxn_to_manualAddAdvMenuFragment, bundleOf(ManualAddAdvMenuFragment.ADVANCE_MENU_EDIT to false, ManualAddAdvMenuFragment.CART_POSITION to 0)) }
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter
         dataBinding.listMenuDetail.layoutManager = GridLayoutManager(requireView().context, 3)
-    }
-
-    private fun attachInputListeners() {
-        dataBinding.btnNext.setOnClickListener {
-            viewModel.addTotalQty()
-            navController?.navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.totalItems.observe(viewLifecycleOwner, Observer { totalItems ->
-            if (totalItems > 0){
-                dataBinding.btnNext.visibility = View.VISIBLE
-                dataBinding.btnNext.text = getString(R.string.cart, totalItems.toString())
-            } else {
-                dataBinding.btnNext.visibility = View.GONE
-            }
-        })
     }
 }

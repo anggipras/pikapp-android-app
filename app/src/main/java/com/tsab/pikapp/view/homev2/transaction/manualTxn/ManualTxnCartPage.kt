@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -16,19 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
-import com.tsab.pikapp.models.model.ExtraList
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import java.text.NumberFormat
 import java.util.*
 
 class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
-
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentManualTxnCartPageBinding
     lateinit var linearLayoutManager: LinearLayoutManager
     private var navController: NavController? = null
     lateinit var manualTxnCartAdapter: ManualTxnCartAdapter
-    private var extraList: ArrayList<ExtraList> = ArrayList()
     private val localeID =  Locale("in", "ID")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +71,8 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    navController?.navigate(R.id.action_manualTxnCartPage_to_homeViewManualTxn)
+                    dataBinding.loadingOverlay.loadingView.isVisible = true
+                    navController?.navigateUp()
                 }
             })
 
@@ -86,6 +85,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
         }
 
         dataBinding.topAppBar.setOnClickListener {
+            dataBinding.loadingOverlay.loadingView.isVisible = true
             navController?.navigateUp()
         }
     }
@@ -122,6 +122,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
         } else {
             if (i == 0) {
                 viewModel.setCartItems(0)
+                dataBinding.loadingOverlay.loadingView.isVisible = true
                 navController?.navigateUp()
             } else {
                 viewModel.selectedMenuTemp.value?.let { viewModel.setCartItems(it.size) }
@@ -133,7 +134,6 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
 
     override fun onResume() {
         super.onResume()
-
         manualTxnCartAdapter.notifyDataSetChanged()
     }
 }

@@ -13,6 +13,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityManualAddAdvMenuBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.models.model.AdvanceMenu
+import com.tsab.pikapp.services.CacheService
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnAddViewModel
 import kotlinx.android.synthetic.main.fragment_manual_add_adv_menu.*
 import java.io.Serializable
@@ -101,7 +102,7 @@ class ManualAddAdvMenuActivity : AppCompatActivity(), ManualChildAdvMenuAdapterD
                 finish()
             } else {
                 dataBinding.loadingOverlay.loadingView.isVisible = true
-                viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate, this)
+                viewModel.addToCart(dataBinding.manualNote.text.toString(), addAdvMenuChoiceTemplate)
                 Toast.makeText(baseContext, "${viewModel.menuName.value} berhasil masuk keranjang", Toast.LENGTH_SHORT).show()
             }
         }
@@ -120,7 +121,7 @@ class ManualAddAdvMenuActivity : AppCompatActivity(), ManualChildAdvMenuAdapterD
                 intent.putExtra("MENU_LIST_DATA", viewModel.selectedMenuTemp.value as Serializable)
                 intent.putExtra("MENU_QTY", viewModel.quantity.value!!)
                 intent.putExtra("MENU_PRICE", viewModel.menuPrice.value.toString())
-                intent.putExtra("MENU_TOTAL_PRICE", viewModel.totalPrice.value.toString())
+                intent.putExtra("MENU_TOTAL_PRICE", viewModel.totalPrice.value)
                 intent.putExtra("MANUAL_TXN_ACT", 1)
                 setResult(RESULT_OK, intent)
                 finish()
@@ -186,5 +187,6 @@ class ManualAddAdvMenuActivity : AppCompatActivity(), ManualChildAdvMenuAdapterD
     override fun onDestroy() {
         super.onDestroy()
         viewModel.setTrigger(false)
+        CacheService().deleteCache(baseContext)
     }
 }

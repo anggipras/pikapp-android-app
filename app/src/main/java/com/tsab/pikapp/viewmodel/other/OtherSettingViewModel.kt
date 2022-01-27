@@ -463,9 +463,11 @@ class OtherSettingViewModel : ViewModel() {
         nestedShipmentLayout.isVisible = false
         shipmentButtonSection.isVisible = false
         loadingOverlay.loadingView.isVisible = true
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
         val mid = sessionManager.getUserData()!!.mid!!
         disposable.add(
-            PikappApiService().shipmentApi.checkShipmentCondition(mid)
+            PikappApiService().shipmentApi.checkShipmentCondition(getUUID(), timestamp, getClientID(), token, mid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<ShipmentConditionResponse>() {
@@ -505,9 +507,11 @@ class OtherSettingViewModel : ViewModel() {
         shipmentButtonSection: ConstraintLayout,
         loadingOverlay: LayoutLoadingOverlayBinding
     ) {
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
         val mid = sessionManager.getUserData()!!.mid!!
         disposable.add(
-            PikappApiService().shipmentApi.getMerchantShipment(mid)
+            PikappApiService().shipmentApi.getMerchantShipment(getUUID(), timestamp, getClientID(), token, mid)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantShipmentDataResponse>() {
@@ -588,8 +592,10 @@ class OtherSettingViewModel : ViewModel() {
 
     fun getCourierList(loadingOverlay: LayoutLoadingOverlayBinding) {
         loadingOverlay.loadingView.isVisible = true
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
         disposable.add(
-            PikappApiService().shipmentApi.getCourierList()
+            PikappApiService().shipmentApi.getCourierList(getUUID(), timestamp, getClientID(), token)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<CourierListResponse>() {
@@ -734,16 +740,18 @@ class OtherSettingViewModel : ViewModel() {
         )
 
         loadingOverlay.loadingView.isVisible = true
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
         val mid = sessionManager.getUserData()!!.mid!!
 
         if (editOrAddShipment.value == true) { // EDIT TO UPDATE MERCHANT LOCATION AND DELIVERY OPTIONS
             disposable.add(
-                PikappApiService().shipmentApi.updateMerchantShipment(mid, reqMerchShipment)
+                PikappApiService().shipmentApi.updateMerchantShipment(getUUID(), timestamp, getClientID(), token, mid, reqMerchShipment)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<SubmitDataShipmentResponse>() {
                         override fun onSuccess(t: SubmitDataShipmentResponse) {
-                            Log.e("UPDATE_SUCCEED", t.result.toString())
+                            Log.e("UPDATE_SUCCEED", "succeed")
                             loadingOverlay.loadingView.isVisible = false
                             setFirstEnterEdit(false)
                             Navigation.findNavController(view).navigateUp()
@@ -757,12 +765,12 @@ class OtherSettingViewModel : ViewModel() {
             )
         } else { // ADD MERCHANT LOCATION AND DELIVERY OPTIONS
             disposable.add(
-                PikappApiService().shipmentApi.submitMerchantShipment(mid, reqMerchShipment)
+                PikappApiService().shipmentApi.submitMerchantShipment(getUUID(), timestamp, getClientID(), token, mid, reqMerchShipment)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<SubmitDataShipmentResponse>() {
                         override fun onSuccess(t: SubmitDataShipmentResponse) {
-                            Log.e("SUBMIT_SUCCEED", t.result.toString())
+                            Log.e("SUBMIT_SUCCEED", "succeed")
                             loadingOverlay.loadingView.isVisible = false
                             setFirstEnterEdit(false)
                             Navigation.findNavController(view).navigate(R.id.fromShipmentAddAddress_navigateTo_settingFragment)

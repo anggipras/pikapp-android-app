@@ -643,6 +643,17 @@ interface PikappApi {
     ): Call<OtherBaseResponse>
 
     @POST("merchant/v2/product-list/")
+    suspend fun merchantMenu(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String?,
+        @Body search: SearchRequest
+    ): Response<SearchResponse>
+
+    @POST("merchant/v2/product-list/")
     fun searchMenu(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
@@ -664,22 +675,39 @@ interface PikappApi {
     // Check Merchant Shipment Condition
     @GET("/api/checking-data/{mid}")
     fun checkShipmentCondition(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String
     ): Single<ShipmentConditionResponse>
 
     // Check Merchant Shipment Location and Delivery Data
     @GET("/api/locations-and-courier/{mid}")
     fun getMerchantShipment(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String
     ): Single<MerchantShipmentDataResponse>
 
     // Get Courier List
     @GET("merchant/courier-list/")
-    fun getCourierList(): Single<CourierListResponse>
+    fun getCourierList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
+    ): Single<CourierListResponse>
 
     // Submit merchant shipment data for the first time
     @POST("/api/submit-data/{mid}")
     fun submitMerchantShipment(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String,
         @Body requestMerchantShipment: RequestMerchantShipment
     ): Single<SubmitDataShipmentResponse>
@@ -687,6 +715,10 @@ interface PikappApi {
     // Update merchant shipment
     @PUT("/api/update-locations-courier/{mid}")
     fun updateMerchantShipment(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String,
         @Body requestMerchantShipment: RequestMerchantShipment
     ): Single<SubmitDataShipmentResponse>
@@ -788,6 +820,11 @@ interface PikappApi {
 
     @POST("api/transaction/courier-pricing")
     fun getCourierPrice(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("x-token") token: String,
         @Header("merchant-id") mid: String,
         @Body courierPriceReqBody: GetCourierRequestBody
     ): Single<CustomerCourierListResponse>

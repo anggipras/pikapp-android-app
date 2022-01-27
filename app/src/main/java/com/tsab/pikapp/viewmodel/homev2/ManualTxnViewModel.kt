@@ -26,6 +26,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -590,59 +594,86 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
-        PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, 7)
-        ).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                    call: Call<SearchResponse>,
-                    response: Response<SearchResponse>
-            ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = PikappApiService().api.merchantMenu(getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, 7))
+            if (response.isSuccessful) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val amountOfMenus = response.body()!!.total_items
                     if (amountOfMenus != 0) {
                         getSearchList(amountOfMenus)
                     } else {
-                        mutableMenuList.value = mutableMenuListEmpty.value
-                        Log.e("Zero_Product", "There is no product available")
+                        withContext(Dispatchers.Main) {
+                            mutableMenuList.value = mutableMenuListEmpty.value
+                            Log.e("Zero_Product", "There is no product available")
+                            setLoading(false)
+                        }
                     }
-                    setLoading(false)
                 } else {
                     Log.e("FAIL", "Failed get amount of menus")
                 }
             }
+        }
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e("FAILED", t.message.toString())
-                setLoading(false)
-            }
-        })
+//        PikappApiService().api.searchMenu(
+//                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, 7)
+//        ).enqueue(object : Callback<SearchResponse> {
+//            override fun onResponse(
+//                    call: Call<SearchResponse>,
+//                    response: Response<SearchResponse>
+//            ) {
+//                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+//                    val amountOfMenus = response.body()!!.total_items
+//                    if (amountOfMenus != 0) {
+//                        getSearchList(amountOfMenus)
+//                    } else {
+//                        mutableMenuList.value = mutableMenuListEmpty.value
+//                        Log.e("Zero_Product", "There is no product available")
+//                    }
+//                    setLoading(false)
+//                } else {
+//                    Log.e("FAIL", "Failed get amount of menus")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+//                Log.e("FAILED", t.message.toString())
+//                setLoading(false)
+//            }
+//        })
     }
 
-    fun getSearchList(amountOfMenus: Int) {
-        /*if (menuList.value!!.isNotEmpty()) return*/
-
+    private suspend fun getSearchList(amountOfMenus: Int) {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
-        PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token,
-                mid, SearchRequest(mutableSearchMenu.value!!, 0, amountOfMenus)
-        ).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                    call: Call<SearchResponse>,
-                    response: Response<SearchResponse>
-            ) {
+        val response = PikappApiService().api.merchantMenu(getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, amountOfMenus))
+        if (response.isSuccessful) {
+            withContext(Dispatchers.Main) {
                 val searchResult = response.body()?.results
                 setMenuList(searchResult ?: listOf())
+                setLoading(false)
             }
+        }
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e(tag, "Error: " + t.message.toString())
-            }
-        })
+//        PikappApiService().api.searchMenu(
+//                getUUID(), timestamp, getClientID(), signature, token,
+//                mid, SearchRequest(mutableSearchMenu.value!!, 0, amountOfMenus)
+//        ).enqueue(object : Callback<SearchResponse> {
+//            override fun onResponse(
+//                    call: Call<SearchResponse>,
+//                    response: Response<SearchResponse>
+//            ) {
+//                val searchResult = response.body()?.results
+//                setMenuList(searchResult ?: listOf())
+//            }
+//
+//            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+//                Log.e(tag, "Error: " + t.message.toString())
+//            }
+//        })
     }
 
     fun searchMenu(name: String, status: Boolean){
@@ -718,9 +749,14 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             items = listOfMenus
         )
 
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
+
         disposable.add(
-            PikappApiService().courierPriceApi.getCourierPrice(mid, courierReqBody)
+            PikappApiService().courierPriceApi.getCourierPrice(getUUID(), timestamp, getClientID(), signature, token, mid, courierReqBody)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<CustomerCourierListResponse>() {

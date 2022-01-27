@@ -52,7 +52,7 @@ class SettingFragment : Fragment() {
         dataBinding.pinSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_currentPinFragment) }
         dataBinding.openHourSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_shopManagementFragment) }
         dataBinding.accountNumber.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_dataBankFragment) }
-//        dataBinding.shippingSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_merchantShippingFragment) }
+        dataBinding.shippingSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_merchantShippingFragment) }
 
         dataBinding.backButton.setOnClickListener {
             activity?.finish()

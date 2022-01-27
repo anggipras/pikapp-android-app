@@ -1,7 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.app.Application
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
@@ -14,23 +13,18 @@ import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.util.getTimestamp
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuActivity
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnActivity
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnListAdapter
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import java.io.Serializable
 
 class ManualTxnAddViewModel(application: Application) : BaseViewModel(application) {
-    private val tag = javaClass.simpleName
     private val sessionManager = SessionManager(getApplication())
 
     private val apiService = PikappApiService()
     private val disposable = CompositeDisposable()
 
-    lateinit var manualTxnAdapter: ManualTxnListAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
 
     private val mutableSelectedMenuTemp = MutableLiveData<List<AddManualAdvMenu>>(listOf())
@@ -38,7 +32,7 @@ class ManualTxnAddViewModel(application: Application) : BaseViewModel(applicatio
 
     private val mutableResultOK = MutableLiveData<Boolean>()
     val resultOK: LiveData<Boolean> get() = mutableResultOK
-    fun setResultOK(bool: Boolean){
+    private fun setResultOK(bool: Boolean){
         mutableResultOK.value = bool
     }
 
@@ -96,16 +90,6 @@ class ManualTxnAddViewModel(application: Application) : BaseViewModel(applicatio
             totalAmount += amount.foodAmount
         }
         mutableTotalQuantity.value = totalAmount
-    }
-
-    private val mutableTotalItems = MutableLiveData(0)
-    val totalItems: LiveData<Int> get() = mutableTotalItems
-    private var x : String = ""
-    fun addTotalItems(quantity: Int){
-        mutableTotalItems.value = mutableTotalItems.value?.plus(quantity)
-    }
-    fun setCartItems(size: Int) {
-        mutableTotalItems.value = size
     }
 
     private val mutableQuantity = MutableLiveData(1)
@@ -191,12 +175,11 @@ class ManualTxnAddViewModel(application: Application) : BaseViewModel(applicatio
 
     fun addToCart(
         foodNote: String,
-        foodExtraList: ArrayList<ManualAddAdvMenuActivity.AddAdvMenuTemp>,
-        activity: ManualAddAdvMenuActivity
+        foodExtraList: ArrayList<ManualAddAdvMenuActivity.AddAdvMenuTemp>
     ) {
         //mapping radio and or checkbox menu choice
-        var foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
-        var foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
+        val foodExtraRadio: MutableList<FoodListParentRadio> = ArrayList()
+        val foodExtraCheck: MutableList<FoodListParentCheck> = ArrayList()
         foodExtraList.forEach {
             if (it.template_type == "RADIO") {
                 it.ext_menus.forEach { extMenuRad ->
@@ -224,8 +207,6 @@ class ManualTxnAddViewModel(application: Application) : BaseViewModel(applicatio
                 foodNote = foodNote,
                 foodTotalPrice = totalPrice.value.toString()
             )) }
-        addTotalItems(quantity.value!!)
-        cartTotalPrice(totalPrice.value.toString(), menuPrice.value.toString())
         setResultOK(true)
     }
 

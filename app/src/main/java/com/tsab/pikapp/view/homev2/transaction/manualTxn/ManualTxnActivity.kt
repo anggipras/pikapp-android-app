@@ -10,14 +10,6 @@ import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 
 class ManualTxnActivity : AppCompatActivity() {
-    companion object {
-        const val MENU_LIST_DATA = "menu_list_data"
-        const val MENU_QTY = "quantity"
-        const val MENU_PRICE = "menu_price"
-        const val MENU_TOTAL_PRICE = "menu_total_price"
-        const val MANUAL_TXN_ACT = "action to hit api"
-    }
-
     private val viewModel: MenuViewModel by viewModels()
     private val viewModelManualTxn: ManualTxnViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +20,6 @@ class ManualTxnActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val maknyus = data?.getSerializableExtra("MENU_LIST_BRO") as? List<AddManualAdvMenu>
         if (resultCode == RESULT_OK) {
             val menuListData = data?.getSerializableExtra("MENU_LIST_DATA") as? List<AddManualAdvMenu>
             val menuQty = data?.getIntExtra("MENU_QTY", 0)
