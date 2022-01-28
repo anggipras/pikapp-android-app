@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
             android:name=".view.homev2.transaction.manualTxn.ManualAddAdvMenuActivity"
