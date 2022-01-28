@@ -65,9 +65,9 @@ class PikappApiService {
 
     private fun checkShipmentConfig(): String {
         return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
-            "https://dev-mch-api.pikapp.id"
+            "https://dev-mch-api.pikapp.id/"
         } else {
-            "https://mch-api.pikapp.id"
+            "https://mch-api.pikapp.id/"
         }
     }
 
@@ -80,9 +80,9 @@ class PikappApiService {
 
     private fun checkCourierPriceConfig(): String {
         return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
-            "https://dev-courier-api.pikapp.id"
+            "https://dev-courier-api.pikapp.id/"
         } else {
-            "https://courier-api.pikapp.id"
+            "https://courier-api.pikapp.id/"
         }
     }
 
