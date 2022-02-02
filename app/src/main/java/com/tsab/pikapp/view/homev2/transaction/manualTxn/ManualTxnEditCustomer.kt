@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -46,16 +46,29 @@ class ManualTxnEditCustomer : Fragment() {
 
         attachInputListener()
         observeViewModel()
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.mutableAddressLocation.value = ArrayList()
+                    viewModel.setPostalCode("")
+                }
+            })
     }
 
     private fun observeViewModel(){
-        viewModel.custNameTemp.observe(viewLifecycleOwner, Observer { custName ->
+        viewModel.custNameTemp.observe(viewLifecycleOwner, { custName ->
             if (custName != ""){
-                dataBinding.custName.append(viewModel.custNameTemp.value)
-                dataBinding.custPhone.append(viewModel.custPhoneTemp.value?.substringAfter("0"))
-                dataBinding.custAddress.append(viewModel.custAddressTemp.value)
-                dataBinding.custAddressDetail.append(viewModel.custAddressDetailTemp.value)
+                dataBinding.custName.setText(viewModel.custNameTemp.value)
+                dataBinding.custPhone.setText(viewModel.custPhoneTemp.value?.substringAfter("0"))
+                dataBinding.custAddress.setText(viewModel.custAddressTemp.value)
+                dataBinding.custAddressDetail.setText(viewModel.custAddressDetailTemp.value)
             }
+        })
+
+        viewModel.customerPostalCode.observe(viewLifecycleOwner, {
+            dataBinding.custPostalCodeDetail.setText(viewModel.customerPostalCode.value)
         })
 
         viewModel.addressLocation.observe(viewLifecycleOwner, {
@@ -74,6 +87,8 @@ class ManualTxnEditCustomer : Fragment() {
 
     private fun attachInputListener(){
         topAppBar.setNavigationOnClickListener {
+            viewModel.mutableAddressLocation.value = ArrayList()
+            viewModel.setPostalCode("")
             navController?.navigate(R.id.action_manualTxnEditCustomer_to_manualTxnCustomerPage)
         }
 
@@ -105,9 +120,8 @@ class ManualTxnEditCustomer : Fragment() {
                 viewModel.editCustPhone("0$phone")
                 viewModel.editCustAddress(dataBinding.custAddress.text.toString())
                 viewModel.editCustAddressDetail(dataBinding.custAddressDetail.text.toString())
-                viewModel.editCustomer()
-                Toast.makeText(context, "Pelanggan berhasil diubah", Toast.LENGTH_SHORT).show()
-                navController?.navigate(R.id.action_manualTxnEditCustomer_to_manualTxnCustomerPage)
+                viewModel.setPostalCode(dataBinding.custPostalCodeDetail.text.toString())
+                view?.let { it1 -> viewModel.editCustomer(requireContext(), it1) }
             }
         }
     }
@@ -130,8 +144,6 @@ class ManualTxnEditCustomer : Fragment() {
             if (it != null) {
                 if (viewModel.currentLatLng.value == null) {
                     viewModel.setCurrentLocation(CurrentLatLng(latitude = it.latitude, longitude = it.longitude))
-                } else {
-
                 }
                 view?.let { v -> Navigation.findNavController(v).navigate(R.id.action_manualTxnEditCustomer_to_customerGetLocationFragment) }
             }

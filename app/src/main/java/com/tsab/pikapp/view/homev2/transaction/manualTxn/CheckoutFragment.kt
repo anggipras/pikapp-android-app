@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -56,7 +57,11 @@ class CheckoutFragment : Fragment() {
                     dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
                 }
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
+                dataBinding.divider1.visibility = View.VISIBLE
                 dataBinding.namaKirim.text = nama
+            } else {
+                dataBinding.dataPengiriman.visibility = View.GONE
+                dataBinding.divider1.visibility = View.GONE
             }
         })
 
@@ -75,18 +80,51 @@ class CheckoutFragment : Fragment() {
             if(harga != "" && harga != " "){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
-                val thePrice: Long = harga.toLong()
-                val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
-                val thePrice1: Long = (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
-                val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
-                dataBinding.hargaKirim.text = "Rp. $numberFormat"
-                dataBinding.ongkirHarga.text = "Rp. $numberFormat"
-                dataBinding.hargaBottom.text = "Rp. $numberFormat1"
+                dataBinding.paymentInsurance.visibility = View.VISIBLE
+                val shipmentPrice: Long = harga.toLong()
+                val shipmentPriceFormat = NumberFormat.getInstance(localeID).format(shipmentPrice)
+                dataBinding.hargaKirim.text = "Rp. $shipmentPriceFormat"
+                dataBinding.ongkirHarga.text = "Rp. $shipmentPriceFormat"
+                val totalPriceOnCart: Long = (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val totalPriceFormat = NumberFormat.getInstance(localeID).format(totalPriceOnCart)
+                dataBinding.hargaBottom.text = "Rp. $totalPriceFormat"
+                viewModel.setInvoiceTotalPrice(totalPriceOnCart.toString())
             }
             if(harga == " "){
                 dataBinding.ongkirHarga.text = "Rp. 0"
-                dataBinding.hargaBottom.text = "Rp. ${viewModel.mutableCartPrice.value}"
+                val thePrice = viewModel.mutableCartPrice.value!!.toLong()
+                val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+                dataBinding.hargaBottom.text = "Rp. $numberFormat"
                 dataBinding.hargaKirim.visibility = View.GONE
+                dataBinding.paymentInsurance.visibility = View.GONE
+                viewModel.setInvoiceTotalPrice(thePrice.toString())
+            }
+        })
+
+        viewModel.insurancePrice.observe(viewLifecycleOwner, { insurance ->
+            if (!insurance.isNullOrEmpty()) {
+                if (insurance != "0") {
+                    val totalPriceWithInsurance: Long = (viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + insurance.toLong())
+                    val numberFormat = NumberFormat.getInstance(localeID).format(totalPriceWithInsurance)
+                    val insuranceFormat = NumberFormat.getInstance(localeID).format(insurance.toLong())
+                    dataBinding.insurancePriceTitle.isVisible = true
+                    dataBinding.insurancePrice.isVisible = true
+                    dataBinding.insurancePrice.text = "Rp. $insuranceFormat"
+                    dataBinding.hargaBottom.text = "Rp. $numberFormat"
+                    viewModel.setInvoiceTotalPrice(totalPriceWithInsurance.toString())
+                } else {
+                    val totalPriceWithoutInsurance = if (!viewModel.HargaEkspedisi.value.isNullOrEmpty()) {
+                        (viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong())
+                    } else {
+                        viewModel.mutableCartPrice.value!!.toLong()
+                    }
+                    val numberFormat = NumberFormat.getInstance(localeID).format(totalPriceWithoutInsurance)
+                    dataBinding.paymentInsurance.isChecked = false
+                    dataBinding.insurancePriceTitle.isVisible = false
+                    dataBinding.insurancePrice.isVisible = false
+                    dataBinding.hargaBottom.text = "Rp. $numberFormat"
+                    viewModel.setInvoiceTotalPrice(totalPriceWithoutInsurance.toString())
+                }
             }
         })
 
@@ -116,8 +154,10 @@ class CheckoutFragment : Fragment() {
                 val thePrice1: Long = (price + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
                 val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
                 dataBinding.hargaBottom.text = "Rp. $numberFormat1"
+                viewModel.setInvoiceTotalPrice(thePrice1.toString())
             }else{
                 dataBinding.hargaBottom.text = "Rp. $numberFormat"
+                viewModel.setInvoiceTotalPrice(thePrice.toString())
             }
         })
 
@@ -128,7 +168,7 @@ class CheckoutFragment : Fragment() {
                     dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
                 }
                 dataBinding.bayarPesanan.visibility = View.VISIBLE
-                dataBinding.bayarPesanDengan.text = nama.lowercase().capitalize()
+                dataBinding.bayarPesanDengan.text = nama
             }
         })
 
@@ -172,6 +212,14 @@ class CheckoutFragment : Fragment() {
                 }
             }else{
                 Log.e("Fail", "Data Kosong")
+            }
+        }
+
+        dataBinding.paymentInsurance.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.countInsurance(true)
+            } else {
+                viewModel.countInsurance(false)
             }
         }
 

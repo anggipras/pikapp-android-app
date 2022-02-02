@@ -431,7 +431,11 @@ class OtherSettingViewModel : ViewModel() {
         val gcd = Geocoder(context, Locale.getDefault())
         val addresses: List<Address> = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1)
         mutableAddressLocation.value = addresses
-        setPostalCode(addresses[0].postalCode)
+        if (!addresses[0].postalCode.isNullOrEmpty()) {
+            setPostalCode(addresses[0].postalCode)
+        } else {
+            setPostalCode("")
+        }
     }
 
     private val mutablePostalCode = MutableLiveData<String?>()

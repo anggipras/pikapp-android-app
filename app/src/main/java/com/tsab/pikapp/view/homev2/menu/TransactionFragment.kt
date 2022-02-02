@@ -73,7 +73,7 @@ class TransactionFragment : Fragment() {
                    R.id.manualTxn -> {
                      val intent = Intent(activity?.baseContext, ManualTxnActivity::class.java)
                       activity?.startActivityForResult(intent, 1)
-                       activity?.overridePendingTransition(0, 0)
+                       activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
                       true
                   }
                   else -> false

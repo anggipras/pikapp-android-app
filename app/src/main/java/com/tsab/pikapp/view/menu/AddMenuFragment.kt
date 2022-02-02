@@ -3,7 +3,6 @@ package com.tsab.pikapp.view.menu
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentAddMenuBinding
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
@@ -68,6 +66,7 @@ class AddMenuFragment : Fragment() {
             override fun handleOnBackPressed() {
                 sessionManager.setMenuDefInit(0)
                 activity?.finish()
+                activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
             }
         })
     }
@@ -76,6 +75,7 @@ class AddMenuFragment : Fragment() {
         dataBinding.topAppBar.setNavigationOnClickListener {
             sessionManager.setMenuDefInit(0)
             activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.infoBtn.setOnClickListener {
@@ -133,6 +133,7 @@ class AddMenuFragment : Fragment() {
                 Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                     activity?.finish()
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             }
         })

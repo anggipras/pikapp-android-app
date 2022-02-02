@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -110,7 +111,7 @@ class CustomerGetLocationFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.addressLocation.observe(viewLifecycleOwner, {
-            if (it != null) {
+            if (!it.isNullOrEmpty()) {
                 dataBinding.locationAddressTitle.text = getString(R.string.main_address_location, it[0].locality)
                 dataBinding.locationAddressDetail.text = getString(R.string.detail_address_location, it[0].getAddressLine(0))
                 dataBinding.locationAddressBottom.visibility = View.VISIBLE

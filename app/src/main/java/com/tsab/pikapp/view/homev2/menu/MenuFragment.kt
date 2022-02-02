@@ -183,6 +183,7 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
             if (viewModel.size.value == 0) {
                 Intent(activity?.baseContext, MenuNavigation::class.java).apply {
                     activity?.startActivity(this)
+                    activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
                 }
             }
         }
@@ -190,6 +191,7 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
         dataBinding.plusBtn.setOnClickListener {
             Intent(activity?.baseContext, CategoryNavigation::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 

@@ -25,7 +25,7 @@
                 android:id="@+id/foodimg"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:background="@drawable/background"
+                android:background="@color/white"
                 android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>

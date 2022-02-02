@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -97,9 +98,13 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
         }
 
         dataDeliv.setOnClickListener {
-            select_shipment_id.visibility = View.GONE
-            courier_list_id.visibility = View.VISIBLE
-            viewModel.getCourierPriceList()
+            if (viewModel.currentLatLng.value == null) {
+                Toast.makeText(requireContext(), "Mohon pilih data customer terlebih dahulu", Toast.LENGTH_SHORT).show()
+            } else {
+                select_shipment_id.visibility = View.GONE
+                courier_list_id.visibility = View.VISIBLE
+                viewModel.getCourierPriceList()
+            }
         }
 
         btnSaveCourierService.setOnClickListener {
@@ -109,10 +114,12 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
                 "${viewModel.selectedCourierService.value?.service_name.toString()} - ${viewModel.selectedCourierService.value?.name.toString()}"
             }
             viewModel.setEkspedisi(courierName, viewModel.selectedCourierService.value?.price.toString())
+            viewModel.countInsurance(false)
             dismiss()
         }
 
         btnSaveExpedition.setOnClickListener {
+            viewModel.countInsurance(false)
             if(ekspedisiSend){
                 dismiss()
             }else if(selfPickup){
@@ -168,8 +175,12 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
         courier_serviceList_id.visibility = View.GONE
     }
 
-    override fun onCourierClick(courierServiceList: MutableList<CustomerCourierServiceList>) {
+    override fun onCourierClick(
+        nameOfService: String,
+        courierServiceList: MutableList<CustomerCourierServiceList>
+    ) {
         courier_list_id.visibility = View.GONE
+        select_courierService_id.text = nameOfService
         viewModel.liveDataCourierServiceList.postValue(courierServiceList)
         courier_serviceList_id.visibility = View.VISIBLE
     }

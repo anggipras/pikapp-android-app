@@ -811,7 +811,7 @@ interface PikappApi {
     ) : Call<ManualTxnResponse>
 
     //Customer Manual TXN
-    @GET("pos/v1/customerlist/{mid}")
+    @GET("pos/v2/customerlist/{mid}")
     fun getListCustomer(
         @Header("page") page: String,
         @Header("size") size: String,
@@ -829,15 +829,15 @@ interface PikappApi {
         @Body courierPriceReqBody: GetCourierRequestBody
     ): Single<CustomerCourierListResponse>
 
-    @POST("pos/v1/customerlist/add/")
+    @POST("pos/v2/customerlist/add/")
     fun addCustomer(
-        @Body addCustomerRequest: addCustomerRequest
-    ): Call<CustomerResponse>
+        @Body addCustomerRequest: AddCustomerRequest
+    ): Call<CustomerResponseApi>
 
-    @POST("pos/v1/customerlist/add/")
+    @POST("pos/v2/customerlist/add/")
     fun editCustomer(
         @Body editCustomerRequest: EditCustomerRequest
-    ): Call<CustomerResponse>
+    ): Call<CustomerResponseApi>
 
     @DELETE("pos/v1/customer/delete/{customerId}")
     fun deleteCustomer(

@@ -111,13 +111,25 @@ data class CustomerResponseDetail(
     val addressDetail: String?,
     @SerializedName("phone_number")
     val phone: String?,
+    @SerializedName("latitude")
+    val latitude: String?,
+    @SerializedName("longitude")
+    val longitude: String?,
+    @SerializedName("postal_code")
+    val postal_code: String?,
+    @SerializedName("subdistrict_name")
+    val subdistrict_name: String?,
+    @SerializedName("city")
+    val city: String?,
+    @SerializedName("province")
+    val province: String?,
     @SerializedName("created_at")
     val createdAt: String?,
     @SerializedName("updated_at")
     val updatedAt: String?
 )
 
-data class addCustomerRequest(
+data class AddCustomerRequest(
     @SerializedName("name")
     val name: String?,
     @SerializedName("mid")
@@ -126,13 +138,25 @@ data class addCustomerRequest(
     val address: String?,
     @SerializedName("address_detail")
     val addressDetail: String?,
+    @SerializedName("latitude")
+    val latitude: String?,
+    @SerializedName("longitude")
+    val longitude: String?,
+    @SerializedName("subdistrict_name")
+    val subdistrict_name: String?,
+    @SerializedName("city")
+    val city: String?,
+    @SerializedName("province")
+    val province: String?,
+    @SerializedName("postal_code")
+    val postal_code: String?,
     @SerializedName("phone_number")
     val phoneNumber: String?
 )
 
 data class EditCustomerRequest(
     @SerializedName("customer_id")
-    val customerId: Long?,
+    val customer_id: Long?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("mid")
@@ -140,9 +164,61 @@ data class EditCustomerRequest(
     @SerializedName("address")
     val address: String?,
     @SerializedName("address_detail")
-    val addressDetail: String?,
+    val address_detail: String?,
+    @SerializedName("latitude")
+    val latitude: String?,
+    @SerializedName("longitude")
+    val longitude: String?,
+    @SerializedName("subdistrict_name")
+    val subdistrict_name: String?,
+    @SerializedName("city")
+    val city: String?,
+    @SerializedName("province")
+    val province: String?,
+    @SerializedName("postal_code")
+    val postal_code: String?,
     @SerializedName("phone_number")
-    val phoneNumber: String?
+    val phone_number: String?
+)
+
+data class CustomerResponseApi(
+    @SerializedName("err_code")
+    override val errCode: String?,
+    @SerializedName("err_message")
+    override val errMessage: String?,
+    @SerializedName("results")
+    val results: CustomerResponseDetailApi?
+) : Response
+
+data class CustomerResponseDetailApi(
+    @SerializedName("customer_id")
+    val customerId: Long?,
+    @SerializedName("mid")
+    val mid: String?,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("address")
+    val address: String?,
+    @SerializedName("address_detail")
+    val addressDetail: String?,
+    @SerializedName("latitude")
+    val latitude: String?,
+    @SerializedName("longitude")
+    val longitude: String?,
+    @SerializedName("subdistrict_name")
+    val subdistrict_name: String?,
+    @SerializedName("city")
+    val city: String?,
+    @SerializedName("province")
+    val province: String?,
+    @SerializedName("postal_code")
+    val postal_code: String?,
+    @SerializedName("phone_number")
+    val phone: String?,
+    @SerializedName("created_at")
+    val createdAt: String?,
+    @SerializedName("updated_at")
+    val updatedAt: String?
 )
 
 data class DeleteCustomerResponse(

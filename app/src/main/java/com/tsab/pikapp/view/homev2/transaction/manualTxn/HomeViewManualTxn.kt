@@ -2,7 +2,6 @@ package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
@@ -23,7 +21,6 @@ import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
 
 class HomeViewManualTxn : Fragment() {
-
     private val viewModel: MenuViewModel by activityViewModels()
     private val viewModelDynamic: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentHomeViewManualTxnBinding
@@ -72,6 +69,7 @@ class HomeViewManualTxn : Fragment() {
         sessionManager.setHomeNav(0)
         dataBinding.topAppBar.setNavigationOnClickListener {
             activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         requireActivity()
@@ -79,6 +77,7 @@ class HomeViewManualTxn : Fragment() {
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     activity?.finish()
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             })
 
@@ -93,13 +92,13 @@ class HomeViewManualTxn : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
             if (!isLoading) {
                 initViews()
             }
         })
 
-        viewModel.categoryListResult.observe(viewLifecycleOwner, Observer { categoryList ->
+        viewModel.categoryListResult.observe(viewLifecycleOwner, { categoryList ->
             this.categoryList = categoryList.map { it.category_name ?: "" }
 
             dataBinding.tabs.removeAllTabs()
@@ -111,7 +110,7 @@ class HomeViewManualTxn : Fragment() {
             }
         })
 
-        viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
+        viewModel.errCode.observe(viewLifecycleOwner, { errCode ->
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {

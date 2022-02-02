@@ -143,14 +143,12 @@ class ManualTxnAddCustomer : Fragment() {
                 dataBinding.nameHeaderText.setTextColor(context?.resources?.getColor(R.color.red)!!)
             } else {
                 viewModel.addCustName(dataBinding.custName.text.toString())
-                var phone = dataBinding.custPhone.text.toString()
+                val phone = dataBinding.custPhone.text.toString()
                 viewModel.addCustPhone("0$phone")
                 viewModel.addCustAddress(dataBinding.custAddress.text.toString())
                 viewModel.addCustAddressDetail(dataBinding.custAddressDetail.text.toString())
                 viewModel.setPostalCode(dataBinding.custPostalCodeDetail.text.toString())
-                viewModel.addCustomer()
-                Toast.makeText(context, "Pelanggan berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-                navController?.navigate(R.id.action_manualTxnAddCustomer_to_manualTxnCustomerPage)
+                view?.let { it1 -> viewModel.addCustomer(requireContext(), it1) }
             }
         }
 
@@ -175,6 +173,7 @@ class ManualTxnAddCustomer : Fragment() {
         }
         task.addOnSuccessListener {
             if (it != null) {
+                Log.e("ASYIKK", CurrentLatLng(latitude = it.latitude, longitude = it.longitude).toString())
                 viewModel.setCurrentLocation(CurrentLatLng(latitude = it.latitude, longitude = it.longitude))
                 view?.let { v -> Navigation.findNavController(v).navigate(R.id.action_manualTxnAddCustomer_to_customerGetLocationFragment) }
             }
