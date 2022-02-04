@@ -8,7 +8,6 @@ import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -19,6 +18,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.LayoutLoadingOverlayBinding
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -763,7 +763,13 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         )
     }
 
-    fun postOrder(paymentStatus: Boolean, nav: NavController, activity: Activity): Int {
+    fun postOrder(
+        paymentStatus: Boolean,
+        nav: NavController,
+        activity: Activity,
+        loadingOverlayCheckout: LayoutLoadingOverlayBinding
+    ): Int {
+        loadingOverlayCheckout.loadingView.isVisible = true
         mutablePayStat.value = paymentStatus
         var status = 0
         val menuList: ArrayList<MenuList> = ArrayList()
@@ -857,14 +863,16 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 status = response.code()
                 if (response.code() == 200) {
                     mutableInvoiceTransactionId.value = response.body()?.results?.transaction_id
+                    loadingOverlayCheckout.loadingView.isVisible = false
                     nav.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
                 } else {
+                    loadingOverlayCheckout.loadingView.isVisible = false
                     Toast.makeText(activity,"Transaksi Gagal Dilakukan", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
-               Log.e("Fail", t.toString())
+                loadingOverlayCheckout.loadingView.isVisible = false
             }
         })
         return status

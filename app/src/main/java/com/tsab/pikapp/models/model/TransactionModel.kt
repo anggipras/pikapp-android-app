@@ -312,6 +312,13 @@ data class FilterMockUp(
     var orderPlatform: String?
 )
 
+/* DUMMY TRACK ORDER */
+data class TrackingDetail(
+    var note: String?,
+    var updated_at: String?,
+    var status: String?
+)
+
 
 
 

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,7 +67,6 @@ class TransactionListV2Adapter(
     var menuPrice = 0
     var str: String = ""
     val reasonsheet = CancelReasonFragment()
-    var isLoading: Boolean = false
 
     /* GET LIST OF TRANSACTION FROM LIVEDATA MVVM */
     fun setTransactionList(transactionList: List<TransactionListV2Data>) {
@@ -427,7 +425,8 @@ class TransactionListV2Adapter(
                     rejectBtn.text = "Lacak"
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
-                        // would be open new activity for lacak
+                        val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
+                        activity.startActivity(intent)
                     }
                 }
                 acceptBtn.visibility = View.VISIBLE
@@ -445,7 +444,8 @@ class TransactionListV2Adapter(
                     rejectBtn.text = "Lacak"
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
-                        // would be open new activity for lacak
+                        val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
+                        activity.startActivity(intent)
                     }
                 }
                 acceptBtn.visibility = View.VISIBLE
@@ -781,8 +781,6 @@ class TransactionListV2Adapter(
         status: String,
         loadingOverlay: View
     ) {
-//        loadingOverlay.visibility = View.VISIBLE
-//        setIsLoading(true)
         listener.onItemClickTransactionTxn(txnId, status)
     }
 
@@ -791,13 +789,7 @@ class TransactionListV2Adapter(
         orderId: String,
         loadingOverlay: View
     ) {
-//        loadingOverlay.visibility = View.VISIBLE
-//        setIsLoading(true)
         listener.onItemClickTransactionChannel(channel, orderId)
-    }
-
-    fun setIsLoading(value: Boolean) {
-        isLoading = value
     }
 
     interface OnItemClickListener {

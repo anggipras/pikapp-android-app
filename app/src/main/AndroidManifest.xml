@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".view.homev2.transaction.TransactionTrackingActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.homev2.transaction.manualTxn.ManualAddAdvMenuActivity"
             android:exported="false" />
         <activity android:name=".view.homev2.menu.WebMenuActivity" />

@@ -868,7 +868,6 @@
                     android:textColor="@color/green"
                     android:textSize="16sp"/>
 
-
             </LinearLayout>
 
             <Button
@@ -887,6 +886,11 @@
                 android:layout_marginEnd="20dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loadingOverlayCheckout"
+            layout="@layout/layout_loading_overlay"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

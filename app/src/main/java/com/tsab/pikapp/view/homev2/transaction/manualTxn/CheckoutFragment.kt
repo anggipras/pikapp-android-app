@@ -200,8 +200,11 @@ class CheckoutFragment : Fragment() {
             if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                 viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
                 var status = navController?.let { it1 ->
-                    viewModel.postOrder(dataBinding.payStat.isChecked,
-                        it1, requireActivity()
+                    viewModel.postOrder(
+                        dataBinding.payStat.isChecked,
+                        it1,
+                        requireActivity(),
+                        dataBinding.loadingOverlayCheckout
                     )
                 }
             }else{
