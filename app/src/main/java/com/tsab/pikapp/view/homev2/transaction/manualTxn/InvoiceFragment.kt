@@ -1,11 +1,9 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +12,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,8 +62,9 @@ class InvoiceFragment : Fragment() {
 
         dataBinding.topAppBar.setNavigationOnClickListener {
             val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-            activity?.startActivityForResult(intent, 1)
-            activity?.overridePendingTransition(0, 0)
+            activity?.startActivity(intent)
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.btnShare.setOnClickListener {
@@ -84,7 +82,8 @@ class InvoiceFragment : Fragment() {
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                    activity?.startActivityForResult(intent, 1)
+                    activity?.startActivity(intent)
+                    activity?.finish()
                     activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             }
@@ -94,6 +93,12 @@ class InvoiceFragment : Fragment() {
     }
 
     fun observeViewModel(){
+        viewModel.invoiceTransactionId.observe(viewLifecycleOwner, {
+            it?.let {
+                dataBinding.invoiceNoData.text = it.substring(0, 10)
+            }
+        })
+
         viewModel.AsalPesanan.observe(viewLifecycleOwner, { nama ->
             if(nama != ""){
                 dataBinding.asalPesanan.text = nama
@@ -152,11 +157,9 @@ class InvoiceFragment : Fragment() {
             }
         })
 
-        viewModel.invoiceTotalPrice.observe(viewLifecycleOwner, { price ->
-            val invoiceTotalPrice: Long = price.toLong()
-            val invoiceTotalPriceFormat = NumberFormat.getInstance(localeID).format(invoiceTotalPrice)
-            dataBinding.totalHargaBot.text = "Rp. $invoiceTotalPriceFormat"
-        })
+        val invoiceTotalPrice: Long = viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
+        val invoiceTotalPriceFormat = NumberFormat.getInstance(localeID).format(invoiceTotalPrice)
+        dataBinding.totalHargaBot.text = "Rp. $invoiceTotalPriceFormat"
 
         viewModel.WaktuPesan.observe(viewLifecycleOwner, { waktu ->
             if(waktu == "Sekarang"){

@@ -12,6 +12,7 @@
     <color name="placeholderBackground">#DDDDDD</color>
 
     <color name="colorGreen">#4BB7AC</color>
+    <color name="colorLightGreen">#E6FBF9</color>
     <color name="colorGrey">#323232</color>
     <color name="colorGold">#D39C22</color>
     <color name="colorLightGrey">#EDEDED</color>

@@ -173,7 +173,6 @@ class ManualTxnAddCustomer : Fragment() {
         }
         task.addOnSuccessListener {
             if (it != null) {
-                Log.e("ASYIKK", CurrentLatLng(latitude = it.latitude, longitude = it.longitude).toString())
                 viewModel.setCurrentLocation(CurrentLatLng(latitude = it.latitude, longitude = it.longitude))
                 view?.let { v -> Navigation.findNavController(v).navigate(R.id.action_manualTxnAddCustomer_to_customerGetLocationFragment) }
             }

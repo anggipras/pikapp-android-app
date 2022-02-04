@@ -411,6 +411,9 @@ class TransactionListV2Adapter(
                 acceptBtn.setOnClickListener {
                     listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "DELIVER", recyclerViewDelivery.payment_status))
                 }
+                rejectBtn.setBackgroundResource(R.drawable.button_red_transparent)
+                rejectBtn.text = "Batalkan"
+                rejectBtn.setTextColor(context.resources.getColor(R.color.colorRed))
                 rejectBtn.setOnClickListener {
                     listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", recyclerViewDelivery.payment_status))
                 }
@@ -418,6 +421,15 @@ class TransactionListV2Adapter(
                 orderStatus.text = "Dikirim"
                 orderStatus.setBackgroundResource(R.drawable.button_green_square)
                 rejectBtn.visibility = View.GONE
+                if (recyclerViewDelivery.payment_status == "PAID" && recyclerViewDelivery.biz_type == "DELIVERY") {
+                    rejectBtn.visibility = View.VISIBLE //This is change for Lacak button (not rejectButton anymore)
+                    rejectBtn.setBackgroundResource(R.drawable.button_purple_transparent)
+                    rejectBtn.text = "Lacak"
+                    rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
+                    rejectBtn.setOnClickListener {
+                        // would be open new activity for lacak
+                    }
+                }
                 acceptBtn.visibility = View.VISIBLE
                 acceptBtn.text = "Pesanan Tiba"
                 acceptBtn.setOnClickListener {
@@ -427,6 +439,15 @@ class TransactionListV2Adapter(
                 orderStatus.text = "Sampai"
                 orderStatus.setBackgroundResource(R.drawable.button_green_square)
                 rejectBtn.visibility = View.GONE
+                if (recyclerViewDelivery.payment_status == "PAID" && recyclerViewDelivery.biz_type == "DELIVERY") {
+                    rejectBtn.visibility = View.VISIBLE //This is change for Lacak button (not rejectButton anymore)
+                    rejectBtn.setBackgroundResource(R.drawable.button_purple_transparent)
+                    rejectBtn.text = "Lacak"
+                    rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
+                    rejectBtn.setOnClickListener {
+                        // would be open new activity for lacak
+                    }
+                }
                 acceptBtn.visibility = View.VISIBLE
                 acceptBtn.text = "Pesanan Selesai"
                 if (recyclerViewDelivery.payment_status == "PAID"){
@@ -651,7 +672,7 @@ class TransactionListV2Adapter(
     }
 
     private fun formatNumber() {
-        str = NumberFormat.getNumberInstance(Locale.US).format(this.menuPrice)
+        str = NumberFormat.getNumberInstance(Locale("in", "ID")).format(this.menuPrice)
     }
 
     private fun openWhatsapp(recyclerViewDelivery: TransactionListV2Data){

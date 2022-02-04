@@ -32,7 +32,11 @@ class CustomerCourierListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val courierObject = courierList[position]
-        holder.courierNameAndPrice.text = "${courierObject.name} (Rp. ${formatNumber(courierObject.lower_limit)} - Rp. ${formatNumber(courierObject.upper_limit)})"
+        if (courierObject.lower_limit.toInt() == 0) {
+            holder.courierNameAndPrice.text = "${courierObject.name} (Rp. ${formatNumber(courierObject.upper_limit)})"
+        } else {
+            holder.courierNameAndPrice.text = "${courierObject.name} (Rp. ${formatNumber(courierObject.lower_limit)} - Rp. ${formatNumber(courierObject.upper_limit)})"
+        }
         holder.courierDescription.text = courierObject.description
         holder.itemView.setOnClickListener {
             listener.onCourierClick(courierObject.name, courierObject.courier_list)

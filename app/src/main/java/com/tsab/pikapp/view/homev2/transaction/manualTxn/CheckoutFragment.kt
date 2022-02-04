@@ -85,10 +85,9 @@ class CheckoutFragment : Fragment() {
                 val shipmentPriceFormat = NumberFormat.getInstance(localeID).format(shipmentPrice)
                 dataBinding.hargaKirim.text = "Rp. $shipmentPriceFormat"
                 dataBinding.ongkirHarga.text = "Rp. $shipmentPriceFormat"
-                val totalPriceOnCart: Long = (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val totalPriceOnCart: Long = viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
                 val totalPriceFormat = NumberFormat.getInstance(localeID).format(totalPriceOnCart)
                 dataBinding.hargaBottom.text = "Rp. $totalPriceFormat"
-                viewModel.setInvoiceTotalPrice(totalPriceOnCart.toString())
             }
             if(harga == " "){
                 dataBinding.ongkirHarga.text = "Rp. 0"
@@ -97,7 +96,6 @@ class CheckoutFragment : Fragment() {
                 dataBinding.hargaBottom.text = "Rp. $numberFormat"
                 dataBinding.hargaKirim.visibility = View.GONE
                 dataBinding.paymentInsurance.visibility = View.GONE
-                viewModel.setInvoiceTotalPrice(thePrice.toString())
             }
         })
 
@@ -111,7 +109,6 @@ class CheckoutFragment : Fragment() {
                     dataBinding.insurancePrice.isVisible = true
                     dataBinding.insurancePrice.text = "Rp. $insuranceFormat"
                     dataBinding.hargaBottom.text = "Rp. $numberFormat"
-                    viewModel.setInvoiceTotalPrice(totalPriceWithInsurance.toString())
                 } else {
                     val totalPriceWithoutInsurance = if (!viewModel.HargaEkspedisi.value.isNullOrEmpty()) {
                         (viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong())
@@ -123,7 +120,6 @@ class CheckoutFragment : Fragment() {
                     dataBinding.insurancePriceTitle.isVisible = false
                     dataBinding.insurancePrice.isVisible = false
                     dataBinding.hargaBottom.text = "Rp. $numberFormat"
-                    viewModel.setInvoiceTotalPrice(totalPriceWithoutInsurance.toString())
                 }
             }
         })
@@ -151,13 +147,11 @@ class CheckoutFragment : Fragment() {
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
             if(viewModel.mutableHargaEkspedisi.value != "" && viewModel.mutableHargaEkspedisi.value != " "){
-                val thePrice1: Long = (price + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val thePrice1: Long = price.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
                 val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
                 dataBinding.hargaBottom.text = "Rp. $numberFormat1"
-                viewModel.setInvoiceTotalPrice(thePrice1.toString())
             }else{
                 dataBinding.hargaBottom.text = "Rp. $numberFormat"
-                viewModel.setInvoiceTotalPrice(thePrice.toString())
             }
         })
 

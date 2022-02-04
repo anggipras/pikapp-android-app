@@ -12,6 +12,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.SearchItem
+import java.text.NumberFormat
+import java.util.*
 
 class DynamicListAdapter(
     val context: Context,
@@ -35,7 +37,8 @@ class DynamicListAdapter(
 
     override fun onBindViewHolder(holder: DynamicListAdapter.ViewHolder, position: Int) {
         val img = menuList[position].pict_02
-        holder.itemTextHarga.text = "Rp. " + menuList[position].price
+        val numberFormat = NumberFormat.getInstance(Locale("in", "ID")).format(menuList[position].price?.toLong())
+        holder.itemTextHarga.text = "Rp. $numberFormat"
         Glide.with(context).load(img).transform(RoundedCorners(25), CenterCrop()).into(holder.img)
         holder.itemText.text = menuList[position].product_name
 

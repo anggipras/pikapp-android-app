@@ -805,8 +805,8 @@ interface PikappApi {
             @Part("mid") mid: RequestBody
     ): Call<UploadReportResponse>
 
-    @POST("pos/v1/transaction/add/")
-    fun uploadManualTxn(
+    @POST("pos/v2/transaction/add/")
+    fun recordPostManualTxn(
         @Body ManualTxnRequest: ManualTxnRequest
     ) : Call<ManualTxnResponse>
 

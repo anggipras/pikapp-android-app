@@ -112,7 +112,7 @@ class TransactionFragment : Fragment() {
     }
 
     private fun setUpTabs() {
-        viewModel.getBadgesTransactionV2List(requireContext())
+        viewModel.getBadgesTransactionV2List()
 
         TabLayoutMediator(
             dataBinding.tabs,
