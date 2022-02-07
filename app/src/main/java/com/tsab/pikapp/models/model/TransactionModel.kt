@@ -27,19 +27,21 @@ data class ManualTxnRequest(
     var mid: String,
     var order_type: String,
     var order_platform: String,
-    var total_product_price: Int,
+    var total_product_price: Long,
     var payment_status: String,
     var payment_method: String,
     var order_status: String,
-    var total_discount: Int,
-    var total_payment: Int
+    var total_discount: Long,
+    var total_payment: Long
 )
 
 data class ShippingData(
     var shipping_method: String,
     var shipping_cost: Int,
     var shipping_time: String,
-    var shipping_time_type: String
+    var shipping_time_type: String,
+    var shipping_insurance: Long?,
+    var shipping_service_type: String?
 )
 
 data class MenuList(
@@ -308,6 +310,13 @@ data class TransactionListV2Data(
 data class FilterMockUp(
     var txnType: String?,
     var orderPlatform: String?
+)
+
+/* DUMMY TRACK ORDER */
+data class TrackingDetail(
+    var note: String?,
+    var updated_at: String?,
+    var status: String?
 )
 
 

@@ -46,10 +46,8 @@ class HomeReportFragment : Fragment() {
 
         sessionManager.setHomeNav(3)
         dataBinding.backButton.setOnClickListener {
-            Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                startActivity(this)
-                activity?.finish()
-            }
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.backImage.setColorFilter(
@@ -105,9 +103,8 @@ class HomeReportFragment : Fragment() {
                         true
                 ) {
                     override fun handleOnBackPressed() {
-                        val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                        activity?.startActivity(intent)
                         activity?.finish()
+                        activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                     }
                 })
     }

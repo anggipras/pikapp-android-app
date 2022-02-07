@@ -23,5 +23,6 @@ data class CustomerCourierServiceList(
     val name: String,
     val description: String,
     val price: Long,
-    val service_name: String?
+    val service_name: String?,
+    val service_type: String?
 )

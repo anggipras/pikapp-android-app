@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -55,6 +56,7 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
             Navigation.findNavController(view).navigateUp()
             viewModel.setFirstEnterEdit(false)
         }
+        onBackPressed()
         dataBinding.selectLocationId.setOnClickListener {
             when {
                 PermissionUtils.isLocationEnabled(requireContext()) -> {
@@ -158,6 +160,15 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
 
     override fun onCheckClick(courierNameIndex: Int, courierServiceIndex: Int, isChecked: Boolean) {
         viewModel.changeCourierService(courierNameIndex, courierServiceIndex, isChecked)
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view?.let { Navigation.findNavController(it).navigateUp() }
+                viewModel.setFirstEnterEdit(false)
+            }
+        })
     }
 
     /* REUSE FUNCTION */

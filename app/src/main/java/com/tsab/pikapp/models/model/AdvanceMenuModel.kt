@@ -2,6 +2,7 @@ package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
+import java.io.Serializable
 
 enum class AdvanceMenuTemplateType {
     CHECKBOX, RADIO;
@@ -184,35 +185,35 @@ data class AddManualAdvMenu(
         var foodNote: String?,
         @SerializedName("foodTotalPrice")
         var foodTotalPrice: String
-)
+) : Serializable
 
 data class FoodListParentCheck(
         @SerializedName("menu_choice_name")
         var menuChoiceName: String,
         @SerializedName("foodList_Check")
         var foodListChildCheck: List<FoodListCheck?>
-)
+) : Serializable
 
 data class FoodListCheck(
         @SerializedName("name")
         var name: String,
         @SerializedName("price")
         var price: String
-)
+) : Serializable
 
 data class FoodListParentRadio(
         @SerializedName("menu_choice_name")
         var menuChoiceName: String,
         @SerializedName("foodList_Radio")
         var foodListChildRadio: FoodListRadio?
-)
+) : Serializable
 
 data class FoodListRadio(
         @SerializedName("name")
         var name: String,
         @SerializedName("price")
         var price: String
-)
+) : Serializable
 /*ADD MANUAL TXN ADVANCE MENU END*/
 
 /* MENU MODEL FOR GET COURIER */

@@ -1,25 +1,21 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.datatransport.cct.internal.LogEvent
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentCheckoutBinding
 import com.tsab.pikapp.databinding.FragmentInvoiceBinding
 import com.tsab.pikapp.models.model.AddManualAdvMenu
 import com.tsab.pikapp.view.homev2.HomeActivity
@@ -29,7 +25,6 @@ import java.text.NumberFormat
 import java.util.*
 
 class InvoiceFragment : Fragment() {
-
     private val viewModel: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentInvoiceBinding
     private var navController: NavController? = null
@@ -67,8 +62,9 @@ class InvoiceFragment : Fragment() {
 
         dataBinding.topAppBar.setNavigationOnClickListener {
             val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-            activity?.startActivityForResult(intent, 1)
-            activity?.overridePendingTransition(0, 0)
+            activity?.startActivity(intent)
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.btnShare.setOnClickListener {
@@ -85,10 +81,10 @@ class InvoiceFragment : Fragment() {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    Log.d(TAG, "Fragment back pressed invoked")
                     val intent = Intent(activity?.baseContext, HomeActivity::class.java)
-                    activity?.startActivityForResult(intent, 1)
-                    activity?.overridePendingTransition(0, 0)
+                    activity?.startActivity(intent)
+                    activity?.finish()
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             }
             )
@@ -97,19 +93,25 @@ class InvoiceFragment : Fragment() {
     }
 
     fun observeViewModel(){
-        viewModel.AsalPesanan.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.invoiceTransactionId.observe(viewLifecycleOwner, {
+            it?.let {
+                dataBinding.invoiceNoData.text = it.substring(0, 10)
+            }
+        })
+
+        viewModel.AsalPesanan.observe(viewLifecycleOwner, { nama ->
             if(nama != ""){
                 dataBinding.asalPesanan.text = nama
             }
         })
 
-        viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.BayarPesanan.observe(viewLifecycleOwner, { nama ->
             if (nama != "") {
-                dataBinding.namaBayar.text = nama.lowercase().capitalize()
+                dataBinding.namaBayar.text = nama
             }
         })
 
-        viewModel.payStatus.observe(viewLifecycleOwner, Observer{ status ->
+        viewModel.payStatus.observe(viewLifecycleOwner,{ status ->
             if(status){
                 dataBinding.statusBayar.text = "Sudah Melakukan Pembayaran"
                 dataBinding.statusBayar.setTextColor(Color.parseColor("#4BB7AC"))
@@ -119,32 +121,47 @@ class InvoiceFragment : Fragment() {
             }
         })
 
-        viewModel.totalQuantity.observe(viewLifecycleOwner, Observer { totalQty ->
+        viewModel.totalQuantity.observe(viewLifecycleOwner, { totalQty ->
             dataBinding.totalHargaTitle.text = "Total Harga ($totalQty Item(s))"
-            dataBinding.totalHargaTitleBot.text = "Total Harga ($totalQty Item(s))"
         })
 
-        viewModel.totalCart.observe(viewLifecycleOwner, Observer { price ->
+        viewModel.totalCart.observe(viewLifecycleOwner, { price ->
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
         })
 
-        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
-            val thePrice: Long = viewModel.mutableCartPrice.value!!.toLong()
-            val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, { nama ->
             if (nama == "Pickup Sendiri"){
                 dataBinding.namaKurir.text = nama
-                dataBinding.ongkirHarga.text = "Rp.0"
-                dataBinding.totalHargaBot.text = "Rp." + numberFormat
-            }else{
+                dataBinding.ongkirHarga.text = "Rp. 0"
+            } else {
+                val shipmentPrice: Long = viewModel.mutableHargaEkspedisi.value!!.toLong()
+                val shipmentPriceFormat = NumberFormat.getInstance(localeID).format(shipmentPrice)
                 dataBinding.namaKurir.text = "Dikirim (" + nama + " - Rp " + viewModel.mutableHargaEkspedisi.value + ")"
-                dataBinding.ongkirHarga.text = "Rp." + viewModel.mutableHargaEkspedisi.value
-                dataBinding.totalHargaBot.text = "Rp." + (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt())
+                dataBinding.ongkirHarga.text = "Rp. $shipmentPriceFormat"
             }
         })
 
-        viewModel.WaktuPesan.observe(viewLifecycleOwner, Observer { waktu ->
+        viewModel.insurancePrice.observe(viewLifecycleOwner, { insurance ->
+            if (!insurance.isNullOrEmpty()) {
+                if (insurance != "0") {
+                    val insuranceFormat = NumberFormat.getInstance(localeID).format(insurance.toLong())
+                    dataBinding.insurancePriceTitle.isVisible = true
+                    dataBinding.insurancePrice.isVisible = true
+                    dataBinding.insurancePrice.text = "Rp. $insuranceFormat"
+                } else {
+                    dataBinding.insurancePriceTitle.isVisible = false
+                    dataBinding.insurancePrice.isVisible = false
+                }
+            }
+        })
+
+        val invoiceTotalPrice: Long = viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
+        val invoiceTotalPriceFormat = NumberFormat.getInstance(localeID).format(invoiceTotalPrice)
+        dataBinding.totalHargaBot.text = "Rp. $invoiceTotalPriceFormat"
+
+        viewModel.WaktuPesan.observe(viewLifecycleOwner, { waktu ->
             if(waktu == "Sekarang"){
                 dataBinding.tanggalKirim.text = "Sekarang"
             }else{

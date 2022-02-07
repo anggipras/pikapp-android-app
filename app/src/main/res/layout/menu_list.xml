@@ -29,7 +29,7 @@
                 android:id="@+id/foodimg"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/background"
+                android:background="@color/white"
                 android:scaleType="centerCrop"/>
 
         </androidx.cardview.widget.CardView>

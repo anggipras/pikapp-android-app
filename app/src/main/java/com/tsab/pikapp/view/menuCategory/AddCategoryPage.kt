@@ -58,6 +58,7 @@ class AddCategoryPage : Fragment() {
             } else {
                 Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
                 dataBinding.loadingViewAddCategory.visibility = View.GONE
             }
@@ -79,6 +80,7 @@ class AddCategoryPage : Fragment() {
 
         dataBinding.topAppBar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.toggleButton.setOnCheckedChangeListener { _, isChecked ->

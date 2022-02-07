@@ -79,6 +79,7 @@ def rxAndroidVersion = '2.1.1'
 def roomVersion = '2.2.5'
 def navVersion = '2.3.2'
 def preferencesVersion = '1.1.1'
+def lottieVersion = "4.2.2"
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -176,4 +177,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-RC")
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-RC'
+
+    // Animation
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

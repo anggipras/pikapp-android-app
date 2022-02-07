@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,7 +11,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
-import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.CustomProgressDialog
 import com.tsab.pikapp.viewmodel.BaseViewModel
@@ -33,7 +30,6 @@ import java.lang.Exception
 
 class TransactionViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
-    private val onlineService = OnlineService()
     private var sessionManager = SessionManager(getApplication())
     private val disposable = CompositeDisposable()
     private val pikappService = PikappApiService()
@@ -138,9 +134,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             setProgressLoading(true)
             setProgressDialog(true, context)
         }
-        var mid = sessionManager.getUserData()?.mid
-        var size = 100
-        var page = 0
+        val mid = sessionManager.getUserData()?.mid
+        val size = 100
+        val page = 0
 
         viewModelScope.launch {
             try {
@@ -196,7 +192,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                             processList.add(addTransactionData(2, it))
                                         } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
                                             doneList.add(addTransactionData(2, it))
-                                        } else if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                                        } else if (it.order_status == "CANCELLED" || it.order_status == "FAILED") {
                                             cancelList.add(addTransactionData(2, it))
                                         } else {
                                             Timber.tag(tag).d("Invalid transaction")
@@ -453,10 +449,10 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         })
     }
 
-    fun getBadgesTransactionV2List(context: Context) {
-        var mid = sessionManager.getUserData()?.mid
-        var size = 100
-        var page = 0
+    fun getBadgesTransactionV2List() {
+        val mid = sessionManager.getUserData()?.mid
+        val size = 100
+        val page = 0
 
         viewModelScope.launch {
             try {
@@ -507,11 +503,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                             Timber.tag(tag).d("Invalid transaction")
                                         }
                                     } else { // PIKAPP DELIVERY
-                                        if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
+                                        if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS" || it.order_status == "DELIVER" || it.order_status == "FINALIZE") {
                                             processList.add(addTransactionData(2, it))
-                                        } else if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                        } else if (it.order_status == "CLOSE") {
                                             doneList.add(addTransactionData(2, it))
-                                        } else if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                                        } else if (it.order_status == "CANCELLED" || it.order_status == "FAILED") {
                                             cancelList.add(addTransactionData(2, it))
                                         } else {
                                             Timber.tag(tag).d("Invalid transaction")
@@ -583,7 +579,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                             Timber.tag(tag).d("Invalid transaction")
                                         }
                                     } else { // PIKAPP DELIVERY
-                                        if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
+                                        if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS" || it.order_status == "DELIVER" || it.order_status == "FINALIZE") {
                                             processList.add(addTransactionData(2, it))
                                         } else {
                                             Timber.tag(tag).d("Invalid transaction")
@@ -668,7 +664,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                             Timber.tag(tag).d("Invalid transaction")
                                         }
                                     } else { // PIKAPP DELIVERY
-                                        if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                        if (it.order_status == "CLOSE") {
                                             doneList.add(addTransactionData(2, it))
                                         } else {
                                             Timber.tag(tag).d("Invalid transaction")
@@ -751,7 +747,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                             Timber.tag(tag).d("Invalid transaction")
                                         }
                                     } else { // PIKAPP DELIVERY
-                                        if (it.order_status == "CANCELLED" || it.order_status == "CANCELLED") {
+                                        if (it.order_status == "CANCELLED" || it.order_status == "FAILED") {
                                             cancelList.add(addTransactionData(2, it))
                                         } else {
                                             Timber.tag(tag).d("Invalid transaction")
@@ -800,7 +796,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
 
     /* ADDITION FOR DUMMY TESTING */
     private fun readJson(context: Context, fileName: String): String? {
-        var jsonString: String
+        val jsonString: String
 
         try {
             jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }

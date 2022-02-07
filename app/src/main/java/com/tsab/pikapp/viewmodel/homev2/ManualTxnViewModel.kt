@@ -18,19 +18,21 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
+import com.tsab.pikapp.databinding.LayoutLoadingOverlayBinding
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
-import com.tsab.pikapp.view.homev2.transaction.OmniTransactionListAdapter
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualAddAdvMenuFragment
-import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnCustomerPage
 import com.tsab.pikapp.view.homev2.transaction.manualTxn.ManualTxnListAdapter
-import com.tsab.pikapp.view.onboarding.login.navController
 import com.tsab.pikapp.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,6 +52,16 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val mutableSelectedMenuTemp = MutableLiveData<List<AddManualAdvMenu>>(listOf())
     val selectedMenuTemp: LiveData<List<AddManualAdvMenu>> = mutableSelectedMenuTemp
+    fun setSelectedMenu(menuListData: List<AddManualAdvMenu>?) {
+        val manualAdvMenu: MutableList<AddManualAdvMenu> = ArrayList()
+        if (!selectedMenuTemp.value.isNullOrEmpty()) {
+            selectedMenuTemp.value!!.forEach {
+                manualAdvMenu.add(it)
+            }
+        }
+        menuListData?.get(0)?.let { manualAdvMenu.add(it) }
+        mutableSelectedMenuTemp.value = manualAdvMenu
+    }
 
     val mutableMenuList = MutableLiveData<List<SearchItem>>(listOf())
     val menuList: LiveData<List<SearchItem>> = mutableMenuList
@@ -69,7 +81,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableSearchMenu = MutableLiveData("")
     val MenuSubmit: LiveData<String> get() = mutableSearchMenu
 
-    val mutableNamaEkspedisi = MutableLiveData("")
+    private val mutableNamaEkspedisi = MutableLiveData("")
     val NamaEkspedisi: LiveData<String> get() = mutableNamaEkspedisi
 
     val mutableStatusTime = MutableLiveData("")
@@ -77,6 +89,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     val mutableHargaEkspedisi = MutableLiveData("")
     val HargaEkspedisi: LiveData<String> get() = mutableHargaEkspedisi
+
+    private val mutableInsurancePrice = MutableLiveData("0")
+    val insurancePrice: LiveData<String> get() = mutableInsurancePrice
 
     val mutableAsal = MutableLiveData("")
     val AsalPesanan: LiveData<String> get() = mutableAsal
@@ -189,18 +204,19 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableHargaEkspedisi.value = harga
     }
 
+    fun setInsurance(price: String){
+        mutableInsurancePrice.value = price
+    }
+
+    private val mutableInvoiceTransactionId = MutableLiveData("")
+    val invoiceTransactionId: LiveData<String> get() = mutableInvoiceTransactionId
+
     fun setAsal(nama: String){
         mutableAsal.value = nama
     }
 
     fun setBayar(nama: String){
-        if (nama != "ShopeePay" || nama != "Gopay") {
-            mutableBayar.value = "WALLET_${nama.uppercase()}"
-        } else if(nama == "OVO" || nama == "DANA" || nama == "LinkAja") {
-            mutableBayar.value = nama.uppercase()
-        } else {
-            mutableBayar.value = nama
-        }
+        mutableBayar.value = nama
     }
 
     fun setWaktu(nama: String, custom:String){
@@ -228,7 +244,6 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
 
     private val mutableTotalItems = MutableLiveData(0)
     val totalItems: LiveData<Int> get() = mutableTotalItems
-    private var x : String = ""
     fun addTotalItems(quantity: Int){
         mutableTotalItems.value = mutableTotalItems.value?.plus(quantity)
     }
@@ -249,6 +264,17 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         if (mutableQuantity.value!! > 1) {
             mutableQuantity.value = mutableQuantity.value?.minus(1)
             countTotalPrice()
+        }
+    }
+
+    fun countInsurance(boolean: Boolean) {
+        if (boolean) {
+            val totalPrice = totalCart.value!! + HargaEkspedisi.value!!.toInt()
+            val countedInsurance = (totalPrice * 0.5) / 100
+            val finalInsurance = Math.round(countedInsurance / 100.0) * 100
+            setInsurance(finalInsurance.toString())
+        } else {
+            setInsurance("0")
         }
     }
 
@@ -415,51 +441,67 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         Navigation.findNavController(view).popBackStack()
     }
 
-    fun addCustomer() {
+    fun addCustomer(context: Context, view: View) {
         val mid = sessionManager.getUserData()!!.mid!!
-        val addReq = addCustomerRequest(
+        val addReq = AddCustomerRequest(
             name = addCustName.value,
             mid = mid,
             address = addCustAddress.value,
             addressDetail = addCustAddressDetail.value,
+            latitude = currentLatLng.value?.latitude.toString(),
+            longitude = currentLatLng.value?.longitude.toString(),
+            subdistrict_name = addressLocation.value?.get(0)?.locality,
+            city = addressLocation.value?.get(0)?.subAdminArea,
+            province = addressLocation.value?.get(0)?.adminArea,
+            postal_code = customerPostalCode.value,
             phoneNumber = addCustPhone.value
         )
 
-        PikappApiService().api.addCustomer(addReq).enqueue(object : Callback<CustomerResponse>{
+        PikappApiService().api.addCustomer(addReq).enqueue(object : Callback<CustomerResponseApi>{
             override fun onResponse(
-                call: Call<CustomerResponse>,
-                response: Response<CustomerResponse>
+                call: Call<CustomerResponseApi>,
+                response: Response<CustomerResponseApi>
             ) {
                 Log.e("response body", "succeed")
+                Toast.makeText(context, "Pelanggan berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(view).navigate(R.id.action_manualTxnAddCustomer_to_manualTxnCustomerPage)
             }
 
-            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
+            override fun onFailure(call: Call<CustomerResponseApi>, t: Throwable) {
                 Timber.tag(tag).d("Failed to add customer list: ${t.message.toString()}")
             }
 
         })
     }
 
-    fun editCustomer(){
+    fun editCustomer(context: Context, view: View) {
         val mid = sessionManager.getUserData()!!.mid!!
         val editReq = EditCustomerRequest(
-            customerId = custIdTemp.value,
-            mid = mid,
+            customer_id = custIdTemp.value,
             name = editCustName.value,
+            mid = mid,
             address = editCustAddress.value,
-            addressDetail = editCustAddressDetail.value,
-            phoneNumber = editCustPhone.value
+            address_detail = editCustAddressDetail.value,
+            latitude = currentLatLng.value?.latitude.toString(),
+            longitude = currentLatLng.value?.longitude.toString(),
+            subdistrict_name = addressLocation.value?.get(0)?.locality,
+            city = addressLocation.value?.get(0)?.subAdminArea,
+            province = addressLocation.value?.get(0)?.adminArea,
+            postal_code = customerPostalCode.value,
+            phone_number = editCustPhone.value
         )
 
-        PikappApiService().api.editCustomer(editReq).enqueue(object : Callback<CustomerResponse>{
+        PikappApiService().api.editCustomer(editReq).enqueue(object : Callback<CustomerResponseApi>{
             override fun onResponse(
-                call: Call<CustomerResponse>,
-                response: Response<CustomerResponse>
+                call: Call<CustomerResponseApi>,
+                response: Response<CustomerResponseApi>
             ) {
                 Log.e("edit customer: ", "succeed")
+                Toast.makeText(context, "Pelanggan berhasil diubah", Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(view).navigate(R.id.action_manualTxnEditCustomer_to_manualTxnCustomerPage)
             }
 
-            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
+            override fun onFailure(call: Call<CustomerResponseApi>, t: Throwable) {
                 Timber.tag(tag).d("Failed to edit customer : ${t.message.toString()}")
             }
 
@@ -586,59 +628,42 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
-        PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, 7)
-        ).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                    call: Call<SearchResponse>,
-                    response: Response<SearchResponse>
-            ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = PikappApiService().api.merchantMenu(getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, 7))
+            if (response.isSuccessful) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val amountOfMenus = response.body()!!.total_items
                     if (amountOfMenus != 0) {
                         getSearchList(amountOfMenus)
                     } else {
-                        mutableMenuList.value = mutableMenuListEmpty.value
-                        Log.e("Zero_Product", "There is no product available")
+                        withContext(Dispatchers.Main) {
+                            mutableMenuList.value = mutableMenuListEmpty.value
+                            Log.e("Zero_Product", "There is no product available")
+                            setLoading(false)
+                        }
                     }
-                    setLoading(false)
                 } else {
                     Log.e("FAIL", "Failed get amount of menus")
                 }
             }
-
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e("FAILED", t.message.toString())
-                setLoading(false)
-            }
-        })
+        }
     }
 
-    fun getSearchList(amountOfMenus: Int) {
-        /*if (menuList.value!!.isNotEmpty()) return*/
-
+    private suspend fun getSearchList(amountOfMenus: Int) {
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
 
-        PikappApiService().api.searchMenu(
-                getUUID(), timestamp, getClientID(), signature, token,
-                mid, SearchRequest(mutableSearchMenu.value!!, 0, amountOfMenus)
-        ).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                    call: Call<SearchResponse>,
-                    response: Response<SearchResponse>
-            ) {
+        val response = PikappApiService().api.merchantMenu(getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest(mutableSearchMenu.value!!, 0, amountOfMenus))
+        if (response.isSuccessful) {
+            withContext(Dispatchers.Main) {
                 val searchResult = response.body()?.results
                 setMenuList(searchResult ?: listOf())
+                setLoading(false)
             }
-
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e(tag, "Error: " + t.message.toString())
-            }
-        })
+        }
     }
 
     fun searchMenu(name: String, status: Boolean){
@@ -682,7 +707,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         )
     }
 
-    private var liveDataCourierList: MutableLiveData<List<CustomerCourierListResult>> = MutableLiveData()
+    var liveDataCourierList: MutableLiveData<List<CustomerCourierListResult>> = MutableLiveData()
     fun getLiveDataCourierListObserver(): MutableLiveData<List<CustomerCourierListResult>> {
         return liveDataCourierList
     }
@@ -709,14 +734,19 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }
 
         val courierReqBody = GetCourierRequestBody(
-            destination_latitude = -6.270794928895856,
-            destination_longitude = 106.7406809150353,
+            destination_latitude = currentLatLng.value!!.latitude,
+            destination_longitude = currentLatLng.value!!.longitude,
             items = listOfMenus
         )
 
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()!!.mid!!
+
         disposable.add(
-            PikappApiService().courierPriceApi.getCourierPrice(mid, courierReqBody)
+            PikappApiService().courierPriceApi.getCourierPrice(getUUID(), timestamp, getClientID(), signature, token, mid, courierReqBody)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<CustomerCourierListResponse>() {
@@ -733,57 +763,35 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         )
     }
 
-    fun setDummyData() {
-        val listOfCourier: MutableList<CustomerCourierListResult> = ArrayList()
-        listOfCourier.add(CustomerCourierListResult(name = "Instant Bike", description = "Estimasi Tiba 1 jam", lower_limit = 5000, upper_limit = 10000, courier_list = mutableListOf(
-            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 7000, service_name = null),
-            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 9000, service_name = null),
-            CustomerCourierServiceList(courier_image = null, name = "Lalamove", description = "On Demand instant 1-3 hours", price = 5000, service_name = "mpv"),
-            CustomerCourierServiceList(courier_image = null, name = "Rara", description = "On Demand instant 1-3 hours", price = 10000, service_name = "ouyeah")
-        )))
-        listOfCourier.add(CustomerCourierListResult(name = "Instant Car", description = "Estimasi Tiba 3 jam", lower_limit = 11000, upper_limit = 20000, courier_list = mutableListOf(
-            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 14000, service_name = null),
-            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 19000, service_name = null)
-        )))
-        listOfCourier.add(CustomerCourierListResult(name = "Instant Cargo", description = "Estimasi Tiba 1 jam", lower_limit = 5000, upper_limit = 10000, courier_list = mutableListOf(
-            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 7000, service_name = null),
-            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 9000, service_name = null)
-        )))
-        listOfCourier.add(CustomerCourierListResult(name = "Instant Becak", description = "Estimasi Tiba 3 jam", lower_limit = 11000, upper_limit = 20000, courier_list = mutableListOf(
-            CustomerCourierServiceList(courier_image = null, name = "Gojek", description = "On Demand instant 1-3 hours", price = 14000, service_name = null),
-            CustomerCourierServiceList(courier_image = null, name = "Grab", description = "On Demand instant 1-3 hours", price = 19000, service_name = null)
-        )))
-
-        setCourierList(listOfCourier)
-    }
-
-    fun postOrder(paymentStatus: Boolean, nav: NavController, activity: Activity): Int{
+    fun postOrder(
+        paymentStatus: Boolean,
+        nav: NavController,
+        activity: Activity,
+        loadingOverlayCheckout: LayoutLoadingOverlayBinding
+    ): Int {
+        loadingOverlayCheckout.loadingView.isVisible = true
         mutablePayStat.value = paymentStatus
-        var hargaEkspedisi: String = ""
-        var orderType: String = ""
-        var payStatus: String = ""
         var status = 0
-        var ekspedisi = ""
-        var menuList: ArrayList<MenuList> = ArrayList()
-        var mid: String? = sessionManager.getUserData()?.mid
+        val menuList: ArrayList<MenuList> = ArrayList()
+        val mid: String? = sessionManager.getUserData()?.mid
 
-        if(paymentStatus){
-            payStatus = "PAID"
-        }else{
-            payStatus = "UNPAID"
+        val payStatus = if(paymentStatus){
+            "PAID"
+        } else {
+            "UNPAID"
         }
 
-        if(mutableHargaEkspedisi.value == " "){
-            hargaEkspedisi = "0"
+        val hargaEkspedisi = if(mutableHargaEkspedisi.value == " "){
+            "0"
         }else{
-            hargaEkspedisi = mutableHargaEkspedisi.value.toString()
+            mutableHargaEkspedisi.value.toString()
         }
 
         for(q in mutableSelectedMenuTemp.value!!){
-            var extraList: ArrayList<ExtraList> = ArrayList()
+            val extraList: ArrayList<ExtraList> = ArrayList()
             for (q in q.foodListRadio){
                 if (q != null) {
-                    var price: Int = q.foodListChildRadio!!.price.substringBefore(".").toInt()
+                    val price: Int = q.foodListChildRadio!!.price.substringBefore(".").toInt()
                     extraList.add(ExtraList(q.foodListChildRadio!!.name, price))
                 }
             }
@@ -791,7 +799,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
                 if (q != null) {
                     for(m in q.foodListChildCheck){
                         if (m != null) {
-                            var price: Int = m.price.substringBefore(".").toInt()
+                            val price: Int = m.price.substringBefore(".").toInt()
                             extraList.add(ExtraList(m.name, price))
                         }
                     }
@@ -800,45 +808,72 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             menuList.add(MenuList(q.product_id.toString(), q.foodName, "", q.foodPrice.toInt(), q.foodNote.toString(), q.foodAmount, 0, "0", extraList))
         }
 
-        if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
-            orderType = "PICKUP"
-        }else{
-            orderType = "DELIVERY"
+        val orderType = if(mutableNamaEkspedisi.value == "Pickup Sendiri"){
+            "PICKUP"
+        } else{
+            "DELIVERY"
         }
 
-
-        if(mutableAsal.value == "Telepon"){
-            ekspedisi ="PHONE_CALL"
-        }else{
-            ekspedisi = mutableAsal.value.toString().uppercase(Locale.getDefault())
+        val ekspedisi = if(mutableAsal.value == "Telepon"){
+            "PHONE_CALL"
+        } else{
+            mutableAsal.value.toString().uppercase(Locale.getDefault())
         }
 
-        var tanggalKirim: String = mutableDate.value.toString() + " " + mutableHour.value.toString()
-        var shippingData: ShippingData = ShippingData(mutableNamaEkspedisi.value.toString() ,hargaEkspedisi.toInt(), mutablePostWaktu.value.toString(), mutableStatusTime.value.toString())
-        PikappApiService().api.uploadManualTxn(ManualTxnRequest(menuList, shippingData, mutableCustId.value.toString(), mid.toString(), orderType,
-            ekspedisi, mutableCartPrice.value!!.toInt(), payStatus,
-            mutableBayar.value!!.toString().uppercase(Locale.getDefault()), "OPEN", 0, mutableCartPrice.value!!.toInt() + hargaEkspedisi.toInt())).
-        enqueue(object : Callback<ManualTxnResponse>{
+        val paymentMethod = if (mutableBayar.value != "ShopeePay" || mutableBayar.value != "Gopay" || mutableBayar.value != "LinkAja") {
+            "WALLET_${mutableBayar.value?.uppercase(Locale.getDefault())}"
+        } else {
+            mutableBayar.value!!.uppercase(Locale.getDefault())
+        }
+
+        val courierSelected = if (mutableNamaEkspedisi.value.toString() == "Pickup Sendiri") {
+            "Pickup Sendiri"
+        } else {
+            selectedCourierService.value!!.name
+        }
+        val shippingData = ShippingData(
+            courierSelected,
+            hargaEkspedisi.toInt(),
+            mutablePostWaktu.value.toString(),
+            mutableStatusTime.value.toString(),
+            insurancePrice.value?.toLong(),
+            selectedCourierService.value?.service_type
+        )
+
+        val reqBodyManualTxn = ManualTxnRequest(
+            menuList,
+            shippingData,
+            mutableCustId.value.toString(),
+            mid.toString(),
+            orderType,
+            ekspedisi,
+            mutableCartPrice.value!!.toLong(),
+            payStatus,
+            paymentMethod,
+            "OPEN",
+            0,
+            mutableCartPrice.value!!.toLong() + mutableHargaEkspedisi.value!!.toLong() + insurancePrice.value!!.toLong()
+        )
+
+        PikappApiService().api.recordPostManualTxn(reqBodyManualTxn).enqueue(object : Callback<ManualTxnResponse> {
             override fun onResponse(
                 call: Call<ManualTxnResponse>,
                 response: Response<ManualTxnResponse>
             ) {
                 status = response.code()
-                if(response.code() == 200){
-                   nav.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
-                }else{
+                if (response.code() == 200) {
+                    mutableInvoiceTransactionId.value = response.body()?.results?.transaction_id
+                    loadingOverlayCheckout.loadingView.isVisible = false
+                    nav.navigate(R.id.action_checkoutFragment_to_invoiceFragment)
+                } else {
+                    loadingOverlayCheckout.loadingView.isVisible = false
                     Toast.makeText(activity,"Transaksi Gagal Dilakukan", Toast.LENGTH_SHORT).show()
                 }
-                Log.e("WAKTU", mutablePostWaktu.value.toString())
-                Log.e("WAKTU", mutableCustId.value.toString())
-                Log.e("Fail", response.code().toString())
-                Log.e("success", response.body().toString())
             }
 
             override fun onFailure(call: Call<ManualTxnResponse>, t: Throwable) {
-               Log.e("Fail", t.toString())
+                loadingOverlayCheckout.loadingView.isVisible = false
             }
-
         })
         return status
     }
@@ -850,13 +885,17 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         mutableCurrentLatLng.value = latLng
     }
 
-    private val mutableAddressLocation = MutableLiveData<List<Address>>()
+    val mutableAddressLocation = MutableLiveData<List<Address>>()
     val addressLocation: LiveData<List<Address>> = mutableAddressLocation
     fun setAddressLocation(context: Context, latLng: CurrentLatLng) {
         val gcd = Geocoder(context, Locale.getDefault())
         val addresses: List<Address> = gcd.getFromLocation(latLng.latitude, latLng.longitude, 1)
         mutableAddressLocation.value = addresses
-        setPostalCode(addresses[0].postalCode)
+        if (!addresses[0].postalCode.isNullOrEmpty()) {
+            setPostalCode(addresses[0].postalCode)
+        } else {
+            setPostalCode("")
+        }
     }
 
     private val mutableCustomerPostalCode = MutableLiveData<String>()

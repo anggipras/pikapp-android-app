@@ -1,9 +1,6 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.ContentValues
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,16 +13,12 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.gson.annotations.SerializedName
 import com.tsab.pikapp.R
-import com.tsab.pikapp.databinding.FragmentManualTxnCartPageBinding
 import com.tsab.pikapp.databinding.FragmentManualTxnCustomerPageBinding
 import com.tsab.pikapp.models.model.*
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
-import kotlinx.android.synthetic.main.other_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.*
-import java.util.*
+import java.util.ArrayList
 
 class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickListener {
     private val viewModel: ManualTxnViewModel by activityViewModels()
@@ -60,16 +53,16 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         viewModel.getCustomer()
 
         observeViewModel()
-        attatchInputListeners()
+        attachInputListeners()
     }
 
     private fun observeViewModel(){
-        viewModel.isLoading.observe(viewLifecycleOwner, androidx.lifecycle.Observer { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
             dataBinding.loadingOverlay.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
         })
 
-        viewModel.customerSize.observe(viewLifecycleOwner, androidx.lifecycle.Observer { size->
+        viewModel.customerSize.observe(viewLifecycleOwner, { size->
             if(size == 0){
                 dataBinding.searchField.visibility = View.GONE
                 dataBinding.searchDivider.visibility = View.GONE
@@ -91,7 +84,7 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         })
     }
 
-    private fun attatchInputListeners(){
+    private fun attachInputListeners(){
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -103,7 +96,6 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.manualTxn -> {
-                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
                     navController?.navigate(R.id.action_manualTxnCustomerPage_to_manualTxnAddCustomer)
                     true
                 }
@@ -116,17 +108,19 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         }
 
         dataBinding.buttonContinue.setOnClickListener {
-            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_manualTxnAddCustomer)
         }
 
         dataBinding.btnSelect.setOnClickListener {
             Toast.makeText(context, "Pelanggan berhasil dipilih", Toast.LENGTH_SHORT).show()
             viewModel.setCustName(viewModel.custNameTemp.value.toString())
-            viewModel.custIdTemp.value?.let { it1 -> viewModel.setCustId(it1.toLong()) }
+            viewModel.custIdTemp.value?.let { it1 -> viewModel.setCustId(it1) }
             viewModel.setCustPhone(viewModel.custPhoneTemp.value.toString())
             viewModel.setCustAddress(viewModel.custAddressTemp.value.toString())
             viewModel.setCustAddressDetail(viewModel.custAddressDetailTemp.value.toString())
+            viewModel.setInsurance("0")
+            viewModel.setEkspedisi("", "")
+            viewModel.liveDataCourierList.value = ArrayList()
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
         }
     }
@@ -146,6 +140,10 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
                 it.address?.let { it1 -> viewModel.setCustAddressTemp(it1) }
                 it.addressDetail?.let { it1 -> viewModel.setCustAddressDetailTemp(it1) }
                 it.customerId?.let { it1 -> viewModel.setCustIdTemp(it1) }
+                it.latitude?.let { it1 ->
+                    viewModel.setCurrentLocation(CurrentLatLng(it1.toDouble(), it.longitude!!.toDouble()))
+                    viewModel.setAddressLocation(requireContext(), CurrentLatLng(it1.toDouble(), it.longitude.toDouble()))
+                }
             }
             view?.let { Navigation.findNavController(it).navigate(R.id.action_manualTxnCustomerPage_to_manualTxnEditCustomer) }
         } else {
@@ -155,6 +153,7 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
                 it.address?.let { it1 -> viewModel.setCustAddressTemp(it1) }
                 it.addressDetail?.let { it1 -> viewModel.setCustAddressDetailTemp(it1) }
                 it.customerId?.let { it1 -> viewModel.setCustIdTemp(it1) }
+                it.latitude?.let { it1 ->  viewModel.setCurrentLocation(CurrentLatLng(it1.toDouble(), it.longitude!!.toDouble()))}
             }
             dataBinding.btnSelect.setBackgroundResource(R.drawable.button_green_square)
             dataBinding.btnSelect.isEnabled = true
