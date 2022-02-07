@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,7 +67,6 @@ class TransactionListV2Adapter(
     var menuPrice = 0
     var str: String = ""
     val reasonsheet = CancelReasonFragment()
-    var isLoading: Boolean = false
 
     /* GET LIST OF TRANSACTION FROM LIVEDATA MVVM */
     fun setTransactionList(transactionList: List<TransactionListV2Data>) {
@@ -411,6 +409,9 @@ class TransactionListV2Adapter(
                 acceptBtn.setOnClickListener {
                     listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "DELIVER", recyclerViewDelivery.payment_status))
                 }
+                rejectBtn.setBackgroundResource(R.drawable.button_red_transparent)
+                rejectBtn.text = "Batalkan"
+                rejectBtn.setTextColor(context.resources.getColor(R.color.colorRed))
                 rejectBtn.setOnClickListener {
                     listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", recyclerViewDelivery.payment_status))
                 }
@@ -418,6 +419,16 @@ class TransactionListV2Adapter(
                 orderStatus.text = "Dikirim"
                 orderStatus.setBackgroundResource(R.drawable.button_green_square)
                 rejectBtn.visibility = View.GONE
+                if (recyclerViewDelivery.payment_status == "PAID" && recyclerViewDelivery.biz_type == "DELIVERY") {
+                    rejectBtn.visibility = View.VISIBLE //This is change for Lacak button (not rejectButton anymore)
+                    rejectBtn.setBackgroundResource(R.drawable.button_purple_transparent)
+                    rejectBtn.text = "Lacak"
+                    rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
+                    rejectBtn.setOnClickListener {
+                        val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
+                        activity.startActivity(intent)
+                    }
+                }
                 acceptBtn.visibility = View.VISIBLE
                 acceptBtn.text = "Pesanan Tiba"
                 acceptBtn.setOnClickListener {
@@ -427,6 +438,16 @@ class TransactionListV2Adapter(
                 orderStatus.text = "Sampai"
                 orderStatus.setBackgroundResource(R.drawable.button_green_square)
                 rejectBtn.visibility = View.GONE
+                if (recyclerViewDelivery.payment_status == "PAID" && recyclerViewDelivery.biz_type == "DELIVERY") {
+                    rejectBtn.visibility = View.VISIBLE //This is change for Lacak button (not rejectButton anymore)
+                    rejectBtn.setBackgroundResource(R.drawable.button_purple_transparent)
+                    rejectBtn.text = "Lacak"
+                    rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
+                    rejectBtn.setOnClickListener {
+                        val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
+                        activity.startActivity(intent)
+                    }
+                }
                 acceptBtn.visibility = View.VISIBLE
                 acceptBtn.text = "Pesanan Selesai"
                 if (recyclerViewDelivery.payment_status == "PAID"){
@@ -651,7 +672,7 @@ class TransactionListV2Adapter(
     }
 
     private fun formatNumber() {
-        str = NumberFormat.getNumberInstance(Locale.US).format(this.menuPrice)
+        str = NumberFormat.getNumberInstance(Locale("in", "ID")).format(this.menuPrice)
     }
 
     private fun openWhatsapp(recyclerViewDelivery: TransactionListV2Data){
@@ -760,8 +781,6 @@ class TransactionListV2Adapter(
         status: String,
         loadingOverlay: View
     ) {
-//        loadingOverlay.visibility = View.VISIBLE
-//        setIsLoading(true)
         listener.onItemClickTransactionTxn(txnId, status)
     }
 
@@ -770,13 +789,7 @@ class TransactionListV2Adapter(
         orderId: String,
         loadingOverlay: View
     ) {
-//        loadingOverlay.visibility = View.VISIBLE
-//        setIsLoading(true)
         listener.onItemClickTransactionChannel(channel, orderId)
-    }
-
-    fun setIsLoading(value: Boolean) {
-        isLoading = value
     }
 
     interface OnItemClickListener {

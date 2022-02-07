@@ -82,8 +82,8 @@ class DynamicFragment : Fragment() {
                         putExtra(AdvanceMenuActivity.MENU_LIST, menuList as Serializable)
                         sessionManager.setMenuDefInit(1)
                         startActivity(this)
+                        activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
                     }
-
                 }
             })
         dataBinding.listMenuDetail.adapter = dynamicAdapter
@@ -98,6 +98,7 @@ class DynamicFragment : Fragment() {
                 putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
                 sessionManager.setMenuDefInit(1)
                 startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 
@@ -106,6 +107,7 @@ class DynamicFragment : Fragment() {
                 putExtra(AdvanceMenuActivity.EXTRA_TYPE, AdvanceMenuActivity.TYPE_ADD)
                 sessionManager.setMenuDefInit(1)
                 startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
     }

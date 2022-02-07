@@ -70,18 +70,21 @@ class OtherFragment : Fragment() {
         dataBinding.merchantSettingClick.setOnClickListener {
             Intent(activity?.baseContext, OtherSettingsActivity::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 
         dataBinding.integrasiButton.setOnClickListener {
             Intent(activity?.baseContext, IntegrationActivity::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 
         dataBinding.merchantReportClick.setOnClickListener {
             Intent(activity?.baseContext, ReportActivity::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 

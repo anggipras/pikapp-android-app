@@ -33,7 +33,8 @@
                         android:layout_height="?attr/actionBarSize"
                         app:title="Transaksi"
                         app:titleTextColor="@color/black"
-                        app:titleTextAppearance="@style/titleToolbar" />
+                        app:titleTextAppearance="@style/titleToolbar"
+                        app:menu="@menu/txn_menu"/>
                 </com.google.android.material.appbar.AppBarLayout>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>

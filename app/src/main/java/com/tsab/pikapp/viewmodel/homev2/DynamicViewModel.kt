@@ -10,6 +10,10 @@ import com.tsab.pikapp.models.model.SearchResponse
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.viewmodel.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,13 +41,9 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()?.mid
 
-        PikappApiService().api.searchMenu(
-            getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
-        ).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                call: Call<SearchResponse>,
-                response: Response<SearchResponse>
-            ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = PikappApiService().api.merchantMenu(getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7))
+            if (response.isSuccessful) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     val amountOfMenus = response.body()!!.total_items
                     if (amountOfMenus != 0) {
@@ -55,14 +55,34 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
                     Log.e("FAIL", "Failed get amount of menus")
                 }
             }
+        }
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e("FAILED", t.message.toString())
-            }
-        })
+//        PikappApiService().api.searchMenu(
+//            getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, 7)
+//        ).enqueue(object : Callback<SearchResponse> {
+//            override fun onResponse(
+//                call: Call<SearchResponse>,
+//                response: Response<SearchResponse>
+//            ) {
+//                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+//                    val amountOfMenus = response.body()!!.total_items
+//                    if (amountOfMenus != 0) {
+//                        getSearchList(amountOfMenus)
+//                    } else {
+//                        Log.e("Zero_Product", "There is no product available")
+//                    }
+//                } else {
+//                    Log.e("FAIL", "Failed get amount of menus")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+//                Log.e("FAILED", t.message.toString())
+//            }
+//        })
     }
 
-    fun getSearchList(amountOfMenus: Int) {
+    private suspend fun getSearchList(amountOfMenus: Int) {
         if (menuList.value!!.isNotEmpty()) return
 
         val email = sessionManager.getUserData()?.email
@@ -71,21 +91,29 @@ class DynamicViewModel(application: Application) : BaseViewModel(application) {
         val signature = getSignature(email, timestamp)
         val mid = sessionManager.getUserData()?.mid
 
-        PikappApiService().api.searchMenu(
-            getUUID(), timestamp, getClientID(), signature, token,
-            mid, SearchRequest("", 0, amountOfMenus)
-        ).enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                call: Call<SearchResponse>,
-                response: Response<SearchResponse>
-            ) {
+        val response = PikappApiService().api.merchantMenu(getUUID(), timestamp, getClientID(), signature, token, mid, SearchRequest("", 0, amountOfMenus))
+        if (response.isSuccessful) {
+            withContext(Dispatchers.Main) {
                 val searchResult = response.body()?.results
                 setMenuList(searchResult ?: listOf())
             }
+        }
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                Log.e(tag, "Error: " + t.message.toString())
-            }
-        })
+//        PikappApiService().api.searchMenu(
+//            getUUID(), timestamp, getClientID(), signature, token,
+//            mid, SearchRequest("", 0, amountOfMenus)
+//        ).enqueue(object : Callback<SearchResponse> {
+//            override fun onResponse(
+//                call: Call<SearchResponse>,
+//                response: Response<SearchResponse>
+//            ) {
+//                val searchResult = response.body()?.results
+//                setMenuList(searchResult ?: listOf())
+//            }
+//
+//            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+//                Log.e(tag, "Error: " + t.message.toString())
+//            }
+//        })
     }
 }

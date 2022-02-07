@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.CustomerResponseDetail
@@ -19,17 +16,8 @@ class ManualTxnCustomerAdapter (
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ManualTxnCustomerAdapter.ViewHolder>(){
 
-    //private lateinit var mListener: onItemClickListener
     var clickedPosition = 0
     var clicked = false
-
-/*    interface onItemClickListener{
-        fun onItemClick(position: Int)
-    }
-
-    fun setOnItemClickListener(listener: onItemClickListener){
-        mListener = listener
-    }*/
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var name: TextView = itemView.findViewById(R.id.customerName)
@@ -47,15 +35,6 @@ class ManualTxnCustomerAdapter (
                 notifyDataSetChanged();
             }
         }
-
-/*        init {
-            itemView.setOnClickListener {
-                listener.onItemClick(adapterPosition)
-                clickedPosition = position
-                clicked = true
-                notifyItemChanged(position)
-            }
-        }*/
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManualTxnCustomerAdapter.ViewHolder {

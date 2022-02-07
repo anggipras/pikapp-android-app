@@ -22,17 +22,11 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentEditMenuBinding
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.util.setAllOnClickListener
 import com.tsab.pikapp.view.homev2.HomeActivity
-import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
 import com.tsab.pikapp.view.menu.advance.EditMenuAdvanceMainFragment
 import com.tsab.pikapp.viewmodel.menu.MenuViewModel
-import com.tsab.pikapp.viewmodel.menu.advance.AdvanceMenuViewModel
 import kotlinx.android.synthetic.main.alert_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_edit_menu.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class EditMenuFragment : Fragment() {
     private val viewModelMenu: MenuViewModel by activityViewModels()
@@ -76,6 +70,7 @@ class EditMenuFragment : Fragment() {
             override fun handleOnBackPressed() {
                 sessionManager.setMenuDefInit(0)
                 activity?.finish()
+                activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
             }
         })
     }
@@ -85,6 +80,7 @@ class EditMenuFragment : Fragment() {
         dataBinding.topAppBar.setNavigationOnClickListener {
             sessionManager.setMenuDefInit(0)
             activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.infoBtn.setOnClickListener {
@@ -151,6 +147,7 @@ class EditMenuFragment : Fragment() {
                 Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
                     activity?.finish()
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             }
         })

@@ -30,6 +30,9 @@
     <string name="tolak">Tolak</string>
     <string name="pesanan_siap">Pesanan Siap</string>
 
+    <!-- Header Title -->
+    <string name="tracking_order">Lacak Pengiriman</string>
+
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
     <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>

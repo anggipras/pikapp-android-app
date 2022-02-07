@@ -1,26 +1,20 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCheckoutBinding
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
-import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_checkout.*
-import kotlinx.android.synthetic.main.fragment_proccess.view.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -52,22 +46,26 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun observeViewModel(){
-        viewModel.totalQuantity.observe(viewLifecycleOwner, Observer { totalQty ->
+        viewModel.totalQuantity.observe(viewLifecycleOwner, { totalQty ->
             dataBinding.totalHargaTitle.text = "Total Harga ($totalQty Item(s))"
         })
 
-        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, { nama ->
             if(nama != ""){
                 kurirStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                     dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
                 }
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
+                dataBinding.divider1.visibility = View.VISIBLE
                 dataBinding.namaKirim.text = nama
+            } else {
+                dataBinding.dataPengiriman.visibility = View.GONE
+                dataBinding.divider1.visibility = View.GONE
             }
         })
 
-        viewModel.AsalPesanan.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.AsalPesanan.observe(viewLifecycleOwner, { nama ->
             if(nama != ""){
                 asalStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -78,26 +76,55 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
+        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, { harga ->
             if(harga != "" && harga != " "){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
-                val thePrice: Long = harga.toLong()
-                val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
-                val thePrice1: Long = (viewModel.mutableCartPrice.value!!.toInt() + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
-                val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
-                dataBinding.hargaKirim.text = "Rp. $numberFormat"
-                dataBinding.ongkirHarga.text = "Rp. $numberFormat"
-                dataBinding.hargaBottom.text = "Rp. $numberFormat1"
+                dataBinding.paymentInsurance.visibility = View.VISIBLE
+                val shipmentPrice: Long = harga.toLong()
+                val shipmentPriceFormat = NumberFormat.getInstance(localeID).format(shipmentPrice)
+                dataBinding.hargaKirim.text = "Rp. $shipmentPriceFormat"
+                dataBinding.ongkirHarga.text = "Rp. $shipmentPriceFormat"
+                val totalPriceOnCart: Long = viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
+                val totalPriceFormat = NumberFormat.getInstance(localeID).format(totalPriceOnCart)
+                dataBinding.hargaBottom.text = "Rp. $totalPriceFormat"
             }
             if(harga == " "){
                 dataBinding.ongkirHarga.text = "Rp. 0"
-                dataBinding.hargaBottom.text = "Rp. ${viewModel.mutableCartPrice.value}"
+                val thePrice = viewModel.mutableCartPrice.value!!.toLong()
+                val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
+                dataBinding.hargaBottom.text = "Rp. $numberFormat"
                 dataBinding.hargaKirim.visibility = View.GONE
+                dataBinding.paymentInsurance.visibility = View.GONE
             }
         })
 
-        viewModel.WaktuPesan.observe(viewLifecycleOwner, Observer { waktu ->
+        viewModel.insurancePrice.observe(viewLifecycleOwner, { insurance ->
+            if (!insurance.isNullOrEmpty()) {
+                if (insurance != "0") {
+                    val totalPriceWithInsurance: Long = (viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + insurance.toLong())
+                    val numberFormat = NumberFormat.getInstance(localeID).format(totalPriceWithInsurance)
+                    val insuranceFormat = NumberFormat.getInstance(localeID).format(insurance.toLong())
+                    dataBinding.insurancePriceTitle.isVisible = true
+                    dataBinding.insurancePrice.isVisible = true
+                    dataBinding.insurancePrice.text = "Rp. $insuranceFormat"
+                    dataBinding.hargaBottom.text = "Rp. $numberFormat"
+                } else {
+                    val totalPriceWithoutInsurance = if (!viewModel.HargaEkspedisi.value.isNullOrEmpty()) {
+                        (viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong())
+                    } else {
+                        viewModel.mutableCartPrice.value!!.toLong()
+                    }
+                    val numberFormat = NumberFormat.getInstance(localeID).format(totalPriceWithoutInsurance)
+                    dataBinding.paymentInsurance.isChecked = false
+                    dataBinding.insurancePriceTitle.isVisible = false
+                    dataBinding.insurancePrice.isVisible = false
+                    dataBinding.hargaBottom.text = "Rp. $numberFormat"
+                }
+            }
+        })
+
+        viewModel.WaktuPesan.observe(viewLifecycleOwner, { waktu ->
             if(waktu != ""){
                 dateStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -108,19 +135,19 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.WaktuPesanCustom.observe(viewLifecycleOwner, Observer { custom ->
+        viewModel.WaktuPesanCustom.observe(viewLifecycleOwner, { custom ->
             if(custom != ""){
                 dataBinding.dataTanggal.visibility = View.VISIBLE
                 dataBinding.customWaktu.text = custom
             }
         })
 
-        viewModel.totalCart.observe(viewLifecycleOwner, Observer { price ->
+        viewModel.totalCart.observe(viewLifecycleOwner, { price ->
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
             if(viewModel.mutableHargaEkspedisi.value != "" && viewModel.mutableHargaEkspedisi.value != " "){
-                val thePrice1: Long = (price + viewModel.mutableHargaEkspedisi.value!!.toInt()).toLong()
+                val thePrice1: Long = price.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
                 val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
                 dataBinding.hargaBottom.text = "Rp. $numberFormat1"
             }else{
@@ -128,18 +155,18 @@ class CheckoutFragment : Fragment() {
             }
         })
 
-        viewModel.BayarPesanan.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.BayarPesanan.observe(viewLifecycleOwner, { nama ->
             if (nama != "") {
                 paymentStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                     dataBinding.btnNext.setBackgroundResource(R.drawable.button_green_square)
                 }
                 dataBinding.bayarPesanan.visibility = View.VISIBLE
-                dataBinding.bayarPesanDengan.text = nama.lowercase().capitalize()
+                dataBinding.bayarPesanDengan.text = nama
             }
         })
 
-        viewModel.custName.observe(viewLifecycleOwner, Observer { name ->
+        viewModel.custName.observe(viewLifecycleOwner, { name ->
             if (name != ""){
                 custStat = true
                 if (custStat && kurirStat && dateStat && asalStat && paymentStat){
@@ -173,12 +200,23 @@ class CheckoutFragment : Fragment() {
             if (custStat && kurirStat && dateStat && asalStat && paymentStat){
                 viewModel.mutablePayStat.value = dataBinding.payStat.isChecked
                 var status = navController?.let { it1 ->
-                    viewModel.postOrder(dataBinding.payStat.isChecked,
-                        it1, requireActivity()
+                    viewModel.postOrder(
+                        dataBinding.payStat.isChecked,
+                        it1,
+                        requireActivity(),
+                        dataBinding.loadingOverlayCheckout
                     )
                 }
             }else{
                 Log.e("Fail", "Data Kosong")
+            }
+        }
+
+        dataBinding.paymentInsurance.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.countInsurance(true)
+            } else {
+                viewModel.countInsurance(false)
             }
         }
 
