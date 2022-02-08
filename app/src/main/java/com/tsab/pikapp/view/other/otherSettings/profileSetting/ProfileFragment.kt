@@ -23,7 +23,6 @@ import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.profile_birthday_dialog.view.*
 import kotlinx.android.synthetic.main.profile_gender_dialog.view.*
 
-
 class ProfileFragment : Fragment() {
 
     private lateinit var dataBinding: ProfileFragmentBinding
@@ -40,6 +39,8 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.profile_title)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
                 object : OnBackPressedCallback(true) {
@@ -79,7 +80,7 @@ class ProfileFragment : Fragment() {
             datePickerFragment.show(supportFragmentManager, "ProfileBirthdayFragment")
         }
 
-        dataBinding.backButtonProfile.setOnClickListener {
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
             if (!viewModel._genderSelection.value.isNullOrEmpty() && !viewModel._birthdaySelection.value.isNullOrEmpty()) {
                 viewModel.setGenderAndDOB()
                 Navigation.findNavController(view).popBackStack()

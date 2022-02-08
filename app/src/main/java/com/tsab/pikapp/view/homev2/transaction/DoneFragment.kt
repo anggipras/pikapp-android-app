@@ -18,6 +18,7 @@ import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
+import androidx.core.widget.NestedScrollView
 
 class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
@@ -39,6 +40,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.mutableFinishPageStateDone.value = false
 
         initRecyclerView()
         initViewModel()
@@ -46,6 +48,19 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
         general_error_done.try_button.setOnClickListener {
             getDataDone()
         }
+
+        dataBinding.nestedScrollDone.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+            // on scroll change we are checking when users scroll as bottom.
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                if (!viewModel.finishPageStateDone.value!!) {
+                    // in this method we are incrementing page number,
+                    // making progress bar visible and calling get data method.
+                    val pageDoneAct = viewModel.pageDone.value!! + 1
+                    dataBinding.loadingPB.isVisible = true
+                    viewModel.getDoneTransactionV2PaginationList(pageDoneAct, dataBinding.loadingPB)
+                }
+            }
+        })
     }
 
     private fun initRecyclerView() {

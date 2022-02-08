@@ -15,7 +15,6 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCurrentPinBinding
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 
-
 class CurrentPinFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentCurrentPinBinding
@@ -32,6 +31,8 @@ class CurrentPinFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.pin_setting_title)
+
         showKeyboard()
 
         dataBinding.currentPinInput.addTextChangedListener {
@@ -44,7 +45,7 @@ class CurrentPinFragment : Fragment() {
             }
         }
 
-        dataBinding.backButtonPinFirst.setOnClickListener {
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }

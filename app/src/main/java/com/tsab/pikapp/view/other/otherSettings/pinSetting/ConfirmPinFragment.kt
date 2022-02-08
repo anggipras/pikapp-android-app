@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.other.otherSettings.pinSetting
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,21 +34,27 @@ class ConfirmPinFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard()
 
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.pin_setting_title)
+
         dataBinding.confirmPinInput.addTextChangedListener {
             val confirmPin = dataBinding.confirmPinInput.text.toString()
             if (confirmPin.length == 6) {
                 hideKeyboard()
                 if (confirmPin == viewModel._newPin.value) {
+                    dataBinding.confirmPinTextDetail.setTextColor(Color.parseColor("#111111"))
+                    dataBinding.confirmPinInput.setLineColor(Color.parseColor("#111111"))
                     viewModel.changePin()
                 } else {
-                    Toast.makeText(requireActivity(), "PIN salah, masukkan PIN yang sama dengan PIN baru Anda", Toast.LENGTH_SHORT).show()
+                    dataBinding.confirmPinTextDetail.text = "PIN yang Anda masukkan salah"
+                    dataBinding.confirmPinTextDetail.setTextColor(Color.parseColor("#DC6A84"))
+                    dataBinding.confirmPinInput.setLineColor(Color.parseColor("#DC6A84"))
                     dataBinding.confirmPinInput.setText("")
                     showKeyboard()
                 }
             }
         }
 
-        dataBinding.backButtonPinThird.setOnClickListener {
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
             requireActivity().onBackPressed()
         }
 

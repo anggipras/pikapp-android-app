@@ -6,12 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -426,7 +428,17 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        activity.startActivity(intent)
+                        if (recyclerViewDelivery.shipping?.awb.isNullOrEmpty()) {
+                            Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
+                        } else {
+                            intent.putExtra(TransactionTrackingActivity.WAYBILL_ID,
+                                recyclerViewDelivery.shipping?.awb
+                            )
+                            intent.putExtra(TransactionTrackingActivity.COURIER_NAME,
+                                recyclerViewDelivery.shipping?.shipping_method
+                            )
+                            activity.startActivity(intent)
+                        }
                     }
                 }
                 acceptBtn.visibility = View.VISIBLE
@@ -445,7 +457,18 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        activity.startActivity(intent)
+                        Log.e("AWB", recyclerViewDelivery.shipping.toString())
+                        if (recyclerViewDelivery.shipping?.awb.isNullOrEmpty()) {
+                            Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
+                        } else {
+                            intent.putExtra(TransactionTrackingActivity.WAYBILL_ID,
+                                recyclerViewDelivery.shipping?.awb
+                            )
+                            intent.putExtra(TransactionTrackingActivity.COURIER_NAME,
+                                recyclerViewDelivery.shipping?.shipping_method
+                            )
+                            activity.startActivity(intent)
+                        }
                     }
                 }
                 acceptBtn.visibility = View.VISIBLE
@@ -515,7 +538,7 @@ class TransactionListV2Adapter(
             formatNumber()
             totalPrice.text = "Rp. " + str
             menuPrice = 0
-            shippingMethod.text = recyclerViewDelivery.shipping?.shipping_method
+            shippingMethod.text = recyclerViewDelivery.shipping?.shipping_method?.replaceFirstChar { it.titlecase() }
             shippingDate.text = recyclerViewDelivery.shipping?.shipping_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
                     recyclerViewDelivery.shipping?.shipping_time.toString().substringBefore("-") +", "+ recyclerViewDelivery.shipping?.shipping_time.toString().substringAfter(" ").substringBeforeLast(":")
             custName.text = recyclerViewDelivery.customer?.name

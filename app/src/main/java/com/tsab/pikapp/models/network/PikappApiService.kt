@@ -86,7 +86,7 @@ class PikappApiService {
         }
     }
 
-    val courierPriceApi = Retrofit.Builder()
+    val courierApi = Retrofit.Builder()
         .baseUrl(checkCourierPriceConfig())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

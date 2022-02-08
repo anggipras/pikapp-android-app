@@ -746,7 +746,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val mid = sessionManager.getUserData()!!.mid!!
 
         disposable.add(
-            PikappApiService().courierPriceApi.getCourierPrice(getUUID(), timestamp, getClientID(), signature, token, mid, courierReqBody)
+            PikappApiService().courierApi.getCourierPrice(getUUID(), timestamp, getClientID(), signature, token, mid, courierReqBody)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<CustomerCourierListResponse>() {
@@ -829,7 +829,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val courierSelected = if (mutableNamaEkspedisi.value.toString() == "Pickup Sendiri") {
             "Pickup Sendiri"
         } else {
-            selectedCourierService.value!!.name
+            selectedCourierService.value!!.courier_code
         }
         val shippingData = ShippingData(
             courierSelected,
