@@ -82,7 +82,7 @@ class ManualTxnCartPage : Fragment(), ManualTxnCartAdapter.OnItemClickListener {
 
         dataBinding.btnNext.setOnClickListener {
             viewModel.setInsurance("0")
-            viewModel.setEkspedisi("", "")
+            viewModel.setEkspedisi("", "0")
             viewModel.liveDataCourierList.value = ArrayList()
             navController?.navigate(R.id.action_manualTxnCartPage_to_checkoutFragment)
         }

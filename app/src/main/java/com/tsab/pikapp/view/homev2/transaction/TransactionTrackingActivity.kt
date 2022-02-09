@@ -58,18 +58,19 @@ class TransactionTrackingActivity : AppCompatActivity() {
                     override fun onSuccess(t: TrackingDetailResponse) {
                         if (t.errCode == "200") {
                             val trackResult = t.result
-                            dataBinding.shipmentWaybill.text = "Resi Pengiriman: ${trackResult.waybillID}"
-                            dataBinding.driverName.text = trackResult.courier.name ?: "Unknown"
-                            dataBinding.driverPhone.text = trackResult.courier.phone ?: "0"
+                            val waybillIdPass = waybillId ?: "0123082100003094"
+                            dataBinding.shipmentWaybill.text = "Resi Pengiriman: $waybillIdPass"
+                            dataBinding.driverName.text = trackResult.courier?.name ?: "Hadrian"
+                            dataBinding.driverPhone.text = trackResult.courier?.phone ?: "081293955247"
                             dataBinding.callDriverBtn.setOnClickListener {
-                                openWhatsApp(trackResult.courier.phone)
+                                openWhatsApp(trackResult.courier?.phone ?: "081293955247")
                             }
                             dataBinding.clipboardCopy.setOnClickListener {
-                                copyInvoice(trackResult.waybillID)
+                                copyInvoice(waybillIdPass)
                             }
 
                             val trackOrderList: MutableList<TrackingDetail> = ArrayList()
-                            trackOrderList.addAll(trackResult.history)
+                            trackOrderList.addAll(trackResult.history ?: dummyTrackingList())
                             trackOrderList.reverse()
                             recyclerAdapter.setTransactionTrackingList(trackOrderList)
                         }
@@ -77,17 +78,6 @@ class TransactionTrackingActivity : AppCompatActivity() {
 
                     override fun onError(e: Throwable) {
                         Log.e("ERROR", e.message.toString())
-                        dataBinding.shipmentWaybill.text = "Resi Pengiriman: ${dummyTrackingDetail().waybillID}"
-                        dataBinding.driverName.text = dummyTrackingDetail().courier.name
-                        dataBinding.driverPhone.text = dummyTrackingDetail().courier.phone
-                        dataBinding.callDriverBtn.setOnClickListener {
-                            openWhatsApp(dummyTrackingDetail().courier.phone)
-                        }
-                        dataBinding.clipboardCopy.setOnClickListener {
-                            copyInvoice(dummyTrackingDetail().waybillID)
-                        }
-
-                        recyclerAdapter.setTransactionTrackingList(dummyTrackingDetail().history)
                     }
                 })
         )
@@ -112,6 +102,32 @@ class TransactionTrackingActivity : AppCompatActivity() {
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         startActivity(shareIntent)
+    }
+
+    private fun dummyTrackingList() : List<TrackingDetail> {
+        val trackOrderList: MutableList<TrackingDetail> = ArrayList()
+        trackOrderList.add(
+            TrackingDetail(
+                note = "SHIPMENT RECEIVED BY JNE COUNTER OFFICER AT [JAKARTA]",
+                updated_at = "2021-03-16T18:17:00+07:00",
+                status = "dropping_off"
+            )
+        )
+        trackOrderList.add(
+            TrackingDetail(
+                note = "RECEIVED AT SORTING CENTER [JAKARTA]",
+                updated_at = "2021-03-16T21:15:00+07:00",
+                status = "dropping_off"
+            )
+        )
+        trackOrderList.add(
+            TrackingDetail(
+                note = "SHIPMENT FORWARDED TO DESTINATION [JAKARTA , HUB VETERAN BINTARO]",
+                updated_at = "2021-03-16T23:12:00+07:00",
+                status = "dropping_off"
+            )
+        )
+        return trackOrderList
     }
 
     private fun dummyTrackingDetail(): TrackingDetailResult {

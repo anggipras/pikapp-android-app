@@ -414,7 +414,7 @@ interface PikappApi {
         @Path("status") statusTrans: String
     ): Call<GetManualTransactionResp>
 
-    @POST("pos/v1/transaction/status/")
+    @POST("pos/v2/transaction/status/")
     fun postUpdateManualTransaction(
         @Body UpdateStatusManualTxnRequest: UpdateStatusManualTxnRequest
     ): Call<UpdateStatusManualResponse>

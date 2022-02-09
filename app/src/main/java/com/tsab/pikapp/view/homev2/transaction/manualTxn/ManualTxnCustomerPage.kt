@@ -119,7 +119,7 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
             viewModel.setCustAddress(viewModel.custAddressTemp.value.toString())
             viewModel.setCustAddressDetail(viewModel.custAddressDetailTemp.value.toString())
             viewModel.setInsurance("0")
-            viewModel.setEkspedisi("", "")
+            viewModel.setEkspedisi("", "0")
             viewModel.liveDataCourierList.value = ArrayList()
             navController?.navigate(R.id.action_manualTxnCustomerPage_to_checkoutFragment)
         }

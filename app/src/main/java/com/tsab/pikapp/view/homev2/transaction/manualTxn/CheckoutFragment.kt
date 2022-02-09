@@ -77,7 +77,7 @@ class CheckoutFragment : Fragment() {
         })
 
         viewModel.HargaEkspedisi.observe(viewLifecycleOwner, { harga ->
-            if(harga != "" && harga != " "){
+            if(harga != "0"){
                 dataBinding.dataPengiriman.visibility = View.VISIBLE
                 dataBinding.hargaKirim.visibility = View.VISIBLE
                 dataBinding.paymentInsurance.visibility = View.VISIBLE
@@ -88,8 +88,7 @@ class CheckoutFragment : Fragment() {
                 val totalPriceOnCart: Long = viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
                 val totalPriceFormat = NumberFormat.getInstance(localeID).format(totalPriceOnCart)
                 dataBinding.hargaBottom.text = "Rp. $totalPriceFormat"
-            }
-            if(harga == " "){
+            } else if(harga == "0"){
                 dataBinding.ongkirHarga.text = "Rp. 0"
                 val thePrice = viewModel.mutableCartPrice.value!!.toLong()
                 val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
@@ -110,8 +109,8 @@ class CheckoutFragment : Fragment() {
                     dataBinding.insurancePrice.text = "Rp. $insuranceFormat"
                     dataBinding.hargaBottom.text = "Rp. $numberFormat"
                 } else {
-                    val totalPriceWithoutInsurance = if (!viewModel.HargaEkspedisi.value.isNullOrEmpty()) {
-                        (viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong())
+                    val totalPriceWithoutInsurance = if (viewModel.HargaEkspedisi.value != "0") {
+                        viewModel.mutableCartPrice.value!!.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong()
                     } else {
                         viewModel.mutableCartPrice.value!!.toLong()
                     }
@@ -146,7 +145,7 @@ class CheckoutFragment : Fragment() {
             val thePrice: Long = price.toLong()
             val numberFormat = NumberFormat.getInstance(localeID).format(thePrice)
             dataBinding.totalHarga.text = "Rp. $numberFormat"
-            if(viewModel.mutableHargaEkspedisi.value != "" && viewModel.mutableHargaEkspedisi.value != " "){
+            if(viewModel.mutableHargaEkspedisi.value != "0"){
                 val thePrice1: Long = price.toLong() + viewModel.mutableHargaEkspedisi.value!!.toLong() + viewModel.insurancePrice.value!!.toLong()
                 val numberFormat1 = NumberFormat.getInstance(localeID).format(thePrice1)
                 dataBinding.hargaBottom.text = "Rp. $numberFormat1"

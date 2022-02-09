@@ -457,7 +457,6 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        Log.e("AWB", recyclerViewDelivery.shipping.toString())
                         if (recyclerViewDelivery.shipping?.awb.isNullOrEmpty()) {
                             Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
                         } else {

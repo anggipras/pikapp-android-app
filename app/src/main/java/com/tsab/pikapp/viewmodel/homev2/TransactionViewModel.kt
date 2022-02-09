@@ -397,7 +397,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     override fun onSuccess(t: UpdateStatusResponse) {
                         Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
                         getProcessTransactionV2List(context, false, 0)
-                        getDoneTransactionV2List(context, false, 0)
+                        getDoneTransactionV2PaginationList(context, false, pageDone.value!!)
+//                        getDoneTransactionV2List(context, false, 0)
                         getCancelTransactionV2List(context, false, 0)
                     }
 
@@ -432,7 +433,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
                 getProcessTransactionV2List(context, false, 0)
-                getDoneTransactionV2List(context, false, 0)
+                getDoneTransactionV2PaginationList(context, false, pageDone.value!!)
+//                getDoneTransactionV2List(context, false, 0)
                 getCancelTransactionV2List(context, false, 0)
             }
         })
@@ -449,7 +451,8 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
             ) {
                 Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
                 getProcessTransactionV2List(context, false, 0)
-                getDoneTransactionV2List(context, false, 0)
+                getDoneTransactionV2PaginationList(context, false, pageDone.value!!)
+//                getDoneTransactionV2List(context, false, 0)
                 getCancelTransactionV2List(context, false, 0)
             }
 
@@ -776,13 +779,26 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    private val mutablePageDone = MutableLiveData(0)
+    val mutablePageDone = MutableLiveData(0)
     val pageDone: LiveData<Int> get() = mutablePageDone
-    fun getDoneTransactionV2PaginationList(propsPage: Int, loadingPB: ProgressBar) {
+    fun getDoneTransactionV2PaginationList(context: Context, getOrUpdate: Boolean, propsPage: Int) {
+        val theSizesPlus1: Int
+        val thePages: Int
+        val theSizes: Int
+        if (!getOrUpdate) {
+            theSizesPlus1 = propsPage + 1
+            theSizes = theSizesPlus1 * 10
+            thePages = 0
+            setProgressLoading(false)
+            setProgressDialog(false, context)
+        } else {
+            theSizes = 10
+            thePages = propsPage
+        }
         val mid = sessionManager.getUserData()?.mid
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = PikappApiService().api.getTransactionListV2Coroutines(mid, 10, propsPage)
+            val response = PikappApiService().api.getTransactionListV2Coroutines(mid, theSizes, thePages)
             if (response.isSuccessful) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     if (response.body()!!.results?.isNotEmpty() == true) {
@@ -817,19 +833,27 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                         }
                         withContext(Dispatchers.Main) {
                             mutablePageDone.value = propsPage
-                            loadingPB.isVisible = true
-                            val donePaginationSize = doneSize.value?.plus(doneList.size)
-                            mutableDoneSize.value = donePaginationSize
+                            if (!getOrUpdate) {
+                                mutableDoneSize.value = doneList.size
+                                liveDataTransListV2Done.postValue(doneList)
+                            } else {
+                                val donePaginationSize = doneSize.value?.plus(doneList.size)
+                                mutableDoneSize.value = donePaginationSize
 
-                            val transListV2DoneAdded: MutableList<TransactionListV2Data> = ArrayList()
-                            liveDataTransListV2Done.value?.let { transListV2DoneAdded.addAll(it) }
-                            transListV2DoneAdded.addAll(doneList)
-                            liveDataTransListV2Done.postValue(transListV2DoneAdded)
+                                val transListV2DoneAdded: MutableList<TransactionListV2Data> = ArrayList()
+                                liveDataTransListV2Done.value?.let { transListV2DoneAdded.addAll(it) }
+                                transListV2DoneAdded.addAll(doneList)
+                                liveDataTransListV2Done.postValue(transListV2DoneAdded)
+                            }
+
+                            if (!getOrUpdate) {
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
+                            }
                         }
                     } else {
                         withContext(Dispatchers.Main) {
                             mutableFinishPageStateDone.value = true
-                            loadingPB.isVisible = false
                         }
                     }
                 }

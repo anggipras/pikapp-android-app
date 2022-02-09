@@ -325,14 +325,14 @@ data class TrackingDetailResult (
     val success: Boolean,
     val messsage: String?,
     @SerializedName("object")
-    val resultObject: String,
-    val id: String,
+    val resultObject: String?,
+    val id: String?,
     @SerializedName("waybill_id")
-    val waybillID: String,
-    val courier: CourierDriver,
-    val origin: OriginPlace,
-    val destination: DestinationPlace,
-    val history: List<TrackingDetail>,
+    val waybillID: String?,
+    val courier: CourierDriver?,
+    val origin: OriginPlace?,
+    val destination: DestinationPlace?,
+    val history: List<TrackingDetail>?,
     val link: String?,
     @SerializedName("order_id")
     val orderID: String? = null,
