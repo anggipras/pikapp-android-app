@@ -659,7 +659,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                         }
                                     } else { // PIKAPP DELIVERY
                                         if (it.order_status == "OPEN" || it.order_status == "ON_PROCESS") {
-                                            processList.add(addTransactionData(2, it))
+                                            if (it.payment_status == "UNPAID" && it.order_platform == "PIKAPP") {
+                                                Timber.tag(tag).d("UNPAID PIKAPP")
+                                            } else {
+                                                processList.add(addTransactionData(2, it))
+                                            }
                                         } else {
                                             Timber.tag(tag).d("Invalid transaction")
                                         }
