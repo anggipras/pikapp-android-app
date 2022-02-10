@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
@@ -50,6 +51,7 @@ class TransactionTrackingActivity : AppCompatActivity() {
     }
 
     private fun getTrackTransactionOrder(waybillId: String?, courierName: String?) {
+        dataBinding.loadingOverlay.loadingView.isVisible = true
         disposable.add(
             PikappApiService().courierApi.getTrackOrderDetail(getClientID(), TrackingOrderRequest(waybillId, courierName!!.lowercase()))
                 .subscribeOn(Schedulers.newThread())
@@ -73,11 +75,13 @@ class TransactionTrackingActivity : AppCompatActivity() {
                             trackOrderList.addAll(trackResult.history ?: dummyTrackingList())
                             trackOrderList.reverse()
                             recyclerAdapter.setTransactionTrackingList(trackOrderList)
+                            dataBinding.loadingOverlay.loadingView.isVisible = false
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         Log.e("ERROR", e.message.toString())
+                        dataBinding.loadingOverlay.loadingView.isVisible = false
                     }
                 })
         )

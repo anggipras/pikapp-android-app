@@ -414,8 +414,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                         Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
                     } else {
                         setLoading(false)
-                        var errorResponse: BaseResponse? =
-                                gson.fromJson(response.errorBody()!!.charStream(), type)
+//                        var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
                     }
                 }
 

@@ -415,7 +415,12 @@ class TransactionListV2Adapter(
                 rejectBtn.text = "Batalkan"
                 rejectBtn.setTextColor(context.resources.getColor(R.color.colorRed))
                 rejectBtn.setOnClickListener {
-                    listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", recyclerViewDelivery.payment_status))
+                    val paymentStatusProps = if (recyclerViewDelivery.payment_status == "UNPAID") {
+                        "CANCELLED"
+                    } else {
+                        recyclerViewDelivery.payment_status
+                    }
+                    listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", paymentStatusProps))
                 }
             } else if (orderStatusManual == "DELIVER") {
                 orderStatus.text = "Dikirim"
@@ -496,8 +501,9 @@ class TransactionListV2Adapter(
                 acceptBtn.visibility = View.GONE
                 when (recyclerViewDelivery.payment_status) {
                     "PAID" -> {
-                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
                         statusPayment.text = "Sudah Bayar"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
+
                         updatePaymentBtn.visibility = View.VISIBLE
                         updatePaymentBtn.text = "Refund ke Pelanggan"
                         updatePaymentBtn.setOnClickListener {
