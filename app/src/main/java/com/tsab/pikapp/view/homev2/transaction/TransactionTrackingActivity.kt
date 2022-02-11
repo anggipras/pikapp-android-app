@@ -60,10 +60,10 @@ class TransactionTrackingActivity : AppCompatActivity() {
                     override fun onSuccess(t: TrackingDetailResponse) {
                         if (t.errCode == "200") {
                             val trackResult = t.result
-                            val waybillIdPass = waybillId ?: "0123082100003094"
+                            val waybillIdPass = waybillId ?: ""
                             dataBinding.shipmentWaybill.text = "Resi Pengiriman: $waybillIdPass"
-                            dataBinding.driverName.text = trackResult.courier?.name ?: "Hadrian"
-                            dataBinding.driverPhone.text = trackResult.courier?.phone ?: "081293955247"
+                            dataBinding.driverName.text = trackResult.courier?.name ?: ""
+                            dataBinding.driverPhone.text = trackResult.courier?.phone ?: ""
                             dataBinding.callDriverBtn.setOnClickListener {
                                 openWhatsApp(trackResult.courier?.phone ?: "081293955247")
                             }
@@ -72,7 +72,7 @@ class TransactionTrackingActivity : AppCompatActivity() {
                             }
 
                             val trackOrderList: MutableList<TrackingDetail> = ArrayList()
-                            trackOrderList.addAll(trackResult.history ?: dummyTrackingList())
+                            trackOrderList.addAll(trackResult.history ?: ArrayList())
                             trackOrderList.reverse()
                             recyclerAdapter.setTransactionTrackingList(trackOrderList)
                             dataBinding.loadingOverlay.loadingView.isVisible = false

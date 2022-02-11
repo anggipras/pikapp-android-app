@@ -791,7 +791,9 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         val theSizeDividedBy10 = size / 10
         val theSizePlusOne = theSizeDividedBy10 + 1
         val finalSize = theSizePlusOne * 10
-        getDoneTransactionV2ListCausedByEmptyFilter(context, finalSize)
+        if (finalSize < 50) {
+            getDoneTransactionV2ListCausedByEmptyFilter(context, finalSize)
+        }
     }
 
     fun getDoneTransactionV2ListCausedByEmptyFilter(

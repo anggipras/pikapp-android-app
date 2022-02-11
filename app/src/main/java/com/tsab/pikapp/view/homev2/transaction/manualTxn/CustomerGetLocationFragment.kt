@@ -112,8 +112,8 @@ class CustomerGetLocationFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.addressLocation.observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
-                dataBinding.locationAddressTitle.text = getString(R.string.main_address_location, it[0].locality)
-                dataBinding.locationAddressDetail.text = getString(R.string.detail_address_location, it[0].getAddressLine(0))
+                dataBinding.locationAddressTitle.text = getString(R.string.detail_address_location, it[0].getAddressLine(0).split(",")[0])
+                dataBinding.locationAddressDetail.text = getString(R.string.main_address_location, it[0].locality)
                 dataBinding.locationAddressBottom.visibility = View.VISIBLE
             }
         })

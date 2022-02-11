@@ -446,10 +446,16 @@ class TransactionListV2Adapter(
                         }
                     }
                 }
-                acceptBtn.visibility = View.VISIBLE
-                acceptBtn.text = "Pesanan Tiba"
-                acceptBtn.setOnClickListener {
-                    listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "FINALIZE", recyclerViewDelivery.payment_status))
+                if (recyclerViewDelivery.biz_type == "DELIVERY") {
+                    acceptBtn.visibility = View.GONE
+                } else {
+                    acceptBtn.visibility = View.VISIBLE
+                    acceptBtn.text = "Pesanan Tiba"
+                    acceptBtn.isEnabled = true
+                    acceptBtn.setTextColor(context.resources.getColor(R.color.green))
+                    acceptBtn.setOnClickListener {
+                        listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "FINALIZE", recyclerViewDelivery.payment_status))
+                    }
                 }
             } else if (orderStatusManual == "FINALIZE") {
                 orderStatus.text = "Sampai"
