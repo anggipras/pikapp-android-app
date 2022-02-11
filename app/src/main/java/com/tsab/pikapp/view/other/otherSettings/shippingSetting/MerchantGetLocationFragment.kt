@@ -15,6 +15,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentMerchantGetLocationBinding
 import com.tsab.pikapp.models.model.CurrentLatLng
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
+import java.lang.NumberFormatException
 
 class MerchantGetLocationFragment : Fragment() {
     private lateinit var dataBinding: FragmentMerchantGetLocationBinding
@@ -115,7 +116,22 @@ class MerchantGetLocationFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.addressLocation.observe(viewLifecycleOwner, {
             if (it != null) {
-                dataBinding.locationAddressTitle.text = getString(R.string.detail_address_location, it[0].getAddressLine(0).split(",")[0])
+                val addressFirstInd = it[0].getAddressLine(0).split(",")[0]
+                val addressSecondInd = it[0].getAddressLine(0).split(",")[1]
+                var numeric = true
+
+                try {
+                    val num = addressFirstInd.toInt()
+                } catch (e: NumberFormatException) {
+                    numeric = false
+                }
+
+                val addressLine = if (numeric) {
+                    addressSecondInd
+                } else {
+                    addressFirstInd
+                }
+                dataBinding.locationAddressTitle.text = getString(R.string.detail_address_location, addressLine)
                 dataBinding.locationAddressDetail.text = getString(R.string.main_address_location, it[0].locality)
                 dataBinding.locationAddressBottom.visibility = View.VISIBLE
             }
