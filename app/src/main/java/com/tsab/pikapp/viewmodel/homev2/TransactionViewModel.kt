@@ -752,11 +752,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                         }
                                     }
                                 }
-                                mutableDoneSize.value = doneList.size
-                                liveDataTransListV2Done.postValue(doneList)
-                                if (swipeDown == 0) {
-                                    setProgressLoading(false)
-                                    setProgressDialog(false, context)
+                                if (doneList.size == 0) {
+                                    getDoneTransactionV2ListCausedByEmptyFilter(context, 10)
+                                } else {
+                                    mutableDoneSize.value = doneList.size
+                                    liveDataTransListV2Done.postValue(doneList)
+                                    if (swipeDown == 0) {
+                                        setProgressLoading(false)
+                                        setProgressDialog(false, context)
+                                    }
                                 }
                             } else {
                                 if (swipeDown == 0) {
@@ -773,6 +777,86 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                             setProgressLoading(false)
                             setProgressDialog(false, context)
                         }
+                        setErrorLoading(true)
+                    }
+
+                })
+            } catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun mediumGetDoneTransactionCausedByEmptyFilter(context: Context, size: Int) {
+        val theSizeDividedBy10 = size / 10
+        val theSizePlusOne = theSizeDividedBy10 + 1
+        val finalSize = theSizePlusOne * 10
+        getDoneTransactionV2ListCausedByEmptyFilter(context, finalSize)
+    }
+
+    fun getDoneTransactionV2ListCausedByEmptyFilter(
+        context: Context,
+        theSize: Int
+    ) {
+        val mid = sessionManager.getUserData()?.mid
+
+        viewModelScope.launch {
+            try {
+                PikappApiService().api.getTransactionListV2(mid, theSize, 0).enqueue(object : Callback<TransactionListV2RespAPI> {
+                    override fun onResponse(
+                        call: Call<TransactionListV2RespAPI>,
+                        response: Response<TransactionListV2RespAPI>
+                    ) {
+                        if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+                            if (response.body()!!.results?.isNotEmpty() == true) {
+                                val theTransactionListV2 = response.body()!!.results
+                                val doneList: MutableList<TransactionListV2Data> = ArrayList()
+
+                                theTransactionListV2!!.forEach {
+                                    if (it.txn_type == "TXN") { // PIKAPP DINE IN
+                                        if (it.order_status == "DELIVER" || it.order_status == "CLOSE" || it.order_status == "FINALIZE") {
+                                            doneList.add(addTransactionData(0, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else if (it.txn_type == "CHANNEL") { // PIKAPP OMNICHANNEL
+                                        if (it.order_status == "ORDER_DELIVERED"
+                                            || it.order_status == "ORDER_FINISHED"
+                                            || it.order_status == "ORDER_SHIPMENT"
+                                            || it.order_status == "DELIVERED_TO_PICKUP_POINT"
+                                            || it.order_status == "DELIVERED"
+                                            || it.order_status == "COLLECTED") {
+                                            doneList.add(addTransactionData(1, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    } else { // PIKAPP DELIVERY
+                                        if (it.order_status == "CLOSE" || it.order_status == "DELIVER" || it.order_status == "FINALIZE") {
+                                            doneList.add(addTransactionData(2, it))
+                                        } else {
+                                            Timber.tag(tag).d("Invalid transaction")
+                                        }
+                                    }
+                                }
+                                if (doneList.size == 0) {
+                                    mediumGetDoneTransactionCausedByEmptyFilter(context, theSize)
+                                } else {
+                                    mutableDoneSize.value = doneList.size
+                                    liveDataTransListV2Done.postValue(doneList)
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
+                            } else {
+                                setProgressLoading(false)
+                                setProgressDialog(false, context)
+                                mutableEmptyState.value = true
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TransactionListV2RespAPI>, t: Throwable) {
+                        setProgressLoading(false)
+                        setProgressDialog(false, context)
                         setErrorLoading(true)
                     }
 
