@@ -71,6 +71,15 @@ class TransactionTrackingActivity : AppCompatActivity() {
                                 openWhatsApp(trackResult.courier?.phone ?: "081293955247")
                             }
 
+                            if (!trackResult.link.isNullOrEmpty()) {
+                                dataBinding.liveTrackingSection.isVisible = true
+                                dataBinding.liveTrackingButton.setOnClickListener {
+                                    openLiveTrackingWeb(trackResult.link)
+                                }
+                            } else {
+                                dataBinding.liveTrackingSection.isVisible = false
+                            }
+
                             val trackOrderList: MutableList<TrackingDetail> = ArrayList()
                             trackOrderList.addAll(trackResult.history ?: ArrayList())
                             trackOrderList.reverse()
@@ -94,6 +103,12 @@ class TransactionTrackingActivity : AppCompatActivity() {
         val url = "https://api.whatsapp.com/send?phone=$waNumber"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
+        startActivity(intent)
+    }
+
+    private fun openLiveTrackingWeb(link: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(link)
         startActivity(intent)
     }
 
