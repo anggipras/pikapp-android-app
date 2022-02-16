@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers
 class TransactionTrackingActivity : AppCompatActivity() {
     companion object {
         const val WAYBILL_ID = "waybill_id"
-        const val COURIER_NAME = "courier_name"
+        const val TRACK_ID = "track_id"
     }
 
     private lateinit var dataBinding: ActivityTransactionTrackingBinding
@@ -40,8 +40,13 @@ class TransactionTrackingActivity : AppCompatActivity() {
         initRecyclerView()
 
         val waybillIdProps = intent.getStringExtra(WAYBILL_ID)
-        val courierNameProps = intent.getStringExtra(COURIER_NAME)
-        getTrackTransactionOrder(waybillIdProps, courierNameProps)
+        dataBinding.shipmentWaybill.text = "Resi Pengiriman: $waybillIdProps"
+        dataBinding.clipboardCopy.setOnClickListener {
+            copyInvoice(waybillIdProps)
+        }
+
+        val trackIdProps = intent.getStringExtra(TRACK_ID)
+        getTrackTransactionOrder(trackIdProps)
     }
 
     private fun initRecyclerView() {
@@ -50,25 +55,20 @@ class TransactionTrackingActivity : AppCompatActivity() {
         dataBinding.recyclerviewTransactionTrack.adapter = recyclerAdapter
     }
 
-    private fun getTrackTransactionOrder(waybillId: String?, courierName: String?) {
+    private fun getTrackTransactionOrder(trackId: String?) {
         dataBinding.loadingOverlay.loadingView.isVisible = true
         disposable.add(
-            PikappApiService().courierApi.getTrackOrderDetail(getClientID(), TrackingOrderRequest(waybillId, courierName!!.lowercase()))
+            PikappApiService().courierApi.getTrackOrderDetail(getClientID(), TrackingOrderRequest(trackId))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<TrackingDetailResponse>() {
                     override fun onSuccess(t: TrackingDetailResponse) {
                         if (t.errCode == "200") {
                             val trackResult = t.result
-                            val waybillIdPass = waybillId ?: ""
-                            dataBinding.shipmentWaybill.text = "Resi Pengiriman: $waybillIdPass"
                             dataBinding.driverName.text = trackResult.courier?.name ?: ""
                             dataBinding.driverPhone.text = trackResult.courier?.phone ?: ""
                             dataBinding.callDriverBtn.setOnClickListener {
                                 openWhatsApp(trackResult.courier?.phone ?: "081293955247")
-                            }
-                            dataBinding.clipboardCopy.setOnClickListener {
-                                copyInvoice(waybillIdPass)
                             }
 
                             val trackOrderList: MutableList<TrackingDetail> = ArrayList()
@@ -97,7 +97,7 @@ class TransactionTrackingActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun copyInvoice(waybillID: String) {
+    private fun copyInvoice(waybillID: String?) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, waybillID)
@@ -177,7 +177,7 @@ class TransactionTrackingActivity : AppCompatActivity() {
 
         return TrackingDetailResult(
             success = true,
-            messsage = "Successfully get tracking info",
+            message = "Successfully get tracking info",
             resultObject = "tracking",
             id = "6051861741a37414e6637fab",
             waybillID = "0123082100003094",

@@ -200,7 +200,9 @@ data class ShippingDetailV2Response(
     @SerializedName("phone_number")
     val phone_number: String?,
     @SerializedName("postal_code")
-    val postal_code: String?
+    val postal_code: String?,
+    @SerializedName("tracking_id")
+    val tracking_id: String?
 )
 
 data class ProductDetailV2Response(
@@ -323,7 +325,7 @@ data class TrackingDetailResponse (
 
 data class TrackingDetailResult (
     val success: Boolean,
-    val messsage: String?,
+    val message: String?,
     @SerializedName("object")
     val resultObject: String?,
     val id: String?,
@@ -364,8 +366,7 @@ data class TrackingDetail(
 )
 
 data class TrackingOrderRequest(
-    var waybill_id: String?,
-    var courier: String?
+    var tracking_id: String?
 )
 
 

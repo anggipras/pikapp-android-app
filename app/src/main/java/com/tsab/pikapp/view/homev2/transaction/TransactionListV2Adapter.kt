@@ -433,14 +433,14 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        if (recyclerViewDelivery.shipping?.awb.isNullOrEmpty()) {
+                        if (recyclerViewDelivery.shipping?.tracking_id.isNullOrEmpty()) {
                             Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
                         } else {
                             intent.putExtra(TransactionTrackingActivity.WAYBILL_ID,
                                 recyclerViewDelivery.shipping?.awb
                             )
-                            intent.putExtra(TransactionTrackingActivity.COURIER_NAME,
-                                recyclerViewDelivery.shipping?.shipping_method
+                            intent.putExtra(TransactionTrackingActivity.TRACK_ID,
+                                recyclerViewDelivery.shipping?.tracking_id
                             )
                             activity.startActivity(intent)
                         }
@@ -468,14 +468,14 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        if (recyclerViewDelivery.shipping?.awb.isNullOrEmpty()) {
+                        if (recyclerViewDelivery.shipping?.tracking_id.isNullOrEmpty()) {
                             Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
                         } else {
                             intent.putExtra(TransactionTrackingActivity.WAYBILL_ID,
                                 recyclerViewDelivery.shipping?.awb
                             )
-                            intent.putExtra(TransactionTrackingActivity.COURIER_NAME,
-                                recyclerViewDelivery.shipping?.shipping_method
+                            intent.putExtra(TransactionTrackingActivity.TRACK_ID,
+                                recyclerViewDelivery.shipping?.tracking_id
                             )
                             activity.startActivity(intent)
                         }

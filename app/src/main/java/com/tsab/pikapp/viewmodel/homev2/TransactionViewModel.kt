@@ -449,11 +449,15 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 call: Call<UpdateStatusManualResponse>,
                 response: Response<UpdateStatusManualResponse>
             ) {
-                Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
-                getProcessTransactionV2List(context, false, 0)
-                getDoneTransactionV2PaginationList(context, false, pageDone.value!!)
-//                getDoneTransactionV2List(context, false, 0)
-                getCancelTransactionV2List(context, false, 0)
+                if (response.code() == 200) {
+                    Toast.makeText(context, "Transaksi Berhasil Di Update", Toast.LENGTH_SHORT).show()
+                    getProcessTransactionV2List(context, false, 0)
+                    getDoneTransactionV2PaginationList(context, false, pageDone.value!!)
+//                    getDoneTransactionV2List(context, false, 0)
+                    getCancelTransactionV2List(context, false, 0)
+                } else {
+                    Toast.makeText(context, "Transaksi Gagal Di Update, Mohon tunggu dan update kembali", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onFailure(call: Call<UpdateStatusManualResponse>, t: Throwable) {
