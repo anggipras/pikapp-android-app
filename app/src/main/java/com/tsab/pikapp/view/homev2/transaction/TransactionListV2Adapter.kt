@@ -533,6 +533,29 @@ class TransactionListV2Adapter(
                 orderStatus.setBackgroundResource(R.drawable.button_red_square)
                 rejectBtn.visibility = View.GONE
                 acceptBtn.visibility = View.GONE
+                when (recyclerViewDelivery.payment_status) {
+                    "PAID" -> {
+                        statusPayment.text = "Sudah Bayar"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
+
+                        updatePaymentBtn.visibility = View.VISIBLE
+                        updatePaymentBtn.text = "Refund ke Pelanggan"
+                        updatePaymentBtn.setOnClickListener {
+                            listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUND"))
+                        }
+                    }
+                    "CANCELLED" -> {
+                        statusPayment.text = "Dibatalkan"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                        updatePaymentBtn.visibility = View.GONE
+                    }
+                    "REFUND" -> {
+                        statusPayment.text = "Dana Dikembalikan"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.orange))
+                        updatePaymentBtn.visibility = View.GONE
+                    }
+                    else -> Timber.tag("INVALID_STATUS").d("Invalid status payment")
+                }
             }
             callBtn.setOnClickListener {
                 openWhatsapp(recyclerViewDelivery)
