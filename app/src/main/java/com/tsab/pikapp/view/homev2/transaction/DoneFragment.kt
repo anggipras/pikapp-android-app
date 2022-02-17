@@ -1,7 +1,6 @@
 package com.tsab.pikapp.view.homev2.transaction
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentDoneBinding
@@ -18,6 +16,7 @@ import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.viewmodel.homev2.TransactionViewModel
 import kotlinx.android.synthetic.main.fragment_done.*
 import kotlinx.android.synthetic.main.layout_page_problem.view.*
+import androidx.core.widget.NestedScrollView
 
 class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
@@ -39,6 +38,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.mutableFinishPageStateDone.value = false
 
         initRecyclerView()
         initViewModel()
@@ -46,6 +46,27 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
         general_error_done.try_button.setOnClickListener {
             getDataDone()
         }
+
+        dataBinding.nestedScrollDone.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+            // on scroll change we are checking when users scroll as bottom.
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                if (!viewModel.finishPageStateDone.value!!) {
+                    // in this method we are incrementing page number,
+                    // making progress bar visible and calling get data method.
+                    val pageDoneAct = viewModel.pageDone.value!! + 1
+                    dataBinding.loadingPB.isVisible = true
+                    viewModel.getDoneTransactionV2PaginationList(requireContext(), true, pageDoneAct)
+                } else {
+                    dataBinding.loadingPB.isVisible = false
+                }
+            }
+        })
+
+        viewModel.finishPageStateDone.observe(viewLifecycleOwner, {
+            if (it) {
+                dataBinding.loadingPB.isVisible = false
+            }
+        })
     }
 
     private fun initRecyclerView() {
@@ -55,7 +76,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
     }
 
     private fun initViewModel() {
-        viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, Observer {
+        viewModel.getLiveDataTransListV2DoneObserver().observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
                 dataBinding.emptyStateDone.visibility = View.GONE
                 recyclerAdapter.setTransactionList(it)
@@ -64,7 +85,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
             }
         })
 
-        viewModel.errorLoading.observe(viewLifecycleOwner, Observer { error ->
+        viewModel.errorLoading.observe(viewLifecycleOwner, { error ->
             if (error) {
                 general_error_done.isVisible = true
                 onlineService.serviceDialog(requireActivity())
@@ -83,6 +104,7 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
 
         viewModel.tabPosition.observe(viewLifecycleOwner, {
             if (it == 1) {
+                viewModel.mutablePageDone.value = 0
                 getDataDone()
             }
         })

@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
@@ -17,6 +19,8 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentMerchantAddShipmentBinding
 import com.tsab.pikapp.models.model.CurrentLatLng
 import com.tsab.pikapp.util.PermissionUtils
+import com.tsab.pikapp.view.menu.advance.AdvanceMenuMainFragment
+import com.tsab.pikapp.view.menu.advance.EditMenuAdvanceMainFragment
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 
 class MerchantAddShipmentFragment : Fragment() {
@@ -45,6 +49,7 @@ class MerchantAddShipmentFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_merchantAddShipmentFragment_to_settingFragment)
             viewModel.setFirstEnterEdit(false)
         }
+        onBackPressed()
         dataBinding.nextButton.setOnClickListener {
             when {
                 PermissionUtils.isLocationEnabled(requireContext()) -> {
@@ -77,5 +82,14 @@ class MerchantAddShipmentFragment : Fragment() {
                 view?.let { v -> Navigation.findNavController(v).navigate(R.id.navigateTo_merchantGetLocationFragment) }
             }
         }
+    }
+
+    private fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view?.let { Navigation.findNavController(it).navigate(R.id.action_merchantAddShipmentFragment_to_settingFragment) }
+                viewModel.setFirstEnterEdit(false)
+            }
+        })
     }
 }

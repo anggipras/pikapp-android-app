@@ -6,48 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.other.otherSettings.SettingFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout_setting"
-        android:layout_width="match_parent"
-        android:layout_height="122dp"
-        android:background="@drawable/headersettings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="30dp"
-            android:drawableLeft="@drawable/ic_back_arrow"
-            android:fontFamily="@font/montserrat"
-            android:text="Kembali"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/setting_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="65dp"
-            android:fontFamily="@font/proximanova_bold"
-            android:text="Pengaturan"
-            android:textColor="#FFFFFF"
-            android:textSize="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/header_insideSettings"
+        layout="@layout/layout_header_general" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/account_privacy"
@@ -57,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="7dp"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_setting">
+        app:layout_constraintTop_toBottomOf="@+id/header_insideSettings">
 
         <TextView
             android:id="@+id/account_privacy_title"
@@ -291,68 +252,68 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/shipping_setting"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="38dp"-->
-<!--            android:background="@drawable/setting_border"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/open_hour_setting">-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/shipping_setting"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:background="@drawable/setting_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/open_hour_setting">
 
-<!--            <TextView-->
-<!--                android:id="@+id/shipping_setting_text"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="18dp"-->
-<!--                android:fontFamily="@font/inter_light"-->
-<!--                android:text="@string/shipping_title"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="16sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/shipping_setting_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:fontFamily="@font/inter_light"
+                android:text="@string/shipping_title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/shipping_setting_newText"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="@dimen/_4sdp"-->
-<!--                android:fontFamily="@font/inter_light"-->
-<!--                android:background="@drawable/button_red_oval"-->
-<!--                android:paddingHorizontal="@dimen/_5sdp"-->
-<!--                android:paddingVertical="@dimen/_2sdp"-->
-<!--                android:text="New"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="10sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/shipping_setting_text"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <TextView
+                android:id="@+id/shipping_setting_newText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:fontFamily="@font/inter_light"
+                android:background="@drawable/button_red_oval"
+                android:paddingHorizontal="@dimen/_5sdp"
+                android:paddingVertical="@dimen/_2sdp"
+                android:text="New"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/shipping_setting_text"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <ImageView-->
-<!--                android:layout_width="10dp"-->
-<!--                android:layout_height="15dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@drawable/button_next"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="1.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_next"
+                android:layout_marginRight="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/payment_method_setting"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:background="@color/white"
+            android:background="@drawable/setting_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/open_hour_setting">
+            app:layout_constraintTop_toBottomOf="@+id/shipping_setting">
 
             <TextView
                 android:id="@+id/payment_method_setting_text"
@@ -425,7 +386,7 @@
             android:id="@+id/qrcode_setting"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:background="@drawable/setting_border"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ppn_setting">
@@ -464,18 +425,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/logout_text"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="@dimen/_50sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="28dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/my_restaurant">
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/inter_bold"
             android:text="Keluar"
             android:textColor="@color/red"
             android:textSize="18dp"

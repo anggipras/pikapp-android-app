@@ -30,6 +30,9 @@
     <string name="tolak">Tolak</string>
     <string name="pesanan_siap">Pesanan Siap</string>
 
+    <!-- Header Title -->
+    <string name="tracking_order">Lacak Pengiriman</string>
+
     <!-- Bank names -->
     <string name="dialog_pilih_bank">Pilih Bank</string>
     <string name="bank_bca">BANK CENTRAL ASIA (BCA)</string>
@@ -163,8 +166,8 @@
 
     <!-- Shop Management (SM) screens -->
     <string name="sm_header">Jam Buka Restoran</string>
-
     <string name="sm_restaurant_status_title">Status Restoran</string>
+    <string name="sm_restaurant_openhours_title">Buka-Tutup Otomatis</string>
     <string name="sm_restaurant_status_detail_open">Restoran Anda sedang berada di jam buka</string>
     <string name="sm_restaurant_status_detail_close">Restoran Anda sedang berada di jam tutup</string>
     <string name="sm_restaurant_auto_status">Restoran akan buka dan tutup secara otomatis mengikuti jadwal restoran</string>
@@ -221,10 +224,12 @@
     <string name="laki_laki">Laki-Laki</string>
 
     <!-- Setting Information Fragment Screen -->
+    <string name="information_setting_title">Informasi Restoran</string>
     <string name="nama_restoran">Nama Restoran</string>
     <string name="alamat_restoran">Alamat Restoran</string>
 
     <!-- Setting Pin Fragment Screen -->
+    <string name="pin_setting_title">Ubah Pin</string>
     <string name="buat_pin_baru">Buat PIN baru</string>
     <string name="keterangan_pin">PIN akan digunakan untuk masuk ke akun Anda</string>
     <string name="masukkan_kembali_pin">Masukkan kembali PIN</string>

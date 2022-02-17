@@ -289,7 +289,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val mid = sessionManager.getUserData()!!.mid!!
 
         // TODO: Update API call.
-        PikappApiService().api.getMenuCategoryList(
+        PikappApiService().api.getSortMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {
             override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {
@@ -414,8 +414,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
                         Toast.makeText(getApplication(), toastAddEdit, Toast.LENGTH_LONG).show()
                     } else {
                         setLoading(false)
-                        var errorResponse: BaseResponse? =
-                                gson.fromJson(response.errorBody()!!.charStream(), type)
+//                        var errorResponse: BaseResponse? = gson.fromJson(response.errorBody()!!.charStream(), type)
                     }
                 }
 

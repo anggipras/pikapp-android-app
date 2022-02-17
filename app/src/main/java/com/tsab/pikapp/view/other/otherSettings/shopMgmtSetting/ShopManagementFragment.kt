@@ -47,6 +47,8 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.sm_header)
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Navigation.findNavController(view).navigate(R.id.navigateBackToFromShopManagementFragment_settingFragment)
@@ -67,7 +69,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
             otherSettingViewModel.getMerchantSchedule(requireContext(), shopSchedule_recyclerView, this)
         }
 
-        dataBinding.backButtonShop.setOnClickListener {
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.navigateBackToFromShopManagementFragment_settingFragment)
         }
 

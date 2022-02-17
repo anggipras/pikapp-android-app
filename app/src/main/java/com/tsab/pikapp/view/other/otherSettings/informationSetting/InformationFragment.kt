@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.squareup.picasso.Picasso
+import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.InformationFragmentBinding
 import com.tsab.pikapp.models.model.BaseResponse
 import com.tsab.pikapp.models.network.PikappApiService
@@ -49,6 +50,8 @@ class InformationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.information_setting_title)
+
         Picasso.get().load(sessionManager.getMerchantProfile()?.merchantBanner)
             .into(information_banner)
         Picasso.get().load(sessionManager.getMerchantProfile()?.merchantLogo).into(information_img)
@@ -81,7 +84,7 @@ class InformationFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.saveInformationButton.setOnClickListener { uploadInformationData() }
-        dataBinding.backButtonInformation.setOnClickListener { requireActivity().onBackPressed() }
+        dataBinding.headerInsideSettings.backImage.setOnClickListener { requireActivity().onBackPressed() }
 
         dataBinding.informationBanner.setOnClickListener {
             imgSelection = 1

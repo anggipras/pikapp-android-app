@@ -6,47 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.other.otherSettings.shopMgmtSetting.ShopMgmtStatusFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout_shopStatusSetting"
-        android:layout_width="match_parent"
-        android:layout_height="122dp"
-        android:background="@drawable/headersettings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/back_button_shopStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="@string/kembali"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:drawableLeftCompat="@drawable/ic_back_arrow" />
-
-        <TextView
-            android:id="@+id/shopStatus_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="65dp"
-            android:fontFamily="@font/inter_bold"
-            android:text="@string/sm_status_header"
-            android:textColor="#FFFFFF"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/header_insideSettings"
+        layout="@layout/layout_header_general" />
 
     <RadioGroup
         android:id="@+id/shopStatus_selection"
@@ -59,7 +21,7 @@
         android:theme="@style/RadioButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayout_shopStatusSetting">
+        app:layout_constraintTop_toBottomOf="@id/header_insideSettings">
 
         <RadioButton
             android:id="@+id/hours24_status"
@@ -187,12 +149,11 @@
 
     <Button
         android:id="@+id/saveBtn"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="@dimen/_11sdp"
         android:layout_gravity="center"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="@dimen/_11sdp"
         android:background="@drawable/button_green_small"
         android:backgroundTint="@color/green"
         android:fontFamily="@font/inter_regular"

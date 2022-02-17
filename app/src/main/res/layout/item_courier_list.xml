@@ -13,7 +13,7 @@
         android:id="@+id/courier_image"
         android:layout_width="@dimen/_15sdp"
         android:layout_height="@dimen/_15sdp"
-        android:background="@drawable/logo_tokopedia_small"
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

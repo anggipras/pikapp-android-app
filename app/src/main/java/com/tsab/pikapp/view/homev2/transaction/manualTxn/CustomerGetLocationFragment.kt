@@ -1,6 +1,7 @@
 package com.tsab.pikapp.view.homev2.transaction.manualTxn
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.FragmentCustomerGetLocationBinding
 import com.tsab.pikapp.models.model.CurrentLatLng
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
+import java.lang.NumberFormatException
 
 class CustomerGetLocationFragment : Fragment() {
     private lateinit var dataBinding: FragmentCustomerGetLocationBinding
@@ -110,9 +112,24 @@ class CustomerGetLocationFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.addressLocation.observe(viewLifecycleOwner, {
-            if (it != null) {
-                dataBinding.locationAddressTitle.text = getString(R.string.main_address_location, it[0].locality)
-                dataBinding.locationAddressDetail.text = getString(R.string.detail_address_location, it[0].getAddressLine(0))
+            if (!it.isNullOrEmpty()) {
+                val addressFirstInd = it[0].getAddressLine(0).split(",")[0]
+                val addressSecondInd = it[0].getAddressLine(0).split(",")[1]
+                var numeric = true
+
+                try {
+                    val num = addressFirstInd.toInt()
+                } catch (e: NumberFormatException) {
+                    numeric = false
+                }
+
+                val addressLine = if (numeric) {
+                    addressSecondInd
+                } else {
+                    addressFirstInd
+                }
+                dataBinding.locationAddressTitle.text = getString(R.string.detail_address_location, addressLine)
+                dataBinding.locationAddressDetail.text = getString(R.string.main_address_location, it[0].locality)
                 dataBinding.locationAddressBottom.visibility = View.VISIBLE
             }
         })

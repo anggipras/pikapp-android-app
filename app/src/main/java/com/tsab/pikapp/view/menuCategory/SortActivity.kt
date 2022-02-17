@@ -24,7 +24,6 @@ import java.util.*
 class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListener {
     val gson = Gson()
     val type = object : TypeToken<BaseResponse>() {}.type
-    private val sessionManager = SessionManager()
 
     var categoryListName: MutableList<categories_name> = mutableListOf()
     lateinit var sortCategoryAdapter: SortCategoryAdapter
@@ -38,7 +37,6 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        overridePendingTransition(R.anim.bottom_up, R.anim.no_animation)
         setContentView(R.layout.activity_sort)
 
         recyclerview_category.setHasFixedSize(true)
@@ -99,7 +97,7 @@ class SortActivity : AppCompatActivity(), SortCategoryAdapter.OnItemClickListene
         val mid = sessionManager.getUserData()!!.mid!!
 
         // TODO: Update API call.
-        PikappApiService().api.getMenuCategoryList(
+        PikappApiService().api.getSortMenuCategoryList(
             getUUID(), timestamp, getClientID(), signature, token, mid
         ).enqueue(object : Callback<MerchantListCategoryResponse> {
             override fun onFailure(call: Call<MerchantListCategoryResponse>, t: Throwable) {

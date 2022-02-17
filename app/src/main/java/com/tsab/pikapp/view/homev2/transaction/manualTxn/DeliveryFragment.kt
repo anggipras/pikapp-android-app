@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tsab.pikapp.R
@@ -61,6 +61,14 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
     }
 
     private fun attachInputListeners() {
+        ic_close_bottomSheet_id.setOnClickListener {
+            dismiss()
+        }
+
+        ic_closeService_bottomSheet_id.setOnClickListener {
+            dismiss()
+        }
+
         pickup.setOnClickListener {
             if(!selfPickup){
                 pickup.setBackgroundResource(R.drawable.btn_green)
@@ -71,6 +79,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
                 selfPickup = true
                 ekspedisiSend = false
                 btnSaveExpedition.setBackgroundResource(R.drawable.button_green_square)
+                btnSaveExpedition.isEnabled = true
             }
         }
 
@@ -83,14 +92,19 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
                 dataDeliv.visibility = View.VISIBLE
                 ekspedisiSend = true
                 selfPickup = false
-                btnSaveExpedition.setBackgroundResource(R.drawable.button_green_square)
+                btnSaveExpedition.setBackgroundResource(R.drawable.button_dark_gray)
+                btnSaveExpedition.isEnabled = false
             }
         }
 
         dataDeliv.setOnClickListener {
-            select_shipment_id.visibility = View.GONE
-            courier_list_id.visibility = View.VISIBLE
-            viewModel.getCourierPriceList()
+            if (viewModel.currentLatLng.value == null) {
+                Toast.makeText(requireContext(), "Mohon pilih data customer terlebih dahulu", Toast.LENGTH_SHORT).show()
+            } else {
+                select_shipment_id.visibility = View.GONE
+                courier_list_id.visibility = View.VISIBLE
+                viewModel.getCourierPriceList()
+            }
         }
 
         btnSaveCourierService.setOnClickListener {
@@ -100,14 +114,16 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
                 "${viewModel.selectedCourierService.value?.service_name.toString()} - ${viewModel.selectedCourierService.value?.name.toString()}"
             }
             viewModel.setEkspedisi(courierName, viewModel.selectedCourierService.value?.price.toString())
+            viewModel.countInsurance(false)
             dismiss()
         }
 
         btnSaveExpedition.setOnClickListener {
+            viewModel.countInsurance(false)
             if(ekspedisiSend){
                 dismiss()
             }else if(selfPickup){
-                viewModel.setEkspedisi("Pickup Sendiri", " ")
+                viewModel.setEkspedisi("Pickup Sendiri", "0")
                 dismiss()
             }
         }
@@ -115,7 +131,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
 
     private fun observeViewModel() {
 
-        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, Observer { nama ->
+        viewModel.NamaEkspedisi.observe(viewLifecycleOwner, { nama ->
             if (nama != "") {
                 if(nama == "Pickup Sendiri"){
                     pickup.setBackgroundResource(R.drawable.btn_green)
@@ -139,8 +155,8 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
             }
         })
 
-        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, Observer { harga ->
-            if (harga != "" && harga != " ") {
+        viewModel.HargaEkspedisi.observe(viewLifecycleOwner, { harga ->
+            if (harga != "0") {
                 delivery.setBackgroundResource(R.drawable.btn_green)
                 delivery_title.setTextColor(Color.parseColor("#4BB7AC"))
                 pickup.setBackgroundResource(R.drawable.btn_transparant)
@@ -159,14 +175,18 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
         courier_serviceList_id.visibility = View.GONE
     }
 
-    override fun onCourierClick(courierServiceList: MutableList<CustomerCourierServiceList>) {
+    override fun onCourierClick(
+        nameOfService: String,
+        courierServiceList: MutableList<CustomerCourierServiceList>
+    ) {
         courier_list_id.visibility = View.GONE
+        select_courierService_id.text = nameOfService
         viewModel.liveDataCourierServiceList.postValue(courierServiceList)
         courier_serviceList_id.visibility = View.VISIBLE
     }
 
     override fun onCourierServiceClick(courierServiceObject: CustomerCourierServiceList) {
         viewModel.setSelectedCourierService(courierServiceObject)
-        btnSaveCourierService.backgroundTintList = requireContext().resources.getColorStateList(R.color.colorGreen)
+        btnSaveCourierService.setBackgroundResource(R.drawable.button_green_square)
     }
 }

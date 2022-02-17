@@ -33,6 +33,8 @@ class NewPinFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.pin_setting_title)
+
         showKeyboard()
 
         dataBinding.newPinInput.addTextChangedListener {
@@ -51,7 +53,7 @@ class NewPinFragment : Fragment() {
             }
         }
 
-        dataBinding.backButtonPinSecond.setOnClickListener {
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }

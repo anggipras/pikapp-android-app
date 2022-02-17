@@ -66,6 +66,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/congrats_animation"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_90sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="false"
+                    android:scaleType="centerCrop"
+                    app:lottie_fileName="success_animation.json"/>
+
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="@dimen/_58sdp"
@@ -294,6 +306,7 @@
                     android:layout_marginTop="@dimen/_10sdp"/>
 
                 <TextView
+                    android:id="@+id/namaBayar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ShopeePay"
@@ -301,7 +314,6 @@
                     android:fontFamily="@font/inter_semibold"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@id/bayarTitle"
-                    android:id="@+id/namaBayar"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp" />
 
@@ -331,17 +343,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/statusBayar" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider1"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:id="@+id/hargaBayar"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@id/divider1" >
 
                     <TextView
                         android:id="@+id/totalHargaTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
                         android:fontFamily="@font/inter_regular"
                         android:text="Total Harga (6Item(s))"
                         android:textColor="@color/black"
@@ -359,41 +372,49 @@
                         android:textColor="@color/black"
                         android:layout_marginTop="@dimen/_5sdp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginRight="@dimen/_10sdp"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/diskonHarga"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rp.0"
+                        android:text="Rp. 0"
                         android:textSize="@dimen/_11sdp"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/black"
                         android:layout_marginTop="@dimen/_5sdp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/totalHarga"
-                        android:layout_marginRight="@dimen/_10sdp"/>
+                        app:layout_constraintTop_toBottomOf="@id/totalHarga" />
 
                     <TextView
                         android:id="@+id/ongkirHarga"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Rp. 0"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/diskonHarga" />
+
+                    <TextView
+                        android:id="@+id/insurancePrice"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Rp.0"
                         android:textSize="@dimen/_11sdp"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/black"
                         android:layout_marginTop="@dimen/_5sdp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/diskonHarga"
-                        android:layout_marginRight="@dimen/_10sdp"/>
-
+                        app:layout_constraintTop_toBottomOf="@id/ongkirHarga" />
 
                     <TextView
                         android:id="@+id/diskonHargaTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:text="Total Diskon Item"
@@ -406,7 +427,6 @@
                         android:id="@+id/ongkirHargaTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:text="Total Ongkos Kirim"
@@ -414,6 +434,20 @@
                         android:textSize="@dimen/_11sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/diskonHargaTitle" />
+
+                    <TextView
+                        android:id="@+id/insurancePriceTitle"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Asuransi pengiriman"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ongkirHargaTitle" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -437,7 +471,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="Total Harga (6Item(s))"
+                    android:text="Total Harga"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -474,10 +508,28 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_green_transparent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:text="@string/kembali"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnShare" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/btnShare"
+                    app:layout_constraintTop_toBottomOf="@+id/btnBack"
                     tools:layout_editor_absoluteX="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

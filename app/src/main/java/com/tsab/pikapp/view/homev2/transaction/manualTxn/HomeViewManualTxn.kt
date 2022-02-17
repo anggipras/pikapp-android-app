@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.tsab.pikapp.R
@@ -17,13 +17,10 @@ import com.tsab.pikapp.databinding.FragmentHomeViewManualTxnBinding
 import com.tsab.pikapp.services.CacheService
 import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.LoginV2Activity
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.viewmodel.homev2.ManualTxnViewModel
 import com.tsab.pikapp.viewmodel.homev2.MenuViewModel
-import kotlinx.android.synthetic.main.fragment_home_view_manual_txn.*
 
 class HomeViewManualTxn : Fragment() {
-
     private val viewModel: MenuViewModel by activityViewModels()
     private val viewModelDynamic: ManualTxnViewModel by activityViewModels()
     private lateinit var dataBinding: FragmentHomeViewManualTxnBinding
@@ -44,11 +41,7 @@ class HomeViewManualTxn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (viewModel.manualTransAct.value == 0) {
-            activity?.let { viewModel.getMenuCategoryList(
-                it.baseContext,
-                requireActivity(),
-                loadingOverlay
-            ) }
+            activity?.let { viewModel.getMenuManualTxnList(it.baseContext) }
         }
 
         dataBinding.searchField.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
@@ -75,36 +68,37 @@ class HomeViewManualTxn : Fragment() {
     private fun attachInputListeners() {
         sessionManager.setHomeNav(0)
         dataBinding.topAppBar.setNavigationOnClickListener {
-            Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                startActivity(this)
-                activity?.finish()
-            }
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                        startActivity(this)
-                        activity?.finish()
-                    }
+                    activity?.finish()
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             })
 
         dataBinding.searchField.setOnClickListener {
             dataBinding.searchField.onActionViewExpanded()
         }
+
+        dataBinding.nextToCart.setOnClickListener {
+            viewModelDynamic.addTotalQty()
+            view?.let { it1 -> Navigation.findNavController(it1).navigate(R.id.action_homeViewManualTxn_to_manualTxnCartPage) }
+        }
     }
 
     private fun observeViewModel() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
             if (!isLoading) {
                 initViews()
             }
         })
 
-        viewModel.categoryListResult.observe(viewLifecycleOwner, Observer { categoryList ->
+        viewModel.categoryListResult.observe(viewLifecycleOwner, { categoryList ->
             this.categoryList = categoryList.map { it.category_name ?: "" }
 
             dataBinding.tabs.removeAllTabs()
@@ -116,7 +110,7 @@ class HomeViewManualTxn : Fragment() {
             }
         })
 
-        viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
+        viewModel.errCode.observe(viewLifecycleOwner, { errCode ->
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
@@ -131,7 +125,14 @@ class HomeViewManualTxn : Fragment() {
 
         dataBinding.tabs.getTabAt(viewModel.menuTabs.value!!)?.select()
         dataBinding.viewpager.currentItem = viewModel.menuTabs.value!!
-//        viewModel.mutableManualTransAct.value = 0
+        viewModelDynamic.totalItems.observe(viewLifecycleOwner, { totalItems ->
+            if (totalItems > 0){
+                dataBinding.nextToCart.visibility = View.VISIBLE
+                dataBinding.nextToCart.text = getString(R.string.cart, totalItems.toString())
+            } else {
+                dataBinding.nextToCart.visibility = View.GONE
+            }
+        })
     }
 
     private fun initViews() {
@@ -144,10 +145,8 @@ class HomeViewManualTxn : Fragment() {
 
         dataBinding.tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                if (viewModel.manualTransAct.value == 0) {
-                    dataBinding.viewpager.currentItem = tab.position
-                    viewModel.mutableMenuTabs.value = tab.position
-                }
+                dataBinding.viewpager.currentItem = tab.position
+                viewModel.mutableMenuTabs.value = tab.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}

@@ -8,13 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.SettingFragmentBinding
 import com.tsab.pikapp.util.SessionManager
-import com.tsab.pikapp.view.homev2.HomeActivity
 import com.tsab.pikapp.view.loginv2.LoginRegisterActivity
 import com.tsab.pikapp.viewmodel.other.otherSettings.SettingViewModel
 
@@ -43,10 +41,8 @@ class SettingFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                        startActivity(this)
-                        activity?.finish()
-                    }
+                    activity?.finish()
+                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                 }
             })
 
@@ -55,13 +51,12 @@ class SettingFragment : Fragment() {
         dataBinding.pinSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_currentPinFragment) }
         dataBinding.openHourSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_shopManagementFragment) }
         dataBinding.accountNumber.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_dataBankFragment) }
-//        dataBinding.shippingSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_merchantShippingFragment) }
+        dataBinding.shippingSetting.setOnClickListener { Navigation.findNavController(view).navigate(R.id.navigateTo_merchantShippingFragment) }
 
-        dataBinding.backButton.setOnClickListener {
-            Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                startActivity(this)
-                activity?.finish()
-            }
+        dataBinding.headerInsideSettings.headerTitle.text = "Pengaturan"
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
         dataBinding.logoutText.setOnClickListener {
@@ -73,23 +68,23 @@ class SettingFragment : Fragment() {
 
     @SuppressLint("FragmentLiveDataObserve")
     private fun observeViewModel() {
-        viewModel.logoutResponse.observe(this, Observer { response ->
+        viewModel.logoutResponse.observe(this, { response ->
             response?.let {
                 viewModel.clearSessionExclusive()
             }
         })
 
-        viewModel.errorResponse.observe(this, Observer { errorResponse ->
+        viewModel.errorResponse.observe(this, { errorResponse ->
             errorResponse?.let {
                 errorResponse.errMessage?.let { err -> viewModel.createToast(err) }
             }
         })
 
-        viewModel.loading.observe(this, Observer { isLoading ->
+        viewModel.loading.observe(this, { isLoading ->
             dataBinding.loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
         })
 
-        viewModel.activityToStart.observe(this, Observer { response ->
+        viewModel.activityToStart.observe(this, { response ->
             response?.let {
                 activity?.let {
                     val intent = Intent(it, LoginRegisterActivity::class.java)

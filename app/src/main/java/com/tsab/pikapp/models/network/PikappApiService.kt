@@ -65,9 +65,9 @@ class PikappApiService {
 
     private fun checkShipmentConfig(): String {
         return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
-            "http://dev-api.pikapp.id:9005"
+            "https://dev-mch-api.pikapp.id/"
         } else {
-            "http://api.pikapp.id:9005"
+            "https://mch-api.pikapp.id/"
         }
     }
 
@@ -80,13 +80,13 @@ class PikappApiService {
 
     private fun checkCourierPriceConfig(): String {
         return if (BuildConfig.BASE_URL == "https://dev-api.pikapp.id/") {
-            "http://dev-api.pikapp.id:9006"
+            "https://dev-courier-api.pikapp.id/"
         } else {
-            "http://api.pikapp.id:9006"
+            "https://courier-api.pikapp.id/"
         }
     }
 
-    val courierPriceApi = Retrofit.Builder()
+    val courierApi = Retrofit.Builder()
         .baseUrl(checkCourierPriceConfig())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

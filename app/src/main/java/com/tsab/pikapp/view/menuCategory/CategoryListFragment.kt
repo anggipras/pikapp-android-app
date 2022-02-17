@@ -50,8 +50,9 @@ class CategoryListFragment : Fragment() {
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                        startActivity(this)
+                        activity?.startActivity(this)
                         activity?.finish()
+                        activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
                     }
                 }
             })
@@ -83,8 +84,9 @@ class CategoryListFragment : Fragment() {
     private fun attachInputListeners() {
         dataBinding.topAppBar.setNavigationOnClickListener {
             Intent(activity?.baseContext, HomeActivity::class.java).apply {
-                startActivity(this)
+                activity?.startActivity(this)
                 activity?.finish()
+                activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
             }
         }
 
@@ -110,8 +112,6 @@ class CategoryListFragment : Fragment() {
                     viewModel.getCategoryActivation(category.isActive.toString())
                     viewModel.getCategoryId(category.id.toString())
                     viewModel.getCategoryMenuSize(category.productSize.toString())
-                    Log.e("activation rv", category.isActive.toString())
-
                     navController.navigate(R.id.action_categoryListPage_to_editCategoryPage)
                 }
             }

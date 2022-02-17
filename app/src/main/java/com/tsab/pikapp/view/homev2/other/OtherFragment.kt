@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -70,18 +71,21 @@ class OtherFragment : Fragment() {
         dataBinding.merchantSettingClick.setOnClickListener {
             Intent(activity?.baseContext, OtherSettingsActivity::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 
         dataBinding.integrasiButton.setOnClickListener {
             Intent(activity?.baseContext, IntegrationActivity::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 
         dataBinding.merchantReportClick.setOnClickListener {
             Intent(activity?.baseContext, ReportActivity::class.java).apply {
                 activity?.startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
             }
         }
 
@@ -158,6 +162,7 @@ class OtherFragment : Fragment() {
 
         viewModel.errCode.observe(viewLifecycleOwner, Observer { errCode ->
             if (errCode == "EC0032" || errCode == "EC0021" || errCode == "EC0017") {
+                Toast.makeText(context, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
                 sessionManager.logout()
                 Intent(activity?.baseContext, LoginV2Activity::class.java).apply {
                     activity?.startActivity(this)

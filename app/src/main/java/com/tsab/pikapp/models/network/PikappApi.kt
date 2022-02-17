@@ -6,6 +6,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PikappApi {
@@ -165,9 +166,8 @@ interface PikappApi {
         @Path("mid") merchantId: String
     ): Single<ListMenuCategoryResponse>
 
-    // TODO: Delete old API call
     @GET("merchant/v1/menu/{mid}/category/list/")
-    fun getMenuCategoryList(
+    fun getSortMenuCategoryList(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
@@ -175,6 +175,26 @@ interface PikappApi {
         @Header("token") token: String,
         @Path("mid") mid: String
     ): Call<MerchantListCategoryResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    suspend fun getMenuCategoryList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Response<MerchantListCategoryResponse>
+
+    @GET("merchant/v1/menu/{mid}/category/list/")
+    suspend fun getMenuCategoryListManualTxn(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Path("mid") mid: String
+    ): Response<MerchantListCategoryResponse>
 
     @POST("merchant/v1/menu/category/update/")
     fun updateMenuCategory(
@@ -394,7 +414,7 @@ interface PikappApi {
         @Path("status") statusTrans: String
     ): Call<GetManualTransactionResp>
 
-    @POST("pos/v1/transaction/status/")
+    @POST("pos/v2/transaction/status/")
     fun postUpdateManualTransaction(
         @Body UpdateStatusManualTxnRequest: UpdateStatusManualTxnRequest
     ): Call<UpdateStatusManualResponse>
@@ -623,6 +643,17 @@ interface PikappApi {
     ): Call<OtherBaseResponse>
 
     @POST("merchant/v2/product-list/")
+    suspend fun merchantMenu(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String?,
+        @Body search: SearchRequest
+    ): Response<SearchResponse>
+
+    @POST("merchant/v2/product-list/")
     fun searchMenu(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
@@ -644,22 +675,39 @@ interface PikappApi {
     // Check Merchant Shipment Condition
     @GET("/api/checking-data/{mid}")
     fun checkShipmentCondition(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String
     ): Single<ShipmentConditionResponse>
 
     // Check Merchant Shipment Location and Delivery Data
     @GET("/api/locations-and-courier/{mid}")
     fun getMerchantShipment(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String
     ): Single<MerchantShipmentDataResponse>
 
     // Get Courier List
     @GET("merchant/courier-list/")
-    fun getCourierList(): Single<CourierListResponse>
+    fun getCourierList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
+    ): Single<CourierListResponse>
 
     // Submit merchant shipment data for the first time
     @POST("/api/submit-data/{mid}")
     fun submitMerchantShipment(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String,
         @Body requestMerchantShipment: RequestMerchantShipment
     ): Single<SubmitDataShipmentResponse>
@@ -667,6 +715,10 @@ interface PikappApi {
     // Update merchant shipment
     @PUT("/api/update-locations-courier/{mid}")
     fun updateMerchantShipment(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-token") token: String,
         @Path("mid") mid: String,
         @Body requestMerchantShipment: RequestMerchantShipment
     ): Single<SubmitDataShipmentResponse>
@@ -753,13 +805,13 @@ interface PikappApi {
             @Part("mid") mid: RequestBody
     ): Call<UploadReportResponse>
 
-    @POST("pos/v1/transaction/add/")
-    fun uploadManualTxn(
+    @POST("pos/v2/transaction/add/")
+    fun recordPostManualTxn(
         @Body ManualTxnRequest: ManualTxnRequest
     ) : Call<ManualTxnResponse>
 
     //Customer Manual TXN
-    @GET("pos/v1/customerlist/{mid}")
+    @GET("pos/v2/customerlist/{mid}")
     fun getListCustomer(
         @Header("page") page: String,
         @Header("size") size: String,
@@ -768,19 +820,24 @@ interface PikappApi {
 
     @POST("api/transaction/courier-pricing")
     fun getCourierPrice(
+        @Header("x-request-id") uuid: String,
+        @Header("x-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("x-token") token: String,
         @Header("merchant-id") mid: String,
         @Body courierPriceReqBody: GetCourierRequestBody
     ): Single<CustomerCourierListResponse>
 
-    @POST("pos/v1/customerlist/add/")
+    @POST("pos/v2/customerlist/add/")
     fun addCustomer(
-        @Body addCustomerRequest: addCustomerRequest
-    ): Call<CustomerResponse>
+        @Body addCustomerRequest: AddCustomerRequest
+    ): Call<CustomerResponseApi>
 
-    @POST("pos/v1/customerlist/add/")
+    @POST("pos/v2/customerlist/add/")
     fun editCustomer(
         @Body editCustomerRequest: EditCustomerRequest
-    ): Call<CustomerResponse>
+    ): Call<CustomerResponseApi>
 
     @DELETE("pos/v1/customer/delete/{customerId}")
     fun deleteCustomer(
@@ -794,5 +851,18 @@ interface PikappApi {
         @Header("size") size: Int,
         @Header("page") page: Int
     ): Call<TransactionListV2RespAPI>
+
+    @GET("ntxn/v1/list/")
+    suspend fun getTransactionListV2Coroutines(
+        @Header("mid") merchantID: String?,
+        @Header("size") size: Int,
+        @Header("page") page: Int
+    ): Response<TransactionListV2RespAPI>
+
+    @POST("api/transaction/tracking-order")
+    fun getTrackOrderDetail(
+        @Header("x-client-id") clientID: String,
+        @Body trackingOrderRequest: TrackingOrderRequest
+    ): Single<TrackingDetailResponse>
 }
 

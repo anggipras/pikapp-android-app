@@ -11,317 +11,357 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/_12sdp"
-        android:paddingEnd="@dimen/_12sdp"
-        android:paddingTop="@dimen/_14sdp"
-        android:paddingBottom="@dimen/_10sdp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/omniChannelIcon"
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:src="@drawable/logo_wa"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginTop="5dp" />
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/transactionCardKey_id"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/_35sdp"-->
+<!--            android:paddingHorizontal="@dimen/_10sdp"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:background="@color/colorLightGreen">-->
 
-        <TextView
-            android:id="@+id/transactionIdManual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/test"
-            android:fontFamily="@font/inter_bold"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/omniChannelIcon"
-            app:layout_constraintStart_toStartOf="parent" />
+<!--            <ImageView-->
+<!--                android:id="@+id/keyIcon"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_deliverykey"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/orderDateManual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_regular"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="10 juni"
-            android:textColor="@color/borderSubtle"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/transactionIdManual" />
+<!--            <TextView-->
+<!--                android:id="@+id/transactionCardKey_content"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/inter_semibold"-->
+<!--                android:text="Delivery"-->
+<!--                android:textColor="@color/colorGreen"-->
+<!--                android:textSize="15sp"-->
+<!--                android:layout_marginStart="@dimen/_8sdp"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/keyIcon"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent" />-->
 
-        <TextView
-            android:id="@+id/paymentStatusManual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/_5sdp"
-            android:paddingHorizontal="@dimen/_17sdp"
-            android:background="@drawable/button_red_square"
-            android:fontFamily="@font/inter_semibold"
-            android:gravity="center"
-            android:text="Batal"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-        <View
-            android:id="@+id/dividerPlatform"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/lightGrey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDateManual" />
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:paddingTop="@dimen/_14sdp"
+            android:paddingBottom="@dimen/_10sdp">
 
-        <TextView
-            android:id="@+id/shippingMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/test"
-            android:fontFamily="@font/inter_bold"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/dividerPlatform"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/callBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_phone_call"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintTop_toBottomOf="@+id/dividerPlatform"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <LinearLayout
-            android:id="@+id/containerName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_2sdp"
-            app:layout_constraintTop_toBottomOf="@+id/shippingMethod"
-            app:layout_constraintStart_toStartOf="parent">
+            <ImageView
+                android:id="@+id/omniChannelIcon"
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:src="@drawable/logo_wa"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginTop="5dp" />
 
             <TextView
-                android:id="@+id/custName"
+                android:id="@+id/transactionIdManual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test"
-                android:textColor="@color/borderSubtle"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/custPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test"
-                android:layout_marginStart="@dimen/_3sdp"
-                android:textColor="@color/borderSubtle"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/custAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/test"
-            android:textColor="@color/borderSubtle"
-            android:fontFamily="@font/inter_regular"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/_2sdp"
-            app:layout_constraintTop_toBottomOf="@+id/containerName"
-            app:layout_constraintStart_toStartOf="parent"
-            />
-
-        <LinearLayout
-            android:id="@+id/containerShipping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_2sdp"
-            app:layout_constraintTop_toBottomOf="@+id/custAddress"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tanggal Pengiriman : "
-                android:textColor="@color/green"
-                android:fontFamily="@font/inter_regular"
-                android:textSize="12sp"/>
-
-            <TextView
-                android:id="@+id/shippingDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_regular"
-                android:text="@string/test"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:textColor="@color/black"
-                android:textSize="12sp"/>
+                app:layout_constraintTop_toBottomOf="@+id/omniChannelIcon"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/orderDateManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="10 juni"
+                android:textColor="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/transactionIdManual" />
 
-        <View
-            android:id="@+id/dividerShipping"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/lightGrey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerShipping" />
+            <TextView
+                android:id="@+id/paymentStatusManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_17sdp"
+                android:background="@drawable/button_red_square"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="center"
+                android:text="Batal"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/statusPaymentText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status Pembayaran"
-            android:textColor="@color/borderSubtle"
-            android:fontFamily="@font/inter_regular"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintTop_toBottomOf="@+id/dividerShipping"
-            app:layout_constraintStart_toStartOf="parent" />
+            <View
+                android:id="@+id/dividerPlatform"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/lightGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orderDateManual" />
 
-        <TextView
-            android:id="@+id/statusPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/test"
-            android:textColor="@color/red"
-            android:fontFamily="@font/inter_regular"
-            android:textSize="12sp"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintTop_toBottomOf="@+id/dividerShipping"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/shippingMethod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/dividerPlatform"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/updateStatus"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:text="Perbarui Status Pembayaran"
-            android:textAllCaps="false"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/button_blue_transparent"
-            app:layout_constraintTop_toBottomOf="@id/statusPayment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <ImageView
+                android:id="@+id/callBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_call"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@+id/dividerPlatform"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        <View
-            android:id="@+id/dividerStatus"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/lightGrey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/updateStatus" />
+            <LinearLayout
+                android:id="@+id/containerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintTop_toBottomOf="@+id/shippingMethod"
+                app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_menu_omni"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dividerStatus"
-            tools:itemCount="2"
-            tools:listitem="@layout/item_transaction_menu" />
+                <TextView
+                    android:id="@+id/custName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test"
+                    android:textColor="@color/borderSubtle"
+                    android:fontFamily="@font/inter_regular"
+                    android:textSize="12sp" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/lightGrey"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu_omni" />
+                <TextView
+                    android:id="@+id/custPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:textColor="@color/borderSubtle"
+                    android:fontFamily="@font/inter_regular"
+                    android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/itemCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Total 3 items:"
-            android:textColor="@color/borderSubtle"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/totalPriceManual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Rp. 70.000"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemCount" />
+            <TextView
+                android:id="@+id/custAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test"
+                android:textColor="@color/borderSubtle"
+                android:fontFamily="@font/inter_regular"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintTop_toBottomOf="@+id/containerName"
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
-        <TextView
-            android:id="@+id/totalPriceOmni"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/inter_semibold"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            <LinearLayout
+                android:id="@+id/containerShipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_2sdp"
+                app:layout_constraintTop_toBottomOf="@+id/custAddress"
+                app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/acceptButtonManual"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:background="@drawable/button_green_transparent"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Pesanan Siap"
-            android:textAllCaps="false"
-            android:textColor="@color/green"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Pengiriman : "
+                    android:textColor="@color/green"
+                    android:fontFamily="@font/inter_regular"
+                    android:textSize="12sp"/>
 
-        <Button
-            android:id="@+id/rejectButtonManual"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/button_red_transparent"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Batalkan"
-            android:textAllCaps="false"
-            android:textColor="@color/red"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/acceptButtonManual"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+                <TextView
+                    android:id="@+id/shippingDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="@string/test"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
 
-        <include
-            android:id="@+id/loadingOverlay"
-            layout="@layout/layout_loading_overlay"
-            android:visibility="gone" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/dividerShipping"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/lightGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/containerShipping" />
+
+            <TextView
+                android:id="@+id/statusPaymentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status Pembayaran"
+                android:textColor="@color/borderSubtle"
+                android:fontFamily="@font/inter_regular"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@+id/dividerShipping"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/statusPayment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test"
+                android:textColor="@color/red"
+                android:fontFamily="@font/inter_regular"
+                android:textSize="12sp"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@+id/dividerShipping"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/updateStatus"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:text="Perbarui Status Pembayaran"
+                android:textAllCaps="false"
+                android:fontFamily="@font/inter_regular"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@drawable/button_blue_transparent"
+                app:layout_constraintTop_toBottomOf="@id/statusPayment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <View
+                android:id="@+id/dividerStatus"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/lightGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/updateStatus" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_menu_omni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dividerStatus"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_transaction_menu" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/lightGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerview_menu_omni" />
+
+            <TextView
+                android:id="@+id/itemCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Total 3 items:"
+                android:textColor="@color/borderSubtle"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            <TextView
+                android:id="@+id/totalPriceManual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Rp. 70.000"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemCount" />
+
+            <TextView
+                android:id="@+id/totalPriceOmni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            <Button
+                android:id="@+id/acceptButtonManual"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:background="@drawable/button_green_transparent"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Pesanan Siap"
+                android:textAllCaps="false"
+                android:textColor="@color/green"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            <Button
+                android:id="@+id/rejectButtonManual"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/button_red_transparent"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Batalkan"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/acceptButtonManual"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            <include
+                android:id="@+id/loadingOverlay"
+                layout="@layout/layout_loading_overlay"
+                android:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>
