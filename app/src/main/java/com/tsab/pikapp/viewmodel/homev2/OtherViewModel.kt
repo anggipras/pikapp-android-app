@@ -1,7 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -42,10 +41,23 @@ class OtherViewModel : ViewModel() {
         general_error_other: View
     ) {
         val timeStamp = getTimestamp()
-        val email = sessionManager.getUserData()?.email
-        val mid = sessionManager.getUserData()?.mid
+        val email: String?
+        val mid: String?
+        if (sessionManager.getUserData() != null) {
+            email = sessionManager.getUserData()?.email
+            mid = sessionManager.getUserData()?.mid
+        } else {
+            email = "johndoe@gmail.com"
+            mid = "M00000008"
+        }
+
+        val token = if (sessionManager.getUserToken() != null) {
+            sessionManager.getUserToken()!!
+        } else {
+            "1a2b3c4d5e6f7g8h9i0j"
+        }
+
         val signature = getSignature(email, timeStamp)
-        val token = sessionManager.getUserToken()!!
         val uuid = getUUID()
         val clientId = getClientID()
 
@@ -88,10 +100,22 @@ class OtherViewModel : ViewModel() {
         val uuid = getUUID()
         val timestamp = getTimestamp()
         val clientId = getClientID()
-        val email = sessionManager.getUserData()?.email
+        val email: String?
+        val mid: String?
+        if (sessionManager.getUserData() != null) {
+            email = sessionManager.getUserData()?.email
+            mid = sessionManager.getUserData()?.mid
+        } else {
+            email = "johndoe@gmail.com"
+            mid = "M00000008"
+        }
+
+        val token = if (sessionManager.getUserToken() != null) {
+            sessionManager.getUserToken()!!
+        } else {
+            "1a2b3c4d5e6f7g8h9i0j"
+        }
         val signature = getSignature(email, timestamp)
-        val token = sessionManager.getUserToken()!!
-        val mid = sessionManager.getUserData()?.mid
 
         PikappApiService().api.getMerchantShopManagement(
             uuid, timestamp, clientId, signature, token, mid
@@ -112,14 +136,12 @@ class OtherViewModel : ViewModel() {
                     general_error_other.isVisible = false
                     val timeManagementResult = response.body()?.results?.timeManagement
                     val filteredDay = timeManagementResult?.filter { selectedDay ->
-                        selectedDay.days == dayOfTheWeek.toUpperCase()
+                        selectedDay.days == dayOfTheWeek.uppercase(Locale.getDefault())
                     }
                     merchantShopStatus.value = filteredDay?.get(0)
                 }  else {
                     var errorResponse: MerchantTimeManagement? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
-                    Toast.makeText(context, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
-                    Log.e("error", "logged out")
                     mutableErrCode.value = errorResponse?.errCode
                 }
             }

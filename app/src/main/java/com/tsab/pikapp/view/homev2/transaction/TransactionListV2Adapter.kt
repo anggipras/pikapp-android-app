@@ -6,12 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -413,7 +415,12 @@ class TransactionListV2Adapter(
                 rejectBtn.text = "Batalkan"
                 rejectBtn.setTextColor(context.resources.getColor(R.color.colorRed))
                 rejectBtn.setOnClickListener {
-                    listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", recyclerViewDelivery.payment_status))
+                    val paymentStatusProps = if (recyclerViewDelivery.payment_status == "UNPAID") {
+                        "CANCELLED"
+                    } else {
+                        recyclerViewDelivery.payment_status
+                    }
+                    listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "CANCELLED", paymentStatusProps))
                 }
             } else if (orderStatusManual == "DELIVER") {
                 orderStatus.text = "Dikirim"
@@ -426,13 +433,29 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        activity.startActivity(intent)
+                        if (recyclerViewDelivery.shipping?.tracking_id.isNullOrEmpty()) {
+                            Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
+                        } else {
+                            intent.putExtra(TransactionTrackingActivity.WAYBILL_ID,
+                                recyclerViewDelivery.shipping?.awb
+                            )
+                            intent.putExtra(TransactionTrackingActivity.TRACK_ID,
+                                recyclerViewDelivery.shipping?.tracking_id
+                            )
+                            activity.startActivity(intent)
+                        }
                     }
                 }
-                acceptBtn.visibility = View.VISIBLE
-                acceptBtn.text = "Pesanan Tiba"
-                acceptBtn.setOnClickListener {
-                    listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "FINALIZE", recyclerViewDelivery.payment_status))
+                if (recyclerViewDelivery.biz_type == "DELIVERY") {
+                    acceptBtn.visibility = View.GONE
+                } else {
+                    acceptBtn.visibility = View.VISIBLE
+                    acceptBtn.text = "Pesanan Tiba"
+                    acceptBtn.isEnabled = true
+                    acceptBtn.setTextColor(context.resources.getColor(R.color.green))
+                    acceptBtn.setOnClickListener {
+                        listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, "FINALIZE", recyclerViewDelivery.payment_status))
+                    }
                 }
             } else if (orderStatusManual == "FINALIZE") {
                 orderStatus.text = "Sampai"
@@ -445,7 +468,17 @@ class TransactionListV2Adapter(
                     rejectBtn.setTextColor(context.resources.getColor(R.color.colorPrimaryDark))
                     rejectBtn.setOnClickListener {
                         val intent = Intent(activity.baseContext, TransactionTrackingActivity::class.java)
-                        activity.startActivity(intent)
+                        if (recyclerViewDelivery.shipping?.tracking_id.isNullOrEmpty()) {
+                            Toast.makeText(context, "Menunggu mendapatkan kurir, mohon refresh page", Toast.LENGTH_SHORT).show()
+                        } else {
+                            intent.putExtra(TransactionTrackingActivity.WAYBILL_ID,
+                                recyclerViewDelivery.shipping?.awb
+                            )
+                            intent.putExtra(TransactionTrackingActivity.TRACK_ID,
+                                recyclerViewDelivery.shipping?.tracking_id
+                            )
+                            activity.startActivity(intent)
+                        }
                     }
                 }
                 acceptBtn.visibility = View.VISIBLE
@@ -474,8 +507,9 @@ class TransactionListV2Adapter(
                 acceptBtn.visibility = View.GONE
                 when (recyclerViewDelivery.payment_status) {
                     "PAID" -> {
-                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
                         statusPayment.text = "Sudah Bayar"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
+
                         updatePaymentBtn.visibility = View.VISIBLE
                         updatePaymentBtn.text = "Refund ke Pelanggan"
                         updatePaymentBtn.setOnClickListener {
@@ -499,6 +533,29 @@ class TransactionListV2Adapter(
                 orderStatus.setBackgroundResource(R.drawable.button_red_square)
                 rejectBtn.visibility = View.GONE
                 acceptBtn.visibility = View.GONE
+                when (recyclerViewDelivery.payment_status) {
+                    "PAID" -> {
+                        statusPayment.text = "Sudah Bayar"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.green))
+
+                        updatePaymentBtn.visibility = View.VISIBLE
+                        updatePaymentBtn.text = "Refund ke Pelanggan"
+                        updatePaymentBtn.setOnClickListener {
+                            listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUND"))
+                        }
+                    }
+                    "CANCELLED" -> {
+                        statusPayment.text = "Dibatalkan"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.red))
+                        updatePaymentBtn.visibility = View.GONE
+                    }
+                    "REFUND" -> {
+                        statusPayment.text = "Dana Dikembalikan"
+                        statusPayment.setTextColor(context.resources.getColor(R.color.orange))
+                        updatePaymentBtn.visibility = View.GONE
+                    }
+                    else -> Timber.tag("INVALID_STATUS").d("Invalid status payment")
+                }
             }
             callBtn.setOnClickListener {
                 openWhatsapp(recyclerViewDelivery)
@@ -515,7 +572,7 @@ class TransactionListV2Adapter(
             formatNumber()
             totalPrice.text = "Rp. " + str
             menuPrice = 0
-            shippingMethod.text = recyclerViewDelivery.shipping?.shipping_method
+            shippingMethod.text = recyclerViewDelivery.shipping?.shipping_method?.replaceFirstChar { it.titlecase() }
             shippingDate.text = recyclerViewDelivery.shipping?.shipping_time.toString().substringBefore(" ").substringAfterLast("-") + bulan +
                     recyclerViewDelivery.shipping?.shipping_time.toString().substringBefore("-") +", "+ recyclerViewDelivery.shipping?.shipping_time.toString().substringAfter(" ").substringBeforeLast(":")
             custName.text = recyclerViewDelivery.customer?.name

@@ -508,10 +508,28 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_green_transparent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:text="@string/kembali"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnShare" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
-                    app:layout_constraintTop_toBottomOf="@+id/btnShare"
+                    app:layout_constraintTop_toBottomOf="@+id/btnBack"
                     tools:layout_editor_absoluteX="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

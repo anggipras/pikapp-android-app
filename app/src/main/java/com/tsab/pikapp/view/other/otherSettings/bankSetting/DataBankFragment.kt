@@ -28,6 +28,8 @@ class DataBankFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.rekening_bank)
+
         viewModel.getProfileDetail()
         dataBinding.merchantProfileDetail = viewModel
 
@@ -35,7 +37,7 @@ class DataBankFragment : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_dataBankFragment_to_pinBankFragment)
         }
 
-        dataBinding.backButtonInformation.setOnClickListener {
+        dataBinding.headerInsideSettings.backImage.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_dataBankFragment_to_settingFragment)
         }
     }

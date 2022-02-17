@@ -19,6 +19,7 @@ data class CustomerCourierListResult(
 )
 
 data class CustomerCourierServiceList(
+    val courier_code: String,
     val courier_image: String?,
     val name: String,
     val description: String,

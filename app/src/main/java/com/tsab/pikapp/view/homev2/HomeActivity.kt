@@ -56,7 +56,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(dataBinding.root)
 
         replaceFragment(transactionFragment)
-        sessionManager.setHomeNav(0)
         bottom_navigation.selectedItemId = R.id.nav_transaction
 
         when {

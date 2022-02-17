@@ -414,7 +414,7 @@ interface PikappApi {
         @Path("status") statusTrans: String
     ): Call<GetManualTransactionResp>
 
-    @POST("pos/v1/transaction/status/")
+    @POST("pos/v2/transaction/status/")
     fun postUpdateManualTransaction(
         @Body UpdateStatusManualTxnRequest: UpdateStatusManualTxnRequest
     ): Call<UpdateStatusManualResponse>
@@ -851,5 +851,18 @@ interface PikappApi {
         @Header("size") size: Int,
         @Header("page") page: Int
     ): Call<TransactionListV2RespAPI>
+
+    @GET("ntxn/v1/list/")
+    suspend fun getTransactionListV2Coroutines(
+        @Header("mid") merchantID: String?,
+        @Header("size") size: Int,
+        @Header("page") page: Int
+    ): Response<TransactionListV2RespAPI>
+
+    @POST("api/transaction/tracking-order")
+    fun getTrackOrderDetail(
+        @Header("x-client-id") clientID: String,
+        @Body trackingOrderRequest: TrackingOrderRequest
+    ): Single<TrackingDetailResponse>
 }
 

@@ -4,50 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.other.otherSettings.pinSetting.NewPinFragment">
+    tools:context=".view.other.otherSettings.pinSetting.NewPinFragment"
+    android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout_pinSetting"
-        android:layout_width="match_parent"
-        android:layout_height="122dp"
-        android:background="@drawable/headersettings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/back_button_pin_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="30dp"
-            android:drawableLeft="@drawable/ic_back_arrow"
-            android:fontFamily="@font/inter_regular"
-            android:text="@string/kembali"
-            android:textColor="#FFFFFF"
-            android:textSize="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/pin_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="65dp"
-            android:fontFamily="@font/inter_bold"
-            android:text="Ubah PIN"
-            android:textColor="#FFFFFF"
-            android:textSize="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/header_insideSettings"
+        layout="@layout/layout_header_general" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -56,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayout_pinSetting">
+        app:layout_constraintTop_toBottomOf="@id/header_insideSettings">
 
         <TextView
             android:id="@+id/newPin_text"
@@ -74,9 +36,9 @@
             android:id="@+id/newPin_textDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
+            android:fontFamily="@font/inter_regular"
             android:text="@string/keterangan_pin"
-            android:textColor="@color/borderSubtle"
+            android:textColor="@color/textSubtle"
             android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -95,9 +57,11 @@
             app:cursorColor="@color/black"
             app:itemCount="6"
             app:itemSpacing="12dp"
-            app:lineColor="@color/textSubtle"
+            app:itemRadius="@dimen/_11sdp"
+            app:lineColor="@color/borderSubtle"
             app:lineWidth="1dp"
-            app:viewType="line"
+            app:viewType="rectangle"
+            android:itemBackground="@drawable/pinform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newPin_text" />

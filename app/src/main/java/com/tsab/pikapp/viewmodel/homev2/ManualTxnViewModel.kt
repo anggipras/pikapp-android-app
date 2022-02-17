@@ -87,7 +87,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
     val mutableStatusTime = MutableLiveData("")
     val StatusTime: LiveData<String> get() = mutableStatusTime
 
-    val mutableHargaEkspedisi = MutableLiveData("")
+    val mutableHargaEkspedisi = MutableLiveData("0")
     val HargaEkspedisi: LiveData<String> get() = mutableHargaEkspedisi
 
     private val mutableInsurancePrice = MutableLiveData("0")
@@ -746,7 +746,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val mid = sessionManager.getUserData()!!.mid!!
 
         disposable.add(
-            PikappApiService().courierPriceApi.getCourierPrice(getUUID(), timestamp, getClientID(), signature, token, mid, courierReqBody)
+            PikappApiService().courierApi.getCourierPrice(getUUID(), timestamp, getClientID(), signature, token, mid, courierReqBody)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<CustomerCourierListResponse>() {
@@ -781,11 +781,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
             "UNPAID"
         }
 
-        val hargaEkspedisi = if(mutableHargaEkspedisi.value == " "){
-            "0"
-        }else{
-            mutableHargaEkspedisi.value.toString()
-        }
+        val hargaEkspedisi = mutableHargaEkspedisi.value.toString()
 
         for(q in mutableSelectedMenuTemp.value!!){
             val extraList: ArrayList<ExtraList> = ArrayList()
@@ -829,7 +825,7 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         val courierSelected = if (mutableNamaEkspedisi.value.toString() == "Pickup Sendiri") {
             "Pickup Sendiri"
         } else {
-            selectedCourierService.value!!.name
+            selectedCourierService.value!!.courier_code
         }
         val shippingData = ShippingData(
             courierSelected,

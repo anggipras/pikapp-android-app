@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -39,6 +40,7 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        viewModel.mutableFinishPageStateCancel.value = false
 
         initRecyclerView()
         initViewModel()
@@ -46,6 +48,19 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
         general_error_cancel.try_button.setOnClickListener {
             getDataCancel()
         }
+
+//        dataBinding.nestedScrollCancel.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+//            // on scroll change we are checking when users scroll as bottom.
+//            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+//                if (!viewModel.finishPageStateCancel.value!!) {
+//                    // in this method we are incrementing page number,
+//                    // making progress bar visible and calling get data method.
+//                    val pageCancelAct = viewModel.pageCancel.value!! + 1
+//                    dataBinding.loadingPB.isVisible = true
+//                    viewModel.getCancelTransactionV2PaginationList(pageCancelAct, dataBinding.loadingPB)
+//                }
+//            }
+//        })
     }
 
     private fun initRecyclerView() {
@@ -105,18 +120,11 @@ class CancelFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener 
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
         viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionChannelUpdate(
-            channel,
-            orderId,
-            requireContext()
-        )
+        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
         viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionPosUpdate(
-            updateStatusManualTxnRequest,
-            requireContext()
-        )
+        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
     }
 }

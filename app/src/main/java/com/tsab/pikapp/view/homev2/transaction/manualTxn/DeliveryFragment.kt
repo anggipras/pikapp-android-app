@@ -123,7 +123,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
             if(ekspedisiSend){
                 dismiss()
             }else if(selfPickup){
-                viewModel.setEkspedisi("Pickup Sendiri", " ")
+                viewModel.setEkspedisi("Pickup Sendiri", "0")
                 dismiss()
             }
         }
@@ -156,7 +156,7 @@ class DeliveryFragment: BottomSheetDialogFragment(), CustomerCourierListAdapter.
         })
 
         viewModel.HargaEkspedisi.observe(viewLifecycleOwner, { harga ->
-            if (harga != "" && harga != " ") {
+            if (harga != "0") {
                 delivery.setBackgroundResource(R.drawable.btn_green)
                 delivery_title.setTextColor(Color.parseColor("#4BB7AC"))
                 pickup.setBackgroundResource(R.drawable.btn_transparant)

@@ -1,6 +1,5 @@
 package com.tsab.pikapp.view.homev2.transaction
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.TrackingDetail
 import kotlinx.android.synthetic.main.item_transaction_tracking.view.*
 import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class TransactionTrackListAdapter() : RecyclerView.Adapter<TransactionTrackListAdapter.ViewHolder>() {

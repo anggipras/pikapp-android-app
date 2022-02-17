@@ -2,16 +2,13 @@ package com.tsab.pikapp.view.homev2.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.TransactionFragmentBinding
@@ -88,7 +85,10 @@ class TransactionFragment : Fragment() {
                 val position = dataBinding.tabs.selectedTabPosition
                 when(position) {
                     0 -> viewModel.getProcessTransactionV2List(requireContext(), true, 1)
-                    1 -> viewModel.getDoneTransactionV2List(requireContext(), true, 1)
+                    1 -> {
+                        viewModel.mutablePageDone.value = 0
+                        viewModel.getDoneTransactionV2List(requireContext(), true, 1)
+                    }
                     2 -> viewModel.getCancelTransactionV2List(requireContext(), true, 1)
                 }
                 dataBinding.tabs.selectTab(dataBinding.tabs.getTabAt(position))
@@ -100,13 +100,13 @@ class TransactionFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.processSize.observe(viewLifecycleOwner, Observer {
+        viewModel.processSize.observe(viewLifecycleOwner, {
             dataBinding.tabs.getTabAt(0)?.orCreateBadge?.number = it
         })
-        viewModel.doneSize.observe(viewLifecycleOwner, Observer {
+        viewModel.doneSize.observe(viewLifecycleOwner, {
             dataBinding.tabs.getTabAt(1)?.orCreateBadge?.number = it
         })
-        viewModel.cancelSize.observe(viewLifecycleOwner, Observer {
+        viewModel.cancelSize.observe(viewLifecycleOwner, {
             dataBinding.tabs.getTabAt(2)?.orCreateBadge?.number = it
         })
     }

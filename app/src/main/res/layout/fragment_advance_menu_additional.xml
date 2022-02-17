@@ -199,12 +199,11 @@
             <!-- Save button -->
             <Button
                 android:id="@+id/saveButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="32dp"
+                android:layout_width="match_parent"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="24dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginBottom="@dimen/_11sdp"
+                android:layout_marginHorizontal="@dimen/_11sdp"
                 android:background="@drawable/button_green_small"
                 android:fontFamily="@font/inter_regular"
                 android:text="@string/simpan"

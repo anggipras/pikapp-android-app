@@ -200,7 +200,9 @@ data class ShippingDetailV2Response(
     @SerializedName("phone_number")
     val phone_number: String?,
     @SerializedName("postal_code")
-    val postal_code: String?
+    val postal_code: String?,
+    @SerializedName("tracking_id")
+    val tracking_id: String?
 )
 
 data class ProductDetailV2Response(
@@ -312,11 +314,59 @@ data class FilterMockUp(
     var orderPlatform: String?
 )
 
-/* DUMMY TRACK ORDER */
+/* TRACK DETAIL ORDER */
+data class TrackingDetailResponse (
+    @SerializedName("err_code")
+    val errCode: String,
+    @SerializedName("err_message")
+    val errMessage: String,
+    val result: TrackingDetailResult
+)
+
+data class TrackingDetailResult (
+    val success: Boolean,
+    val message: String?,
+    @SerializedName("object")
+    val resultObject: String?,
+    val id: String?,
+    @SerializedName("waybill_id")
+    val waybillID: String?,
+    val courier: CourierDriver?,
+    val origin: OriginPlace?,
+    val destination: DestinationPlace?,
+    val history: List<TrackingDetail>?,
+    val link: String?,
+    @SerializedName("order_id")
+    val orderID: String? = null,
+    val status: String?
+)
+
+data class CourierDriver (
+    val company: String,
+    val name: String? = null,
+    val phone: String? = null
+)
+
+data class OriginPlace (
+    @SerializedName("contact_name")
+    val contactName: String,
+    val address: String
+)
+
+data class DestinationPlace (
+    @SerializedName("contact_name")
+    val contactName: String,
+    val address: String
+)
+
 data class TrackingDetail(
     var note: String?,
     var updated_at: String?,
     var status: String?
+)
+
+data class TrackingOrderRequest(
+    var tracking_id: String?
 )
 
 

@@ -49,8 +49,11 @@ class CategoryListFragment : Fragment() {
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    activity?.finish()
-                    activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+                    Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                        activity?.startActivity(this)
+                        activity?.finish()
+                        activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+                    }
                 }
             })
 
@@ -80,8 +83,11 @@ class CategoryListFragment : Fragment() {
 
     private fun attachInputListeners() {
         dataBinding.topAppBar.setNavigationOnClickListener {
-            activity?.finish()
-            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+            Intent(activity?.baseContext, HomeActivity::class.java).apply {
+                activity?.startActivity(this)
+                activity?.finish()
+                activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+            }
         }
 
         dataBinding.daftarKategoriChangeOrderButton.setOnClickListener {

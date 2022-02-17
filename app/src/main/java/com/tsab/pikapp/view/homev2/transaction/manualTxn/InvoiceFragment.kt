@@ -77,6 +77,13 @@ class InvoiceFragment : Fragment() {
             startActivity(i)
         }
 
+        dataBinding.btnBack.setOnClickListener {
+            val intent = Intent(activity?.baseContext, HomeActivity::class.java)
+            activity?.startActivity(intent)
+            activity?.finish()
+            activity?.overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+        }
+
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
