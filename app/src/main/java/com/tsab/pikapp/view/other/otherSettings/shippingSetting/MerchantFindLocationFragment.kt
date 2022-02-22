@@ -1,6 +1,8 @@
 package com.tsab.pikapp.view.other.otherSettings.shippingSetting
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -17,11 +19,15 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.ActivityCompat
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.tsab.pikapp.models.model.CurrentLatLng
 
 class MerchantFindLocationFragment : Fragment(), GoogleListPlacesAdapter.OnPlaceClickListener {
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var dataBinding: FragmentMerchantFindLocationBinding
     private val viewModel: OtherSettingViewModel by activityViewModels()
     private lateinit var recyclerAdapter: GoogleListPlacesAdapter
@@ -43,6 +49,8 @@ class MerchantFindLocationFragment : Fragment(), GoogleListPlacesAdapter.OnPlace
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         dataBinding.headerInsideSettings.headerTitle.text = getString(R.string.find_location_title)
         dataBinding.headerInsideSettings.backImage.setOnClickListener {
@@ -82,6 +90,10 @@ class MerchantFindLocationFragment : Fragment(), GoogleListPlacesAdapter.OnPlace
             }
         }
         )
+
+        dataBinding.selectCurrentLocationId.setOnClickListener {
+            fetchLocation()
+        }
     }
 
     private fun initViewModel() {
@@ -100,7 +112,7 @@ class MerchantFindLocationFragment : Fragment(), GoogleListPlacesAdapter.OnPlace
 
     private val inputFinishChecker = Runnable {
         if (System.currentTimeMillis() > lastTextEdit + delay - 200) {
-            viewModel.getListGooglePlaces(dataBinding.findLocation.text.toString())
+            viewModel.getListGooglePlaces(dataBinding.findLocation.text.toString(), requireContext())
         }
     }
 
@@ -111,6 +123,28 @@ class MerchantFindLocationFragment : Fragment(), GoogleListPlacesAdapter.OnPlace
 
         if (inputManager.isAcceptingText) {
             inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        }
+    }
+
+    private fun fetchLocation() {
+        val task = fusedLocationProviderClient.lastLocation
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 101)
+            return
+        }
+        task.addOnSuccessListener {
+            if (it != null) {
+                viewModel.setCurrentLocation(CurrentLatLng(latitude = it.latitude, longitude = it.longitude))
+                view?.let { v -> Navigation.findNavController(v).navigateUp() }
+            }
         }
     }
 
