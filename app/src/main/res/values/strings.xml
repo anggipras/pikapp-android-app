@@ -256,6 +256,7 @@
     <string name="find_location_title">Cari Lokasi</string>
     <string name="find_location">Cari lokasi…</string>
     <string name="change_shipping_title">Ubah Pengiriman</string>
+    <string name="select_courier_title">Pilih Kurir</string>
 
     <!-- Omnichannel transaction filter -->
     <string name="filter">Filter</string>

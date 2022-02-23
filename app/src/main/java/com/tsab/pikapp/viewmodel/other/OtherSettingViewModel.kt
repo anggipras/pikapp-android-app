@@ -443,6 +443,17 @@ class OtherSettingViewModel : ViewModel() {
     fun setPostalCode(postalCd: String?) {
         mutablePostalCode.value = postalCd
     }
+
+    private val mutableAddPostalCode = MutableLiveData<String>()
+    val addPostalCode: LiveData<String> = mutableAddPostalCode
+    fun setAddPostalCode(postalCd: String) {
+        mutableAddPostalCode.value = postalCd
+    }
+    private val mutableAddressShippingDetail = MutableLiveData<String>()
+    val addressShippingDetail: LiveData<String> = mutableAddressShippingDetail
+    fun setAddressShippingDetail(shippingdet: String) {
+        mutableAddressShippingDetail.value = shippingdet
+    }
     private val mutableMerchantAddress = MutableLiveData<String>()
     val merchantAddress: LiveData<String> = mutableMerchantAddress
     fun setMerchantAddress(address: String) {
@@ -777,7 +788,7 @@ class OtherSettingViewModel : ViewModel() {
                             Log.e("SUBMIT_SUCCEED", "succeed")
                             loadingOverlay.loadingView.isVisible = false
                             setFirstEnterEdit(false)
-                            Navigation.findNavController(view).navigate(R.id.fromShipmentAddAddress_navigateTo_settingFragment)
+                            Navigation.findNavController(view).navigate(R.id.fromShipmentAddCourier_navigateTo_settingFragment)
                         }
 
                         override fun onError(e: Throwable) {
