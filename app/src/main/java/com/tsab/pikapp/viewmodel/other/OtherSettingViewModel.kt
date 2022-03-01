@@ -343,10 +343,11 @@ class OtherSettingViewModel : ViewModel() {
         val token = sessionManager.getUserToken()!!
         val uuid = getUUID()
         val clientId = getClientID()
+        val username = sessionManager.getUserName()
 
         disposable.add(
             PikappApiService().api.getMerchantProfile(
-                uuid, timeStamp, clientId, signature, token, mid
+                uuid, timeStamp, clientId, signature, token, username
             )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

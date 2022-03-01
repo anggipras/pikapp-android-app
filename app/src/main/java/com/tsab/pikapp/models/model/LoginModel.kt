@@ -30,7 +30,10 @@ data class LoginResultV2(
     val isVerified: Boolean?,
 
     @SerializedName("login_time")
-    val loginTime: String?
+    val loginTime: String?,
+
+    @SerializedName("username")
+    val username: String
 )
 
 data class LoginRequest(
