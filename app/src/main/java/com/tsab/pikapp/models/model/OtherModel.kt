@@ -55,8 +55,8 @@ data class MerchantProfileData(
         @SerializedName("merchant_category")
         val merchantCategory: String? = null,
 
-        @SerializedName("username")
-        val username: String
+        @SerializedName("domain")
+        val domain: String
 )
 
 //SHOP MANAGEMENT SETTINGS

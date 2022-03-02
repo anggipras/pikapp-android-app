@@ -44,7 +44,7 @@ class OtherViewModel : ViewModel() {
         val timeStamp = getTimestamp()
         val email: String?
         val mid: String?
-        val username = sessionManager.getUserName()
+        val userDomain = sessionManager.getUserDomain()
         if (sessionManager.getUserData() != null) {
             email = sessionManager.getUserData()?.email
             mid = sessionManager.getUserData()?.mid
@@ -65,13 +65,14 @@ class OtherViewModel : ViewModel() {
 
         disposable.add(
             PikappApiService().api.getMerchantProfile(
-                uuid, timeStamp, clientId, signature, token, username
+                uuid, timeStamp, clientId, signature, token, userDomain
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
                     override fun onSuccess(t: MerchantProfileResponse) {
                         general_error_other.isVisible = false
                         t.results?.let { res ->
+                            Log.e("THEREST", res.domain)
                             merchantProfileRetrieved(res)
                         }
                     }

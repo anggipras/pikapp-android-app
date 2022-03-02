@@ -32,8 +32,8 @@ data class LoginResultV2(
     @SerializedName("login_time")
     val loginTime: String?,
 
-    @SerializedName("username")
-    val username: String
+    @SerializedName("domain")
+    val domain: String
 )
 
 data class LoginRequest(

@@ -502,14 +502,14 @@ interface PikappApi {
 //            @Path("mid") mid: String? = null
 //    ): Single<MerchantProfileResponse>
 
-    @GET("/merchant/v2/m/uname/{username}/profile/")
+    @GET("/merchant/v1/domain/{domain}/profile/")
     fun getMerchantProfile(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
-        @Path("username") username: String? = null
+        @Path("domain") domain: String? = null
     ): Single<MerchantProfileResponse>
 
     // Advanced Menu
