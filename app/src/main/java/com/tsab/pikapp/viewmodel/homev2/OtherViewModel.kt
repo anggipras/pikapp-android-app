@@ -72,7 +72,6 @@ class OtherViewModel : ViewModel() {
                     override fun onSuccess(t: MerchantProfileResponse) {
                         general_error_other.isVisible = false
                         t.results?.let { res ->
-                            Log.e("THEREST", res.domain)
                             merchantProfileRetrieved(res)
                         }
                     }
