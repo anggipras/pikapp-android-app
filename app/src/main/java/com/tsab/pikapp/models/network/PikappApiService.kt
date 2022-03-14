@@ -51,11 +51,6 @@ class PikappApiService {
         .build()
         .create(PikappApi::class.java)
 
-    private val googleApiKey = "AIzaSyDpgv_S1kGc7pYaxSh_q6Q-IWz_qlIwQpg"
-    fun getGoogleApiKey() : String {
-        return googleApiKey
-    }
-
     val googleApi = Retrofit.Builder()
         .baseUrl("https://maps.googleapis.com/maps/api/")
         .addConverterFactory(GsonConverterFactory.create())

@@ -50,7 +50,13 @@ data class MerchantProfileData(
         val bankAccountName: String? = null,
 
         @SerializedName("bank_name")
-        val bankName: String? = null
+        val bankName: String? = null,
+
+        @SerializedName("merchant_category")
+        val merchantCategory: String? = null,
+
+        @SerializedName("domain")
+        val domain: String
 )
 
 //SHOP MANAGEMENT SETTINGS

@@ -182,8 +182,8 @@
             android:id="@+id/fromShipmentAddAddress_navigateTo_merchantGetLocationFragment"
             app:destination="@id/merchantGetLocationFragment" />
         <action
-            android:id="@+id/fromShipmentAddAddress_navigateTo_settingFragment"
-            app:popUpTo="@id/settingFragment" />
+            android:id="@+id/fromShipmentAddAddress_navigateTo_shipmentAddCourierDetailFragment"
+            app:destination="@id/shipmentAddCourierDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/merchantGetLocationFragment"
@@ -202,5 +202,14 @@
         android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.MerchantFindLocationFragment"
         android:label="fragment_merchant_find_location"
         tools:layout="@layout/fragment_merchant_find_location" >
+    </fragment>
+    <fragment
+        android:id="@+id/shipmentAddCourierDetailFragment"
+        android:name="com.tsab.pikapp.view.other.otherSettings.shippingSetting.ShipmentAddCourierDetailFragment"
+        android:label="fragment_shipment_add_courier_detail"
+        tools:layout="@layout/fragment_shipment_add_courier_detail" >
+        <action
+            android:id="@+id/fromShipmentAddCourier_navigateTo_settingFragment"
+            app:popUpTo="@id/settingFragment" />
     </fragment>
 </navigation>

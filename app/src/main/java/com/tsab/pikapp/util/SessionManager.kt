@@ -27,6 +27,7 @@ class SessionManager {
         private const val PREF_MERCHANT_LOGO = "merchant logo"
         private const val PREF_MENU_TABS = "menu tabs"
         private const val PREF_MENU_INIT = "menu init"
+        private const val PREF_USER_DOMAIN = "user domain"
 
         private var prefs: SharedPreferences? = null
 
@@ -86,6 +87,14 @@ class SessionManager {
         val userData = prefs?.getString(PREF_USER_DATA, null)
         return GsonBuilder().create().fromJson(userData, UserAccess::class.java)
     }
+
+    fun setUserDomain(domain: String) {
+        prefs?.edit(commit = true) {
+            putString(PREF_USER_DOMAIN, domain)
+        }
+    }
+
+    fun getUserDomain() = prefs?.getString(PREF_USER_DOMAIN, "username")
 
     fun setUserSession(token: String, time: Long, userData: UserAccess) {
         saveUserLogin(true)

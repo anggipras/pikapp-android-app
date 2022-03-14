@@ -1,6 +1,7 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -43,6 +44,7 @@ class OtherViewModel : ViewModel() {
         val timeStamp = getTimestamp()
         val email: String?
         val mid: String?
+        val userDomain = sessionManager.getUserDomain()
         if (sessionManager.getUserData() != null) {
             email = sessionManager.getUserData()?.email
             mid = sessionManager.getUserData()?.mid
@@ -62,7 +64,7 @@ class OtherViewModel : ViewModel() {
         val clientId = getClientID()
 
         disposable.add(
-            PikappApiService().api.getMerchantProfile(
+            PikappApiService().api.getMerchantProfileV1(
                 uuid, timeStamp, clientId, signature, token, mid
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

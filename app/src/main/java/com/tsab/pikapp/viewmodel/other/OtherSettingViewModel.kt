@@ -89,7 +89,7 @@ class OtherSettingViewModel : ViewModel() {
     private val mutableIsForceClose = MutableLiveData(true)
     val isForceClose: LiveData<Boolean> get() = mutableIsForceClose
 
-    private val mutableAutoOnOff = MutableLiveData(true)
+    private val mutableAutoOnOff = MutableLiveData<Boolean>()
     val autoOnOff: LiveData<Boolean> get() = mutableAutoOnOff
 
     private val mutableScheduleList = MutableLiveData<List<ShopSchedule>>(listOf())
@@ -248,6 +248,7 @@ class OtherSettingViewModel : ViewModel() {
                 response: Response<MerchantTimeManagement>
             ) {
                 val timeManagementResult = response.body()?.results?.timeManagement
+                mutableAutoOnOff.value = response.body()?.results?.autoOnOff!!
                 shopManagementAdapter = ShopManagementAdapter(
                     baseContext,
                     timeManagementResult as MutableList<ShopSchedule>,
@@ -263,8 +264,12 @@ class OtherSettingViewModel : ViewModel() {
         })
     }
 
-    fun updateShopStatus(baseContext: Context){
-        //var sessionManager = SessionManager(getApplication())
+    fun updateShopStatus(
+        baseContext: Context,
+        view: View,
+        loadingOverlay: LayoutLoadingOverlayBinding
+    ){
+        loadingOverlay.loadingView.isVisible = true
         val email = sessionManager.getUserData()!!.email!!
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
@@ -279,14 +284,16 @@ class OtherSettingViewModel : ViewModel() {
 
         PikappApiService().api.updateShopManagement(
                 getUUID(), timestamp, getClientID(), signature, token, mid, shopStatusReq
-        ).enqueue(object : retrofit2.Callback<BaseResponse> {
+        ).enqueue(object : Callback<BaseResponse> {
             override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                Toast.makeText(baseContext, "failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(baseContext, "Gagal disimpan", Toast.LENGTH_SHORT).show()
+                loadingOverlay.loadingView.isVisible = false
             }
 
             override fun onResponse(call: Call<BaseResponse>, response: Response<BaseResponse>) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     Toast.makeText(baseContext, "Berhasil disimpan", Toast.LENGTH_SHORT).show()
+                    Navigation.findNavController(view).navigate(R.id.navigateToFromShopMgmtStatusFragment_shopManagementFragment)
                 } else {
                     var errorResponse: BaseResponse? =
                             gson.fromJson(response.errorBody()!!.charStream(), type)
@@ -298,6 +305,7 @@ class OtherSettingViewModel : ViewModel() {
                             ).toString(),
                             Toast.LENGTH_LONG
                     ).show()
+                    loadingOverlay.loadingView.isVisible = false
                 }
             }
         })
@@ -343,10 +351,11 @@ class OtherSettingViewModel : ViewModel() {
         val token = sessionManager.getUserToken()!!
         val uuid = getUUID()
         val clientId = getClientID()
+        val userDomain = sessionManager.getUserDomain()
 
         disposable.add(
             PikappApiService().api.getMerchantProfile(
-                uuid, timeStamp, clientId, signature, token, mid
+                uuid, timeStamp, clientId, signature, token, userDomain
             )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -392,12 +401,39 @@ class OtherSettingViewModel : ViewModel() {
         mutableIsForceClose.value = isForceClose
     }
 
-    fun setAutoOnOffTrue(autoOnOff: Boolean){
-        mutableAutoOnOff.value = true
-    }
+    fun setAutoOnOff(
+        autoOnOff: Boolean,
+        mAlertDialog: AlertDialog,
+        loadingOverlay: LayoutLoadingOverlayBinding
+    ) {
+        Log.e("AUTOONOFF", autoOnOff.toString())
+        loadingOverlay.loadingView.isVisible = true
+        val timestamp = getTimestamp()
+        val email = sessionManager.getUserData()!!.email!!
+        val mid = sessionManager.getUserData()!!.mid!!
+        val signature = getSignature(email, timestamp)
+        val token = sessionManager.getUserToken()!!
 
-    fun setAutoOnOffFalse(autoOnOff: Boolean){
-        mutableAutoOnOff.value = false
+        disposable.add(
+            PikappApiService().api.updateAutoOnOffShopManagement(
+                getUUID(), timestamp, getClientID(), signature, token, mid, true
+            )
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<BaseResponse>() {
+                    override fun onSuccess(t: BaseResponse) {
+                        loadingOverlay.loadingView.isVisible = false
+                        mAlertDialog.dismiss()
+                        mutableAutoOnOff.value = autoOnOff
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("ERROR", e.message.toString())
+                        loadingOverlay.loadingView.isVisible = false
+                        mAlertDialog.dismiss()
+                    }
+                })
+        )
     }
 
     /* SHIPPING SETTINGS ------- */
@@ -442,6 +478,17 @@ class OtherSettingViewModel : ViewModel() {
     val postalCode: LiveData<String?> = mutablePostalCode
     fun setPostalCode(postalCd: String?) {
         mutablePostalCode.value = postalCd
+    }
+
+    private val mutableAddPostalCode = MutableLiveData<String>()
+    val addPostalCode: LiveData<String> = mutableAddPostalCode
+    fun setAddPostalCode(postalCd: String) {
+        mutableAddPostalCode.value = postalCd
+    }
+    private val mutableAddressShippingDetail = MutableLiveData<String>()
+    val addressShippingDetail: LiveData<String> = mutableAddressShippingDetail
+    fun setAddressShippingDetail(shippingdet: String) {
+        mutableAddressShippingDetail.value = shippingdet
     }
     private val mutableMerchantAddress = MutableLiveData<String>()
     val merchantAddress: LiveData<String> = mutableMerchantAddress
@@ -565,9 +612,9 @@ class OtherSettingViewModel : ViewModel() {
         liveDataGooglePlacesList.postValue(placeList)
     }
 
-    fun getListGooglePlaces(text: String) {
+    fun getListGooglePlaces(text: String, context: Context) {
         disposable.add(
-            PikappApiService().googleApi.getListOfPlaces(text, PikappApiService().getGoogleApiKey())
+            PikappApiService().googleApi.getListOfPlaces(text, context.getString(R.string.google_api_key))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<GooglePlacesResponse>() {
@@ -777,7 +824,7 @@ class OtherSettingViewModel : ViewModel() {
                             Log.e("SUBMIT_SUCCEED", "succeed")
                             loadingOverlay.loadingView.isVisible = false
                             setFirstEnterEdit(false)
-                            Navigation.findNavController(view).navigate(R.id.fromShipmentAddAddress_navigateTo_settingFragment)
+                            Navigation.findNavController(view).navigate(R.id.fromShipmentAddCourier_navigateTo_settingFragment)
                         }
 
                         override fun onError(e: Throwable) {

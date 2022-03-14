@@ -457,6 +457,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     getCancelTransactionV2List(context, false, 0)
                 } else {
                     Toast.makeText(context, "Transaksi Gagal Di Update, Mohon tunggu dan update kembali", Toast.LENGTH_SHORT).show()
+                    setProgressDialog(false, context)
                 }
             }
 

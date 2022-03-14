@@ -20,7 +20,9 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".view.homev2.transaction.TransactionTrackingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.homev2.transaction.manualTxn.ManualAddAdvMenuActivity"
             android:exported="false" />

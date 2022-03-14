@@ -909,9 +909,9 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         liveDataGooglePlacesList.postValue(placeList)
     }
 
-    fun getListGooglePlaces(text: String) {
+    fun getListGooglePlaces(text: String, context: Context) {
         disposable.add(
-            PikappApiService().googleApi.getListOfPlaces(text, PikappApiService().getGoogleApiKey())
+            PikappApiService().googleApi.getListOfPlaces(text, context.getString(R.string.google_api_key))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<GooglePlacesResponse>() {
