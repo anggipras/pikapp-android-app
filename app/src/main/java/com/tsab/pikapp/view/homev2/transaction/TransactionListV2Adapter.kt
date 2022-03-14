@@ -513,7 +513,7 @@ class TransactionListV2Adapter(
                         updatePaymentBtn.visibility = View.VISIBLE
                         updatePaymentBtn.text = "Refund ke Pelanggan"
                         updatePaymentBtn.setOnClickListener {
-                            listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUND"))
+                            listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUNDED"))
                         }
                     }
                     "CANCELLED" -> {
@@ -521,7 +521,7 @@ class TransactionListV2Adapter(
                         statusPayment.setTextColor(context.resources.getColor(R.color.red))
                         updatePaymentBtn.visibility = View.GONE
                     }
-                    "REFUND" -> {
+                    "REFUNDED" -> {
                         statusPayment.text = "Dana Dikembalikan"
                         statusPayment.setTextColor(context.resources.getColor(R.color.orange))
                         updatePaymentBtn.visibility = View.GONE
@@ -541,7 +541,7 @@ class TransactionListV2Adapter(
                         updatePaymentBtn.visibility = View.VISIBLE
                         updatePaymentBtn.text = "Refund ke Pelanggan"
                         updatePaymentBtn.setOnClickListener {
-                            listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUND"))
+                            listener.onItemClickTransactionPos(UpdateStatusManualTxnRequest(recyclerViewDelivery.transaction_id, recyclerViewDelivery.order_status, "REFUNDED"))
                         }
                     }
                     "CANCELLED" -> {
@@ -549,7 +549,7 @@ class TransactionListV2Adapter(
                         statusPayment.setTextColor(context.resources.getColor(R.color.red))
                         updatePaymentBtn.visibility = View.GONE
                     }
-                    "REFUND" -> {
+                    "REFUNDED" -> {
                         statusPayment.text = "Dana Dikembalikan"
                         statusPayment.setTextColor(context.resources.getColor(R.color.orange))
                         updatePaymentBtn.visibility = View.GONE

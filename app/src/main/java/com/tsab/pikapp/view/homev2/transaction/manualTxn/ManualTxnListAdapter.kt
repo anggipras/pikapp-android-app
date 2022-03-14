@@ -198,14 +198,14 @@ class ManualTxnListAdapter(
                     updateStatus(UpdateStatusManualTxnRequest(
                         transactionList[position].transaction_id,
                         transactionList[position].order_status,
-                        "REFUND"),
+                        "REFUNDED"),
                         "CANCELLED", mid, position, reycler, context)
                 }
             } else if (transactionList[position].payment_status == "CANCELLED"){
                 holder.statusPayment.text = "Dibatalkan"
                 holder.statusPayment.setTextColor(context.resources.getColor(R.color.red))
                 holder.updatePaymentBtn.visibility = View.GONE
-            } else if (transactionList[position].payment_status == "REFUND"){
+            } else if (transactionList[position].payment_status == "REFUNDED"){
                 holder.statusPayment.text = "Dana Dikembalikan"
                 holder.statusPayment.setTextColor(context.resources.getColor(R.color.orange))
                 holder.updatePaymentBtn.visibility = View.GONE

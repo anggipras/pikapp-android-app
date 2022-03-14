@@ -492,15 +492,15 @@ interface PikappApi {
             @Part("product_qty") qty: RequestBody
     ): Call<BaseResponse>
 
-//    @GET("/merchant/v1/merchant/{mid}/profile/")
-//    fun getMerchantProfile(
-//            @Header("x-request-id") uuid: String,
-//            @Header("x-request-timestamp") time: String,
-//            @Header("x-client-id") clientID: String,
-//            @Header("x-signature") signature: String,
-//            @Header("token") token: String,
-//            @Path("mid") mid: String? = null
-//    ): Single<MerchantProfileResponse>
+    @GET("/merchant/v1/merchant/{mid}/profile/")
+    fun getMerchantProfileV1(
+            @Header("x-request-id") uuid: String,
+            @Header("x-request-timestamp") time: String,
+            @Header("x-client-id") clientID: String,
+            @Header("x-signature") signature: String,
+            @Header("token") token: String,
+            @Path("mid") mid: String? = null
+    ): Single<MerchantProfileResponse>
 
     @GET("/merchant/v1/domain/{domain}/profile/")
     fun getMerchantProfile(
@@ -598,6 +598,17 @@ interface PikappApi {
             @Header("token") token: String,
             @Header("mid") mid: String?
     ): Call<MerchantTimeManagement>
+
+    @POST("merchant/v1/shop/force/status/")
+    fun updateAutoOnOffShopManagement(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Header("mid") mid: String,
+        @Header("auto-on-off") autoOnOff: Boolean,
+    ): Single<BaseResponse>
 
     @Multipart
     @POST("merchant/v1/merchant/update/profile/")

@@ -64,8 +64,8 @@ class OtherViewModel : ViewModel() {
         val clientId = getClientID()
 
         disposable.add(
-            PikappApiService().api.getMerchantProfile(
-                uuid, timeStamp, clientId, signature, token, userDomain
+            PikappApiService().api.getMerchantProfileV1(
+                uuid, timeStamp, clientId, signature, token, mid
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
