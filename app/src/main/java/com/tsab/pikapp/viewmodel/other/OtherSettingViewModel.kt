@@ -403,10 +403,9 @@ class OtherSettingViewModel : ViewModel() {
 
     fun setAutoOnOff(
         autoOnOff: Boolean,
-        mAlertDialog: AlertDialog,
+        context: Context,
         loadingOverlay: LayoutLoadingOverlayBinding
     ) {
-        Log.e("AUTOONOFF", autoOnOff.toString())
         loadingOverlay.loadingView.isVisible = true
         val timestamp = getTimestamp()
         val email = sessionManager.getUserData()!!.email!!
@@ -416,21 +415,20 @@ class OtherSettingViewModel : ViewModel() {
 
         disposable.add(
             PikappApiService().api.updateAutoOnOffShopManagement(
-                getUUID(), timestamp, getClientID(), signature, token, mid, true
+                getUUID(), timestamp, getClientID(), signature, token, mid, autoOnOff
             )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<BaseResponse>() {
                     override fun onSuccess(t: BaseResponse) {
                         loadingOverlay.loadingView.isVisible = false
-                        mAlertDialog.dismiss()
                         mutableAutoOnOff.value = autoOnOff
+                        Toast.makeText(context, "Berhasil diubah", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.e("ERROR", e.message.toString())
                         loadingOverlay.loadingView.isVisible = false
-                        mAlertDialog.dismiss()
+                        Toast.makeText(context, "Gagal diubah", Toast.LENGTH_SHORT).show()
                     }
                 })
         )

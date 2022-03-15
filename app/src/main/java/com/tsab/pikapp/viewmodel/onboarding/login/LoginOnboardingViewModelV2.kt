@@ -140,7 +140,7 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
         response.results?.token?.let {
             val userData: UserAccess = decodeJWT(response.results.token)
             sessionManager.setUserSession(response.results.token, System.nanoTime(), userData)
-//            sessionManager.setUserDomain(response.results.domain)
+            sessionManager.setUserDomain(response.results.domain)
         }
 
         prefHelper.saveOnboardingFinised(true)

@@ -88,13 +88,13 @@ class SessionManager {
         return GsonBuilder().create().fromJson(userData, UserAccess::class.java)
     }
 
-    fun setUserDomain(domain: String) {
+    fun setUserDomain(domain: String?) {
         prefs?.edit(commit = true) {
             putString(PREF_USER_DOMAIN, domain)
         }
     }
 
-    fun getUserDomain() = prefs?.getString(PREF_USER_DOMAIN, "username")
+    fun getUserDomain() = prefs?.getString(PREF_USER_DOMAIN, "user.domain")
 
     fun setUserSession(token: String, time: Long, userData: UserAccess) {
         saveUserLogin(true)

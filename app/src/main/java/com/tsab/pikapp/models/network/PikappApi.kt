@@ -599,7 +599,7 @@ interface PikappApi {
             @Header("mid") mid: String?
     ): Call<MerchantTimeManagement>
 
-    @POST("merchant/v1/shop/force/status/")
+    @GET("merchant/v1/shop/force/status/")
     fun updateAutoOnOffShopManagement(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,

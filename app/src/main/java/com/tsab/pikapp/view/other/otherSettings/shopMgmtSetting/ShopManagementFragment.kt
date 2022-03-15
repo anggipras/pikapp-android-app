@@ -164,7 +164,8 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
             mAlertDialog.dismiss()
         }
         mDialogView.second_dialog_ok.setOnClickListener {
-            otherSettingViewModel.setAutoOnOff(status, mAlertDialog, dataBinding.loadingOverlay)
+            mAlertDialog.dismiss()
+            otherSettingViewModel.setAutoOnOff(status, requireContext(), dataBinding.loadingOverlay)
         }
     }
 
