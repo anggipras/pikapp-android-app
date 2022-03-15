@@ -492,15 +492,15 @@ interface PikappApi {
             @Part("product_qty") qty: RequestBody
     ): Call<BaseResponse>
 
-    @GET("/merchant/v1/merchant/{mid}/profile/")
-    fun getMerchantProfileV1(
-            @Header("x-request-id") uuid: String,
-            @Header("x-request-timestamp") time: String,
-            @Header("x-client-id") clientID: String,
-            @Header("x-signature") signature: String,
-            @Header("token") token: String,
-            @Path("mid") mid: String? = null
-    ): Single<MerchantProfileResponse>
+//    @GET("/merchant/v1/merchant/{mid}/profile/")
+//    fun getMerchantProfileV1(
+//            @Header("x-request-id") uuid: String,
+//            @Header("x-request-timestamp") time: String,
+//            @Header("x-client-id") clientID: String,
+//            @Header("x-signature") signature: String,
+//            @Header("token") token: String,
+//            @Path("mid") mid: String? = null
+//    ): Single<MerchantProfileResponse>
 
     @GET("/merchant/v1/domain/{domain}/profile/")
     fun getMerchantProfile(

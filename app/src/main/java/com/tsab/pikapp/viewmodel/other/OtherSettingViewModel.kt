@@ -27,10 +27,12 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
+import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_shop_management.*
 import kotlinx.android.synthetic.main.second_alert_dialog.view.*
 import retrofit2.*
 import retrofit2.Response
@@ -228,6 +230,7 @@ class OtherSettingViewModel : ViewModel() {
         shopSchedule_recyclerView: RecyclerView,
         listener: ShopManagementAdapter.OnItemClickListener
     ) {
+        mutableLoading.value = true
         val uuid = getUUID()
         val timestamp = getTimestamp()
         val clientId = getClientID()
@@ -404,7 +407,9 @@ class OtherSettingViewModel : ViewModel() {
     fun setAutoOnOff(
         autoOnOff: Boolean,
         context: Context,
-        loadingOverlay: LayoutLoadingOverlayBinding
+        loadingOverlay: LayoutLoadingOverlayBinding,
+        shopSchedule_recyclerView: RecyclerView,
+        listener: ShopManagementAdapter.OnItemClickListener
     ) {
         loadingOverlay.loadingView.isVisible = true
         val timestamp = getTimestamp()
@@ -423,6 +428,7 @@ class OtherSettingViewModel : ViewModel() {
                     override fun onSuccess(t: BaseResponse) {
                         loadingOverlay.loadingView.isVisible = false
                         mutableAutoOnOff.value = autoOnOff
+                        getMerchantSchedule(context, shopSchedule_recyclerView, listener)
                         Toast.makeText(context, "Berhasil diubah", Toast.LENGTH_SHORT).show()
                     }
 
