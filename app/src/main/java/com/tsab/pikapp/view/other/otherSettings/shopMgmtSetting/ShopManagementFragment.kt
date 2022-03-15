@@ -1,17 +1,16 @@
 package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 
-import android.content.Context
-import android.os.Build
+import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
-import android.view.Gravity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +20,7 @@ import com.tsab.pikapp.databinding.FragmentShopManagementBinding
 import com.tsab.pikapp.util.getHour
 import com.tsab.pikapp.viewmodel.other.OtherSettingViewModel
 import kotlinx.android.synthetic.main.fragment_shop_management.*
+import kotlinx.android.synthetic.main.second_alert_dialog.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,7 +32,6 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     private var navController: NavController? = null
     private var hour: String = ""
     private var day: String = ""
-    var autoTurn: Boolean = true
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
@@ -74,7 +73,7 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         }
 
         dataBinding.autoTurnToggle.setOnClickListener {
-            showPopup()
+            showPopup(requireActivity())
         }
 
         hour = getHour()
@@ -85,28 +84,42 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     }
 
     private fun observeViewModel(){
-        otherSettingViewModel.Loading.observe(viewLifecycleOwner, Observer { loading ->
+        otherSettingViewModel.Loading.observe(viewLifecycleOwner, { loading ->
             if (!loading) {
                 otherSettingViewModel.shopScheduleResult.value?.forEach { resSchedule ->
                     if (resSchedule.days == day){
-                        if(resSchedule.dailyStatus == "OPEN"){
-                            when {
-                                hour < resSchedule.openTime.toString() -> {
-                                    closedShop()
+                        if (otherSettingViewModel.autoOnOff.value == false) {
+                            temporaryClosedShop()
+                        } else {
+                            if(resSchedule.dailyStatus == "OPEN"){
+                                when {
+                                    hour < resSchedule.openTime.toString() -> {
+                                        closedShop()
+                                    }
+                                    hour > resSchedule.closeTime.toString() -> {
+                                        closedShop()
+                                    }
+                                    else -> {
+                                        openedShop()
+                                    }
                                 }
-                                hour > resSchedule.closeTime.toString() -> {
-                                    closedShop()
-                                }
-                                else -> {
-                                    openedShop()
-                                }
+                            } else {
+                                closedShop()
                             }
-                        }else{
-                            closedShop()
                         }
                     }
                 }
                 swipeRefreshLayout.isRefreshing = false
+            }
+        })
+
+        otherSettingViewModel.autoOnOff.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it) {
+                    dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
+                } else {
+                    dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_off)
+                }
             }
         })
     }
@@ -123,49 +136,46 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         dataBinding.restaurantStatusDetail.text = getString(R.string.sm_restaurant_status_detail_open)
     }
 
-    private fun showPopup(){
+    private fun temporaryClosedShop(){
+        dataBinding.restaurantStatusNow.text = getString(R.string.Tutup).toUpperCase()
+        dataBinding.restaurantStatusNow.setTextColor(resources.getColor(R.color.red))
+        dataBinding.restaurantStatusDetail.text = getString(R.string.sm_restaurant_status_detail_temp_close)
+    }
+
+    private fun showPopup(activity: Activity) {
         if (otherSettingViewModel.autoOnOff.value == true) {
-            dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
-            val inflater: LayoutInflater =
-                    activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.open_close_restaurant_popup, null)
-            val popupWindow = PopupWindow(
-                    view,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popupWindow.elevation = 20.0F
-            }
-
-            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
-
-            val closeBtn = view.findViewById<ImageView>(R.id.closeBtn)
-            val buttonContinue = view.findViewById<TextView>(R.id.buttonContinue)
-            val buttonBack = view.findViewById<Button>(R.id.buttonBack)
-
-            closeBtn.setOnClickListener {
-                otherSettingViewModel.setAutoOnOffTrue(autoTurn)
-                popupWindow.dismiss()
-                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
-            }
-
-            buttonContinue.setOnClickListener {
-                Toast.makeText(requireView().context, "false", Toast.LENGTH_SHORT).show()
-                otherSettingViewModel.setAutoOnOffFalse(autoTurn)
-                popupWindow.dismiss()
-                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_off)
-            }
-
-            buttonBack.setOnClickListener {
-                otherSettingViewModel.setAutoOnOffTrue(autoTurn)
-                popupWindow.dismiss()
-                dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
-            }
+            autoTurnOnOffDialog(activity, false)
         } else if (otherSettingViewModel.autoOnOff.value == false) {
-            dataBinding.autoTurnToggle.setBackgroundResource(R.drawable.switch_on)
-            otherSettingViewModel.setAutoOnOffTrue(autoTurn)
+            autoTurnOnOffDialog(activity, true)
+        }
+    }
+
+    private fun autoTurnOnOffDialog(activity: Activity, status: Boolean) {
+        val mDialogView = LayoutInflater.from(activity).inflate(R.layout.second_alert_dialog, null)
+        val mBuilder = AlertDialog.Builder(activity)
+            .setView(mDialogView)
+        val mAlertDialog = mBuilder.show()
+        mAlertDialog.getWindow()?.setBackgroundDrawable(
+            AppCompatResources.getDrawable(
+                activity,
+                R.drawable.dialog_background
+            )
+        )
+        if (status) {
+            mDialogView.second_dialog_text.text = getString(R.string.sm_close_open_popup)
+        } else {
+            mDialogView.second_dialog_text.text = getString(R.string.sm_open_close_popup)
+        }
+
+        mDialogView.second_dialog_back.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mDialogView.second_dialog_close.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
+        mDialogView.second_dialog_ok.setOnClickListener {
+            mAlertDialog.dismiss()
+            otherSettingViewModel.setAutoOnOff(status, requireContext(), dataBinding.loadingOverlay, shopSchedule_recyclerView, this)
         }
     }
 

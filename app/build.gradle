@@ -23,8 +23,8 @@ android {
         applicationId "com.tsab.pikapp"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 15
-        versionName "1.4.0"
+        versionCode 16
+        versionName "1.4.001"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
@@ -180,4 +180,5 @@ dependencies {
 
     // Animation
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
 }

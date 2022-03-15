@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
     tools:context=".view.other.otherSettings.shopMgmtSetting.ShopMgmtStatusFragment">
 
     <include
@@ -108,14 +109,27 @@
                 android:textColor="@color/textSubtle"
                 android:textSize="15sp" />
 
-            <EditText
+<!--            <EditText-->
+<!--                android:id="@+id/openStatus_input"-->
+<!--                android:layout_width="75dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/inter_semibold"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:backgroundTint="#D9CECE"-->
+<!--                android:textSize="17sp"-->
+<!--                android:maxLength="5" />-->
+            <br.com.sapereaude.maskedEditText.MaskedEditText
                 android:id="@+id/openStatus_input"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/black"
                 android:backgroundTint="#D9CECE"
-                android:textSize="17sp" />
+                android:maxLength="5"
+                android:inputType="phone"
+                android:typeface="monospace"
+                mask:allowed_chars="1234567890"
+                mask:mask="##:##" />
 
         </LinearLayout>
 
@@ -134,18 +148,36 @@
                 android:textColor="@color/textSubtle"
                 android:textSize="15sp" />
 
-            <EditText
+<!--            <EditText-->
+<!--                android:id="@+id/closeStatus_input"-->
+<!--                android:layout_width="75dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/inter_semibold"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:backgroundTint="#D9CECE"-->
+<!--                android:textSize="17sp"-->
+<!--                android:maxLength="5" />-->
+            <br.com.sapereaude.maskedEditText.MaskedEditText
                 android:id="@+id/closeStatus_input"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"
                 android:textColor="@color/black"
                 android:backgroundTint="#D9CECE"
-                android:textSize="17sp" />
+                android:maxLength="5"
+                android:inputType="phone"
+                android:typeface="monospace"
+                mask:allowed_chars="1234567890"
+                mask:mask="##:##" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/loadingOverlay"
+        layout="@layout/layout_loading_overlay"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/saveBtn"

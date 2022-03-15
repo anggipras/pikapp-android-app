@@ -457,6 +457,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                     getCancelTransactionV2List(context, false, 0)
                 } else {
                     Toast.makeText(context, "Transaksi Gagal Di Update, Mohon tunggu dan update kembali", Toast.LENGTH_SHORT).show()
+                    setProgressDialog(false, context)
                 }
             }
 
@@ -925,24 +926,28 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                                 }
                             }
                         }
-                        withContext(Dispatchers.Main) {
-                            mutablePageDone.value = propsPage
-                            if (!getOrUpdate) {
-                                mutableDoneSize.value = doneList.size
-                                liveDataTransListV2Done.postValue(doneList)
-                            } else {
-                                val donePaginationSize = doneSize.value?.plus(doneList.size)
-                                mutableDoneSize.value = donePaginationSize
+                        if (doneList.size == 0) {
+                            mediumGetDoneTransactionV2PaginationList(context, thePages)
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                mutablePageDone.value = propsPage
+                                if (!getOrUpdate) {
+                                    mutableDoneSize.value = doneList.size
+                                    liveDataTransListV2Done.postValue(doneList)
+                                } else {
+                                    val donePaginationSize = doneSize.value?.plus(doneList.size)
+                                    mutableDoneSize.value = donePaginationSize
 
-                                val transListV2DoneAdded: MutableList<TransactionListV2Data> = ArrayList()
-                                liveDataTransListV2Done.value?.let { transListV2DoneAdded.addAll(it) }
-                                transListV2DoneAdded.addAll(doneList)
-                                liveDataTransListV2Done.postValue(transListV2DoneAdded)
-                            }
+                                    val transListV2DoneAdded: MutableList<TransactionListV2Data> = ArrayList()
+                                    liveDataTransListV2Done.value?.let { transListV2DoneAdded.addAll(it) }
+                                    transListV2DoneAdded.addAll(doneList)
+                                    liveDataTransListV2Done.postValue(transListV2DoneAdded)
+                                }
 
-                            if (!getOrUpdate) {
-                                setProgressLoading(false)
-                                setProgressDialog(false, context)
+                                if (!getOrUpdate) {
+                                    setProgressLoading(false)
+                                    setProgressDialog(false, context)
+                                }
                             }
                         }
                     } else {
@@ -955,6 +960,11 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
                 mutableFinishPageStateDone.value = true
             }
         }
+    }
+
+    private fun mediumGetDoneTransactionV2PaginationList(context: Context, propsPage: Int) {
+        val thePages = propsPage + 1
+        getDoneTransactionV2PaginationList(context, true, thePages)
     }
 
     fun getCancelTransactionV2List(
