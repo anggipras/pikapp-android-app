@@ -3,6 +3,7 @@ package com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting
 import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -84,24 +84,28 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
     }
 
     private fun observeViewModel(){
-        otherSettingViewModel.Loading.observe(viewLifecycleOwner, Observer { loading ->
+        otherSettingViewModel.Loading.observe(viewLifecycleOwner, { loading ->
             if (!loading) {
                 otherSettingViewModel.shopScheduleResult.value?.forEach { resSchedule ->
                     if (resSchedule.days == day){
-                        if(resSchedule.dailyStatus == "OPEN"){
-                            when {
-                                hour < resSchedule.openTime.toString() -> {
-                                    closedShop()
+                        if (otherSettingViewModel.autoOnOff.value == false) {
+                            temporaryClosedShop()
+                        } else {
+                            if(resSchedule.dailyStatus == "OPEN"){
+                                when {
+                                    hour < resSchedule.openTime.toString() -> {
+                                        closedShop()
+                                    }
+                                    hour > resSchedule.closeTime.toString() -> {
+                                        closedShop()
+                                    }
+                                    else -> {
+                                        openedShop()
+                                    }
                                 }
-                                hour > resSchedule.closeTime.toString() -> {
-                                    closedShop()
-                                }
-                                else -> {
-                                    openedShop()
-                                }
+                            } else {
+                                closedShop()
                             }
-                        }else{
-                            closedShop()
                         }
                     }
                 }
@@ -130,6 +134,12 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
         dataBinding.restaurantStatusNow.text = getString(R.string.open_status_title).toUpperCase()
         dataBinding.restaurantStatusNow.setTextColor(resources.getColor(R.color.green))
         dataBinding.restaurantStatusDetail.text = getString(R.string.sm_restaurant_status_detail_open)
+    }
+
+    private fun temporaryClosedShop(){
+        dataBinding.restaurantStatusNow.text = getString(R.string.Tutup).toUpperCase()
+        dataBinding.restaurantStatusNow.setTextColor(resources.getColor(R.color.red))
+        dataBinding.restaurantStatusDetail.text = getString(R.string.sm_restaurant_status_detail_temp_close)
     }
 
     private fun showPopup(activity: Activity) {
@@ -164,7 +174,8 @@ class ShopManagementFragment : Fragment(), ShopManagementAdapter.OnItemClickList
             mAlertDialog.dismiss()
         }
         mDialogView.second_dialog_ok.setOnClickListener {
-            otherSettingViewModel.setAutoOnOff(status, mAlertDialog, dataBinding.loadingOverlay)
+            mAlertDialog.dismiss()
+            otherSettingViewModel.setAutoOnOff(status, requireContext(), dataBinding.loadingOverlay, shopSchedule_recyclerView, this)
         }
     }
 

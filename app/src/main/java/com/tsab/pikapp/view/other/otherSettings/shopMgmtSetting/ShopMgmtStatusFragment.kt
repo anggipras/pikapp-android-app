@@ -44,7 +44,7 @@ class ShopMgmtStatusFragment : Fragment() {
 
         if (otherSettingViewModel.openTime.value == "00:00" && otherSettingViewModel.closeTime.value == "00:00") {
             dataBinding.closeStatus.isChecked = true
-        } else if (otherSettingViewModel.openTime.value == "00:00" && otherSettingViewModel.closeTime.value == "00:00") {
+        } else if (otherSettingViewModel.openTime.value == "00:00" && otherSettingViewModel.closeTime.value == "23:59") {
             dataBinding.hours24Status.isChecked = true
         } else {
             dataBinding.openStatus.isChecked = true

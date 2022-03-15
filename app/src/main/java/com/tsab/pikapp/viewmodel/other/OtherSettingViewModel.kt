@@ -27,10 +27,12 @@ import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementAdapter
+import com.tsab.pikapp.view.other.otherSettings.shopMgmtSetting.ShopManagementFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_shop_management.*
 import kotlinx.android.synthetic.main.second_alert_dialog.view.*
 import retrofit2.*
 import retrofit2.Response
@@ -228,6 +230,7 @@ class OtherSettingViewModel : ViewModel() {
         shopSchedule_recyclerView: RecyclerView,
         listener: ShopManagementAdapter.OnItemClickListener
     ) {
+        mutableLoading.value = true
         val uuid = getUUID()
         val timestamp = getTimestamp()
         val clientId = getClientID()
@@ -403,10 +406,11 @@ class OtherSettingViewModel : ViewModel() {
 
     fun setAutoOnOff(
         autoOnOff: Boolean,
-        mAlertDialog: AlertDialog,
-        loadingOverlay: LayoutLoadingOverlayBinding
+        context: Context,
+        loadingOverlay: LayoutLoadingOverlayBinding,
+        shopSchedule_recyclerView: RecyclerView,
+        listener: ShopManagementAdapter.OnItemClickListener
     ) {
-        Log.e("AUTOONOFF", autoOnOff.toString())
         loadingOverlay.loadingView.isVisible = true
         val timestamp = getTimestamp()
         val email = sessionManager.getUserData()!!.email!!
@@ -416,21 +420,21 @@ class OtherSettingViewModel : ViewModel() {
 
         disposable.add(
             PikappApiService().api.updateAutoOnOffShopManagement(
-                getUUID(), timestamp, getClientID(), signature, token, mid, true
+                getUUID(), timestamp, getClientID(), signature, token, mid, autoOnOff
             )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<BaseResponse>() {
                     override fun onSuccess(t: BaseResponse) {
                         loadingOverlay.loadingView.isVisible = false
-                        mAlertDialog.dismiss()
                         mutableAutoOnOff.value = autoOnOff
+                        getMerchantSchedule(context, shopSchedule_recyclerView, listener)
+                        Toast.makeText(context, "Berhasil diubah", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.e("ERROR", e.message.toString())
                         loadingOverlay.loadingView.isVisible = false
-                        mAlertDialog.dismiss()
+                        Toast.makeText(context, "Gagal diubah", Toast.LENGTH_SHORT).show()
                     }
                 })
         )

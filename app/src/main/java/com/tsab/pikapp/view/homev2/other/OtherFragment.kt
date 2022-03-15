@@ -171,42 +171,58 @@ class OtherFragment : Fragment() {
             }
         })
 
-        viewModel.merchantShopStatus.observe(viewLifecycleOwner, Observer { shopSchedule ->
+        viewModel.merchantShopStatus.observe(viewLifecycleOwner, { shopSchedule ->
             shopSchedule?.let {
-                val merchantStatus = when (shopSchedule.dailyStatus) {
-                    "OPEN" -> "Buka"
-                    else -> "Tutup"
-                }
+                if (viewModel.autoOnOff.value == false) {
+                    val merchantDay = when (shopSchedule.days) {
+                        "MONDAY" -> "Senin"
+                        "TUESDAY" -> "Selasa"
+                        "WEDNESDAY" -> "Rabu"
+                        "THURSDAY" -> "Kamis"
+                        "FRIDAY" -> "Jumat"
+                        "SATURDAY" -> "Sabtu"
+                        else -> "Minggu"
+                    }
 
-                when (shopSchedule.dailyStatus) {
-                    "OPEN" -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#4BB7AC"))
-                    else -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#DC6A84"))
-                }
-
-                val merchantDay = when (shopSchedule.days) {
-                    "MONDAY" -> "Senin"
-                    "TUESDAY" -> "Selasa"
-                    "WEDNESDAY" -> "Rabu"
-                    "THURSDAY" -> "Kamis"
-                    "FRIDAY" -> "Jumat"
-                    "SATURDAY" -> "Sabtu"
-                    else -> "Minggu"
-                }
-
-                dataBinding.merchantStatus.text = merchantStatus
-                dataBinding.shopScheduleSeparator.visibility = View.VISIBLE
-
-                if (shopSchedule.dailyStatus == "OPEN") {
-                    val theHours =
-                        if (shopSchedule.openTime == "00:00" && shopSchedule.closeTime == "23:59") {
-                            "24 jam"
-                        } else {
-                            "${shopSchedule.openTime} - ${shopSchedule.closeTime}"
-                        }
-                    dataBinding.merchantHour.text =
-                        getString(R.string.shop_daily_status, merchantDay, theHours)
-                } else {
+                    dataBinding.merchantStatus.text = "Tutup"
+                    dataBinding.shopScheduleSeparator.visibility = View.VISIBLE
                     dataBinding.merchantHour.text = merchantDay
+                } else {
+                    val merchantStatus = when (shopSchedule.dailyStatus) {
+                        "OPEN" -> "Buka"
+                        else -> "Tutup"
+                    }
+
+                    when (shopSchedule.dailyStatus) {
+                        "OPEN" -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#4BB7AC"))
+                        else -> dataBinding.merchantStatus.setTextColor(Color.parseColor("#DC6A84"))
+                    }
+
+                    val merchantDay = when (shopSchedule.days) {
+                        "MONDAY" -> "Senin"
+                        "TUESDAY" -> "Selasa"
+                        "WEDNESDAY" -> "Rabu"
+                        "THURSDAY" -> "Kamis"
+                        "FRIDAY" -> "Jumat"
+                        "SATURDAY" -> "Sabtu"
+                        else -> "Minggu"
+                    }
+
+                    dataBinding.merchantStatus.text = merchantStatus
+                    dataBinding.shopScheduleSeparator.visibility = View.VISIBLE
+
+                    if (shopSchedule.dailyStatus == "OPEN") {
+                        val theHours =
+                            if (shopSchedule.openTime == "00:00" && shopSchedule.closeTime == "23:59") {
+                                "24 jam"
+                            } else {
+                                "${shopSchedule.openTime} - ${shopSchedule.closeTime}"
+                            }
+                        dataBinding.merchantHour.text =
+                            getString(R.string.shop_daily_status, merchantDay, theHours)
+                    } else {
+                        dataBinding.merchantHour.text = merchantDay
+                    }
                 }
             }
         })

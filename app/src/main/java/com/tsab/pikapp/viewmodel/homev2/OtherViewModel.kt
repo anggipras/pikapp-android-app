@@ -31,6 +31,7 @@ class OtherViewModel : ViewModel() {
     private val onlineService = OnlineService()
 
     val merchantResult = MutableLiveData<MerchantProfileData>()
+    val autoOnOff = MutableLiveData<Boolean>()
     val merchantShopStatus = MutableLiveData<ShopSchedule>()
 
     private val mutableErrCode = MutableLiveData("")
@@ -64,8 +65,8 @@ class OtherViewModel : ViewModel() {
         val clientId = getClientID()
 
         disposable.add(
-            PikappApiService().api.getMerchantProfileV1(
-                uuid, timeStamp, clientId, signature, token, mid
+            PikappApiService().api.getMerchantProfile(
+                uuid, timeStamp, clientId, signature, token, userDomain
             ).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
@@ -137,6 +138,7 @@ class OtherViewModel : ViewModel() {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
                     general_error_other.isVisible = false
                     val timeManagementResult = response.body()?.results?.timeManagement
+                    autoOnOff.value = response.body()?.results?.autoOnOff ?: false
                     val filteredDay = timeManagementResult?.filter { selectedDay ->
                         selectedDay.days == dayOfTheWeek.uppercase(Locale.getDefault())
                     }

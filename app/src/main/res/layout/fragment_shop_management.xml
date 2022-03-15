@@ -44,7 +44,8 @@
             <LinearLayout
                 android:id="@+id/restaurant_status_layout"
                 android:layout_width="match_parent"
-                android:layout_height="71dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_13sdp"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
@@ -54,7 +55,6 @@
                     android:id="@+id/restaurant_status_now"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:fontFamily="@font/inter_bold"
                     android:textColor="@color/green"
                     android:textSize="16sp" />
@@ -63,11 +63,9 @@
                     android:id="@+id/restaurant_status_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
                     android:fontFamily="@font/inter_regular"
-                    android:text=""
                     android:textColor="@color/textSubtle"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
