@@ -91,7 +91,6 @@ class HomeActivity : AppCompatActivity() {
                 R.id.share_link -> {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-//                        var midStore: String? = sessionManager.getUserData()?.mid
                         val userDomain = sessionManager.getUserDomain()
                         val phStore: String? = sessionManager.getUserData()?.phoneNumber
                         val menuWebApi = PikappApiService().menuWeb()

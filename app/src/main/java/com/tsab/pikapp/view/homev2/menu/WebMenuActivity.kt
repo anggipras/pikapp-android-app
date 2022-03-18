@@ -15,7 +15,6 @@ class WebMenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_menu)
-//        val midStore = sessionManager.getUserData()!!.mid!!
         val userDomain = sessionManager.getUserDomain()!!
         webViewSetup(userDomain)
 
