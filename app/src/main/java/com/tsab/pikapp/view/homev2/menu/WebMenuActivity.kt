@@ -15,19 +15,19 @@ class WebMenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_menu)
-        val midStore = sessionManager.getUserData()!!.mid!!
-        webViewSetup(midStore)
+        val userDomain = sessionManager.getUserDomain()!!
+        webViewSetup(userDomain)
 
         menuWeb_back.setOnClickListener {
             onBackPressed()
         }
     }
 
-    private fun webViewSetup(mid: String) {
+    private fun webViewSetup(userDomain: String) {
         menuWebView.webViewClient = WebViewClient()
         menuWebView.apply {
             val menuWebApi = PikappApiService().menuWeb()
-            loadUrl("${menuWebApi}store?mid=${mid}")
+            loadUrl("${menuWebApi}${userDomain}")
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
         }
