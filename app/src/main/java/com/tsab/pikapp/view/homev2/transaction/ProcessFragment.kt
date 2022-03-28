@@ -239,7 +239,7 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
             }
         })
 
-        viewModel.errorLoading.observe(viewLifecycleOwner, Observer { error ->
+        viewModel.errorLoading.observe(viewLifecycleOwner, { error ->
             if (error) {
                 general_error_process.isVisible = true
                 onlineService.serviceDialog(requireActivity())
