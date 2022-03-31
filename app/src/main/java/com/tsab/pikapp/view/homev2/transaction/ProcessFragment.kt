@@ -273,6 +273,11 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (viewModel.progressDialog.dialog.isShowing) viewModel.progressDialog.dialog.dismiss()
+    }
+
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
         viewModel.setProgressDialog(true, requireContext())
         viewModel.transactionTxnUpdate(txnId, status, requireContext())
