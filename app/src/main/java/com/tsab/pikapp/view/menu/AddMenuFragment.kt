@@ -97,7 +97,8 @@ class AddMenuFragment : Fragment() {
         dataBinding.kategori.isFocusable = false
         dataBinding.kategori.isFocusableInTouchMode = false
         dataBinding.kategori.setOnClickListener {
-            navController.navigate(R.id.action_update_menu_add_adv_to_category_name)
+            CategoryNameFragment().show(childFragmentManager, "CategoryNameFragment")
+//            navController.navigate(R.id.action_update_menu_add_adv_to_category_name)
         }
 
         dataBinding.btnNext.setOnClickListener {
@@ -124,11 +125,11 @@ class AddMenuFragment : Fragment() {
 
 
     private fun observeViewModel() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer { bool ->
+        viewModel.isLoading.observe(viewLifecycleOwner, { bool ->
             dataBinding.loadingOverlay.loadingView.isVisible = bool
         })
 
-        viewModel.isLoadingFinish.observe(viewLifecycleOwner, Observer { bool ->
+        viewModel.isLoadingFinish.observe(viewLifecycleOwner, { bool ->
             if (!bool) {
                 Intent(activity?.baseContext, HomeActivity::class.java).apply {
                     startActivity(this)
@@ -138,28 +139,28 @@ class AddMenuFragment : Fragment() {
             }
         })
 
-        viewModel.img.observe(viewLifecycleOwner, Observer { menuUri ->
+        viewModel.img.observe(viewLifecycleOwner, { menuUri ->
             dataBinding.menuImg.layoutParams.width = if (menuUri == null || menuUri == Uri.EMPTY) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT
             dataBinding.menuImg.setImageURI(menuUri)
         })
 
-        viewModel.menuError.observe(viewLifecycleOwner, Observer { menuError ->
+        viewModel.menuError.observe(viewLifecycleOwner, { menuError ->
             dataBinding.menuErrorText.text = if (menuError.isEmpty()) "" else menuError
         })
 
-        viewModel.category.observe(viewLifecycleOwner, Observer { category ->
+        viewModel.category.observe(viewLifecycleOwner, { category ->
             dataBinding.kategori.setText(if (category.isEmpty()) "" else category)
         })
 
-        viewModel.namaError.observe(viewLifecycleOwner, Observer { namaError ->
+        viewModel.namaError.observe(viewLifecycleOwner, { namaError ->
             dataBinding.namaErrorText.text = if (namaError.isEmpty()) "" else namaError
         })
 
-        viewModel.hargaError.observe(viewLifecycleOwner, Observer { hargaError ->
+        viewModel.hargaError.observe(viewLifecycleOwner, { hargaError ->
             dataBinding.hargaErrorText.text = if (hargaError.isEmpty()) "" else hargaError
         })
 
-        viewModel.descError.observe(viewLifecycleOwner, Observer { descError ->
+        viewModel.descError.observe(viewLifecycleOwner, { descError ->
             dataBinding.descErrorText.text = if (descError.isEmpty()) "" else descError
         })
     }

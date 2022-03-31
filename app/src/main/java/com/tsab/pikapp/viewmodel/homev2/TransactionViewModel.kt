@@ -80,7 +80,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private var liveDataTransListV2ProcessFilter: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
     private var liveDataFilterStatus: MutableLiveData<List<FilterMockUp>> = MutableLiveData()
 
-    private val progressDialog = CustomProgressDialog()
+    val progressDialog = CustomProgressDialog()
 
     fun setProgressDialog(action: Boolean, context: Context) {
         if (action) {
