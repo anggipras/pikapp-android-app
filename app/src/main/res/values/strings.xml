@@ -170,7 +170,7 @@
     <string name="sm_restaurant_openhours_title">Buka-Tutup Otomatis</string>
     <string name="sm_restaurant_status_detail_open">Restoran Anda sedang berada di jam buka</string>
     <string name="sm_restaurant_status_detail_close">Restoran Anda sedang berada di jam tutup</string>
-    <string name="sm_restaurant_status_detail_temp_close">Silahkan nyalakan buka tutup otomatis dibawah untuk membuka toko Anda</string>
+    <string name="sm_restaurant_status_detail_temp_close">Silakan nyalakan buka tutup otomatis dibawah untuk membuka toko Anda</string>
     <string name="sm_restaurant_auto_status">Restoran akan buka dan tutup secara otomatis mengikuti jadwal restoran</string>
     <string name="sm_restaurant_schedule_title">Jadwal Restoran</string>
     <string name="sm_open_close_popup">Menonaktifkan Buka-Tutup Otomatis akan membuat status toko Anda tutup. <br /> Apakah Anda ingin melanjutkan?</string>
@@ -407,11 +407,11 @@
 
     <!-- Service Dialog -->
     <string name="no_service_title">Sesi Anda Time Out</string>
-    <string name="no_service_detail">Maaf, saat ini server sedang tidak dapat memproses perintah anda. Silahkan coba lagi!</string>
+    <string name="no_service_detail">Maaf, saat ini server sedang tidak dapat memproses perintah anda. Silakan coba lagi!</string>
     <string name="no_network_title">Koneksi Internet Anda Terputus</string>
-    <string name="no_network_detail">Silahkan periksa koneksi WiFi atau data seluler anda dan coba lagi!</string>
+    <string name="no_network_detail">Silakan periksa koneksi WiFi atau data seluler anda dan coba lagi!</string>
     <string name="page_problem_title">Halaman Bermasalah</string>
-    <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silahkan coba lagi!</string>
+    <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silakan coba lagi!</string>
 
     <!-- Promo screens -->
     <string name="promo_empty_title">Belum ada promo nih!</string>
