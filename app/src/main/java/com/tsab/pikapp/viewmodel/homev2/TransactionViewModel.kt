@@ -80,7 +80,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     private var liveDataTransListV2ProcessFilter: MutableLiveData<List<TransactionListV2Data>> = MutableLiveData()
     private var liveDataFilterStatus: MutableLiveData<List<FilterMockUp>> = MutableLiveData()
 
-    private val progressDialog = CustomProgressDialog()
+    val progressDialog = CustomProgressDialog()
 
     fun setProgressDialog(action: Boolean, context: Context) {
         if (action) {
@@ -140,6 +140,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
     }
 
     fun getTransactionV2List(context: Context, getOrUpdate: Boolean) {
+        setErrorLoading(false)
         if (getOrUpdate) {
             setProgressLoading(true)
             setProgressDialog(true, context)
@@ -623,6 +624,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         getOrUpdate: Boolean,
         swipeDown: Int
     ) {
+        setErrorLoading(false)
         if (getOrUpdate) {
             if (swipeDown == 0) {
                 setProgressLoading(true)
@@ -710,6 +712,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         getOrUpdate: Boolean,
         swipeDown: Int
     ) {
+        setErrorLoading(false)
         if (getOrUpdate) {
             if (swipeDown == 0) {
                 setProgressLoading(true)
@@ -805,6 +808,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         context: Context,
         theSize: Int
     ) {
+        setErrorLoading(false)
         val mid = sessionManager.getUserData()?.mid
 
         viewModelScope.launch {
@@ -972,6 +976,7 @@ class TransactionViewModel(application: Application) : BaseViewModel(application
         getOrUpdate: Boolean,
         swipeDown: Int
     ) {
+        setErrorLoading(false)
         if (getOrUpdate) {
             if (swipeDown == 0) {
                 setProgressLoading(true)

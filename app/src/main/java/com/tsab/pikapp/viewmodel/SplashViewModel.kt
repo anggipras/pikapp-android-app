@@ -55,7 +55,6 @@ class SplashViewModel(application: Application) : BaseViewModel(application) {
                 if (token.isNotEmpty()) {
                     val userData: UserAccess = decodeJWT(token)
                     if (userData.isMerchant == null) {
-                        Log.d("Debug", "harus di logout nih")
                         Toast.makeText(getApplication(), "Silakan login kembali", Toast.LENGTH_LONG)
                             .show()
                         sessionManager.logout()

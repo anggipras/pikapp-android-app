@@ -50,11 +50,13 @@ class CategoryNameFragment : BottomSheetDialogFragment(), CategoryAdapter.OnItem
 
     private fun attachInputListeners() {
         closeBtn.setOnClickListener {
-            navController?.navigateUp()
+            dismiss()
+//            navController?.navigateUp()
         }
 
         okButton.setOnClickListener {
-            navController?.navigateUp()
+            dismiss()
+//            navController?.navigateUp()
         }
     }
 

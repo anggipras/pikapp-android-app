@@ -84,7 +84,7 @@ class SplashActivity : AppCompatActivity() {
                     tableNo = params[3]
                 } else {
                     val params: List<String> = uri.pathSegments
-                    mid = params[1]
+                    mid = if (params[1].isNotBlank()) { params[1] } else { "M00000002" }
                     tableNo = params[2]
                 }
             }

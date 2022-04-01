@@ -91,10 +91,10 @@ class HomeActivity : AppCompatActivity() {
                 R.id.share_link -> {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        var midStore: String? = sessionManager.getUserData()?.mid
-                        var phStore: String? = sessionManager.getUserData()?.phoneNumber
+                        val userDomain = sessionManager.getUserDomain()
+                        val phStore: String? = sessionManager.getUserData()?.phoneNumber
                         val menuWebApi = PikappApiService().menuWeb()
-                        val linkURL = "${menuWebApi}${midStore}"
+                        val linkURL = "${menuWebApi}${userDomain}"
                         val linkText = "Klik disini untuk melihat menu toko kami : ${linkURL}\n\nUntuk info lebih lanjut, hubungi kami di ${phStore}"
                         putExtra(Intent.EXTRA_TEXT, linkText)
                         type = "text/plain"
