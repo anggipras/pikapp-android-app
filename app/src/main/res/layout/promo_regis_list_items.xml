@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_11sdp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_11sdp">
+
+        <TextView
+            android:id="@+id/voucher_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
+            android:text="@string/voucher_title"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/voucher_quota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/inter_regular"
+            android:text="@string/voucher_quota"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/voucher_title" />
+
+        <ImageView
+            android:id="@+id/discount_green_icon"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:background="@drawable/ic_discount_percentage"
+            app:layout_constraintEnd_toStartOf="@id/voucher_disc_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="@dimen/_8sdp"/>
+
+        <LinearLayout
+            android:id="@+id/voucher_disc_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/voucher_disc_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/voucher_disc_title"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/_11sdp" />
+
+            <TextView
+                android:id="@+id/voucher_disc_amt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/voucher_disc_amt"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/_15sdp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@color/textSubtle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/voucher_disc_layout" />
+
+        <LinearLayout
+            android:id="@+id/voucher_period_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:background="@drawable/ic_green_calendar" />
+
+            <TextView
+                android:id="@+id/voucher_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/voucher_period"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginLeft="@dimen/_4sdp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/voucher_deadline_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/inter_regular"
+            android:text="@string/voucher_deadline_period"
+            android:textColor="@color/textSubtle"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/voucher_period_layout" />
+
+        <Button
+            android:id="@+id/voucher_regis_button"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:background="@drawable/button_green_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/voucher_regis_button"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

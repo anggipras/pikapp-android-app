@@ -181,4 +181,5 @@ dependencies {
     // Animation
     implementation "com.airbnb.android:lottie:$lottieVersion"
     implementation 'ru.egslava:MaskedEditText:1.0.5'
+    implementation 'com.github.martinstamenkovski:ARIndicatorView:2.0.0'
 }

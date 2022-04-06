@@ -422,4 +422,13 @@
     <string name="promotion_date">%s - %s</string>
     <string name="promotion_status">Aktif</string>
 
+    <string name="promo_regis_title">Promo Untuk Anda</string>
+    <string name="voucher_title">Diskon Kilat Spesial</string>
+    <string name="voucher_quota">Tersedia %s Kuota</string>
+    <string name="voucher_disc_title">Diskon</string>
+    <string name="voucher_disc_amt">20%</string>
+    <string name="voucher_period">%s – %s</string>
+    <string name="voucher_deadline_period">Daftar sebelum %s</string>
+    <string name="voucher_regis_button">Daftar</string>
+
 </resources>

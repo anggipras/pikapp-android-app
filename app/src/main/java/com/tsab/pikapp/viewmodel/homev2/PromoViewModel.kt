@@ -6,12 +6,61 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.models.model.PromoListModel
+import com.tsab.pikapp.models.model.PromoRegisListModel
+import com.tsab.pikapp.models.model.TransactionListV2Data
 import com.tsab.pikapp.view.homev2.promo.PromoListAdapter
 
 class PromoViewModel : ViewModel() {
     lateinit var promoListAdapter: PromoListAdapter
     private val mutablePromoList = MutableLiveData<MutableList<PromoListModel>>()
     val promoList: LiveData<MutableList<PromoListModel>> = mutablePromoList
+
+    private var liveDataPromoRegisList: MutableLiveData<MutableList<PromoRegisListModel>> = MutableLiveData()
+    fun getLiveDataPromoRegisListObserver(): MutableLiveData<MutableList<PromoRegisListModel>> {
+        return liveDataPromoRegisList
+    }
+
+    fun getPromoRegisList() {
+        val promoListResponse: MutableList<PromoRegisListModel> = ArrayList()
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL1",
+            campaign_quota = "20",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 10,
+            campaign_start_date = "2021-05-01T09:00:00",
+            campaign_end_date = "2021-06-01T21:00:00",
+            campaign_regis_deadline_date = "2021-04-20T21:00:00"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL2",
+            campaign_quota = "30",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 20,
+            campaign_start_date = "2021-05-02T09:00:00",
+            campaign_end_date = "2021-06-02T21:00:00",
+            campaign_regis_deadline_date = "2021-04-21T21:00:00"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL3",
+            campaign_quota = "40",
+            discount_amt_type = "ABSOLUTE",
+            discount_amt = 30000,
+            campaign_start_date = "2021-05-03T09:00:00",
+            campaign_end_date = "2021-06-03T21:00:00",
+            campaign_regis_deadline_date = "2021-04-22T21:00:00"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL4",
+            campaign_quota = "50",
+            discount_amt_type = "ABSOLUTE",
+            discount_amt = 40000,
+            campaign_start_date = "2021-05-04T09:00:00",
+            campaign_end_date = "2021-06-04T21:00:00",
+            campaign_regis_deadline_date = "2021-04-23T21:00:00"
+        ))
+
+        liveDataPromoRegisList.postValue(promoListResponse)
+    }
 
     fun retrievePromoList(baseContext: Context, status: String, rView: RecyclerView) {
         var promoListResponse: MutableList<PromoListModel> = ArrayList()

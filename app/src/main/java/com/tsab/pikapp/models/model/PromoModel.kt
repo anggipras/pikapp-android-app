@@ -12,3 +12,20 @@ data class PromoListModel(
     @SerializedName("status")
     val status: String?
 )
+
+data class PromoRegisListModel(
+    @SerializedName("campaign_name")
+    val campaign_name: String?,
+    @SerializedName("campaign_quota")
+    val campaign_quota: String?,
+    @SerializedName("discount_amt_type")
+    val discount_amt_type: String?,
+    @SerializedName("discount_amt")
+    val discount_amt: Long?,
+    @SerializedName("campaign_start_date")
+    val campaign_start_date: String?,
+    @SerializedName("campaign_end_date")
+    val campaign_end_date: String?,
+    @SerializedName("campaign_regis_deadline_date")
+    val campaign_regis_deadline_date: String?
+)

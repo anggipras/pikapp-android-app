@@ -7,32 +7,39 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.PromoFragmentBinding
 import com.tsab.pikapp.util.SessionManager
+import com.tsab.pikapp.view.promo.PromoRegisAdapter
+import com.tsab.pikapp.viewmodel.homev2.PromoViewModel
 import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
 import kotlinx.android.synthetic.main.promo_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.tabs
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
+import androidx.recyclerview.widget.PagerSnapHelper
 
 class PromoFragment : Fragment() {
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: PromoFragmentBinding
+    private val viewModel: PromoViewModel by activityViewModels()
     private val viewModel1: TutorialViewModel by activityViewModels()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var recyclerAdapter: PromoRegisAdapter
+    private val recyclerViewSnapHelper = PagerSnapHelper()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = PromoFragmentBinding.inflate(
-            inflater, container, false
-        )
-//        dataBinding = DataBindingUtil.inflate(
-//            inflater, R.layout.promo_fragment,
-//            container, false
+//        dataBinding = PromoFragmentBinding.inflate(
+//            inflater, container, false
 //        )
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.promo_fragment,
+            container, false
+        )
         return dataBinding.root
     }
 
@@ -53,6 +60,30 @@ class PromoFragment : Fragment() {
 //
 //            ShowIntro("Promo Button", "Tombol Promo digunakan untuk mengakses halaman “Promo” yang dimiliki oleh merchant.", requireActivity().findViewById(R.id.nav_promo), 2)
 //        }
+
+        viewModel.getPromoRegisList()
+
+        initRecyclerView()
+        initViewModel()
+    }
+
+    private fun initRecyclerView() {
+        dataBinding.recyclerviewPromoList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerAdapter = PromoRegisAdapter(requireContext())
+        dataBinding.recyclerviewPromoList.adapter = recyclerAdapter
+        dataBinding.arIndicator.attachTo(dataBinding.recyclerviewPromoList, true)
+        dataBinding.recyclerviewPromoList.onFlingListener = null
+        recyclerViewSnapHelper.attachToRecyclerView(dataBinding.recyclerviewPromoList)
+//        dataBinding.recyclerviewPromoList.addItemDecoration(CirclePagerIndicatorDecoration())
+    }
+
+    private fun initViewModel() {
+        viewModel.getLiveDataPromoRegisListObserver().observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) {
+                recyclerAdapter.setPromoListAdapter(it)
+                dataBinding.arIndicator.numberOfIndicators = it.size
+            }
+        })
     }
 
 //    private fun setUpTabs() {
