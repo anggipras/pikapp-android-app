@@ -24,46 +24,54 @@ class PromoViewModel : ViewModel() {
         val promoListResponse: MutableList<PromoRegisListModel> = ArrayList()
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL1",
+            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2017/08/Banner-Blog-Seller-Center-1200x630.jpg",
             campaign_quota = "20",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 10,
             campaign_start_date = "2021-05-01T09:00:00",
             campaign_end_date = "2021-06-01T21:00:00",
-            campaign_regis_deadline_date = "2021-04-20T21:00:00"
+            campaign_regis_deadline_date = "2021-04-20T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 10%"
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL2",
+            campaign_image = "https://ecs7.tokopedia.net/img/cache/730/kjjBfF/2021/6/14/658ede0f-7236-425e-bef3-a498a6c14912.jpg",
             campaign_quota = "30",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 20,
             campaign_start_date = "2021-05-02T09:00:00",
             campaign_end_date = "2021-06-02T21:00:00",
-            campaign_regis_deadline_date = "2021-04-21T21:00:00"
+            campaign_regis_deadline_date = "2021-04-21T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 20%"
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL3",
+            campaign_image = "https://ecs7.tokopedia.net/img/cache/730/kjjBfF/2021/6/15/616df725-64b7-4de8-b6c7-4d8d9fff7a68.png",
             campaign_quota = "40",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 30000,
             campaign_start_date = "2021-05-03T09:00:00",
             campaign_end_date = "2021-06-03T21:00:00",
-            campaign_regis_deadline_date = "2021-04-22T21:00:00"
+            campaign_regis_deadline_date = "2021-04-22T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 30rb"
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL4",
+            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2019/05/Banner_Kotak-Kejutan-900-x-494.jpg",
             campaign_quota = "50",
             discount_amt_type = "ABSOLUTE",
-            discount_amt = 40000,
+            discount_amt = 40500,
             campaign_start_date = "2021-05-04T09:00:00",
             campaign_end_date = "2021-06-04T21:00:00",
-            campaign_regis_deadline_date = "2021-04-23T21:00:00"
+            campaign_regis_deadline_date = "2021-04-23T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 40.5rb"
         ))
 
         liveDataPromoRegisList.postValue(promoListResponse)
     }
 
     fun retrievePromoList(baseContext: Context, status: String, rView: RecyclerView) {
-        var promoListResponse: MutableList<PromoListModel> = ArrayList()
+        val promoListResponse: MutableList<PromoListModel> = ArrayList()
         promoListResponse.add(PromoListModel(promoID = "PROMO/01/02/02020019", startDate = "1 Oktober 2021", endDate = "2 Oktober 2021", status = "Aktif"))
         promoListResponse.add(PromoListModel(promoID = "PROMO/01/02/02020020", startDate = "3 Oktober 2021", endDate = "4 Oktober 2021", status = "Tidak Aktif"))
         promoListResponse.add(PromoListModel(promoID = "PROMO/01/02/02020021", startDate = "5 Oktober 2021", endDate = "6 Oktober 2021", status = "Akan Datang"))

@@ -1,5 +1,6 @@
 package com.tsab.pikapp.view.homev2.promo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +20,11 @@ import kotlinx.android.synthetic.main.promo_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.tabs
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
 import androidx.recyclerview.widget.PagerSnapHelper
+import com.tsab.pikapp.models.model.PromoRegisListModel
+import com.tsab.pikapp.view.promo.PromoDetailPageActivity
+import java.io.Serializable
 
-class PromoFragment : Fragment() {
+class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: PromoFragmentBinding
     private val viewModel: PromoViewModel by activityViewModels()
@@ -69,7 +73,7 @@ class PromoFragment : Fragment() {
 
     private fun initRecyclerView() {
         dataBinding.recyclerviewPromoList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerAdapter = PromoRegisAdapter(requireContext())
+        recyclerAdapter = PromoRegisAdapter(requireContext(), this)
         dataBinding.recyclerviewPromoList.adapter = recyclerAdapter
         dataBinding.arIndicator.attachTo(dataBinding.recyclerviewPromoList, true)
         dataBinding.recyclerviewPromoList.onFlingListener = null
@@ -81,9 +85,18 @@ class PromoFragment : Fragment() {
         viewModel.getLiveDataPromoRegisListObserver().observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
                 recyclerAdapter.setPromoListAdapter(it)
-                dataBinding.arIndicator.numberOfIndicators = it.size
+                dataBinding.arIndicator.numberOfIndicators = 4
             }
         })
+    }
+
+    override fun onItemRegisPromoClick(promoRegisValue: PromoRegisListModel) {
+        Intent(activity?.baseContext, PromoDetailPageActivity::class.java).apply {
+            putExtra(PromoDetailPageActivity.PROMO_DETAIL_FLOW, "REGIS")
+            putExtra(PromoDetailPageActivity.PROMO_DETAIL_DATA, promoRegisValue as Serializable)
+            startActivity(this)
+            activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
+        }
     }
 
 //    private fun setUpTabs() {

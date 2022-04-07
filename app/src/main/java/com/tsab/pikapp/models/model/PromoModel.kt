@@ -1,6 +1,7 @@
 package com.tsab.pikapp.models.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class PromoListModel(
     @SerializedName("promo_id")
@@ -16,6 +17,8 @@ data class PromoListModel(
 data class PromoRegisListModel(
     @SerializedName("campaign_name")
     val campaign_name: String?,
+    @SerializedName("campaign_image")
+    val campaign_image: String?,
     @SerializedName("campaign_quota")
     val campaign_quota: String?,
     @SerializedName("discount_amt_type")
@@ -27,5 +30,7 @@ data class PromoRegisListModel(
     @SerializedName("campaign_end_date")
     val campaign_end_date: String?,
     @SerializedName("campaign_regis_deadline_date")
-    val campaign_regis_deadline_date: String?
-)
+    val campaign_regis_deadline_date: String?,
+    @SerializedName("campaign_detail")
+    val campaign_detail: String?
+) : Serializable

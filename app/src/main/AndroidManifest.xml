@@ -19,10 +19,13 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".view.promo.PromoDetailPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.homev2.transaction.TransactionTrackingActivity"
-            android:exported="false"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.homev2.transaction.manualTxn.ManualAddAdvMenuActivity"
             android:exported="false" />

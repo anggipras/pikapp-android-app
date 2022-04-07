@@ -422,6 +422,7 @@
     <string name="promotion_date">%s - %s</string>
     <string name="promotion_status">Aktif</string>
 
+    <string name="promo_detail_regis_title">%s</string>
     <string name="promo_regis_title">Promo Untuk Anda</string>
     <string name="voucher_title">Diskon Kilat Spesial</string>
     <string name="voucher_quota">Tersedia %s Kuota</string>
@@ -430,5 +431,14 @@
     <string name="voucher_period">%s – %s</string>
     <string name="voucher_deadline_period">Daftar sebelum %s</string>
     <string name="voucher_regis_button">Daftar</string>
+
+    <string name="detail_promo_title_content">Detail Promo</string>
+    <string name="detail_promo_content">Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 20%</string>
+    <string name="detail_duration_title_content">Durasi Promo</string>
+    <string name="detail_duration_content">%s – %s</string>
+    <string name="detail_deadline_title_content">Daftar Sebelum</string>
+    <string name="detail_deadline_content">%s</string>
+    <string name="registration_policy_content">Saya menyetujui Syarat dan Ketentuan yang berlaku</string>
+    <string name="registration_promo_succeed">Pendaftaran berhasil diajukan, pengajuan pendaftaran Anda akan kami periksa. Periksa halaman lainnya untuk mengetahui pemberitahuan selanjutnya!</string>
 
 </resources>
