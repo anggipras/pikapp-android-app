@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.promo_fragment.*
 import kotlinx.android.synthetic.main.transaction_fragment.tabs
 import smartdevelop.ir.eram.showcaseviewlib.GuideView
 import androidx.recyclerview.widget.PagerSnapHelper
+import com.tsab.pikapp.models.model.PromoRegisListData
 import com.tsab.pikapp.models.model.PromoRegisListModel
 import com.tsab.pikapp.view.promo.PromoDetailPageActivity
 import java.io.Serializable
@@ -85,12 +86,12 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
         viewModel.getLiveDataPromoRegisListObserver().observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
                 recyclerAdapter.setPromoListAdapter(it)
-                dataBinding.arIndicator.numberOfIndicators = 4
+                dataBinding.arIndicator.numberOfIndicators = it.size
             }
         })
     }
 
-    override fun onItemRegisPromoClick(promoRegisValue: PromoRegisListModel) {
+    override fun onItemRegisPromoClick(promoRegisValue: PromoRegisListData) {
         Intent(activity?.baseContext, PromoDetailPageActivity::class.java).apply {
             putExtra(PromoDetailPageActivity.PROMO_DETAIL_FLOW, "REGIS")
             putExtra(PromoDetailPageActivity.PROMO_DETAIL_DATA, promoRegisValue as Serializable)

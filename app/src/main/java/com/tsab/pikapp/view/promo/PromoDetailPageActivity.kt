@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
 import android.view.LayoutInflater
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -12,7 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityPromoDetailPageBinding
-import com.tsab.pikapp.models.model.PromoRegisListModel
+import com.tsab.pikapp.models.model.PromoRegisListData
 import com.tsab.pikapp.view.homev2.HomeActivity
 import kotlinx.android.synthetic.main.one_button_dialog.view.*
 import java.text.SimpleDateFormat
@@ -37,7 +38,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
-        val promoDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoRegisListModel
+        val promoDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoRegisListData
         dataBinding.headerTracking.headerTitle.text = getString(R.string.promo_detail_regis_title, promoDetailData?.campaign_name)
         mapPromoDetailData(promoDetailData)
 
@@ -59,15 +60,17 @@ class PromoDetailPageActivity : AppCompatActivity() {
                 successRegisDialog()
             }, 5000)
         }
+
+        setPolicyText()
     }
 
-    private fun mapPromoDetailData(promoDetailData: PromoRegisListModel?) {
+    private fun mapPromoDetailData(promoDetailData: PromoRegisListData?) {
         dataBinding.promoDetailContent.text = promoDetailData?.campaign_detail
         Picasso.get().load(promoDetailData?.campaign_image).into(dataBinding.promoDetailImg)
         dateFormatter(promoDetailData)
     }
 
-    private fun dateFormatter(promoDetailData: PromoRegisListModel?) {
+    private fun dateFormatter(promoDetailData: PromoRegisListData?) {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val formatterDate = SimpleDateFormat("dd MMMM yyyy", id)
         val outputStartDate = formatterDate.format(parser.parse(promoDetailData?.campaign_start_date))
@@ -76,6 +79,20 @@ class PromoDetailPageActivity : AppCompatActivity() {
 
         dataBinding.promoDurationContent.text = baseContext.getString(R.string.detail_duration_content, outputStartDate, outputEndDate)
         dataBinding.promoDeadlineContent.text = baseContext.getString(R.string.detail_deadline_content, outputDeadlineDate)
+    }
+
+    private fun setPolicyText() {
+        val firstSentence: String = getColoredSpanned("Saya menyetujui", "#111111")
+        val midSentence: String = getColoredSpanned("Syarat dan Ketentuan", "#4BB7AC")
+        val lastSentence: String = getColoredSpanned("yang berlaku", "#111111")
+        dataBinding.registrationPolicyText.text = Html.fromHtml("$firstSentence $midSentence $lastSentence")
+        dataBinding.registrationPolicyText.setOnClickListener {
+            /* LATER, OPEN THE POLICY DIALOG */
+        }
+    }
+
+    private fun getColoredSpanned(text: String, color: String): String {
+        return "<font color=$color>$text</font>"
     }
 
     private fun successRegisDialog() {
