@@ -99,6 +99,9 @@ class PromoRegisAdapter(
             itemView.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
             }
+            voucherRegisButton.setOnClickListener {
+                listener.onItemRegisPromoClick(promoRegisValue)
+            }
         }
     }
 
@@ -131,6 +134,9 @@ class PromoRegisAdapter(
 
             dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
             itemView.setOnClickListener {
+                listener.onItemRegisPromoClick(promoRegisValue)
+            }
+            voucherRegisButton.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
             }
         }

@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityPromoDetailPageBinding
+import com.tsab.pikapp.models.model.PromoAppliedListData
 import com.tsab.pikapp.models.model.PromoRegisListData
 import com.tsab.pikapp.view.homev2.HomeActivity
 import kotlinx.android.synthetic.main.one_button_dialog.view.*
@@ -38,9 +39,16 @@ class PromoDetailPageActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
         }
 
-        val promoDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoRegisListData
-        dataBinding.headerTracking.headerTitle.text = getString(R.string.promo_detail_regis_title, promoDetailData?.campaign_name)
-        mapPromoDetailData(promoDetailData)
+        val promoDetailFlow = intent.getStringExtra(PROMO_DETAIL_FLOW)
+        if (promoDetailFlow == "REGIS") {
+            val promoRegisDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoRegisListData
+            dataBinding.headerTracking.headerTitle.text = getString(R.string.promo_detail_regis_title, promoRegisDetailData?.campaign_name)
+            mapPromoDetailData(promoRegisDetailData)
+        } else {
+            val promoAppliedDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoAppliedListData
+            dataBinding.headerTracking.headerTitle.text = getString(R.string.promo_detail_regis_title, promoAppliedDetailData?.campaign_name)
+            mapPromoAppliedDetailData(promoAppliedDetailData)
+        }
 
         dataBinding.checkboxPromoRegistration.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -64,18 +72,35 @@ class PromoDetailPageActivity : AppCompatActivity() {
         setPolicyText()
     }
 
-    private fun mapPromoDetailData(promoDetailData: PromoRegisListData?) {
-        dataBinding.promoDetailContent.text = promoDetailData?.campaign_detail
-        Picasso.get().load(promoDetailData?.campaign_image).into(dataBinding.promoDetailImg)
-        dateFormatter(promoDetailData)
+    private fun mapPromoDetailData(promoRegisDetailData: PromoRegisListData?) {
+        dataBinding.promoDetailContent.text = promoRegisDetailData?.campaign_detail
+        Picasso.get().load(promoRegisDetailData?.campaign_image).into(dataBinding.promoDetailImg)
+        dateFormatterRegisPromo(promoRegisDetailData)
     }
 
-    private fun dateFormatter(promoDetailData: PromoRegisListData?) {
+    private fun mapPromoAppliedDetailData(promoAppliedDetailData: PromoAppliedListData?) {
+        dataBinding.promoDetailContent.text = promoAppliedDetailData?.campaign_detail
+        Picasso.get().load(promoAppliedDetailData?.campaign_image).into(dataBinding.promoDetailImg)
+        dateFormatterAppliedPromo(promoAppliedDetailData)
+    }
+
+    private fun dateFormatterRegisPromo(promoRegisDetailData: PromoRegisListData?) {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val formatterDate = SimpleDateFormat("dd MMMM yyyy", id)
-        val outputStartDate = formatterDate.format(parser.parse(promoDetailData?.campaign_start_date))
-        val outputEndDate = formatterDate.format(parser.parse(promoDetailData?.campaign_end_date))
-        val outputDeadlineDate = formatterDate.format(parser.parse(promoDetailData?.campaign_regis_deadline_date))
+        val outputStartDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_start_date))
+        val outputEndDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_end_date))
+        val outputDeadlineDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_regis_deadline_date))
+
+        dataBinding.promoDurationContent.text = baseContext.getString(R.string.detail_duration_content, outputStartDate, outputEndDate)
+        dataBinding.promoDeadlineContent.text = baseContext.getString(R.string.detail_deadline_content, outputDeadlineDate)
+    }
+
+    private fun dateFormatterAppliedPromo(promoAppliedPromoDetailData: PromoAppliedListData?) {
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val formatterDate = SimpleDateFormat("dd MMMM yyyy", id)
+        val outputStartDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_start_date))
+        val outputEndDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_end_date))
+        val outputDeadlineDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_regis_deadline_date))
 
         dataBinding.promoDurationContent.text = baseContext.getString(R.string.detail_duration_content, outputStartDate, outputEndDate)
         dataBinding.promoDeadlineContent.text = baseContext.getString(R.string.detail_deadline_content, outputDeadlineDate)

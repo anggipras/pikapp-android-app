@@ -413,7 +413,7 @@
     <string name="page_problem_title">Halaman Bermasalah</string>
     <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silakan coba lagi!</string>
 
-    <!-- Promo screens -->
+    <!-- Promo --><!-- screens -->
     <string name="promo_empty_title">Belum ada promo nih!</string>
     <string name="promo_empty_detail">Tunggu promo menarik yang bisa kamu ikuti disini ya</string>
     <string name="button_add_promo">Tambah Promo</string>
@@ -422,6 +422,7 @@
     <string name="promotion_date">%s - %s</string>
     <string name="promotion_status">Aktif</string>
 
+    <!--  Register Promo  -->
     <string name="promo_detail_regis_title">%s</string>
     <string name="promo_regis_title">Promo Untuk Anda</string>
     <string name="promo_see_all_regis">Lihat Semua</string>
@@ -433,6 +434,10 @@
     <string name="voucher_deadline_period">Daftar sebelum %s</string>
     <string name="voucher_regis_button">Daftar</string>
 
+    <!--  Applied Promo  -->
+    <string name="promo_applied_title">Promo Saya</string>
+
+    <!--  Detail Promo  -->
     <string name="detail_promo_title_content">Detail Promo</string>
     <string name="detail_promo_content">Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 20%</string>
     <string name="detail_duration_title_content">Durasi Promo</string>
@@ -442,13 +447,5 @@
     <string name="registration_policy_content">Saya menyetujui Syarat dan Ketentuan yang berlaku</string>
     <string name="registration_promo_succeed">Pendaftaran berhasil diajukan, pengajuan pendaftaran Anda akan kami periksa. Periksa halaman lainnya untuk mengetahui pemberitahuan selanjutnya!</string>
     <string name="title_activity_all_regis_promo">AllRegisPromoActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

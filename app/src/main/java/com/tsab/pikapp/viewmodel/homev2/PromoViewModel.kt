@@ -5,9 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.tsab.pikapp.models.model.PromoListModel
-import com.tsab.pikapp.models.model.PromoRegisListData
-import com.tsab.pikapp.models.model.PromoRegisListModel
+import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.view.homev2.promo.PromoListAdapter
 
 class PromoViewModel : ViewModel() {
@@ -36,7 +34,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL2",
-            campaign_image = "https://ecs7.tokopedia.net/img/cache/730/kjjBfF/2021/6/14/658ede0f-7236-425e-bef3-a498a6c14912.jpg",
+            campaign_image = "https://thumbs.dreamstime.com/z/christmas-tours-travel-promo-banner-design-template-vector-illu-illustration-130596950.jpg",
             campaign_quota = "30",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 20,
@@ -47,7 +45,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL3",
-            campaign_image = "https://ecs7.tokopedia.net/img/cache/730/kjjBfF/2021/6/15/616df725-64b7-4de8-b6c7-4d8d9fff7a68.png",
+            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
             campaign_quota = "40",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 30000,
@@ -58,7 +56,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL4",
-            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2019/05/Banner_Kotak-Kejutan-900-x-494.jpg",
+            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
             campaign_quota = "50",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 40500,
@@ -69,7 +67,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL5",
-            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2019/05/Banner_Kotak-Kejutan-900-x-494.jpg",
+            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
             campaign_quota = "60",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 50,
@@ -80,7 +78,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL6",
-            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2019/05/Banner_Kotak-Kejutan-900-x-494.jpg",
+            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
             campaign_quota = "70",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 60,
@@ -91,7 +89,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL7",
-            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2019/05/Banner_Kotak-Kejutan-900-x-494.jpg",
+            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
             campaign_quota = "80",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 70000,
@@ -131,6 +129,99 @@ class PromoViewModel : ViewModel() {
             campaign_end_date = it.campaign_end_date,
             campaign_regis_deadline_date = it.campaign_regis_deadline_date,
             campaign_detail = it.campaign_detail
+        )
+    }
+
+    private var liveDataPromoAppliedList: MutableLiveData<MutableList<PromoAppliedListData>> = MutableLiveData()
+    fun getLiveDataPromoAppliedListObserver(): MutableLiveData<MutableList<PromoAppliedListData>> {
+        return liveDataPromoAppliedList
+    }
+
+    fun getPromoAppliedList() {
+        /* DUMMY DATA MOCKING FROM BE*/
+        val promoListResponse: MutableList<PromoAppliedListModel> = ArrayList()
+        promoListResponse.add(PromoAppliedListModel(
+            campaign_name = "SPESIAL1",
+            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2017/08/Banner-Blog-Seller-Center-1200x630.jpg",
+            campaign_quota = "20",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 10,
+            campaign_start_date = "2021-05-01T09:00:00",
+            campaign_end_date = "2021-06-01T21:00:00",
+            campaign_regis_deadline_date = "2021-04-20T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 10%",
+            campaign_status = "ONGOING"
+        ))
+        promoListResponse.add(PromoAppliedListModel(
+            campaign_name = "SPESIAL2",
+            campaign_image = "https://thumbs.dreamstime.com/z/christmas-tours-travel-promo-banner-design-template-vector-illu-illustration-130596950.jpg",
+            campaign_quota = "30",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 20,
+            campaign_start_date = "2021-05-02T09:00:00",
+            campaign_end_date = "2021-06-02T21:00:00",
+            campaign_regis_deadline_date = "2021-04-21T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 20%",
+            campaign_status = "ONPROCESS"
+        ))
+        promoListResponse.add(PromoAppliedListModel(
+            campaign_name = "SPESIAL3",
+            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
+            campaign_quota = "40",
+            discount_amt_type = "ABSOLUTE",
+            discount_amt = 30000,
+            campaign_start_date = "2021-05-03T09:00:00",
+            campaign_end_date = "2021-06-03T21:00:00",
+            campaign_regis_deadline_date = "2021-04-22T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 30rb",
+            campaign_status = "ONPROCESS"
+        ))
+        promoListResponse.add(PromoAppliedListModel(
+            campaign_name = "SPESIAL4",
+            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
+            campaign_quota = "50",
+            discount_amt_type = "ABSOLUTE",
+            discount_amt = 40500,
+            campaign_start_date = "2021-05-04T09:00:00",
+            campaign_end_date = "2021-06-04T21:00:00",
+            campaign_regis_deadline_date = "2021-04-23T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 40.5rb",
+            campaign_status = "ONGOING"
+        ))
+        promoListResponse.add(PromoAppliedListModel(
+            campaign_name = "SPESIAL5",
+            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
+            campaign_quota = "60",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 50,
+            campaign_start_date = "2021-05-05T09:00:00",
+            campaign_end_date = "2021-06-05T21:00:00",
+            campaign_regis_deadline_date = "2021-04-24T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 50%",
+            campaign_status = "ONGOING"
+        ))
+
+        /* MAPPING DATA WITH VIEWTYPE */
+        val promoListData: MutableList<PromoAppliedListData> = ArrayList()
+        promoListResponse.forEach {
+            promoListData.add(addAppliedPromoData(it))
+        }
+        liveDataPromoAppliedList.postValue(promoListData)
+    }
+
+    private fun addAppliedPromoData(it: PromoAppliedListModel): PromoAppliedListData {
+        return PromoAppliedListData(
+            viewType = 0,
+            campaign_name = it.campaign_name,
+            campaign_image = it.campaign_image,
+            campaign_quota = it.campaign_quota,
+            discount_amt_type = it.discount_amt_type,
+            discount_amt = it.discount_amt,
+            campaign_start_date = it.campaign_start_date,
+            campaign_end_date = it.campaign_end_date,
+            campaign_regis_deadline_date = it.campaign_regis_deadline_date,
+            campaign_detail = it.campaign_detail,
+            campaign_status = it.campaign_status
         )
     }
 

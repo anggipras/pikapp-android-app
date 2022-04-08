@@ -17,18 +17,21 @@ import com.tsab.pikapp.view.promo.PromoRegisAdapter
 import com.tsab.pikapp.viewmodel.homev2.PromoViewModel
 import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
 import androidx.recyclerview.widget.PagerSnapHelper
+import com.tsab.pikapp.models.model.PromoAppliedListData
 import com.tsab.pikapp.models.model.PromoRegisListData
 import com.tsab.pikapp.view.promo.AllRegisPromoActivity
+import com.tsab.pikapp.view.promo.PromoAppliedAdapter
 import com.tsab.pikapp.view.promo.PromoDetailPageActivity
 import java.io.Serializable
 
-class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
+class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener, PromoAppliedAdapter.OnItemClickListener {
     private val sessionManager = SessionManager()
     private lateinit var dataBinding: PromoFragmentBinding
     private val viewModel: PromoViewModel by activityViewModels()
     private val viewModel1: TutorialViewModel by activityViewModels()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recyclerAdapter: PromoRegisAdapter
+    private lateinit var recyclerAppliedPromoAdapter: PromoAppliedAdapter
     private val recyclerViewSnapHelper = PagerSnapHelper()
 
     override fun onCreateView(
@@ -64,6 +67,7 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
 //        }
 
         viewModel.getPromoRegisList(0)
+        viewModel.getPromoAppliedList()
 
         dataBinding.regisSeeAllPromo.setOnClickListener {
             Intent(activity?.baseContext, AllRegisPromoActivity::class.java).apply {
@@ -84,6 +88,10 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
         dataBinding.recyclerviewPromoList.onFlingListener = null
         recyclerViewSnapHelper.attachToRecyclerView(dataBinding.recyclerviewPromoList)
 //        dataBinding.recyclerviewPromoList.addItemDecoration(CirclePagerIndicatorDecoration())
+
+        dataBinding.recyclerviewAppliedPromoList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerAppliedPromoAdapter = PromoAppliedAdapter(requireContext(), this)
+        dataBinding.recyclerviewAppliedPromoList.adapter = recyclerAppliedPromoAdapter
     }
 
     private fun initViewModel() {
@@ -93,12 +101,27 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
                 dataBinding.arIndicator.numberOfIndicators = it.size
             }
         })
+
+        viewModel.getLiveDataPromoAppliedListObserver().observe(viewLifecycleOwner, {
+            if (!it.isNullOrEmpty()) {
+                recyclerAppliedPromoAdapter.setPromoListAdapter(it)
+            }
+        })
     }
 
     override fun onItemRegisPromoClick(promoRegisValue: PromoRegisListData) {
         Intent(activity?.baseContext, PromoDetailPageActivity::class.java).apply {
             putExtra(PromoDetailPageActivity.PROMO_DETAIL_FLOW, "REGIS")
             putExtra(PromoDetailPageActivity.PROMO_DETAIL_DATA, promoRegisValue as Serializable)
+            startActivity(this)
+            activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
+        }
+    }
+
+    override fun onItemAppliedPromoClick(promoAppliedValue: PromoAppliedListData) {
+        Intent(activity?.baseContext, PromoDetailPageActivity::class.java).apply {
+            putExtra(PromoDetailPageActivity.PROMO_DETAIL_FLOW, "APPLIED")
+            putExtra(PromoDetailPageActivity.PROMO_DETAIL_DATA, promoAppliedValue as Serializable)
             startActivity(this)
             activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
         }
