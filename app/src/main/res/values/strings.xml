@@ -424,6 +424,7 @@
 
     <string name="promo_detail_regis_title">%s</string>
     <string name="promo_regis_title">Promo Untuk Anda</string>
+    <string name="promo_see_all_regis">Lihat Semua</string>
     <string name="voucher_title">Diskon Kilat Spesial</string>
     <string name="voucher_quota">Tersedia %s Kuota</string>
     <string name="voucher_disc_title">Diskon</string>
@@ -440,5 +441,14 @@
     <string name="detail_deadline_content">%s</string>
     <string name="registration_policy_content">Saya menyetujui Syarat dan Ketentuan yang berlaku</string>
     <string name="registration_promo_succeed">Pendaftaran berhasil diajukan, pengajuan pendaftaran Anda akan kami periksa. Periksa halaman lainnya untuk mengetahui pemberitahuan selanjutnya!</string>
+    <string name="title_activity_all_regis_promo">AllRegisPromoActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

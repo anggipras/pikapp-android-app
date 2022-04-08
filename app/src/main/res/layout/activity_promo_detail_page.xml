@@ -27,7 +27,7 @@
                 <ImageView
                     android:id="@+id/promo_detail_img"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_180sdp"
+                    android:layout_height="wrap_content"
                     android:scaleType="centerInside"
                     android:adjustViewBounds="true"
                     app:layout_constraintTop_toTopOf="parent"

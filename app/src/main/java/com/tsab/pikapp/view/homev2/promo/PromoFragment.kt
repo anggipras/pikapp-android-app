@@ -16,12 +16,9 @@ import com.tsab.pikapp.util.SessionManager
 import com.tsab.pikapp.view.promo.PromoRegisAdapter
 import com.tsab.pikapp.viewmodel.homev2.PromoViewModel
 import com.tsab.pikapp.viewmodel.homev2.TutorialViewModel
-import kotlinx.android.synthetic.main.promo_fragment.*
-import kotlinx.android.synthetic.main.transaction_fragment.tabs
-import smartdevelop.ir.eram.showcaseviewlib.GuideView
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.tsab.pikapp.models.model.PromoRegisListData
-import com.tsab.pikapp.models.model.PromoRegisListModel
+import com.tsab.pikapp.view.promo.AllRegisPromoActivity
 import com.tsab.pikapp.view.promo.PromoDetailPageActivity
 import java.io.Serializable
 
@@ -66,7 +63,14 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener {
 //            ShowIntro("Promo Button", "Tombol Promo digunakan untuk mengakses halaman “Promo” yang dimiliki oleh merchant.", requireActivity().findViewById(R.id.nav_promo), 2)
 //        }
 
-        viewModel.getPromoRegisList()
+        viewModel.getPromoRegisList(0)
+
+        dataBinding.regisSeeAllPromo.setOnClickListener {
+            Intent(activity?.baseContext, AllRegisPromoActivity::class.java).apply {
+                startActivity(this)
+                activity?.overridePendingTransition(R.anim.slide_up, R.anim.no_animation)
+            }
+        }
 
         initRecyclerView()
         initViewModel()

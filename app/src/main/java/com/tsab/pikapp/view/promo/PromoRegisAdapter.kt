@@ -42,15 +42,15 @@ class PromoRegisAdapter(
                 LayoutInflater.from(context).inflate(R.layout.promo_regis_list_items, parent, false)
             )
         }
-        return SeeAllViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.see_all_item, parent, false)
+        return AllPromoViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.promo_all_regis_list_items, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (listOfPromoRegis[position].viewType) {
             VIEW_TYPE_REGULAR -> (holder as RegularViewHolder).bind(position)
-            else -> (holder as SeeAllViewHolder).bind(position)
+            else -> (holder as AllPromoViewHolder).bind(position)
         }
     }
 
@@ -96,16 +96,42 @@ class PromoRegisAdapter(
             }
 
             dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
-            voucherRegisButton.setOnClickListener {
+            itemView.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
             }
         }
     }
 
-    private inner class SeeAllViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private inner class AllPromoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var voucherTitle: TextView = itemView.findViewById(R.id.voucher_title)
+        var voucherQuota: TextView = itemView.findViewById(R.id.voucher_quota)
+        var voucherDiscPercentage: TextView = itemView.findViewById(R.id.voucher_disc_amt)
+        var voucherDatePeriod: TextView = itemView.findViewById(R.id.voucher_period)
+        var voucherRegisDeadlinePeriod: TextView = itemView.findViewById(R.id.voucher_deadline_period)
+        var voucherRegisButton: Button = itemView.findViewById(R.id.voucher_regis_button)
+
         fun bind(position: Int) {
+            val promoRegisValue = listOfPromoRegis[position]
+            voucherTitle.text = promoRegisValue.campaign_name
+            voucherQuota.text = context.getString(R.string.voucher_quota, promoRegisValue.campaign_quota)
+            if (promoRegisValue.discount_amt_type == "ABSOLUTE") {
+                val nominalDiscountDivided = promoRegisValue.discount_amt?.toDouble()?.div(1000) ?: 1
+                val nominalDiscount = nominalDiscountDivided.toLong()
+                val formattedDouble = String.format("%.1f", nominalDiscountDivided)
+                val doubleTimesTen = (formattedDouble.toDouble() * 10).toLong()
+                val checkLastDigit = (doubleTimesTen % 10).toString()
+                if (checkLastDigit == "0") {
+                    voucherDiscPercentage.text = "${nominalDiscount}rb"
+                } else {
+                    voucherDiscPercentage.text = "${formattedDouble}rb"
+                }
+            } else {
+                voucherDiscPercentage.text = "${promoRegisValue.discount_amt}%"
+            }
+
+            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
             itemView.setOnClickListener {
-                Toast.makeText(context, "Go to All Register List Promo", Toast.LENGTH_SHORT).show()
+                listener.onItemRegisPromoClick(promoRegisValue)
             }
         }
     }

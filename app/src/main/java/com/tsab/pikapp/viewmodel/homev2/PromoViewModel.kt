@@ -1,7 +1,6 @@
 package com.tsab.pikapp.viewmodel.homev2
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +20,7 @@ class PromoViewModel : ViewModel() {
         return liveDataPromoRegisList
     }
 
-    fun getPromoRegisList() {
+    fun getPromoRegisList(flow: Int) {
         /* DUMMY DATA MOCKING FROM BE*/
         val promoListResponse: MutableList<PromoRegisListModel> = ArrayList()
         promoListResponse.add(PromoRegisListModel(
@@ -103,21 +102,21 @@ class PromoViewModel : ViewModel() {
         ))
 
         /* MAPPING DATA WITH VIEWTYPE */
-        val promoListData: MutableList<PromoRegisListData> = ArrayList()
-        if (promoListResponse.size <= 5) {
-            promoListResponse.forEach {
-                promoListData.add(addPromoData(0, it))
-            }
-        } else {
+        if (flow == 0) {
+            val promoListData: MutableList<PromoRegisListData> = ArrayList()
             promoListResponse.forEachIndexed { ind, it ->
-                if (ind < 4) {
+                if (ind < 5) {
                     promoListData.add(addPromoData(0, it))
-                } else if (ind == 4) {
-                    promoListData.add(addPromoData(1, it))
                 }
             }
+            liveDataPromoRegisList.postValue(promoListData)
+        } else {
+            val promoListData: MutableList<PromoRegisListData> = ArrayList()
+            promoListResponse.forEach {
+                promoListData.add(addPromoData(1, it))
+            }
+            liveDataPromoRegisList.postValue(promoListData)
         }
-        liveDataPromoRegisList.postValue(promoListData)
     }
 
     private fun addPromoData(viewType: Int, it: PromoRegisListModel): PromoRegisListData {
