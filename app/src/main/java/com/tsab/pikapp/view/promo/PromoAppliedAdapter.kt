@@ -11,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.PromoAppliedListData
-import com.tsab.pikapp.models.model.PromoRegisListData
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Html
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -44,6 +45,15 @@ class PromoDetailPageActivity : AppCompatActivity() {
             val promoRegisDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoRegisListData
             dataBinding.headerTracking.headerTitle.text = getString(R.string.promo_detail_regis_title, promoRegisDetailData?.campaign_name)
             mapPromoDetailData(promoRegisDetailData)
+
+            dataBinding.registrationButton.setOnClickListener {
+                /* AFTER HIT REGIS PROMO API */
+                dataBinding.loadingOverlay.loadingView.isVisible = true
+                handler.postDelayed({
+                    dataBinding.loadingOverlay.loadingView.isVisible = false
+                    successRegisDialog()
+                }, 5000)
+            }
         } else {
             val promoAppliedDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoAppliedListData
             dataBinding.headerTracking.headerTitle.text = getString(R.string.promo_detail_regis_title, promoAppliedDetailData?.campaign_name)
@@ -60,15 +70,6 @@ class PromoDetailPageActivity : AppCompatActivity() {
             }
         }
 
-        dataBinding.registrationButton.setOnClickListener {
-            /* AFTER HIT REGIS PROMO API */
-            dataBinding.loadingOverlay.loadingView.isVisible = true
-            handler.postDelayed({
-                dataBinding.loadingOverlay.loadingView.isVisible = false
-                successRegisDialog()
-            }, 5000)
-        }
-
         setPolicyText()
     }
 
@@ -82,6 +83,20 @@ class PromoDetailPageActivity : AppCompatActivity() {
         dataBinding.promoDetailContent.text = promoAppliedDetailData?.campaign_detail
         Picasso.get().load(promoAppliedDetailData?.campaign_image).into(dataBinding.promoDetailImg)
         dateFormatterAppliedPromo(promoAppliedDetailData)
+
+        dataBinding.promoDeadlineLayout.isVisible = false
+        dataBinding.promoVoucherCodeLayout.isVisible = true
+        dataBinding.promoVoucherCodeContent.text = baseContext.getString(R.string.detail_voucher_code_content, promoAppliedDetailData?.campaign_name)
+        dataBinding.promoStatusLayout.isVisible = true
+        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, promoAppliedDetailData?.campaign_status)
+        dataBinding.registrationPolicyLayout.isVisible = false
+        dataBinding.registrationButton.text = "Lihat Performa"
+        dataBinding.registrationButton.setBackgroundResource(R.drawable.button_green_small)
+        dataBinding.registrationButton.isEnabled = true
+        dataBinding.registrationButton.setOnClickListener {
+            /* GO TO SEE PERFORMANCE WEB VIEW */
+            Toast.makeText(baseContext, "Buka Page Lihat Performa", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun dateFormatterRegisPromo(promoRegisDetailData: PromoRegisListData?) {
@@ -138,6 +153,9 @@ class PromoDetailPageActivity : AppCompatActivity() {
         }
         mDialogView.oneButton_dialog_ok.setOnClickListener {
             mAlertDialog.dismiss()
+            backToHomeAfterRegis()
+        }
+        mAlertDialog.setOnCancelListener {
             backToHomeAfterRegis()
         }
     }

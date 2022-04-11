@@ -446,6 +446,9 @@
     <string name="detail_deadline_content">%s</string>
     <string name="registration_policy_content">Saya menyetujui Syarat dan Ketentuan yang berlaku</string>
     <string name="registration_promo_succeed">Pendaftaran berhasil diajukan, pengajuan pendaftaran Anda akan kami periksa. Periksa halaman lainnya untuk mengetahui pemberitahuan selanjutnya!</string>
-    <string name="title_activity_all_regis_promo">AllRegisPromoActivity</string>
+    <string name="detail_voucher_code_title_content">Kode Voucher</string>
+    <string name="detail_voucher_code_content">%s</string>
+    <string name="detail_status_title_content">Status</string>
+    <string name="detail_status_content">%s</string>
 
 </resources>
