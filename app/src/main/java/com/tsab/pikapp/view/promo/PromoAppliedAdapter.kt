@@ -2,11 +2,13 @@ package com.tsab.pikapp.view.promo
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.tsab.pikapp.R
@@ -34,7 +36,7 @@ class PromoAppliedAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RegularViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.promo_all_regis_list_items, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.promo_applied_list_items, parent, false)
         )
     }
 
@@ -63,12 +65,12 @@ class PromoAppliedAdapter(
     }
 
     private inner class RegularViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var voucherTitle: TextView = itemView.findViewById(R.id.voucher_title)
-        var voucherQuota: TextView = itemView.findViewById(R.id.voucher_quota)
-        var voucherDiscPercentage: TextView = itemView.findViewById(R.id.voucher_disc_amt)
-        var voucherDatePeriod: TextView = itemView.findViewById(R.id.voucher_period)
-        var voucherRegisDeadlinePeriod: TextView = itemView.findViewById(R.id.voucher_deadline_period)
-        var voucherRegisButton: Button = itemView.findViewById(R.id.voucher_regis_button)
+        var voucherTitle: TextView = itemView.findViewById(R.id.applied_voucher_title)
+        var voucherQuota: TextView = itemView.findViewById(R.id.applied_voucher_quota)
+        var voucherDiscPercentage: TextView = itemView.findViewById(R.id.applied_voucher_disc_amt)
+        var voucherDatePeriod: TextView = itemView.findViewById(R.id.applied_voucher_period)
+        var voucherRegisDeadlinePeriod: TextView = itemView.findViewById(R.id.applied_voucher_deadline_period)
+        var voucherRegisButton: Button = itemView.findViewById(R.id.applied_voucher_regis_button)
         var appliedPromoStatus: TextView = itemView.findViewById(R.id.applied_promo_status)
 
         fun bind(position: Int) {
@@ -93,11 +95,11 @@ class PromoAppliedAdapter(
             }
 
             if (promoAppliedValue.campaign_status == "ONGOING") {
-                appliedPromoStatus.setBackgroundResource(R.drawable.button_lightgreen)
+                appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
                 appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorGreen))
                 appliedPromoStatus.text = "Berlangsung"
             } else {
-                appliedPromoStatus.setBackgroundResource(R.drawable.button_lightorange)
+                appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightOrange), PorterDuff.Mode.SRC_IN)
                 appliedPromoStatus.setTextColor(context.resources.getColor(R.color.orange))
                 appliedPromoStatus.text = "Dalam Proses"
             }

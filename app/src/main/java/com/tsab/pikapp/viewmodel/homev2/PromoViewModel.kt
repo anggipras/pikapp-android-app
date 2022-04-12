@@ -23,7 +23,7 @@ class PromoViewModel : ViewModel() {
         val promoListResponse: MutableList<PromoRegisListModel> = ArrayList()
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL1",
-            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2017/08/Banner-Blog-Seller-Center-1200x630.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "20",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 10,
@@ -34,7 +34,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL2",
-            campaign_image = "https://thumbs.dreamstime.com/z/christmas-tours-travel-promo-banner-design-template-vector-illu-illustration-130596950.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "30",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 20,
@@ -45,7 +45,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL3",
-            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "40",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 30000,
@@ -56,7 +56,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL4",
-            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
+            campaign_image = "https://lelogama.go-jek.com/post_featured_image/promo-tokopedia-agustus.jpg",
             campaign_quota = "50",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 40500,
@@ -67,7 +67,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL5",
-            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "60",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 50,
@@ -78,7 +78,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL6",
-            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "70",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 60,
@@ -89,7 +89,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoRegisListModel(
             campaign_name = "SPESIAL7",
-            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "80",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 70000,
@@ -142,7 +142,7 @@ class PromoViewModel : ViewModel() {
         val promoListResponse: MutableList<PromoAppliedListModel> = ArrayList()
         promoListResponse.add(PromoAppliedListModel(
             campaign_name = "SPESIAL1",
-            campaign_image = "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2017/08/Banner-Blog-Seller-Center-1200x630.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "20",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 10,
@@ -154,7 +154,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoAppliedListModel(
             campaign_name = "SPESIAL2",
-            campaign_image = "https://thumbs.dreamstime.com/z/christmas-tours-travel-promo-banner-design-template-vector-illu-illustration-130596950.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "30",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 20,
@@ -166,7 +166,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoAppliedListModel(
             campaign_name = "SPESIAL3",
-            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "40",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 30000,
@@ -178,7 +178,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoAppliedListModel(
             campaign_name = "SPESIAL4",
-            campaign_image = "https://previews.123rf.com/images/vectorprodesign/vectorprodesign1911/vectorprodesign191100002/134068784-travel-promo-up-to-forty-percents-off-poster-vector-illustration-add-banner-with-blue-sky-and-flying.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "50",
             discount_amt_type = "ABSOLUTE",
             discount_amt = 40500,
@@ -190,7 +190,7 @@ class PromoViewModel : ViewModel() {
         ))
         promoListResponse.add(PromoAppliedListModel(
             campaign_name = "SPESIAL5",
-            campaign_image = "https://image.shutterstock.com/shutterstock/photos/1325995616/display_1500/stock-vector-travel-promo-banner-vacation-poster-design-travelling-and-tourism-web-banner-concept-summer-1325995616.jpg",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
             campaign_quota = "60",
             discount_amt_type = "PERCENTAGE",
             discount_amt = 50,

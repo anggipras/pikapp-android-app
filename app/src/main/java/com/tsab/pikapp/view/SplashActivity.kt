@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -33,6 +34,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
+
+//        if (BuildConfig.VERSION_NAME == "1.6") {
+//            runSplash()
+//        } else {
+//            dialogOpenPlayStore()
+//        }
 
         Firebase.messaging.isAutoInitEnabled = true
 
@@ -110,6 +117,25 @@ class SplashActivity : AppCompatActivity() {
 
             setPositiveButton("Ya") { _, _ ->
                 finish()
+            }
+            setNegativeButton("Tidak") { _, _ ->
+                // Restart activity to start update flow.
+                finish()
+                startActivity(intent)
+            }
+
+            show()
+        }
+    }
+
+    private fun dialogOpenPlayStore() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Perbarui Aplikasi")
+            setMessage("Mohon perbarui aplikasi di play store terlebih dahulu")
+
+            setPositiveButton("Ya") { _, _ ->
+                // Open Play Store
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
             }
             setNegativeButton("Tidak") { _, _ ->
                 // Restart activity to start update flow.

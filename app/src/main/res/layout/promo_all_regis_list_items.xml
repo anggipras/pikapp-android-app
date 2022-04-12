@@ -10,144 +10,149 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/_11sdp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/voucher_title"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/voucher_img"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
-            android:text="@string/voucher_title"
-            android:textColor="@color/black"
-            android:textSize="14sp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:background="@drawable/white_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/voucher_quota"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:fontFamily="@font/inter_regular"
-            android:text="@string/voucher_quota"
-            android:textColor="@color/black"
-            android:textSize="12sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/voucher_detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/voucher_img"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/voucher_title" />
-
-        <ImageView
-            android:id="@+id/discount_green_icon"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:background="@drawable/ic_discount_percentage"
-            app:layout_constraintEnd_toStartOf="@id/voucher_disc_layout"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="@dimen/_8sdp"/>
-
-        <LinearLayout
-            android:id="@+id/voucher_disc_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:paddingVertical="@dimen/_7sdp"
+            android:paddingHorizontal="@dimen/_13sdp">
 
             <TextView
-                android:id="@+id/voucher_disc_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_regular"
-                android:text="@string/voucher_disc_title"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/_11sdp" />
-
-            <TextView
-                android:id="@+id/voucher_disc_amt"
+                android:id="@+id/voucher_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"
-                android:text="@string/voucher_disc_amt"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/_15sdp" />
+                android:text="@string/voucher_title"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:id="@+id/voucher_quota"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/_4sdp"-->
+<!--                android:fontFamily="@font/inter_regular"-->
+<!--                android:text="@string/voucher_quota"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/voucher_title" />-->
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/borderSubtle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/voucher_disc_layout" />
+<!--            <ImageView-->
+<!--                android:id="@+id/discount_green_icon"-->
+<!--                android:layout_width="@dimen/_35sdp"-->
+<!--                android:layout_height="@dimen/_35sdp"-->
+<!--                android:background="@drawable/ic_discount_percentage"-->
+<!--                app:layout_constraintEnd_toStartOf="@id/voucher_disc_layout"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:layout_marginRight="@dimen/_8sdp"/>-->
 
-        <LinearLayout
-            android:id="@+id/voucher_period_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:gravity="center">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/voucher_disc_layout"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
 
-            <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:background="@drawable/ic_green_calendar" />
+<!--                <TextView-->
+<!--                    android:id="@+id/voucher_disc_title"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/inter_regular"-->
+<!--                    android:text="@string/voucher_disc_title"-->
+<!--                    android:textColor="@color/colorPrimaryDark"-->
+<!--                    android:textSize="@dimen/_11sdp" />-->
 
-            <TextView
-                android:id="@+id/voucher_period"
+<!--                <TextView-->
+<!--                    android:id="@+id/voucher_disc_amt"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="@font/inter_semibold"-->
+<!--                    android:text="@string/voucher_disc_amt"-->
+<!--                    android:textColor="@color/colorPrimaryDark"-->
+<!--                    android:textSize="@dimen/_15sdp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--            <View-->
+<!--                android:id="@+id/divider"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginTop="@dimen/_12sdp"-->
+<!--                android:background="@color/borderSubtle"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.5"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/voucher_disc_layout" />-->
+
+            <LinearLayout
+                android:id="@+id/voucher_period_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/voucher_title"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:background="@drawable/ic_green_calendar" />
+
+                <TextView
+                    android:id="@+id/voucher_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="@string/voucher_period"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="@dimen/_4sdp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/voucher_deadline_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/inter_regular"
-                android:text="@string/voucher_period"
-                android:textColor="@color/black"
+                android:text="@string/voucher_deadline_period"
+                android:textColor="@color/textSubtle"
                 android:textSize="12sp"
-                android:layout_marginLeft="@dimen/_4sdp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/voucher_period_layout" />
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/voucher_regis_button"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_27sdp"
+                android:background="@drawable/button_green_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/voucher_regis_button"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/voucher_deadline_period"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:fontFamily="@font/inter_regular"
-            android:text="@string/voucher_deadline_period"
-            android:textColor="@color/textSubtle"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/voucher_period_layout" />
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/applied_promo_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Berlangsung"
-            android:textColor="@color/colorGreen"
-            android:textSize="12sp"
-            android:paddingHorizontal="@dimen/_11sdp"
-            android:paddingVertical="@dimen/_6sdp"
-            android:background="@drawable/button_lightgreen"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <Button
-            android:id="@+id/voucher_regis_button"
-            android:layout_width="@dimen/_75sdp"
-            android:layout_height="@dimen/_27sdp"
-            android:background="@drawable/button_green_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/voucher_regis_button"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

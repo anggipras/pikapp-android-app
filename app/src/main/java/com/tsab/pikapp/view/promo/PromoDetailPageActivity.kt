@@ -30,14 +30,19 @@ class PromoDetailPageActivity : AppCompatActivity() {
     private lateinit var dataBinding: ActivityPromoDetailPageBinding
     private val id = Locale("in", "ID")
     var handler: Handler = Handler()
+    var registerSuccessFlow = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_promo_detail_page)
 
         dataBinding.headerTracking.backImage.setOnClickListener {
-            finish()
-            overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+            if (registerSuccessFlow == 0) {
+                finish()
+                overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+            } else {
+                backToHomeAfterRegis()
+            }
         }
 
         val promoDetailFlow = intent.getStringExtra(PROMO_DETAIL_FLOW)
@@ -51,7 +56,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
                 dataBinding.loadingOverlay.loadingView.isVisible = true
                 handler.postDelayed({
                     dataBinding.loadingOverlay.loadingView.isVisible = false
-                    successRegisDialog()
+                    successRegisDialog(promoRegisDetailData)
                 }, 5000)
             }
         } else {
@@ -128,6 +133,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         dataBinding.registrationPolicyText.text = Html.fromHtml("$firstSentence $midSentence $lastSentence")
         dataBinding.registrationPolicyText.setOnClickListener {
             /* LATER, OPEN THE POLICY DIALOG */
+            Toast.makeText(baseContext, "Buka Web Page Syarat dan Ketentuan", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -135,7 +141,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         return "<font color=$color>$text</font>"
     }
 
-    private fun successRegisDialog() {
+    private fun successRegisDialog(promoRegisDetailData: PromoRegisListData?) {
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.one_button_dialog, null)
         val mBuilder = AlertDialog.Builder(this)
             .setView(mDialogView)
@@ -149,15 +155,30 @@ class PromoDetailPageActivity : AppCompatActivity() {
         mDialogView.oneButton_dialog_text.text = getString(R.string.registration_promo_succeed)
         mDialogView.oneButton_dialog_close.setOnClickListener {
             mAlertDialog.dismiss()
-            backToHomeAfterRegis()
+            uiAfterRegister(promoRegisDetailData)
         }
         mDialogView.oneButton_dialog_ok.setOnClickListener {
             mAlertDialog.dismiss()
-            backToHomeAfterRegis()
+            uiAfterRegister(promoRegisDetailData)
         }
         mAlertDialog.setOnCancelListener {
-            backToHomeAfterRegis()
+            uiAfterRegister(promoRegisDetailData)
         }
+    }
+
+    private fun uiAfterRegister(promoRegisDetailData: PromoRegisListData?) {
+        registerSuccessFlow = 1
+        dataBinding.promoDetailImg.alpha = 0.5F
+        dataBinding.promoDeadlineLayout.isVisible = false
+        dataBinding.promoVoucherCodeLayout.isVisible = true
+        dataBinding.promoVoucherCodeContent.text = baseContext.getString(R.string.detail_voucher_code_content, promoRegisDetailData?.campaign_name)
+        dataBinding.promoStatusLayout.isVisible = true
+        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terdaftar")
+        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorGrey))
+        dataBinding.registrationPolicyLayout.isVisible = false
+        dataBinding.registrationButton.text = "Lihat Performa"
+        dataBinding.registrationButton.isEnabled = false
+        dataBinding.registrationButton.setBackgroundResource(R.drawable.button_dark_gray_small)
     }
 
     private fun backToHomeAfterRegis() {
@@ -170,7 +191,11 @@ class PromoDetailPageActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        finish()
-        overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+        if (registerSuccessFlow == 0) {
+            finish()
+            overridePendingTransition(R.anim.no_animation, R.anim.slide_down)
+        } else {
+            backToHomeAfterRegis()
+        }
     }
 }

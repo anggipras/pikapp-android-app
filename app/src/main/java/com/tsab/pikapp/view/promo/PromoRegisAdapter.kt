@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.models.model.PromoRegisListData
 import java.text.SimpleDateFormat
@@ -70,8 +72,7 @@ class PromoRegisAdapter(
 
     private inner class RegularViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var voucherTitle: TextView = itemView.findViewById(R.id.voucher_title)
-        var voucherQuota: TextView = itemView.findViewById(R.id.voucher_quota)
-        var voucherDiscPercentage: TextView = itemView.findViewById(R.id.voucher_disc_amt)
+        var voucherImg: ImageView = itemView.findViewById(R.id.voucher_img)
         var voucherDatePeriod: TextView = itemView.findViewById(R.id.voucher_period)
         var voucherRegisDeadlinePeriod: TextView = itemView.findViewById(R.id.voucher_deadline_period)
         var voucherRegisButton: Button = itemView.findViewById(R.id.voucher_regis_button)
@@ -79,22 +80,7 @@ class PromoRegisAdapter(
         fun bind(position: Int) {
             val promoRegisValue = listOfPromoRegis[position]
             voucherTitle.text = promoRegisValue.campaign_name
-            voucherQuota.text = context.getString(R.string.voucher_quota, promoRegisValue.campaign_quota)
-            if (promoRegisValue.discount_amt_type == "ABSOLUTE") {
-                val nominalDiscountDivided = promoRegisValue.discount_amt?.toDouble()?.div(1000) ?: 1
-                val nominalDiscount = nominalDiscountDivided.toLong()
-                val formattedDouble = String.format("%.1f", nominalDiscountDivided)
-                val doubleTimesTen = (formattedDouble.toDouble() * 10).toLong()
-                val checkLastDigit = (doubleTimesTen % 10).toString()
-                if (checkLastDigit == "0") {
-                    voucherDiscPercentage.text = "${nominalDiscount}rb"
-                } else {
-                    voucherDiscPercentage.text = "${formattedDouble}rb"
-                }
-            } else {
-                voucherDiscPercentage.text = "${promoRegisValue.discount_amt}%"
-            }
-
+            Picasso.get().load(promoRegisValue.campaign_image).into(voucherImg)
             dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
             itemView.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
@@ -107,8 +93,7 @@ class PromoRegisAdapter(
 
     private inner class AllPromoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var voucherTitle: TextView = itemView.findViewById(R.id.voucher_title)
-        var voucherQuota: TextView = itemView.findViewById(R.id.voucher_quota)
-        var voucherDiscPercentage: TextView = itemView.findViewById(R.id.voucher_disc_amt)
+        var voucherImg: ImageView = itemView.findViewById(R.id.voucher_img)
         var voucherDatePeriod: TextView = itemView.findViewById(R.id.voucher_period)
         var voucherRegisDeadlinePeriod: TextView = itemView.findViewById(R.id.voucher_deadline_period)
         var voucherRegisButton: Button = itemView.findViewById(R.id.voucher_regis_button)
@@ -116,22 +101,7 @@ class PromoRegisAdapter(
         fun bind(position: Int) {
             val promoRegisValue = listOfPromoRegis[position]
             voucherTitle.text = promoRegisValue.campaign_name
-            voucherQuota.text = context.getString(R.string.voucher_quota, promoRegisValue.campaign_quota)
-            if (promoRegisValue.discount_amt_type == "ABSOLUTE") {
-                val nominalDiscountDivided = promoRegisValue.discount_amt?.toDouble()?.div(1000) ?: 1
-                val nominalDiscount = nominalDiscountDivided.toLong()
-                val formattedDouble = String.format("%.1f", nominalDiscountDivided)
-                val doubleTimesTen = (formattedDouble.toDouble() * 10).toLong()
-                val checkLastDigit = (doubleTimesTen % 10).toString()
-                if (checkLastDigit == "0") {
-                    voucherDiscPercentage.text = "${nominalDiscount}rb"
-                } else {
-                    voucherDiscPercentage.text = "${formattedDouble}rb"
-                }
-            } else {
-                voucherDiscPercentage.text = "${promoRegisValue.discount_amt}%"
-            }
-
+            Picasso.get().load(promoRegisValue.campaign_image).into(voucherImg)
             dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
             itemView.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
@@ -148,5 +118,22 @@ class PromoRegisAdapter(
 
     interface OnItemClickListener {
         fun onItemRegisPromoClick(promoRegisValue: PromoRegisListData)
+    }
+
+    private fun reusablePromo() {
+//        if (promoRegisValue.discount_amt_type == "ABSOLUTE") {
+//            val nominalDiscountDivided = promoRegisValue.discount_amt?.toDouble()?.div(1000) ?: 1
+//            val nominalDiscount = nominalDiscountDivided.toLong()
+//            val formattedDouble = String.format("%.1f", nominalDiscountDivided)
+//            val doubleTimesTen = (formattedDouble.toDouble() * 10).toLong()
+//            val checkLastDigit = (doubleTimesTen % 10).toString()
+//            if (checkLastDigit == "0") {
+//                voucherDiscPercentage.text = "${nominalDiscount}rb"
+//            } else {
+//                voucherDiscPercentage.text = "${formattedDouble}rb"
+//            }
+//        } else {
+//            voucherDiscPercentage.text = "${promoRegisValue.discount_amt}%"
+//        }
     }
 }
