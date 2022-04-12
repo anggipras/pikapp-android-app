@@ -13,6 +13,12 @@ class PromoViewModel : ViewModel() {
     private val mutablePromoList = MutableLiveData<MutableList<PromoListModel>>()
     val promoList: LiveData<MutableList<PromoListModel>> = mutablePromoList
 
+    // All Promo Pagination
+    private val mutableFinishPromoPage = MutableLiveData(false)
+    val finishPromoPage: LiveData<Boolean> get() = mutableFinishPromoPage
+    private val mutableNumberAllPromoPage = MutableLiveData(0)
+    val numberAllPromoPage: LiveData<Int> get() = mutableNumberAllPromoPage
+
     private var liveDataPromoRegisList: MutableLiveData<MutableList<PromoRegisListData>> = MutableLiveData()
     fun getLiveDataPromoRegisListObserver(): MutableLiveData<MutableList<PromoRegisListData>> {
         return liveDataPromoRegisList
@@ -100,7 +106,7 @@ class PromoViewModel : ViewModel() {
         ))
 
         /* MAPPING DATA WITH VIEWTYPE */
-        if (flow == 0) {
+        if (flow == 0) { // 0 means register promo list at home page
             val promoListData: MutableList<PromoRegisListData> = ArrayList()
             promoListResponse.forEachIndexed { ind, it ->
                 if (ind < 5) {
@@ -108,12 +114,89 @@ class PromoViewModel : ViewModel() {
                 }
             }
             liveDataPromoRegisList.postValue(promoListData)
-        } else {
+        } else { // 1 means register promo list at see all
             val promoListData: MutableList<PromoRegisListData> = ArrayList()
             promoListResponse.forEach {
                 promoListData.add(addPromoData(1, it))
             }
+            if (promoListData.size < 5) {
+                mutableFinishPromoPage.value = true
+            }
             liveDataPromoRegisList.postValue(promoListData)
+        }
+    }
+
+    fun getPromoRegisListPagination(page: Int) {
+        /* DUMMY DATA MOCKING FROM BE*/
+        val promoListResponse: MutableList<PromoRegisListModel> = ArrayList()
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL1",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
+            campaign_quota = "20",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 10,
+            campaign_start_date = "2021-05-01T09:00:00",
+            campaign_end_date = "2021-06-01T21:00:00",
+            campaign_regis_deadline_date = "2021-04-20T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 10%"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL2",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
+            campaign_quota = "30",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 20,
+            campaign_start_date = "2021-05-02T09:00:00",
+            campaign_end_date = "2021-06-02T21:00:00",
+            campaign_regis_deadline_date = "2021-04-21T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 20%"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL3",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
+            campaign_quota = "40",
+            discount_amt_type = "ABSOLUTE",
+            discount_amt = 30000,
+            campaign_start_date = "2021-05-03T09:00:00",
+            campaign_end_date = "2021-06-03T21:00:00",
+            campaign_regis_deadline_date = "2021-04-22T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 30rb"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL4",
+            campaign_image = "https://lelogama.go-jek.com/post_featured_image/promo-tokopedia-agustus.jpg",
+            campaign_quota = "50",
+            discount_amt_type = "ABSOLUTE",
+            discount_amt = 40500,
+            campaign_start_date = "2021-05-04T09:00:00",
+            campaign_end_date = "2021-06-04T21:00:00",
+            campaign_regis_deadline_date = "2021-04-23T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 40.5rb"
+        ))
+        promoListResponse.add(PromoRegisListModel(
+            campaign_name = "SPESIAL5",
+            campaign_image = "https://www.electgo.com/wp-content/uploads/2021/05/HCD2-Banner-1080x600-2.jpg",
+            campaign_quota = "60",
+            discount_amt_type = "PERCENTAGE",
+            discount_amt = 50,
+            campaign_start_date = "2021-05-05T09:00:00",
+            campaign_end_date = "2021-06-05T21:00:00",
+            campaign_regis_deadline_date = "2021-04-24T21:00:00",
+            campaign_detail = "Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 50%"
+        ))
+
+        val promoListData: MutableList<PromoRegisListData> = ArrayList()
+        if (getLiveDataPromoRegisListObserver().value?.isNotEmpty() == true) {
+            getLiveDataPromoRegisListObserver().value?.let { promoListData.addAll(it) }
+        }
+        promoListResponse.forEach {
+            promoListData.add(addPromoData(1, it))
+        }
+        if (numberAllPromoPage.value == 2) {
+            mutableFinishPromoPage.value = true
+        } else {
+            liveDataPromoRegisList.postValue(promoListData)
+            mutableNumberAllPromoPage.value = page
         }
     }
 
@@ -132,12 +215,18 @@ class PromoViewModel : ViewModel() {
         )
     }
 
+    // All Applied Promo Pagination
+    private val mutableFinishAppliedPromoPage = MutableLiveData(false)
+    val finishAppliedPromoPage: LiveData<Boolean> get() = mutableFinishAppliedPromoPage
+    private val mutableNumberAppliedPromoPage = MutableLiveData(0)
+    val numberAppliedPromoPage: LiveData<Int> get() = mutableNumberAppliedPromoPage
+
     private var liveDataPromoAppliedList: MutableLiveData<MutableList<PromoAppliedListData>> = MutableLiveData()
     fun getLiveDataPromoAppliedListObserver(): MutableLiveData<MutableList<PromoAppliedListData>> {
         return liveDataPromoAppliedList
     }
 
-    fun getPromoAppliedList() {
+    fun getPromoAppliedList(page: Int) {
         /* DUMMY DATA MOCKING FROM BE*/
         val promoListResponse: MutableList<PromoAppliedListModel> = ArrayList()
         promoListResponse.add(PromoAppliedListModel(
@@ -203,10 +292,21 @@ class PromoViewModel : ViewModel() {
 
         /* MAPPING DATA WITH VIEWTYPE */
         val promoListData: MutableList<PromoAppliedListData> = ArrayList()
+        if (getLiveDataPromoAppliedListObserver().value?.isNotEmpty() == true) {
+            getLiveDataPromoAppliedListObserver().value?.let { promoListData.addAll(it) }
+        }
         promoListResponse.forEach {
             promoListData.add(addAppliedPromoData(it))
         }
-        liveDataPromoAppliedList.postValue(promoListData)
+        if (page == 0 && promoListData.size < 5) {
+            mutableFinishPromoPage.value = true
+        }
+        if (numberAppliedPromoPage.value == 2) {
+            mutableFinishAppliedPromoPage.value = true
+        } else {
+            liveDataPromoAppliedList.postValue(promoListData)
+            mutableNumberAppliedPromoPage.value = page
+        }
     }
 
     private fun addAppliedPromoData(it: PromoAppliedListModel): PromoAppliedListData {

@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tsab.pikapp.R
@@ -43,12 +45,33 @@ class AllRegisPromoActivity : AppCompatActivity(), PromoRegisAdapter.OnItemClick
         dataBinding.recyclerviewAllPromoList.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         recyclerAdapter = PromoRegisAdapter(baseContext, this)
         dataBinding.recyclerviewAllPromoList.adapter = recyclerAdapter
+
+        dataBinding.nestedScrollAllPromo.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+            // on scroll change we are checking when users scroll as bottom.
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                if (!viewModel.finishPromoPage.value!!) {
+                    // in this method we are incrementing page number,
+                    // making progress bar visible and calling get data method.
+                    val pageAllPromoAct = viewModel.numberAllPromoPage.value!! + 1
+                    dataBinding.loadingPB.isVisible = true
+                    viewModel.getPromoRegisListPagination(pageAllPromoAct)
+                } else {
+                    dataBinding.loadingPB.isVisible = false
+                }
+            }
+        })
     }
 
     private fun initViewModel() {
         viewModel.getLiveDataPromoRegisListObserver().observe(this, {
             if (!it.isNullOrEmpty()) {
                 recyclerAdapter.setPromoListAdapter(it)
+            }
+        })
+
+        viewModel.finishPromoPage.observe(this, {
+            if (it) {
+                dataBinding.loadingPB.isVisible = false
             }
         })
     }

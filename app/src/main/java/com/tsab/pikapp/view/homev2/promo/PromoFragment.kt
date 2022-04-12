@@ -2,9 +2,12 @@ package com.tsab.pikapp.view.homev2.promo
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -67,7 +70,7 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener, PromoAp
 //        }
 
         viewModel.getPromoRegisList(0)
-        viewModel.getPromoAppliedList()
+        viewModel.getPromoAppliedList(0)
 
         dataBinding.regisSeeAllPromo.setOnClickListener {
             Intent(activity?.baseContext, AllRegisPromoActivity::class.java).apply {
@@ -92,6 +95,21 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener, PromoAp
         dataBinding.recyclerviewAppliedPromoList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerAppliedPromoAdapter = PromoAppliedAdapter(requireContext(), this)
         dataBinding.recyclerviewAppliedPromoList.adapter = recyclerAppliedPromoAdapter
+
+        dataBinding.nestedScrollViewHomePromo.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+            // on scroll change we are checking when users scroll as bottom.
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                if (!viewModel.finishAppliedPromoPage.value!!) {
+                    // in this method we are incrementing page number,
+                    // making progress bar visible and calling get data method.
+                    val pageAllPromoAct = viewModel.numberAppliedPromoPage.value!! + 1
+                    dataBinding.loadingPB.isVisible = true
+                    viewModel.getPromoAppliedList(pageAllPromoAct)
+                } else {
+                    dataBinding.loadingPB.isVisible = false
+                }
+            }
+        })
     }
 
     private fun initViewModel() {
@@ -105,6 +123,12 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener, PromoAp
         viewModel.getLiveDataPromoAppliedListObserver().observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
                 recyclerAppliedPromoAdapter.setPromoListAdapter(it)
+            }
+        })
+
+        viewModel.finishAppliedPromoPage.observe(viewLifecycleOwner, {
+            if (it) {
+                dataBinding.loadingPB.isVisible = false
             }
         })
     }
