@@ -180,11 +180,12 @@ class PromoViewModel : ViewModel() {
         val email = sessionManager.getUserData()!!.email!!
         val signature = getSignature(email, timeStamp)
         val token = sessionManager.getUserToken()!!
-        val promoListRequest = PromoListRequest(
+        val mid = sessionManager.getUserData()!!.mid!!
+        val promoAppliedListRequest = PromoAppliedListRequest(
+            merchant_id = mid,
+            merchant_status = listOf("REGISTERED", "REVIEW", "APPROVED", "FAILED"),
             start_date = null,
             end_date = null,
-            campaign_name = null,
-            campaign_status = listOf("REVIEW", "WAITING", "ON_GOING", "COMPLETED", "DISCONTINUE", "ACTIVE", "FAILED", "APPROVED"),
             page = page,
             size = 5
         )
@@ -195,7 +196,7 @@ class PromoViewModel : ViewModel() {
                 getClientID(),
                 signature,
                 token,
-                promoListRequest
+                promoAppliedListRequest
             )
             if (response.isSuccessful) {
                 if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
@@ -251,7 +252,8 @@ class PromoViewModel : ViewModel() {
             campaign_deadline_date = it.campaign_deadline_date,
             campaign_detail = it.campaign_detail,
             campaign_status = it.campaign_status,
-            campaign_code = it.campaign_code
+            campaign_code = it.campaign_code,
+            merchant_status = it.merchant_status
         )
     }
 

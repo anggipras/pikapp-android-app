@@ -18,6 +18,21 @@ data class PromoListRequest(
     val size: Int
 )
 
+data class PromoAppliedListRequest(
+    @SerializedName("merchant_id")
+    val merchant_id: String? = null,
+    @SerializedName("merchant_status")
+    val merchant_status: List<String>,
+    @SerializedName("start_date")
+    val start_date: String? = null,
+    @SerializedName("end_date")
+    val end_date: String? = null,
+    @SerializedName("page")
+    val page: Int,
+    @SerializedName("size")
+    val size: Int
+)
+
 data class PromoRegisRequest(
     @SerializedName("merchant_id")
     val merchant_id: String,
@@ -136,7 +151,9 @@ data class PromoAppliedListModel(
     @SerializedName("campaign_status")
     val campaign_status: String?,
     @SerializedName("campaign_code")
-    val campaign_code: String?
+    val campaign_code: String?,
+    @SerializedName("merchant_status")
+    val merchant_status: String?
 ) : Serializable
 
 data class PromoAppliedListData(
@@ -164,6 +181,8 @@ data class PromoAppliedListData(
     @SerializedName("campaign_status")
     val campaign_status: String?,
     @SerializedName("campaign_code")
-    val campaign_code: String?
+    val campaign_code: String?,
+    @SerializedName("merchant_status")
+    val merchant_status: String?
 ) : Serializable
 //PROMO APPLIED LIST END

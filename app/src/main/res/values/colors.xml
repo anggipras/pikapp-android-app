@@ -25,7 +25,10 @@
 
     <color name="green">#4BB7AC</color>
     <color name="darkGreen">#3D6C54</color>
+    <color name="generalGreen">#008000</color>
+    <color name="lightGreen">#BFF4BF</color>
     <color name="red">#DC6A84</color>
+    <color name="lightRed">#F7DEFF</color>
     <color name="yellow">#FBA83C</color>
     <color name="black">#111111</color>
     <color name="darkGrey">#494949</color>

@@ -33,6 +33,41 @@
                     app:layout_constraintStart_toStartOf="parent"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/promoFailedStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/button_gray_square"
+                    android:padding="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_11sdp"
+                    android:layout_marginHorizontal="@dimen/_7sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/promo_detail_img">
+
+                    <ImageView
+                        android:id="@+id/promoFailedImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_alert_circle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/promoFailedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_7sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:text="Kuota sudah penuh"
+                        android:textColor="@color/colorRed"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/promoFailedImg"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/promo_detail_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,7 +75,7 @@
                     android:layout_marginTop="@dimen/_11sdp"
                     android:background="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/promo_detail_img">
+                    app:layout_constraintTop_toBottomOf="@+id/promoFailedStatus">
 
                     <TextView
                         android:id="@+id/promoDetailTitle"

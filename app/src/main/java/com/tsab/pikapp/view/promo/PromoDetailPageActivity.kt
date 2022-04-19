@@ -2,6 +2,7 @@ package com.tsab.pikapp.view.promo
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.squareup.picasso.Picasso
@@ -128,11 +130,51 @@ class PromoDetailPageActivity : AppCompatActivity() {
         dataBinding.promoVoucherCodeLayout.isVisible = true
         dataBinding.promoVoucherCodeContent.text = baseContext.getString(R.string.detail_voucher_code_content, promoAppliedDetailData?.campaign_code)
         dataBinding.promoStatusLayout.isVisible = true
-        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, promoAppliedDetailData?.campaign_status)
+        when(promoAppliedDetailData?.merchant_status) {
+            "REGISTERED" -> {
+                dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terdaftar")
+                dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.darkGrey))
+            }
+            "APPROVED" -> {
+                when(promoAppliedDetailData.campaign_status) {
+                    "SCHEDULED" -> {
+                        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terdaftar")
+                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.darkGrey))
+                    }
+                    "REVIEW" -> {
+                        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terverifikasi")
+                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorAccent))
+                    }
+                    "WAITING" -> {
+                        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Dalam Proses")
+                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.orange))
+                    }
+                    "ON_GOING" -> {
+                        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Berlangsung")
+                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorGreen))
+                    }
+                    "COMPLETED" -> {
+                        dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Selesai")
+                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.generalGreen))
+                    }
+                }
+            }
+            "FAILED" -> {
+                dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Gagal")
+                dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorRed))
+                dataBinding.promoFailedStatus.isVisible = true
+                dataBinding.promoFailedImg.background.setColorFilter(ContextCompat.getColor(baseContext, R.color.lightRed), PorterDuff.Mode.SRC_IN)
+            }
+        }
         dataBinding.registrationPolicyLayout.isVisible = false
         dataBinding.registrationButton.text = "Lihat Performa"
-        dataBinding.registrationButton.setBackgroundResource(R.drawable.button_green_small)
-        dataBinding.registrationButton.isEnabled = true
+        if (promoAppliedDetailData?.campaign_status == "ON_GOING" || promoAppliedDetailData?.campaign_status == "COMPLETED") {
+            dataBinding.registrationButton.setBackgroundResource(R.drawable.button_green_small)
+            dataBinding.registrationButton.isEnabled = true
+        } else {
+            dataBinding.registrationButton.setBackgroundResource(R.drawable.button_dark_gray_small)
+            dataBinding.registrationButton.isEnabled = false
+        }
         dataBinding.registrationButton.setOnClickListener {
             /* GO TO SEE PERFORMANCE WEB VIEW */
             Toast.makeText(baseContext, "Lihat Performa", Toast.LENGTH_SHORT).show()
@@ -209,7 +251,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         dataBinding.promoVoucherCodeContent.text = baseContext.getString(R.string.detail_voucher_code_content, promoRegisDetailData?.campaign_name)
         dataBinding.promoStatusLayout.isVisible = true
         dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terdaftar")
-        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorGrey))
+        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.darkGrey))
         dataBinding.registrationPolicyLayout.isVisible = false
         dataBinding.registrationButton.text = "Lihat Performa"
         dataBinding.registrationButton.isEnabled = false

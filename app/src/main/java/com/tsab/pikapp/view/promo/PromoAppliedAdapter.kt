@@ -94,31 +94,45 @@ class PromoAppliedAdapter(
                 voucherDiscPercentage.text = "${promoAppliedValue.discount_amt}%"
             }
 
-            when(promoAppliedValue.campaign_status) {
-                "REVIEW" -> {
+            when(promoAppliedValue.merchant_status) {
+                "REGISTERED" -> {
                     appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightGrey), PorterDuff.Mode.SRC_IN)
                     appliedPromoStatus.setTextColor(context.resources.getColor(R.color.textSubtle))
                     appliedPromoStatus.text = "Terdaftar"
                 }
                 "APPROVED" -> {
-                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
-                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorAccent))
-                    appliedPromoStatus.text = "Terverifikasi"
+                    when(promoAppliedValue.campaign_status) {
+                        "SCHEDULED" -> {
+                            appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightGrey), PorterDuff.Mode.SRC_IN)
+                            appliedPromoStatus.setTextColor(context.resources.getColor(R.color.textSubtle))
+                            appliedPromoStatus.text = "Terdaftar"
+                        }
+                        "REVIEW" -> {
+                            appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
+                            appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorAccent))
+                            appliedPromoStatus.text = "Terverifikasi"
+                        }
+                        "WAITING" -> {
+                            appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightOrange), PorterDuff.Mode.SRC_IN)
+                            appliedPromoStatus.setTextColor(context.resources.getColor(R.color.orange))
+                            appliedPromoStatus.text = "Dalam Proses"
+                        }
+                        "ON_GOING" -> {
+                            appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
+                            appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorGreen))
+                            appliedPromoStatus.text = "Berlangsung"
+                        }
+                        "COMPLETED" -> {
+                            appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightGreen), PorterDuff.Mode.SRC_IN)
+                            appliedPromoStatus.setTextColor(context.resources.getColor(R.color.generalGreen))
+                            appliedPromoStatus.text = "Selesai"
+                        }
+                    }
                 }
-                "WAITING" -> {
-                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightOrange), PorterDuff.Mode.SRC_IN)
-                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.orange))
-                    appliedPromoStatus.text = "Dalam Proses"
-                }
-                "ON_GOING" -> {
-                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
-                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorGreen))
-                    appliedPromoStatus.text = "Berlangsung"
-                }
-                else -> {
-                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
-                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.black))
-                    appliedPromoStatus.text = "else"
+                "FAILED" -> {
+                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightRed), PorterDuff.Mode.SRC_IN)
+                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorRed))
+                    appliedPromoStatus.text = "Gagal"
                 }
             }
 

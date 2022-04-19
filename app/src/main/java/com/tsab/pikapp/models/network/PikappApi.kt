@@ -907,14 +907,14 @@ interface PikappApi {
         @Body promoListRequest: PromoListRequest
     ): Response<PromoRegisListResponse>
 
-    @POST("promotion/merchant/campaign/v1/list")
+    @POST("promotion/merchant/campaign/v1/mlist")
     suspend fun getAppliedPromoList(
         @Header("x-request-id") uuid: String,
         @Header("x-request-timestamp") time: String,
         @Header("x-client-id") clientID: String,
         @Header("x-signature") signature: String,
         @Header("token") token: String,
-        @Body promoListRequest: PromoListRequest
+        @Body promoAppliedListRequest: PromoAppliedListRequest
     ): Response<PromoAppliedListResponse>
 
     /* POST REGISTER PROMO */
