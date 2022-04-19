@@ -4,8 +4,8 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
@@ -14,9 +14,14 @@ import androidx.databinding.DataBindingUtil
 import com.squareup.picasso.Picasso
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.ActivityPromoDetailPageBinding
-import com.tsab.pikapp.models.model.PromoAppliedListData
-import com.tsab.pikapp.models.model.PromoRegisListData
+import com.tsab.pikapp.models.model.*
+import com.tsab.pikapp.models.network.PikappApiService
+import com.tsab.pikapp.util.*
 import com.tsab.pikapp.view.homev2.HomeActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.one_button_dialog.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,8 +34,9 @@ class PromoDetailPageActivity : AppCompatActivity() {
 
     private lateinit var dataBinding: ActivityPromoDetailPageBinding
     private val id = Locale("in", "ID")
-    var handler: Handler = Handler()
     var registerSuccessFlow = 0
+    private val sessionManager = SessionManager()
+    private val disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +59,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
 
             dataBinding.registrationButton.setOnClickListener {
                 /* AFTER HIT REGIS PROMO API */
-                dataBinding.loadingOverlay.loadingView.isVisible = true
-                handler.postDelayed({
-                    dataBinding.loadingOverlay.loadingView.isVisible = false
-                    successRegisDialog(promoRegisDetailData)
-                }, 5000)
+                regisPromo(promoRegisDetailData)
             }
         } else {
             val promoAppliedDetailData = intent.getSerializableExtra(PROMO_DETAIL_DATA) as? PromoAppliedListData
@@ -76,6 +78,39 @@ class PromoDetailPageActivity : AppCompatActivity() {
         }
 
         setPolicyText()
+        MyCalc()
+    }
+
+    private fun regisPromo(promoRegisDetailData: PromoRegisListData?) {
+        dataBinding.loadingOverlay.loadingView.isVisible = true
+        val email = sessionManager.getUserData()!!.email!!
+        val token = sessionManager.getUserToken()!!
+        val timestamp = getTimestamp()
+        val signature = getSignature(email, timestamp)
+        val mid = sessionManager.getUserData()!!.mid!!
+
+        val promoRegisRequest = PromoRegisRequest(
+            merchant_id = mid,
+            campaign_id = promoRegisDetailData?.id
+        )
+
+        disposable.add(
+            PikappApiService().api.registerCampaignPromo(getUUID(), timestamp, getClientID(), signature, token, promoRegisRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<BaseResponse>() {
+                    override fun onSuccess(t: BaseResponse) {
+                        dataBinding.loadingOverlay.loadingView.isVisible = false
+                        successRegisDialog(promoRegisDetailData)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        dataBinding.loadingOverlay.loadingView.isVisible = false
+                        Toast.makeText(baseContext, "Gagal registrasi promo", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+        )
     }
 
     private fun mapPromoDetailData(promoRegisDetailData: PromoRegisListData?) {
@@ -91,7 +126,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
 
         dataBinding.promoDeadlineLayout.isVisible = false
         dataBinding.promoVoucherCodeLayout.isVisible = true
-        dataBinding.promoVoucherCodeContent.text = baseContext.getString(R.string.detail_voucher_code_content, promoAppliedDetailData?.campaign_name)
+        dataBinding.promoVoucherCodeContent.text = baseContext.getString(R.string.detail_voucher_code_content, promoAppliedDetailData?.campaign_code)
         dataBinding.promoStatusLayout.isVisible = true
         dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, promoAppliedDetailData?.campaign_status)
         dataBinding.registrationPolicyLayout.isVisible = false
@@ -100,7 +135,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         dataBinding.registrationButton.isEnabled = true
         dataBinding.registrationButton.setOnClickListener {
             /* GO TO SEE PERFORMANCE WEB VIEW */
-            Toast.makeText(baseContext, "Buka Page Lihat Performa", Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext, "Lihat Performa", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -109,7 +144,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         val formatterDate = SimpleDateFormat("dd MMMM yyyy", id)
         val outputStartDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_start_date))
         val outputEndDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_end_date))
-        val outputDeadlineDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_regis_deadline_date))
+        val outputDeadlineDate = formatterDate.format(parser.parse(promoRegisDetailData?.campaign_deadline_date))
 
         dataBinding.promoDurationContent.text = baseContext.getString(R.string.detail_duration_content, outputStartDate, outputEndDate)
         dataBinding.promoDeadlineContent.text = baseContext.getString(R.string.detail_deadline_content, outputDeadlineDate)
@@ -120,7 +155,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         val formatterDate = SimpleDateFormat("dd MMMM yyyy", id)
         val outputStartDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_start_date))
         val outputEndDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_end_date))
-        val outputDeadlineDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_regis_deadline_date))
+        val outputDeadlineDate = formatterDate.format(parser.parse(promoAppliedPromoDetailData?.campaign_deadline_date))
 
         dataBinding.promoDurationContent.text = baseContext.getString(R.string.detail_duration_content, outputStartDate, outputEndDate)
         dataBinding.promoDeadlineContent.text = baseContext.getString(R.string.detail_deadline_content, outputDeadlineDate)
@@ -133,7 +168,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
         dataBinding.registrationPolicyText.text = Html.fromHtml("$firstSentence $midSentence $lastSentence")
         dataBinding.registrationPolicyText.setOnClickListener {
             /* LATER, OPEN THE POLICY DIALOG */
-            Toast.makeText(baseContext, "Buka Web Page Syarat dan Ketentuan", Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext, "Web Page Syarat dan Ketentuan", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -197,5 +232,22 @@ class PromoDetailPageActivity : AppCompatActivity() {
         } else {
             backToHomeAfterRegis()
         }
+    }
+}
+
+interface Calculations {
+    fun calculateCircumstance(radius:Double) : Double
+    fun calculateArea(radius:Double) : Double
+}
+
+class MyCalc : Calculations {
+    private val pi = 3.14
+
+    override fun calculateCircumstance(radius: Double): Double {
+        return 2 * pi * radius
+    }
+
+    override fun calculateArea(radius: Double): Double {
+        return pi * radius * radius
     }
 }

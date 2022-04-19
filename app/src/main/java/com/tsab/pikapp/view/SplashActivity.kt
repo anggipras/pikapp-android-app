@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -18,7 +19,15 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.tsab.pikapp.BuildConfig
 import com.tsab.pikapp.R
+import com.tsab.pikapp.models.model.LatestVersionModel
+import com.tsab.pikapp.models.network.PikappApiService
+import com.tsab.pikapp.util.getClientID
+import com.tsab.pikapp.util.getTimestamp
+import com.tsab.pikapp.util.getUUID
 import com.tsab.pikapp.viewmodel.SplashViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -35,11 +44,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
-//        if (BuildConfig.VERSION_NAME == "1.6") {
-//            runSplash()
-//        } else {
-//            dialogOpenPlayStore()
-//        }
+//        getVersionUpdate()
 
         Firebase.messaging.isAutoInitEnabled = true
 
@@ -126,6 +131,33 @@ class SplashActivity : AppCompatActivity() {
 
             show()
         }
+    }
+
+    private fun getVersionUpdate() {
+        PikappApiService().api.getLatestVersion(
+            getUUID(),
+            getTimestamp(),
+            getClientID(),
+            "PUBLIC",
+            "PIKAPP_ANDROID")
+            .enqueue(object : Callback<LatestVersionModel> {
+                override fun onResponse(
+                    call: Call<LatestVersionModel>,
+                    response: Response<LatestVersionModel>
+                ) {
+                    val versionResult = response.body()!!.results
+                    if (BuildConfig.VERSION_NAME == versionResult.app_version) {
+                        runSplash()
+                    } else {
+                        dialogOpenPlayStore()
+                    }
+                }
+
+                override fun onFailure(call: Call<LatestVersionModel>, t: Throwable) {
+                    Toast.makeText(baseContext, "Gagal tarik versi", Toast.LENGTH_SHORT).show()
+                    runSplash()
+                }
+        })
     }
 
     private fun dialogOpenPlayStore() {

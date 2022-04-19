@@ -10,6 +10,16 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface PikappApi {
+    //Latest Android Version
+    @POST("home/v1/latest-version/")
+    fun getLatestVersion(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("token") token: String,
+        @Header("app-name") appName: String
+    ): Call<LatestVersionModel>
+
     // AUTH
     @POST("merchant/v1/merchant-login/")
     fun loginMerchant(
@@ -885,5 +895,37 @@ interface PikappApi {
         @Header("x-client-id") clientID: String,
         @Body trackingOrderRequest: TrackingOrderRequest
     ): Single<TrackingDetailResponse>
+
+    /* GET PROMO LIST */
+    @POST("promotion/merchant/campaign/v1/list")
+    suspend fun getPromoList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body promoListRequest: PromoListRequest
+    ): Response<PromoRegisListResponse>
+
+    @POST("promotion/merchant/campaign/v1/list")
+    suspend fun getAppliedPromoList(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body promoListRequest: PromoListRequest
+    ): Response<PromoAppliedListResponse>
+
+    /* POST REGISTER PROMO */
+    @POST("promotion/merchant/campaign/v1/join")
+    fun registerCampaignPromo(
+        @Header("x-request-id") uuid: String,
+        @Header("x-request-timestamp") time: String,
+        @Header("x-client-id") clientID: String,
+        @Header("x-signature") signature: String,
+        @Header("token") token: String,
+        @Body promoRegisterRequest: PromoRegisRequest
+    ): Single<BaseResponse>
 }
 

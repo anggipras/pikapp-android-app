@@ -94,17 +94,35 @@ class PromoAppliedAdapter(
                 voucherDiscPercentage.text = "${promoAppliedValue.discount_amt}%"
             }
 
-            if (promoAppliedValue.campaign_status == "ONGOING") {
-                appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
-                appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorGreen))
-                appliedPromoStatus.text = "Berlangsung"
-            } else {
-                appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightOrange), PorterDuff.Mode.SRC_IN)
-                appliedPromoStatus.setTextColor(context.resources.getColor(R.color.orange))
-                appliedPromoStatus.text = "Dalam Proses"
+            when(promoAppliedValue.campaign_status) {
+                "REVIEW" -> {
+                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightGrey), PorterDuff.Mode.SRC_IN)
+                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.textSubtle))
+                    appliedPromoStatus.text = "Terdaftar"
+                }
+                "APPROVED" -> {
+                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
+                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorAccent))
+                    appliedPromoStatus.text = "Terverifikasi"
+                }
+                "WAITING" -> {
+                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.lightOrange), PorterDuff.Mode.SRC_IN)
+                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.orange))
+                    appliedPromoStatus.text = "Dalam Proses"
+                }
+                "ON_GOING" -> {
+                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
+                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.colorGreen))
+                    appliedPromoStatus.text = "Berlangsung"
+                }
+                else -> {
+                    appliedPromoStatus.background.setColorFilter(ContextCompat.getColor(context, R.color.colorLightGreen), PorterDuff.Mode.SRC_IN)
+                    appliedPromoStatus.setTextColor(context.resources.getColor(R.color.black))
+                    appliedPromoStatus.text = "else"
+                }
             }
 
-            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoAppliedValue.campaign_start_date, promoAppliedValue.campaign_end_date, promoAppliedValue.campaign_regis_deadline_date)
+            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoAppliedValue.campaign_start_date, promoAppliedValue.campaign_end_date, promoAppliedValue.campaign_deadline_date)
             itemView.setOnClickListener {
                 listener.onItemAppliedPromoClick(promoAppliedValue)
             }

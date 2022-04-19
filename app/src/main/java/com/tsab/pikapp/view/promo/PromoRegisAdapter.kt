@@ -81,7 +81,7 @@ class PromoRegisAdapter(
             val promoRegisValue = listOfPromoRegis[position]
             voucherTitle.text = promoRegisValue.campaign_name
             Picasso.get().load(promoRegisValue.campaign_image).into(voucherImg)
-            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
+            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_deadline_date)
             itemView.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
             }
@@ -102,7 +102,7 @@ class PromoRegisAdapter(
             val promoRegisValue = listOfPromoRegis[position]
             voucherTitle.text = promoRegisValue.campaign_name
             Picasso.get().load(promoRegisValue.campaign_image).into(voucherImg)
-            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_regis_deadline_date)
+            dateFormatter(voucherDatePeriod, voucherRegisDeadlinePeriod, promoRegisValue.campaign_start_date, promoRegisValue.campaign_end_date, promoRegisValue.campaign_deadline_date)
             itemView.setOnClickListener {
                 listener.onItemRegisPromoClick(promoRegisValue)
             }
