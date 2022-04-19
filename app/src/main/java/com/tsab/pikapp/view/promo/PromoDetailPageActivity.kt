@@ -133,13 +133,13 @@ class PromoDetailPageActivity : AppCompatActivity() {
         when(promoAppliedDetailData?.merchant_status) {
             "REGISTERED" -> {
                 dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terdaftar")
-                dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.darkGrey))
+                dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.textSubtle))
             }
             "APPROVED" -> {
                 when(promoAppliedDetailData.campaign_status) {
                     "SCHEDULED" -> {
                         dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terdaftar")
-                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.darkGrey))
+                        dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.textSubtle))
                     }
                     "REVIEW" -> {
                         dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Terverifikasi")
@@ -163,18 +163,24 @@ class PromoDetailPageActivity : AppCompatActivity() {
                 dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Gagal")
                 dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorRed))
                 dataBinding.promoFailedStatus.isVisible = true
-                dataBinding.promoFailedImg.background.setColorFilter(ContextCompat.getColor(baseContext, R.color.lightRed), PorterDuff.Mode.SRC_IN)
+                dataBinding.promoFailedStatus.background.setColorFilter(ContextCompat.getColor(baseContext, R.color.lightRed), PorterDuff.Mode.SRC_IN)
             }
         }
         dataBinding.registrationPolicyLayout.isVisible = false
         dataBinding.registrationButton.text = "Lihat Performa"
-        if (promoAppliedDetailData?.campaign_status == "ON_GOING" || promoAppliedDetailData?.campaign_status == "COMPLETED") {
-            dataBinding.registrationButton.setBackgroundResource(R.drawable.button_green_small)
-            dataBinding.registrationButton.isEnabled = true
+        if (promoAppliedDetailData?.merchant_status == "APPROVED") {
+            if (promoAppliedDetailData.campaign_status == "ON_GOING" || promoAppliedDetailData.campaign_status == "COMPLETED") {
+                dataBinding.registrationButton.setBackgroundResource(R.drawable.button_green_small)
+                dataBinding.registrationButton.isEnabled = true
+            } else {
+                dataBinding.registrationButton.setBackgroundResource(R.drawable.button_dark_gray_small)
+                dataBinding.registrationButton.isEnabled = false
+            }
         } else {
             dataBinding.registrationButton.setBackgroundResource(R.drawable.button_dark_gray_small)
             dataBinding.registrationButton.isEnabled = false
         }
+
         dataBinding.registrationButton.setOnClickListener {
             /* GO TO SEE PERFORMANCE WEB VIEW */
             Toast.makeText(baseContext, "Lihat Performa", Toast.LENGTH_SHORT).show()

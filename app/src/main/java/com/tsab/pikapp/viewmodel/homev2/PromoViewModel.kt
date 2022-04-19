@@ -183,7 +183,7 @@ class PromoViewModel : ViewModel() {
         val mid = sessionManager.getUserData()!!.mid!!
         val promoAppliedListRequest = PromoAppliedListRequest(
             merchant_id = mid,
-            merchant_status = listOf("REGISTERED", "REVIEW", "APPROVED", "FAILED"),
+            merchant_status = listOf("REGISTERED", "ON_REVIEW", "APPROVED", "FAILED"),
             start_date = null,
             end_date = null,
             page = page,
