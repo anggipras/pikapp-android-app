@@ -44,7 +44,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
 
-//        getVersionUpdate()
+        getVersionUpdate()
 
         Firebase.messaging.isAutoInitEnabled = true
 
