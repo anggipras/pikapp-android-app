@@ -59,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_7sdp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="Kuota sudah penuh"
+                        android:text="@string/detail_failed_status_content"
                         android:textColor="@color/colorRed"
                         android:textSize="12sp"
                         app:layout_constraintStart_toEndOf="@+id/promoFailedImg"

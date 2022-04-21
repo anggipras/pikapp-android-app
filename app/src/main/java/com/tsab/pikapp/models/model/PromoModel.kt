@@ -153,7 +153,9 @@ data class PromoAppliedListModel(
     @SerializedName("campaign_code")
     val campaign_code: String?,
     @SerializedName("merchant_status")
-    val merchant_status: String?
+    val merchant_status: String?,
+    @SerializedName("failed_reason")
+    val failed_reason: String? = null
 ) : Serializable
 
 data class PromoAppliedListData(
@@ -183,6 +185,8 @@ data class PromoAppliedListData(
     @SerializedName("campaign_code")
     val campaign_code: String?,
     @SerializedName("merchant_status")
-    val merchant_status: String?
+    val merchant_status: String?,
+    @SerializedName("failed_reason")
+    val failed_reason: String? = null
 ) : Serializable
 //PROMO APPLIED LIST END

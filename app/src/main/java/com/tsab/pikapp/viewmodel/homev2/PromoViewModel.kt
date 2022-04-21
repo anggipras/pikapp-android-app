@@ -253,7 +253,8 @@ class PromoViewModel : ViewModel() {
             campaign_detail = it.campaign_detail,
             campaign_status = it.campaign_status,
             campaign_code = it.campaign_code,
-            merchant_status = it.merchant_status
+            merchant_status = it.merchant_status,
+            failed_reason = it.failed_reason
         )
     }
 

@@ -163,6 +163,7 @@ class PromoDetailPageActivity : AppCompatActivity() {
                 dataBinding.promoStatusContent.text = baseContext.getString(R.string.detail_status_content, "Gagal")
                 dataBinding.promoStatusContent.setTextColor(resources.getColor(R.color.colorRed))
                 dataBinding.promoFailedStatus.isVisible = true
+                dataBinding.promoFailedText.text = baseContext.getString(R.string.detail_failed_status_content, promoAppliedDetailData.failed_reason)
                 dataBinding.promoFailedStatus.background.setColorFilter(ContextCompat.getColor(baseContext, R.color.lightRed), PorterDuff.Mode.SRC_IN)
             }
         }

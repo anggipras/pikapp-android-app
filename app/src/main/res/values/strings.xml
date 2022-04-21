@@ -450,5 +450,6 @@
     <string name="detail_voucher_code_content">%s</string>
     <string name="detail_status_title_content">Status</string>
     <string name="detail_status_content">%s</string>
+    <string name="detail_failed_status_content">%s</string>
 
 </resources>
