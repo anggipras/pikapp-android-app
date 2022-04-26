@@ -413,7 +413,7 @@
     <string name="page_problem_title">Halaman Bermasalah</string>
     <string name="page_problem_detail">Saat ini halaman sedang bermasalah. Silakan coba lagi!</string>
 
-    <!-- Promo screens -->
+    <!-- Promo --><!-- screens -->
     <string name="promo_empty_title">Belum ada promo nih!</string>
     <string name="promo_empty_detail">Tunggu promo menarik yang bisa kamu ikuti disini ya</string>
     <string name="button_add_promo">Tambah Promo</string>
@@ -421,5 +421,35 @@
     <string name="promotion_id">ID Promosi: %s</string>
     <string name="promotion_date">%s - %s</string>
     <string name="promotion_status">Aktif</string>
+
+    <!--  Register Promo  -->
+    <string name="promo_detail_regis_title">%s</string>
+    <string name="promo_regis_title">Promo Untuk Anda</string>
+    <string name="promo_see_all_regis">Lihat Semua</string>
+    <string name="voucher_title">Diskon Kilat Spesial</string>
+    <string name="voucher_quota">Tersedia %s Kuota</string>
+    <string name="voucher_disc_title">Diskon</string>
+    <string name="voucher_disc_amt">20%</string>
+    <string name="voucher_period">%s – %s</string>
+    <string name="voucher_deadline_period">Daftar sebelum %s</string>
+    <string name="voucher_regis_button">Daftar</string>
+
+    <!--  Applied Promo  -->
+    <string name="promo_applied_title">Promo Saya</string>
+
+    <!--  Detail Promo  -->
+    <string name="detail_promo_title_content">Detail Promo</string>
+    <string name="detail_promo_content">Diskon Kilat Spesial hadir untuk membantu Anda meraih pelanggan sebanyak-banyaknya dengan penawaran diskon hingga 20%</string>
+    <string name="detail_duration_title_content">Durasi Promo</string>
+    <string name="detail_duration_content">%s – %s</string>
+    <string name="detail_deadline_title_content">Daftar Sebelum</string>
+    <string name="detail_deadline_content">%s</string>
+    <string name="registration_policy_content">Saya menyetujui Syarat dan Ketentuan yang berlaku</string>
+    <string name="registration_promo_succeed">Pendaftaran berhasil diajukan, pengajuan pendaftaran Anda akan kami periksa. Periksa halaman lainnya untuk mengetahui pemberitahuan selanjutnya!</string>
+    <string name="detail_voucher_code_title_content">Kode Voucher</string>
+    <string name="detail_voucher_code_content">%s</string>
+    <string name="detail_status_title_content">Status</string>
+    <string name="detail_status_content">%s</string>
+    <string name="detail_failed_status_content">%s</string>
 
 </resources>
