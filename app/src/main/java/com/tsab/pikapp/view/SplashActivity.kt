@@ -48,28 +48,28 @@ class SplashActivity : AppCompatActivity() {
 
         Firebase.messaging.isAutoInitEnabled = true
 
-        appUpdateListener = OnSuccessListener { appUpdateInfo ->
-            this.appUpdateInfo = appUpdateInfo
-
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    myRequestCode
-                )
-            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                Timber.d("Update on progress...")
-            } else if(appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
-                runSplash()
-            } else {
-                Timber.d("Update went wrong!")
-            }
-        }
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-        appUpdateManager.appUpdateInfo.addOnSuccessListener(appUpdateListener)
+//        appUpdateListener = OnSuccessListener { appUpdateInfo ->
+//            this.appUpdateInfo = appUpdateInfo
+//
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+//            ) {
+//                appUpdateManager.startUpdateFlowForResult(
+//                    appUpdateInfo,
+//                    AppUpdateType.IMMEDIATE,
+//                    this,
+//                    myRequestCode
+//                )
+//            } else if (appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+//                Timber.d("Update on progress...")
+//            } else if(appUpdateInfo.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
+//                runSplash()
+//            } else {
+//                Timber.d("Update went wrong!")
+//            }
+//        }
+//        appUpdateManager = AppUpdateManagerFactory.create(this)
+//        appUpdateManager.appUpdateInfo.addOnSuccessListener(appUpdateListener)
     }
 
     private fun runSplash() {
