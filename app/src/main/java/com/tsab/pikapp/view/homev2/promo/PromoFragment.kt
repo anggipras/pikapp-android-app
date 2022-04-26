@@ -115,6 +115,7 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener, PromoAp
     private fun initViewModel() {
         viewModel.getLiveDataPromoRegisListObserver().observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
+                dataBinding.registrationPromo.isVisible = true
                 recyclerAdapter.setPromoListAdapter(it)
                 dataBinding.arIndicator.numberOfIndicators = it.size
             }
@@ -122,6 +123,7 @@ class PromoFragment : Fragment(), PromoRegisAdapter.OnItemClickListener, PromoAp
 
         viewModel.getLiveDataPromoAppliedListObserver().observe(viewLifecycleOwner, {
             if (!it.isNullOrEmpty()) {
+                dataBinding.appliedPromo.isVisible = true
                 recyclerAppliedPromoAdapter.setPromoListAdapter(it)
             }
         })
