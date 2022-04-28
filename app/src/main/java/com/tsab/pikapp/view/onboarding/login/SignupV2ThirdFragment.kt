@@ -136,7 +136,7 @@ class SignupV2ThirdFragment : Fragment() {
 
             if (!viewModel.validateThirdPage()) return@setOnClickListener
 
-            uploadData()
+//            uploadData()
         }
     }
 

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.ErrorResponse
 import com.tsab.pikapp.models.model.LoginResponseV2
 import com.tsab.pikapp.models.model.UserAccess
@@ -25,6 +26,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
+import java.io.IOException
 
 class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(application) {
 
@@ -51,11 +53,37 @@ class LoginOnboardingViewModelV2(application: Application) : BaseViewModel(appli
     var isEmailValid = false
     private var isPasswordValid = false
 
-    fun login(username: String, pin: String) {
+    fun login(username: String, pin: String, context: Context) {
         checkUserInput(username, pin)
         if (isEmailValid && isPasswordValid) {
-            loginProcess(username, pin)
+            val loginMerchant = object : TypeToken<LoginResponseV2>() {}.type
+            val loginMerchantRes: LoginResponseV2 = Gson().fromJson(readJson(context, "login_response.json"), loginMerchant)
+
+            loginResponse.value = loginMerchantRes
+            loading.value = false
+
+            loginMerchantRes.results?.token?.let {
+                val userData: UserAccess = decodeJWT(loginMerchantRes.results.token)
+                sessionManager.setUserSession(loginMerchantRes.results.token, System.nanoTime(), userData)
+                sessionManager.setUserDomain(loginMerchantRes.results.domain)
+            }
+
+            prefHelper.saveOnboardingFinised(true)
+
+//            loginProcess(username, pin)
         }
+    }
+
+    private fun readJson(context: Context, fileName: String): String? {
+        val jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 
     fun validateEmail(email: String) {

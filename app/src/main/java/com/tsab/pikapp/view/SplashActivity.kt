@@ -46,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
 
 //        getVersionUpdate()
 
-        Firebase.messaging.isAutoInitEnabled = true
+//        Firebase.messaging.isAutoInitEnabled = true
         runSplash()
 
 //        appUpdateListener = OnSuccessListener { appUpdateInfo ->

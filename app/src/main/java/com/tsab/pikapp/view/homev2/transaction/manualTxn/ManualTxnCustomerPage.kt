@@ -42,7 +42,7 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
 
         swipeRefreshLayout = dataBinding.swipeCustomerList
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getCustomer()
+            viewModel.getCustomer(requireContext())
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -50,7 +50,7 @@ class ManualTxnCustomerPage : Fragment(), ManualTxnCustomerAdapter.OnItemClickLi
         dataBinding.recyclerviewCustomer.layoutManager = linearLayoutManager
         dataBinding.recyclerviewCustomer.setHasFixedSize(false)
 
-        viewModel.getCustomer()
+        viewModel.getCustomer(requireContext())
 
         observeViewModel()
         attachInputListeners()

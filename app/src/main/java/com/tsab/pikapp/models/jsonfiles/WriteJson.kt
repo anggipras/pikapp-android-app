@@ -9,7 +9,7 @@ class WriteJson {
     @Throws(IOException::class)
     fun save(context: Context, jsonString: String?) {
         val rootFolder = context.getExternalFilesDir(null)
-        val jsonFile = File(rootFolder, "merchant_profile.json")
+        val jsonFile = File(rootFolder, "merchant_customer_list.json")
         val writer = FileWriter(jsonFile)
         writer.write(jsonString)
         writer.close()
@@ -18,7 +18,7 @@ class WriteJson {
     @Throws(IOException::class)
     fun saveTwo(context: Context, jsonString: String?) {
         val rootFolder = context.getExternalFilesDir(null)
-        val jsonFile = File(rootFolder, "merchant_shop_management.json")
+        val jsonFile = File(rootFolder, "decoded_token.json")
         val writer = FileWriter(jsonFile)
         writer.write(jsonString)
         writer.close()

@@ -17,8 +17,12 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.R
 import com.tsab.pikapp.databinding.LayoutLoadingOverlayBinding
+import com.tsab.pikapp.models.jsonfiles.WriteJson
 import com.tsab.pikapp.models.model.*
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.util.*
@@ -37,6 +41,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -524,31 +529,53 @@ class ManualTxnViewModel(application: Application) : BaseViewModel(application) 
         }) }
     }
 
-    fun getCustomer(){
+    fun getCustomer(context: Context) {
         val mid = sessionManager.getUserData()!!.mid!!
         val page = "0"
         val size = "50"
         setLoading(true)
 
-        PikappApiService().api.getListCustomer(page, size, mid).enqueue(object : Callback<CustomerResponse>{
-            override fun onResponse(
-                call: Call<CustomerResponse>,
-                response: Response<CustomerResponse>
-            ) {
-                val orderResponse = response.body()
-                val resultList = orderResponse?.results
-                if (resultList != null){
-                    mutableCustomerList.value = resultList!!
-                    mutableSizeCustomer.value = mutableCustomerList.value?.size
-                    setLoading(false)
-                }
-            }
+        val customerList = object : TypeToken<CustomerResponse>() {}.type
+        val customerListRes: CustomerResponse = Gson().fromJson(readJson(context, "merchant_customer_list.json"), customerList)
 
-            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
-                Timber.tag(tag).d("Failed to get customer list: ${t.message.toString()}")
-            }
+        val resultList = customerListRes.results
+        if (resultList != null){
+            mutableCustomerList.value = resultList!!
+            mutableSizeCustomer.value = mutableCustomerList.value?.size
+            setLoading(false)
+        }
 
-        })
+//        PikappApiService().api.getListCustomer(page, size, mid).enqueue(object : Callback<CustomerResponse>{
+//            override fun onResponse(
+//                call: Call<CustomerResponse>,
+//                response: Response<CustomerResponse>
+//            ) {
+//                val orderResponse = response.body()
+//                val resultList = orderResponse?.results
+//                if (resultList != null){
+//                    mutableCustomerList.value = resultList!!
+//                    mutableSizeCustomer.value = mutableCustomerList.value?.size
+//                    setLoading(false)
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<CustomerResponse>, t: Throwable) {
+//                Timber.tag(tag).d("Failed to get customer list: ${t.message.toString()}")
+//            }
+//
+//        })
+    }
+
+    private fun readJson(context: Context, fileName: String): String? {
+        val jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 
     fun editToCart(note: String, indexOfCart: Int, foodExtraList: ArrayList<ManualAddAdvMenuFragment.AddAdvMenuTemp>) {

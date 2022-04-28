@@ -57,16 +57,16 @@ class MerchantShipmentFragment : Fragment(), CourierServiceListAdapter.OnCheckLi
             viewModel.setFirstEnterEdit(false)
         }
         onBackPressed()
-        dataBinding.selectLocationId.setOnClickListener {
-            when {
-                PermissionUtils.isLocationEnabled(requireContext()) -> {
-                    fetchLocation()
-                }
-                else -> {
-                    PermissionUtils.showGPSNotEnabledDialog(requireContext())
-                }
-            }
-        }
+//        dataBinding.selectLocationId.setOnClickListener {
+//            when {
+//                PermissionUtils.isLocationEnabled(requireContext()) -> {
+//                    fetchLocation()
+//                }
+//                else -> {
+//                    PermissionUtils.showGPSNotEnabledDialog(requireContext())
+//                }
+//            }
+//        }
         viewModel.checkMerchantShipmentCondition(requireContext(), view, dataBinding.nestedMerchantLayout, dataBinding.shipmentButtonSection, dataBinding.loadingOverlay)
         dataBinding.switchShippingMode.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setShippingMode(isChecked)

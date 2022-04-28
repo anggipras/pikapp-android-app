@@ -1,0 +1,70 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": [
+    {
+      "address": "Jalana Pratama 9Z No 6",
+      "address_detail": "",
+      "city": "Kota Bekasi",
+      "created_at": "2022-02-10 17:38:47",
+      "customer_id": 45,
+      "latitude": "-6.273905288310527",
+      "longitude": "106.9854037463665",
+      "mid": "M00000150",
+      "name": "Didit",
+      "phone_number": "087725251131",
+      "postal_code": "17116",
+      "province": "Jawa Barat",
+      "subdistrict_name": "Rawalumbu",
+      "updated_at": "2022-02-10 18:40:06"
+    },
+    {
+      "address": "Apartemen Seasons City Tower H Unit H12AI",
+      "address_detail": "ketemu di lobby",
+      "city": "Kota Jakarta Barat",
+      "created_at": "2022-02-10 11:32:07",
+      "customer_id": 44,
+      "latitude": "-6.1536444",
+      "longitude": "106.7962078",
+      "mid": "M00000150",
+      "name": "Rania",
+      "phone_number": "089666331234",
+      "postal_code": "11320",
+      "province": "Daerah Khusus Ibukota Jakarta",
+      "subdistrict_name": "Tambora",
+      "updated_at": "2022-02-10 11:32:07"
+    },
+    {
+      "address": "Dekat Kalibata City",
+      "address_detail": "rumah silver",
+      "city": "Kota Jakarta Selatan",
+      "created_at": "2022-01-31 17:44:14",
+      "customer_id": 42,
+      "latitude": "-6.26547653663894",
+      "longitude": "106.83736424893141",
+      "mid": "M00000150",
+      "name": "Anggi Prastianto",
+      "phone_number": "081260606060",
+      "postal_code": "12740",
+      "province": "Daerah Khusus Ibukota Jakarta",
+      "subdistrict_name": "Pancoran",
+      "updated_at": "2022-02-04 12:09:49"
+    },
+    {
+      "address": "IEC",
+      "address_detail": "Deket els computer",
+      "city": "Kota Yogyakarta",
+      "created_at": "2022-01-31 16:26:26",
+      "customer_id": 41,
+      "latitude": "-7.7780737730540315",
+      "longitude": "110.37363521754742",
+      "mid": "M00000150",
+      "name": "Goldland",
+      "phone_number": "081280808080",
+      "postal_code": "55223",
+      "province": "Daerah Istimewa Yogyakarta",
+      "subdistrict_name": "Gondokusuman",
+      "updated_at": "2022-01-31 16:28:03"
+    }
+  ]
+}

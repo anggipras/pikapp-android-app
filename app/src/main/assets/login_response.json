@@ -1,0 +1,10 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": {
+    "domain": "sushi.to.ramen",
+    "is_verified": true,
+    "login_time": "2022-04-28T23:55:02.765+07:00",
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJwaG9uZV9udW1iZXJcIjpcIjA4MTI5NjAwMDEyMVwiLFwiY3VzdG9tZXJfbmFtZVwiOlwiU3VzaGkgdG8gUmFtZW5cIixcImVtYWlsXCI6XCJ2Y2JhcDk0QGdtYWlsLmNvbVwiLFwic2Vzc2lvbl9pZFwiOlwiOGJlZTg3MDA3ODI2NGQzYWE5NTdjMzZjODU1NTA1MmFcIixcImlzX21lcmNoYW50XCI6dHJ1ZSxcIm1pZFwiOlwiTTAwMDAwMTUwXCIsXCJsZXZlbFwiOlwiVjJcIn0iLCJpc3MiOiJQaWtBcHAgU2VjdXJpdHkgUG9pbnQiLCJleHAiOjE2ODI3MDA5MDIsImlhdCI6MTY1MTE2NDkwMn0.81HKjj8wl3lTwAvTxD4euCFqnHn6dmwYK6Mipyp3CLyEA4JMlpw5UBqlkUrkf2bx0skMiGfR7hSLpaPwrdDnEQ"
+  }
+}

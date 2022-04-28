@@ -76,7 +76,7 @@ class LoginV2Second : Fragment() {
                 hideKeyboard()
             }
 
-            viewModel.login(email, password)
+            viewModel.login(email, password, requireContext())
         }
 
 //        dataBinding.logPin.setPinViewEventListener { pinview, fromUser ->

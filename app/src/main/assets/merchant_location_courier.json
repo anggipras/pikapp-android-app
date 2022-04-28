@@ -1,0 +1,121 @@
+{
+  "err_code": "200",
+  "err_message": "Success Request",
+  "result": {
+    "address": "Tugu Yogyakarta",
+    "courier": [
+      {
+        "courier_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gojek-150px.png",
+        "courier_main": true,
+        "courier_name": "Gojek",
+        "services_list": [
+          {
+            "courier_service_type": true,
+            "courier_services_code": "instant",
+            "courier_services_name": "Instant",
+            "description": "On Demand Instant (bike) 1 - 3 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "same_day",
+            "courier_services_name": "Same Day",
+            "description": "On Demand within 8 hours (bike) 6 - 8 hours"
+          }
+        ]
+      },
+      {
+        "courier_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/grab-150px.png",
+        "courier_main": true,
+        "courier_name": "Grab",
+        "services_list": [
+          {
+            "courier_service_type": true,
+            "courier_services_code": "instant",
+            "courier_services_name": "Instant",
+            "description": "On Demand Instant (bike) 1 - 3 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "same_day",
+            "courier_services_name": "Same Day",
+            "description": "On Demand within 8 hours (bike) 6 - 8 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "instant_car",
+            "courier_services_name": "Instant Car",
+            "description": "Grab Car Express 1 - 3 hours"
+          }
+        ]
+      },
+      {
+        "courier_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/lalamove-150px.png",
+        "courier_main": true,
+        "courier_name": "Lalamove",
+        "services_list": [
+          {
+            "courier_service_type": true,
+            "courier_services_code": "motorcycle",
+            "courier_services_name": "Motorcycle",
+            "description": "Delivery using bike 1 - 3 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "mpv",
+            "courier_services_name": "MPV",
+            "description": "Delivery using car 1 - 3 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "van",
+            "courier_services_name": "Van",
+            "description": "Delivery using van 2 - 4 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "truck",
+            "courier_services_name": "Truck",
+            "description": "Delivery using truck 3 - 6 hours"
+          }
+        ]
+      },
+      {
+        "courier_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/paxel-150px.png",
+        "courier_main": true,
+        "courier_name": "Paxel",
+        "services_list": [
+          {
+            "courier_service_type": true,
+            "courier_services_code": "small",
+            "courier_services_name": "Small Package",
+            "description": "Layanan paket small 8 - 12 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "medium",
+            "courier_services_name": "Medium Package",
+            "description": "Layanan paket medium 8 - 12 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "large",
+            "courier_services_name": "Large Package",
+            "description": "Layanan paket large 8 - 12 hours"
+          },
+          {
+            "courier_service_type": true,
+            "courier_services_code": "paxel_big",
+            "courier_services_name": "Paxel Big",
+            "description": "Layanan kargo paxel big 8 - 12 hours"
+          }
+        ]
+      }
+    ],
+    "latitude": "-7.7830582766992675",
+    "longitude": "110.36707956343889",
+    "postal_code": "55233",
+    "province": "Daerah Istimewa Yogyakarta",
+    "shipping_available": true,
+    "subdistrict_name": "Kecamatan Jetis"
+  }
+}

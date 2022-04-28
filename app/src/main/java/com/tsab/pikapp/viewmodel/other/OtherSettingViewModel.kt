@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.fragment_shop_management.*
 import kotlinx.android.synthetic.main.second_alert_dialog.view.*
 import retrofit2.*
 import retrofit2.Response
+import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -239,32 +240,48 @@ class OtherSettingViewModel : ViewModel() {
         val token = sessionManager.getUserToken()!!
         val mid = sessionManager.getUserData()!!.mid!!
 
-        PikappApiService().api.getMerchantShopManagement(
-            uuid, timestamp, clientId, signature, token, mid
-        ).enqueue(object : Callback<MerchantTimeManagement> {
-            override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
-                Log.e("getTimeManagementFailed", t.message.toString())
-            }
+        val shopMgmt = object : TypeToken<MerchantTimeManagement>() {}.type
+        val shopMgmtRes: MerchantTimeManagement = Gson().fromJson(readJson(baseContext, "merchant_shop_management.json"), shopMgmt)
 
-            override fun onResponse(
-                call: Call<MerchantTimeManagement>,
-                response: Response<MerchantTimeManagement>
-            ) {
-                val timeManagementResult = response.body()?.results?.timeManagement
-                mutableAutoOnOff.value = response.body()?.results?.autoOnOff!!
-                shopManagementAdapter = ShopManagementAdapter(
-                    baseContext,
-                    timeManagementResult as MutableList<ShopSchedule>,
-                    listener
-                )
+        val timeManagementResult = shopMgmtRes.results?.timeManagement
+        mutableAutoOnOff.value = shopMgmtRes.results?.autoOnOff!!
+        shopManagementAdapter = ShopManagementAdapter(
+            baseContext,
+            timeManagementResult as MutableList<ShopSchedule>,
+            listener
+        )
 
-                shopManagementAdapter.notifyDataSetChanged()
-                shopSchedule_recyclerView.adapter = shopManagementAdapter
-                setShopSchedule(timeManagementResult)
-                mutableLoading.value = false
-            }
+        shopManagementAdapter.notifyDataSetChanged()
+        shopSchedule_recyclerView.adapter = shopManagementAdapter
+        setShopSchedule(timeManagementResult)
+        mutableLoading.value = false
 
-        })
+//        PikappApiService().api.getMerchantShopManagement(
+//            uuid, timestamp, clientId, signature, token, mid
+//        ).enqueue(object : Callback<MerchantTimeManagement> {
+//            override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
+//                Log.e("getTimeManagementFailed", t.message.toString())
+//            }
+//
+//            override fun onResponse(
+//                call: Call<MerchantTimeManagement>,
+//                response: Response<MerchantTimeManagement>
+//            ) {
+//                val timeManagementResult = response.body()?.results?.timeManagement
+//                mutableAutoOnOff.value = response.body()?.results?.autoOnOff!!
+//                shopManagementAdapter = ShopManagementAdapter(
+//                    baseContext,
+//                    timeManagementResult as MutableList<ShopSchedule>,
+//                    listener
+//                )
+//
+//                shopManagementAdapter.notifyDataSetChanged()
+//                shopSchedule_recyclerView.adapter = shopManagementAdapter
+//                setShopSchedule(timeManagementResult)
+//                mutableLoading.value = false
+//            }
+//
+//        })
     }
 
     fun updateShopStatus(
@@ -521,39 +538,50 @@ class OtherSettingViewModel : ViewModel() {
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val mid = sessionManager.getUserData()!!.mid!!
-        disposable.add(
-            PikappApiService().shipmentApi.checkShipmentCondition(getUUID(), timestamp, getClientID(), token, mid)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<ShipmentConditionResponse>() {
-                    override fun onSuccess(t: ShipmentConditionResponse) {
-                        t.result.let {
-                            val checkResult = t.result[0]
-                            if (checkResult.postal_code) {
-                                setEditOrAddShipment(true)
-                                if (firstEnterEdit.value == true) {
-                                    nestedShipmentLayout.isVisible = true
-                                    shipmentButtonSection.isVisible = true
-                                    loadingOverlay.loadingView.isVisible = false
-                                } else {
-                                    getMerchantShipment(context, nestedShipmentLayout, shipmentButtonSection, loadingOverlay)
-                                    setFirstEnterEdit(true)
-                                }
-                            } else {
-                                setEditOrAddShipment(false)
-                                loadingOverlay.loadingView.isVisible = false
-                                Navigation.findNavController(view).navigate(R.id.navigateTo_merchantAddShipmentFragment)
-                            }
-                        }
-                    }
 
-                    override fun onError(e: Throwable) {
-                        Log.e("ERROR", e.message.toString())
-                        loadingOverlay.loadingView.isVisible = false
-                    }
+        setEditOrAddShipment(true)
+        if (firstEnterEdit.value == true) {
+            nestedShipmentLayout.isVisible = true
+            shipmentButtonSection.isVisible = true
+            loadingOverlay.loadingView.isVisible = false
+        } else {
+            getMerchantShipment(context, nestedShipmentLayout, shipmentButtonSection, loadingOverlay)
+            setFirstEnterEdit(true)
+        }
 
-                })
-        )
+//        disposable.add(
+//            PikappApiService().shipmentApi.checkShipmentCondition(getUUID(), timestamp, getClientID(), token, mid)
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(object : DisposableSingleObserver<ShipmentConditionResponse>() {
+//                    override fun onSuccess(t: ShipmentConditionResponse) {
+//                        t.result.let {
+//                            val checkResult = t.result[0]
+//                            if (checkResult.postal_code) {
+//                                setEditOrAddShipment(true)
+//                                if (firstEnterEdit.value == true) {
+//                                    nestedShipmentLayout.isVisible = true
+//                                    shipmentButtonSection.isVisible = true
+//                                    loadingOverlay.loadingView.isVisible = false
+//                                } else {
+//                                    getMerchantShipment(context, nestedShipmentLayout, shipmentButtonSection, loadingOverlay)
+//                                    setFirstEnterEdit(true)
+//                                }
+//                            } else {
+//                                setEditOrAddShipment(false)
+//                                loadingOverlay.loadingView.isVisible = false
+//                                Navigation.findNavController(view).navigate(R.id.navigateTo_merchantAddShipmentFragment)
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Log.e("ERROR", e.message.toString())
+//                        loadingOverlay.loadingView.isVisible = false
+//                    }
+//
+//                })
+//        )
     }
 
     fun getMerchantShipment(
@@ -565,46 +593,76 @@ class OtherSettingViewModel : ViewModel() {
         val token = sessionManager.getUserToken()!!
         val timestamp = getTimestamp()
         val mid = sessionManager.getUserData()!!.mid!!
-        disposable.add(
-            PikappApiService().shipmentApi.getMerchantShipment(getUUID(), timestamp, getClientID(), token, mid)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<MerchantShipmentDataResponse>() {
-                    override fun onSuccess(t: MerchantShipmentDataResponse) {
-                        val theResult = t.result
-                        val currentLatLng = CurrentLatLng(latitude = theResult.latitude.toDouble(), longitude = theResult.longitude.toDouble())
 
-                        /* set longlat from database */
-                        setCurrentLocation(currentLatLng)
+        val merchLocCourier = object : TypeToken<MerchantShipmentDataResponse>() {}.type
+        val merchLocCourierRes: MerchantShipmentDataResponse = Gson().fromJson(readJson(context, "merchant_location_courier.json"), merchLocCourier)
 
-                        /* set longlat to be extracted */
-                        setAddressLocation(context, currentLatLng)
+        val theResult = merchLocCourierRes.result
+        val currentLatLng = CurrentLatLng(latitude = theResult.latitude.toDouble(), longitude = theResult.longitude.toDouble())
 
-                        /* set shipping mode */
-                        setShippingMode(theResult.shipping_available)
+        /* set longlat from database */
+        setCurrentLocation(currentLatLng)
 
-                        /* set merchant address */
-                        setMerchantAddress(theResult.address)
+        /* set longlat to be extracted */
+        setAddressLocation(context, currentLatLng)
 
-                        /* set postal code */
-                        setPostalCode(theResult.postal_code)
+        /* set shipping mode */
+        setShippingMode(theResult.shipping_available)
 
-                        /* set courier list to be shown */
-                        setCourierList(theResult.courier)
+        /* set merchant address */
+        setMerchantAddress(theResult.address)
 
-                        /* final change the view to show */
-                        nestedShipmentLayout.isVisible = true
-                        shipmentButtonSection.isVisible = true
-                        loadingOverlay.loadingView.isVisible = false
-                    }
+        /* set postal code */
+        setPostalCode(theResult.postal_code)
 
-                    override fun onError(e: Throwable) {
-                        Log.e("ERROR", e.message.toString())
-                        loadingOverlay.loadingView.isVisible = false
-                    }
+        /* set courier list to be shown */
+        setCourierList(theResult.courier)
 
-                })
-        )
+        /* final change the view to show */
+        nestedShipmentLayout.isVisible = true
+        shipmentButtonSection.isVisible = true
+        loadingOverlay.loadingView.isVisible = false
+
+//        disposable.add(
+//            PikappApiService().shipmentApi.getMerchantShipment(getUUID(), timestamp, getClientID(), token, mid)
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(object : DisposableSingleObserver<MerchantShipmentDataResponse>() {
+//                    override fun onSuccess(t: MerchantShipmentDataResponse) {
+//                        val theResult = t.result
+//                        val currentLatLng = CurrentLatLng(latitude = theResult.latitude.toDouble(), longitude = theResult.longitude.toDouble())
+//
+//                        /* set longlat from database */
+//                        setCurrentLocation(currentLatLng)
+//
+//                        /* set longlat to be extracted */
+//                        setAddressLocation(context, currentLatLng)
+//
+//                        /* set shipping mode */
+//                        setShippingMode(theResult.shipping_available)
+//
+//                        /* set merchant address */
+//                        setMerchantAddress(theResult.address)
+//
+//                        /* set postal code */
+//                        setPostalCode(theResult.postal_code)
+//
+//                        /* set courier list to be shown */
+//                        setCourierList(theResult.courier)
+//
+//                        /* final change the view to show */
+//                        nestedShipmentLayout.isVisible = true
+//                        shipmentButtonSection.isVisible = true
+//                        loadingOverlay.loadingView.isVisible = false
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Log.e("ERROR", e.message.toString())
+//                        loadingOverlay.loadingView.isVisible = false
+//                    }
+//
+//                })
+//        )
     }
 
     //GET LIST GOOGLE PLACE
@@ -869,6 +927,18 @@ class OtherSettingViewModel : ViewModel() {
             mAlertDialog.dismiss()
             submitShipmentData(view, loadingOverlay, postalCode, merchantAddress)
         }
+    }
+
+    private fun readJson(context: Context, fileName: String): String? {
+        val jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 
     // DUMMY DATA
