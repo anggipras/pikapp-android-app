@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tsab.pikapp.models.model.CategoryListResult
 import com.tsab.pikapp.models.model.MerchantListCategoryResponse
+import com.tsab.pikapp.models.model.TransactionListV2RespAPI
 import com.tsab.pikapp.models.network.PikappApiService
 import com.tsab.pikapp.services.OnlineService
 import com.tsab.pikapp.util.*
@@ -23,6 +24,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 class MenuViewModel(application: Application) : BaseViewModel(application) {
     private val tag = javaClass.simpleName
@@ -62,34 +64,42 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         val mid = sessionManager.getUserData()!!.mid!!
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = PikappApiService().api.getMenuCategoryList(getUUID(), timestamp, getClientID(), signature, token, mid)
-            if (response.isSuccessful) {
-                setMenuList(baseContext, general_error_menu, response)
-            } else {
-                setErrorMenuList(general_error_menu, activity)
-            }
+            val menuCateg = object : TypeToken<MerchantListCategoryResponse>() {}.type
+            val cancelTransactionListV2Resp: MerchantListCategoryResponse = Gson().fromJson(readJson(baseContext, "menu_category.json"), menuCateg)
+            setMenuList(baseContext, general_error_menu, cancelTransactionListV2Resp)
         }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val response = PikappApiService().api.getMenuCategoryList(getUUID(), timestamp, getClientID(), signature, token, mid)
+//            if (response.isSuccessful) {
+//                setMenuList(baseContext, general_error_menu, response)
+//            } else {
+//                setErrorMenuList(general_error_menu, activity)
+//            }
+//        }
     }
 
     private suspend fun setMenuList(
         baseContext: Context,
         general_error_menu: View,
-        response: Response<MerchantListCategoryResponse>
+        response: MerchantListCategoryResponse
     ) {
         withContext(Dispatchers.Main) {
-            val gson = Gson()
-            val type = object : TypeToken<MerchantListCategoryResponse>() {}.type
-            general_error_menu.isVisible = false
-            if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                setCategoryList(response.body()?.results ?: listOf())
-                mutableIsLoading.value = false
-            }  else {
-                var errorResponse: MerchantListCategoryResponse? =
-                    gson.fromJson(response.errorBody()!!.charStream(), type)
-                Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
-                mutableErrCode.value = errorResponse?.errCode
-                mutableIsLoading.value = false
-            }
+            setCategoryList(response.results ?: listOf())
+            mutableIsLoading.value = false
+//            val gson = Gson()
+//            val type = object : TypeToken<MerchantListCategoryResponse>() {}.type
+//            general_error_menu.isVisible = false
+//            if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+//                setCategoryList(response.body()?.results ?: listOf())
+//                mutableIsLoading.value = false
+//            }  else {
+//                var errorResponse: MerchantListCategoryResponse? =
+//                    gson.fromJson(response.errorBody()!!.charStream(), type)
+//                Toast.makeText(baseContext, "Your account has been logged in to another device", Toast.LENGTH_SHORT).show()
+//                mutableErrCode.value = errorResponse?.errCode
+//                mutableIsLoading.value = false
+//            }
         }
     }
 
@@ -136,6 +146,18 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
     fun restartFragment() {
         mutableSize.value = 0
         mutableIsLoading.value = true
+    }
+
+    private fun readJson(context: Context, fileName: String): String? {
+        val jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 
     /* REUSABLE DATA */

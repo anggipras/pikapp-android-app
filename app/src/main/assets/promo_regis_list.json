@@ -1,0 +1,48 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": [
+    {
+      "campaign_code": "PTEST",
+      "campaign_deadline_date": "2022-04-04T00:00:00.000+0000",
+      "campaign_detail": "Test promo campaign",
+      "campaign_end_date": "2022-04-10T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/photo_2022-02-18%2015.34.16.jpeg?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T081924Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d25f26550c5edf374e2cf044b3e4e9d8247479c3d8f9a1a00c4f1842d9e6beefb",
+      "campaign_name": "Promo Test ",
+      "campaign_quota": "100",
+      "campaign_start_date": "2022-04-09T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 30,
+      "discount_amt_type": "PERCENTAGE",
+      "id": 35
+    },
+    {
+      "campaign_code": "PIKAPP15",
+      "campaign_deadline_date": "2022-04-30T00:00:00.000+0000",
+      "campaign_detail": "blablablabla",
+      "campaign_end_date": "2022-05-17T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gofood.png?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T081924Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003dfe58c3544a297626531c5d2611cb93fc97483a173c3829b2a560471f2506fd1e",
+      "campaign_name": "PikApp 15",
+      "campaign_quota": "20",
+      "campaign_start_date": "2022-05-10T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 20000,
+      "discount_amt_type": "ABSOLUTE",
+      "id": 33
+    },
+    {
+      "campaign_code": "PIKAPP14",
+      "campaign_deadline_date": "2022-04-11T00:00:00.000+0000",
+      "campaign_detail": "Test Discount for Test Scenario",
+      "campaign_end_date": "2022-04-23T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/1556608.jpg?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T081924Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d9a70e04634f79129a3afc6d50de1b81369c9cb39dd2163317464f606f634f5b4",
+      "campaign_name": "Pikapp 14",
+      "campaign_quota": "30",
+      "campaign_start_date": "2022-04-14T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 30,
+      "discount_amt_type": "PERCENTAGE",
+      "id": 30
+    }
+  ]
+}

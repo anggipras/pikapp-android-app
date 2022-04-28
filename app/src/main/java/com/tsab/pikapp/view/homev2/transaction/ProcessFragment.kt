@@ -279,17 +279,17 @@ class ProcessFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener
     }
 
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
-        viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionTxnUpdate(txnId, status, requireContext())
+//        viewModel.setProgressDialog(true, requireContext())
+//        viewModel.transactionTxnUpdate(txnId, status, requireContext())
     }
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
-        viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
+//        viewModel.setProgressDialog(true, requireContext())
+//        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
-        viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
+//        viewModel.setProgressDialog(true, requireContext())
+//        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
     }
 }

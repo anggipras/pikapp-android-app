@@ -1,0 +1,81 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": [
+    {
+      "campaign_code": "PIKAPP15",
+      "campaign_deadline_date": "2022-04-30T00:00:00.000+0000",
+      "campaign_detail": "blablablabla",
+      "campaign_end_date": "2022-05-17T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gofood.png?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T082243Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d71c7f3250e0075fa77c073c7c7d45d406e09b446e5f8f5e16d495b299ad18a05",
+      "campaign_name": "PikApp 15",
+      "campaign_quota": "20",
+      "campaign_start_date": "2022-05-10T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 20000,
+      "discount_amt_type": "ABSOLUTE",
+      "id": 33,
+      "merchant_status": "REGISTERED"
+    },
+    {
+      "campaign_code": "PIKAPP15",
+      "campaign_deadline_date": "2022-04-30T00:00:00.000+0000",
+      "campaign_detail": "blablablabla",
+      "campaign_end_date": "2022-05-17T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gofood.png?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T082243Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d71c7f3250e0075fa77c073c7c7d45d406e09b446e5f8f5e16d495b299ad18a05",
+      "campaign_name": "PikApp 15",
+      "campaign_quota": "20",
+      "campaign_start_date": "2022-05-10T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 20000,
+      "discount_amt_type": "ABSOLUTE",
+      "id": 33,
+      "merchant_status": "REGISTERED"
+    },
+    {
+      "campaign_code": "PIKAPP15",
+      "campaign_deadline_date": "2022-04-30T00:00:00.000+0000",
+      "campaign_detail": "blablablabla",
+      "campaign_end_date": "2022-05-17T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gofood.png?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T082243Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d71c7f3250e0075fa77c073c7c7d45d406e09b446e5f8f5e16d495b299ad18a05",
+      "campaign_name": "PikApp 15",
+      "campaign_quota": "20",
+      "campaign_start_date": "2022-05-10T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 20000,
+      "discount_amt_type": "ABSOLUTE",
+      "id": 33,
+      "merchant_status": "REGISTERED"
+    },
+    {
+      "campaign_code": "PIKAPP15",
+      "campaign_deadline_date": "2022-04-30T00:00:00.000+0000",
+      "campaign_detail": "blablablabla",
+      "campaign_end_date": "2022-05-17T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gofood.png?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T082243Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43199\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d0d52cdc4eefb429c4d6ab4c08878afd74ef31305cb3bcc5fdf4762b081138c22",
+      "campaign_name": "PikApp 15",
+      "campaign_quota": "20",
+      "campaign_start_date": "2022-05-10T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 20000,
+      "discount_amt_type": "ABSOLUTE",
+      "id": 33,
+      "merchant_status": "REGISTERED"
+    },
+    {
+      "campaign_code": "PIKAPP15",
+      "campaign_deadline_date": "2022-04-30T00:00:00.000+0000",
+      "campaign_detail": "blablablabla",
+      "campaign_end_date": "2022-05-17T00:00:00.000+0000",
+      "campaign_image": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/gofood.png?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T082243Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43199\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d0d52cdc4eefb429c4d6ab4c08878afd74ef31305cb3bcc5fdf4762b081138c22",
+      "campaign_name": "PikApp 15",
+      "campaign_quota": "20",
+      "campaign_start_date": "2022-05-10T00:00:00.000+0000",
+      "campaign_status": "SCHEDULED",
+      "discount_amt": 20000,
+      "discount_amt_type": "ABSOLUTE",
+      "id": 33,
+      "merchant_status": "REGISTERED"
+    }
+  ]
+}

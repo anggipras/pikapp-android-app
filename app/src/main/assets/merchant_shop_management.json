@@ -1,0 +1,58 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": {
+    "auto_on_off": true,
+    "time_management": [
+      {
+        "close_time": "00:00",
+        "daily_status": "CLOSE",
+        "days": "SUNDAY",
+        "is_force_close": false,
+        "open_time": "00:00"
+      },
+      {
+        "close_time": "23:59",
+        "daily_status": "OPEN",
+        "days": "MONDAY",
+        "is_force_close": false,
+        "open_time": "00:00"
+      },
+      {
+        "close_time": "23:59",
+        "daily_status": "OPEN",
+        "days": "TUESDAY",
+        "is_force_close": false,
+        "open_time": "00:00"
+      },
+      {
+        "close_time": "21:00",
+        "daily_status": "OPEN",
+        "days": "WEDNESDAY",
+        "is_force_close": false,
+        "open_time": "09:00"
+      },
+      {
+        "close_time": "21:00",
+        "daily_status": "OPEN",
+        "days": "THURSDAY",
+        "is_force_close": false,
+        "open_time": "09:00"
+      },
+      {
+        "close_time": "23:00",
+        "daily_status": "OPEN",
+        "days": "FRIDAY",
+        "is_force_close": false,
+        "open_time": "10:00"
+      },
+      {
+        "close_time": "00:00",
+        "daily_status": "CLOSE",
+        "days": "SATURDAY",
+        "is_force_close": false,
+        "open_time": "00:00"
+      }
+    ]
+  }
+}

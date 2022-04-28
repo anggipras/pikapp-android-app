@@ -1,0 +1,21 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": {
+    "address": "Puri Gading, Vila Legian, Blok G6 No.6, Jati Melati, Pondok Melati, Bekasi",
+    "bank_account_name": "Anggi Prastianto",
+    "bank_account_no": "12121212",
+    "bank_name": "BANK CENTRAL ASIA (BCA)",
+    "date_of_birth": "30-01-1994",
+    "domain": "sushi.to.ramen",
+    "email": "vcbap94@gmail.com",
+    "full_name": "Bernardus Anggi",
+    "gender": "MALE",
+    "merchant_banner": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/5fd44cf8e94b1.jpg?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T083630Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003d23aa6ac73c5f7ffe83ae3b556b66c3b02449d5309c62700e1837eba91f1cb010",
+    "merchant_category": "NONE,NONE,NONE",
+    "merchant_logo": "https://production-merchant.s3.ap-southeast-1.amazonaws.com/048837600_1587095459-shutterstock_201774374.jpg?X-Amz-Algorithm\u003dAWS4-HMAC-SHA256\u0026X-Amz-Date\u003d20220428T083630Z\u0026X-Amz-SignedHeaders\u003dhost\u0026X-Amz-Expires\u003d43200\u0026X-Amz-Credential\u003dAKIAYBXTVRKM5MEIYZEG%2F20220428%2Fap-southeast-1%2Fs3%2Faws4_request\u0026X-Amz-Signature\u003df22a8edc39bc12d11d97016c9c0cb8548c37f61eac72b3dd63b6ca8625beb0fa",
+    "merchant_name": "Sushi to Ramen",
+    "mid": "M00000150",
+    "phone_number": "081296000121"
+  }
+}

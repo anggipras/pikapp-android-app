@@ -48,7 +48,7 @@ class DynamicFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         categoryName = arguments?.getString(argumentCategoryName).toString()
-        viewModel.getMenuList()
+        viewModel.getMenuList(requireContext())
 
         observeViewModel()
         setupRecyclerView()

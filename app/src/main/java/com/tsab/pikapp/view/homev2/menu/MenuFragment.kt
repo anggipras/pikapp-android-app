@@ -88,7 +88,7 @@ class MenuFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val onlineService = OnlineService()
         if (onlineService.isOnline(context)) {
             activity?.let { viewModel.getMenuCategoryList(it.baseContext, requireActivity(), general_error_menu) }
-            otherViewModel.getMerchantProfile(requireContext(), requireActivity(), general_error_menu)
+//            otherViewModel.getMerchantProfile(requireContext(), requireActivity(), general_error_menu)
             general_error_menu.isVisible = false
         } else {
             general_error_menu.isVisible = true

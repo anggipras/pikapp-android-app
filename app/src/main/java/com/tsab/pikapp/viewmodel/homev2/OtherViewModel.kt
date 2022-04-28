@@ -22,6 +22,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,26 +65,30 @@ class OtherViewModel : ViewModel() {
         val uuid = getUUID()
         val clientId = getClientID()
 
-        disposable.add(
-            PikappApiService().api.getMerchantProfile(
-                uuid, timeStamp, clientId, signature, token, userDomain
-            ).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
-                    override fun onSuccess(t: MerchantProfileResponse) {
-                        general_error_other.isVisible = false
-                        t.results?.let { res ->
-                            merchantProfileRetrieved(res)
-                        }
-                    }
+        val merchProf = object : TypeToken<MerchantProfileResponse>() {}.type
+        val mainMenuRes: MerchantProfileResponse = Gson().fromJson(readJson(context, "merchant_profile.json"), merchProf)
+        mainMenuRes.results?.let { merchantProfileRetrieved(it) }
 
-                    override fun onError(e: Throwable) {
-                        Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
-                        onlineService.serviceDialog(requireActivity)
-                        general_error_other.isVisible = true
-                    }
-                })
-        )
+//        disposable.add(
+//            PikappApiService().api.getMerchantProfile(
+//                uuid, timeStamp, clientId, signature, token, userDomain
+//            ).subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(object : DisposableSingleObserver<MerchantProfileResponse>() {
+//                    override fun onSuccess(t: MerchantProfileResponse) {
+//                        general_error_other.isVisible = false
+//                        t.results?.let { res ->
+//                            merchantProfileRetrieved(res)
+//                        }
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Toast.makeText(context, e.message.toString(), Toast.LENGTH_SHORT).show()
+//                        onlineService.serviceDialog(requireActivity)
+//                        general_error_other.isVisible = true
+//                    }
+//                })
+//        )
     }
 
     fun merchantProfileRetrieved(response: MerchantProfileData) {
@@ -120,35 +125,58 @@ class OtherViewModel : ViewModel() {
         }
         val signature = getSignature(email, timestamp)
 
-        PikappApiService().api.getMerchantShopManagement(
-            uuid, timestamp, clientId, signature, token, mid
-        ).enqueue(object : Callback<MerchantTimeManagement> {
-            override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
-                Toast.makeText(context, t.message.toString(), Toast.LENGTH_SHORT).show()
-                onlineService.serviceDialog(requireActivity)
-                general_error_other.isVisible = true
-            }
+        val shopMgmt = object : TypeToken<MerchantTimeManagement>() {}.type
+        val shopMgmtRes: MerchantTimeManagement = Gson().fromJson(readJson(context, "merchant_shop_management.json"), shopMgmt)
 
-            override fun onResponse(
-                call: Call<MerchantTimeManagement>,
-                response: Response<MerchantTimeManagement>
-            ) {
-                val gson = Gson()
-                val type = object : TypeToken<MerchantTimeManagement>() {}.type
-                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
-                    general_error_other.isVisible = false
-                    val timeManagementResult = response.body()?.results?.timeManagement
-                    autoOnOff.value = response.body()?.results?.autoOnOff ?: false
-                    val filteredDay = timeManagementResult?.filter { selectedDay ->
-                        selectedDay.days == dayOfTheWeek.uppercase(Locale.getDefault())
-                    }
-                    merchantShopStatus.value = filteredDay?.get(0)
-                }  else {
-                    var errorResponse: MerchantTimeManagement? =
-                            gson.fromJson(response.errorBody()!!.charStream(), type)
-                    mutableErrCode.value = errorResponse?.errCode
-                }
-            }
-        })
+        general_error_other.isVisible = false
+        val timeManagementResult = shopMgmtRes.results?.timeManagement
+        autoOnOff.value = shopMgmtRes.results?.autoOnOff ?: false
+        val filteredDay = timeManagementResult?.filter { selectedDay ->
+            selectedDay.days == dayOfTheWeek.uppercase(Locale.getDefault())
+        }
+        merchantShopStatus.value = filteredDay?.get(0)
+
+//        PikappApiService().api.getMerchantShopManagement(
+//            uuid, timestamp, clientId, signature, token, mid
+//        ).enqueue(object : Callback<MerchantTimeManagement> {
+//            override fun onFailure(call: Call<MerchantTimeManagement>, t: Throwable) {
+//                Toast.makeText(context, t.message.toString(), Toast.LENGTH_SHORT).show()
+//                onlineService.serviceDialog(requireActivity)
+//                general_error_other.isVisible = true
+//            }
+//
+//            override fun onResponse(
+//                call: Call<MerchantTimeManagement>,
+//                response: Response<MerchantTimeManagement>
+//            ) {
+//                val gson = Gson()
+//                val type = object : TypeToken<MerchantTimeManagement>() {}.type
+//                if (response.code() == 200 && response.body()!!.errCode.toString() == "EC0000") {
+//                    general_error_other.isVisible = false
+//                    val timeManagementResult = response.body()?.results?.timeManagement
+//                    autoOnOff.value = response.body()?.results?.autoOnOff ?: false
+//                    val filteredDay = timeManagementResult?.filter { selectedDay ->
+//                        selectedDay.days == dayOfTheWeek.uppercase(Locale.getDefault())
+//                    }
+//                    merchantShopStatus.value = filteredDay?.get(0)
+//                }  else {
+//                    var errorResponse: MerchantTimeManagement? =
+//                            gson.fromJson(response.errorBody()!!.charStream(), type)
+//                    mutableErrCode.value = errorResponse?.errCode
+//                }
+//            }
+//        })
+    }
+
+    private fun readJson(context: Context, fileName: String): String? {
+        val jsonString: String
+
+        try {
+            jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        } catch (ioException: IOException) {
+            ioException.printStackTrace()
+            return null
+        }
+        return jsonString
     }
 }

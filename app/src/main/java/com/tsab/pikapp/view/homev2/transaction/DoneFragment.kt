@@ -47,20 +47,20 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
             getDataDone()
         }
 
-        dataBinding.nestedScrollDone.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
-            // on scroll change we are checking when users scroll as bottom.
-            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                if (!viewModel.finishPageStateDone.value!!) {
-                    // in this method we are incrementing page number,
-                    // making progress bar visible and calling get data method.
-                    val pageDoneAct = viewModel.pageDone.value!! + 1
-                    dataBinding.loadingPB.isVisible = true
-                    viewModel.getDoneTransactionV2PaginationList(requireContext(), true, pageDoneAct)
-                } else {
-                    dataBinding.loadingPB.isVisible = false
-                }
-            }
-        })
+//        dataBinding.nestedScrollDone.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+//            // on scroll change we are checking when users scroll as bottom.
+//            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+//                if (!viewModel.finishPageStateDone.value!!) {
+//                    // in this method we are incrementing page number,
+//                    // making progress bar visible and calling get data method.
+//                    val pageDoneAct = viewModel.pageDone.value!! + 1
+//                    dataBinding.loadingPB.isVisible = true
+//                    viewModel.getDoneTransactionV2PaginationList(requireContext(), true, pageDoneAct)
+//                } else {
+//                    dataBinding.loadingPB.isVisible = false
+//                }
+//            }
+//        })
 
         viewModel.finishPageStateDone.observe(viewLifecycleOwner, {
             if (it) {
@@ -121,17 +121,17 @@ class DoneFragment : Fragment(), TransactionListV2Adapter.OnItemClickListener {
     }
 
     override fun onItemClickTransactionTxn(txnId: String, status: String) {
-        viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionTxnUpdate(txnId, status, requireContext())
+//        viewModel.setProgressDialog(true, requireContext())
+//        viewModel.transactionTxnUpdate(txnId, status, requireContext())
     }
 
     override fun onItemClickTransactionChannel(channel: String, orderId: String) {
-        viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
+//        viewModel.setProgressDialog(true, requireContext())
+//        viewModel.transactionChannelUpdate(channel, orderId, requireContext())
     }
 
     override fun onItemClickTransactionPos(updateStatusManualTxnRequest: UpdateStatusManualTxnRequest) {
-        viewModel.setProgressDialog(true, requireContext())
-        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
+//        viewModel.setProgressDialog(true, requireContext())
+//        viewModel.transactionPosUpdate(updateStatusManualTxnRequest, requireContext())
     }
 }

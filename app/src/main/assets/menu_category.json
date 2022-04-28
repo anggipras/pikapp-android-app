@@ -1,0 +1,97 @@
+{
+  "err_code": "EC0000",
+  "err_message": "APPROVED/OK",
+  "results": [
+    {
+      "category_name": "Shoes",
+      "category_order": 0,
+      "id": 289,
+      "is_active": true,
+      "product_size": 1
+    },
+    {
+      "category_name": "Bags",
+      "category_order": 0,
+      "id": 288,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Long Pants",
+      "category_order": 0,
+      "id": 287,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Shirts",
+      "category_order": 0,
+      "id": 286,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Sweater",
+      "category_order": 0,
+      "id": 285,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Tshirts",
+      "category_order": 0,
+      "id": 284,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Pants",
+      "category_order": 0,
+      "id": 283,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Socks",
+      "category_order": 0,
+      "id": 282,
+      "is_active": true,
+      "product_size": 0
+    },
+    {
+      "category_name": "Pizza",
+      "category_order": 0,
+      "id": 232,
+      "is_active": true,
+      "product_size": 5
+    },
+    {
+      "category_name": "Sushi",
+      "category_order": 1,
+      "id": 185,
+      "is_active": true,
+      "product_size": 4
+    },
+    {
+      "category_name": "Udonji",
+      "category_order": 2,
+      "id": 202,
+      "is_active": true,
+      "product_size": 5
+    },
+    {
+      "category_name": "Ramenji",
+      "category_order": 3,
+      "id": 201,
+      "is_active": true,
+      "product_size": 5
+    },
+    {
+      "category_name": "Bulgogi",
+      "category_order": 4,
+      "id": 244,
+      "is_active": true,
+      "product_size": 2
+    }
+  ]
+}
